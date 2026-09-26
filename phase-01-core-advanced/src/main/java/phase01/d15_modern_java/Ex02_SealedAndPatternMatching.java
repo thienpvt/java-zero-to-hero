@@ -37,9 +37,9 @@ import phase01.support.Compiles;
  *               điền dự đoán, tự đọc simple name của exception.
  *   Code      : cài đặt static String describe(Object value) bằng switch pattern matching
  *               kèm guard `when`.
- *   Hoàn thành khi: q05_* xanh; giải thích được: switch expression luôn phải đủ nhánh;
- *               switch statement kiểu cũ trên int/String/enum (không pattern, không null)
- *               không bắt buộc đủ nhánh; switch pattern — kể cả dạng statement — phải đủ nhánh.
+ *   Hoàn thành khi: test q05_* xanh; giải thích được khi nào compiler bắt buộc switch
+ *               phải đủ nhánh (expression vs statement, sealed vs kiểu cũ) và hành vi khi
+ *               selector là null với switch pattern không có {@code case null}.
  */
 public class Ex02_SealedAndPatternMatching {
 
@@ -78,9 +78,9 @@ public class Ex02_SealedAndPatternMatching {
     static final String Q5_SWITCH_ON_NULL_WITHOUT_CASE_NULL = "NullPointerException"; // SOLUTION-VALUE
 
     /**
-     * Cho sẵn để minh họa Q5: switch pattern matching trên kiểu tham chiếu, nếu không có
-     * nhánh {@code case null} tường minh, sẽ ném {@link NullPointerException} khi input
-     * là {@code null}.
+     * Cho sẵn để minh họa Q5: gọi với {@code null} và quan sát (Debug hoặc chạy test q05_*)
+     * khi switch pattern matching trên kiểu tham chiếu không có nhánh {@code case null}
+     * tường minh.
      *
      * <p>Switch statement kiểu cũ cũng có thể NPE trên {@code null}, nhưng không phải vì
      * unboxing trong mọi trường hợp: switch trên {@code String} dereference {@code hashCode()}

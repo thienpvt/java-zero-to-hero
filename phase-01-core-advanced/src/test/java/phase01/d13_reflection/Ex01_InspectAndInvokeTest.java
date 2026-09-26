@@ -76,7 +76,7 @@ class Ex01_InspectAndInvokeTest {
 
     @Test
     @DisplayName("Q4 dự đoán: setAccessible trên String.value ném exception gì")
-    void q04_duDoan_setAccessibleOnStringValue_throwsInaccessibleObjectException() {
+    void q04_prediction_setAccessibleOnStringValue() {
         String actualExceptionSimpleName;
         try {
             Field value = String.class.getDeclaredField("value");

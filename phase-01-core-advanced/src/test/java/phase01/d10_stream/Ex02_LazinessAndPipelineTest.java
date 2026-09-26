@@ -96,8 +96,8 @@ class Ex02_LazinessAndPipelineTest {
     }
 
     @Test
-    @DisplayName("Q11 code: filter trước thì map chạy đúng 2 lần, map trước thì đúng 10 lần")
-    void q11_mapCalls_filterTruocTraVe2_mapTruocTraVe10() {
+    @DisplayName("Q11 code: thứ tự filter/map ảnh hưởng số lần map được gọi")
+    void q11_mapCallCountsMatchPipelineOrder() {
         List<Integer> numbers = IntStream.rangeClosed(1, 10).boxed().toList();
 
         assertEquals(2, Ex02_LazinessAndPipeline.mapCallsWhenFilterFirst(numbers),

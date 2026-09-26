@@ -6,26 +6,28 @@ import java.util.Arrays;
  * ArrayList — Bài 1: Capacity, size và cơ chế resize
  *
  * Nguồn: 01-java-core-advanced.md, mục 2 (ArrayList), câu 2, 1, 3, 4, 6.
- * Cần làm trước: không (trong file này làm Q2 trước Q1).
- * Cách làm: làm lần lượt theo thứ tự Javadoc — Q2 trước Q1, vì test q01_* dựng danh sách
- * bằng add(); chạy test tương ứng trong Ex01_CapacityAndResizeTest bằng nút ▶ cạnh tên
- * test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
+ * Cần làm trước: không (Q1 và Q2 đi cặp trong file này).
+ * Cách làm: Q1 và Q2 đi cặp — cài đặt các phần TODO của cả hai câu rồi mới chạy test q01_*
+ * và q02_*; các câu khác làm lần lượt theo thứ tự Javadoc. Chạy test trong
+ * Ex01_CapacityAndResizeTest bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh
+ * mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
  * Q2 [CODE + TỰ TRẢ LỜI] Tại sao `add()` thường được gọi là amortized O(1)?
- *   Bắt đầu   : cài đặt add(E element), add(int index, E element) và remove(int index).
+ *   Bắt đầu   : cùng Q1, cài đặt add(E), add(int, E), remove(int) và get(int) (TODO của
+ *               cả Q1 lẫn Q2) trước khi chạy test q01_* hoặc q02_*.
  *   Kiểm chứng: đặt breakpoint trong add(E) của bạn, Ctrl+N → ArrayList → Ctrl+F12 → add,
  *               so với cách JDK thật làm; chạy q02_*, sau khi đã cài đặt, tự xem những lần
  *               add nào gọi grow().
  *   Code      : add(E) nối vào cuối, chỉ gọi grow() khi mảng đầy; add(int, E) dùng
  *               System.arraycopy để dời phần tử từ index về phải trước khi chèn;
  *               remove(int) dời phần tử phía sau về trái rồi trả phần tử bị xóa.
- *   Hoàn thành khi: các test q02_* xanh; giải thích được vì sao chi phí trung bình trên
- *               nhiều lần add vẫn là O(1) dù có vài lần grow() tốn O(n).
+ *   Hoàn thành khi: đã cài xong TODO Q1 và Q2, các test q02_* xanh; giải thích được vì sao
+ *               chi phí trung bình trên nhiều lần add vẫn là O(1) dù có vài lần grow() tốn O(n).
  *
  * Q1 [CODE + TỰ TRẢ LỜI] Tại sao `ArrayList.get()` là O(1)?
- *   Bắt đầu   : làm Q2 trước (test q01_* gọi add()). Ctrl+N mở MiniArrayList bên dưới,
- *               cài đặt get(int index) bằng cách ép kiểu trực tiếp (E) elementData[index].
+ *   Bắt đầu   : cùng Q2 (xem mục Q2), cài đặt get(int index) bằng cách ép kiểu trực tiếp
+ *               (E) elementData[index]; chỉ chạy q01_* sau khi cả get và add đã xong.
  *   Kiểm chứng: đặt breakpoint ngay trong get(), Debug q01_get_traVePhanTuDungViTri
  *               (Ctrl+Shift+F10), F8 qua từng bước, sau khi đã cài đặt, tự đếm số phép
  *               truy cập mảng và số vòng lặp.

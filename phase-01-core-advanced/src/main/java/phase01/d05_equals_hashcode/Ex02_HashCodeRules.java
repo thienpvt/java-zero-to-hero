@@ -15,8 +15,9 @@ import java.util.Objects;
  * Q2 [DỰ ĐOÁN] Hai object cùng hashCode có bắt buộc equals không?
  *   Bắt đầu   : Alt+F8 mở Evaluate Expression, thử "Aa".hashCode(), "BB".hashCode() và
  *               "Aa".equals("BB"); điền hằng sau khi đã tự chạy.
- *   Kiểm chứng: chạy q02_prediction_sameHashDoesNotImplyEquals; Ctrl+Q trên String.hashCode
- *               để đọc công thức s[0]*31^(n-1) + ... + s[n-1] rồi tự tính tay để hiểu vì sao trùng.
+ *   Kiểm chứng: chạy q02_prediction_sameHashDoesNotImplyEquals; so sánh hashCode của hai
+ *               chuỗi rồi giải thích kết quả; Ctrl+Q trên String.hashCode để đọc công thức
+ *               s[0]*31^(n-1) + ... + s[n-1] nếu cần kiểm tra tay.
  *   Code      : không có; câu này chỉ dự đoán dựa trên việc chạy code thật trong test.
  *   Hoàn thành khi: q02_* xanh; giải thích được đây là hash collision bình thường,
  *               không phải lỗi của hashCode().

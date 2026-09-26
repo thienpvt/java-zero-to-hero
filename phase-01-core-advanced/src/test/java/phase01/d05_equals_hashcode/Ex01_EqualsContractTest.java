@@ -130,7 +130,7 @@ class Ex01_EqualsContractTest {
     }
 
     @Test
-    @DisplayName("Q5 dự đoán: Integer 127 có dùng cache (== true) không")
+    @DisplayName("Q5 dự đoán: hai Integer 127 có cùng == không")
     void q05_integer127DoubleEquals() {
         Integer a = 127;
         Integer b = 127;
@@ -139,7 +139,7 @@ class Ex01_EqualsContractTest {
     }
 
     @Test
-    @DisplayName("Q5 dự đoán: Integer 128 có dùng cache (== true) không")
+    @DisplayName("Q5 dự đoán: hai Integer 128 có cùng == không")
     void q05_integer128DoubleEquals() {
         Integer a = 128;
         Integer b = 128;

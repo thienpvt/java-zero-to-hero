@@ -27,9 +27,9 @@ import phase01.support.Compiles;
  *   Bắt đầu   : bỏ comment dòng {@code Optional<String> o = null;} ngay trên hằng số Q5_*
  *               bên dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán;
  *               điền 2 hằng số Q5_*.
- *   Kiểm chứng: chạy q05_prediction; nếu sai, đặt breakpoint trong Optional.get()
- *               (Ctrl+N → Optional → Ctrl+F12 → get), Debug q05_prediction, F7 Step Into
- *               để thấy dòng {@code throw new NoSuchElementException("No value present")}.
+ *   Kiểm chứng: chạy q05_prediction; sau khi đã điền dự đoán, Debug q05_prediction (F7
+ *               Step Into vào Optional.get()) để quan sát exception thật khi gọi get trên
+ *               empty — so với dự đoán Q5_GET_ON_EMPTY_EXCEPTION.
  *   Code      : không.
  *   Hoàn thành khi: q05_prediction xanh; giải thích được Optional chỉ tránh NPE khi API
  *               *trả về* Optional được unwrap đúng cách (map/flatMap/orElseGet...) — biến

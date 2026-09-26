@@ -28,7 +28,7 @@ class Ex02_SealedAndPatternMatchingTest {
     }
 
     @Test
-    @DisplayName("Q5 dự đoán: switch expression thiếu case và ném NPE khi thiếu case null")
+    @DisplayName("Q5 dự đoán: switch expression thiếu case và switch pattern với null")
     void q05_prediction() {
         assertPrediction("Q5_SWITCH_EXPRESSION_MISSING_CASE_COMPILES",
                 Compiles.NO, Ex02_SealedAndPatternMatching.Q5_SWITCH_EXPRESSION_MISSING_CASE_COMPILES,

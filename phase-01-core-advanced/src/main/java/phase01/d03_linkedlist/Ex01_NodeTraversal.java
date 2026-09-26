@@ -7,26 +7,28 @@ import java.util.List;
  * LinkedList — Bài 1: Node và duyệt (traversal)
  *
  * Nguồn: 01-java-core-advanced.md, mục 3 (LinkedList), câu 2, 1.
- * Cần làm trước: không (trong file này làm Q2 trước Q1).
- * Cách làm: làm lần lượt theo thứ tự Javadoc — Q2 trước Q1, vì test q01_* dựng danh sách
- * bằng addLast(); chạy test tương ứng trong Ex01_NodeTraversalTest bằng nút ▶ cạnh tên
- * test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
+ * Cần làm trước: không (Q1 và Q2 đi cặp trong file này).
+ * Cách làm: Q1 và Q2 đi cặp — cài đặt các phần TODO của cả hai câu rồi mới chạy test q01_*
+ * và q02_*; chạy test trong Ex01_NodeTraversalTest bằng nút ▶ cạnh tên test
+ * (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
  * Q2 [DỰ ĐOÁN + CODE] Insert giữa LinkedList có thực sự O(1) không?
- *   Bắt đầu   : cài đặt addFirst(E)/addLast(E) và insertAfter(Node, E) bên dưới; điền
- *               Q2_INSERT_MIDDLE_O1_INCLUDING_SEARCH (thay null).
+ *   Bắt đầu   : cùng Q1, cài đặt addFirst/addLast, insertAfter, nodeAt và get (TODO của
+ *               cả Q1 lẫn Q2); điền Q2_INSERT_MIDDLE_O1_INCLUDING_SEARCH (thay null);
+ *               chỉ chạy q01_* hoặc q02_* khi các method trên đã xong.
  *   Kiểm chứng: chạy các test q02_*; sau một lời gọi insertAfter, dùng Alt+F8 Evaluate
  *               Expression để đọc node.next.prev và node.prev.next ngay tại breakpoint,
  *               tự xác nhận liên kết hai chiều đã được nối đúng.
  *   Code      : insertAfter(Node<E> node, E e) chỉ nối lại prev/next quanh vị trí chèn (O(1)),
  *               cập nhật last khi node đang là phần tử cuối — không được duyệt list.
- *   Hoàn thành khi: q02_* xanh; giải thích được phần nào của thao tác chèn là O(1) và phần
- *               nào có thể tốn O(n) nếu tính cả bước tìm node.
+ *   Hoàn thành khi: đã cài xong TODO Q1 và Q2, q02_* xanh; giải thích được phần nào của
+ *               thao tác chèn là O(1) và phần nào có thể tốn O(n) nếu tính cả bước tìm node.
  *
  * Q1 [DỰ ĐOÁN + CODE] `LinkedList.get(5000)` hoạt động thế nào?
- *   Bắt đầu   : làm Q2 trước (test q01_* gọi addLast()). Cài đặt nodeAt(int) và get(int)
- *               bên dưới (thay phần TODO); điền hai hằng số Q1_STEPS_* (thay null).
+ *   Bắt đầu   : cùng Q2 (xem mục Q2), cài đặt nodeAt(int) và get(int) (thay phần TODO);
+ *               điền hai hằng số Q1_STEPS_* (thay null); chỉ chạy q01_* sau khi cả get và
+ *               addLast đã xong.
  *   Kiểm chứng: chạy các test q01_*; đặt breakpoint trong java.util.LinkedList.node(int)
  *               (Ctrl+N → LinkedList → Ctrl+F12 → node(int)), Debug một test bất kỳ gọi
  *               get(...), dùng F7 Step Into để so sánh chiến lược duyệt với nodeAt của bạn.

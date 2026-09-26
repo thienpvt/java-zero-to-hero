@@ -49,8 +49,8 @@ import phase01.support.Compiles;
  *   Hoàn thành khi: các test q04_* xanh; giải thích được vì sao module java.base (một
  *               module trong Java Platform Module System, có từ JDK 9) không
  *               "opens java.lang" cho code ứng dụng nên setAccessible trên field private
- *               của String ném InaccessibleObjectException, còn field/method private của
- *               class tự viết (không nằm trong module nào hạn chế) thì gọi được bình
+ *               của String bị chặn (exception ghi trong Q4_*), còn field/method private
+ *               của class tự viết (không nằm trong module nào hạn chế) thì gọi được bình
  *               thường.
  *
  * Q5 [DỰ ĐOÁN] Reflection ảnh hưởng compile-time checking ra sao?

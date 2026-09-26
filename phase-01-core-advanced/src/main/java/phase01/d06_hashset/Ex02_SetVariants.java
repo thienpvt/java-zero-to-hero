@@ -22,8 +22,8 @@ import java.util.TreeSet;
  * Q3 [DỰ ĐOÁN] HashSet có đảm bảo iteration order không?
  *   Bắt đầu   : chạy main() bên dưới (nút ▶ cạnh main) để thấy thứ tự in ra thật của
  *               "banana","apple","cherry","date" sau khi add vào HashSet.
- *   Kiểm chứng: điền Q3_HASHSET_GUARANTEES_ORDER; Ctrl+Q khi con trỏ ở tên HashSet để đọc
- *               đoạn Javadoc "no guarantees ... iteration order".
+ *   Kiểm chứng: điền Q3_HASHSET_GUARANTEES_ORDER trước; sau khi đã điền dự đoán, Ctrl+Q
+ *               khi con trỏ ở tên HashSet và đọc đoạn Javadoc về iteration order.
  *   Code      : không.
  *   Hoàn thành khi: q03_prediction xanh, giải thích được thứ tự in ra phụ thuộc
  *               hashCode() và cấu trúc bucket của HashMap phía sau, không phải thứ tự add.
@@ -40,9 +40,9 @@ import java.util.TreeSet;
  * Q6 [DỰ ĐOÁN + CODE] `TreeSet` cần Comparable/Comparator vì sao?
  *   Bắt đầu   : điền Q6_TREESET_NON_COMPARABLE_EXCEPTION; cài đặt distinctSorted(Collection)
  *               và byAgeThenName(Collection) bên dưới.
- *   Kiểm chứng: chạy q06_prediction; nếu sai, Ctrl+B vào TreeSet.add(E) rồi F7 Step Into
- *               tới TreeMap.put, thấy compare(k1, k2) ném ClassCastException khi phần tử
- *               không phải Comparable và TreeSet không có Comparator.
+ *   Kiểm chứng: chạy q06_prediction; sau khi đã điền dự đoán, Debug q06_prediction hoặc
+ *               Ctrl+B vào TreeSet.add(E) rồi F7 Step Into tới TreeMap.put để quan sát
+ *               exception khi phần tử không Comparable và TreeSet không có Comparator.
  *   Code      : distinctSorted, byAgeThenName (dùng
  *               Comparator.comparingInt(Person::age).thenComparing(Person::name)).
  *   Hoàn thành khi: test q06_* xanh, giải thích được TreeSet dùng compare()/compareTo()

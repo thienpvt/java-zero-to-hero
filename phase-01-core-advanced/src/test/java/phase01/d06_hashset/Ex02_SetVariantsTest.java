@@ -33,7 +33,7 @@ class Ex02_SetVariantsTest {
     }
 
     @Test
-    @DisplayName("Q6 dự đoán: TreeSet không Comparable ném ClassCastException")
+    @DisplayName("Q6 dự đoán: TreeSet add phần tử không Comparable ném exception gì")
     void q06_prediction() {
         TreeSet<Object> set = new TreeSet<>();
 
