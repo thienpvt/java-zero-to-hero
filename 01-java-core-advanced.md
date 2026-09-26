@@ -14,6 +14,8 @@
 
 ## 1. Generics
 
+> Thực hành: [d01_generics](phase-01-core-advanced/src/main/java/phase01/d01_generics/)
+
 ### Kiến thức cần nắm
 
 #### Cơ bản
@@ -107,6 +109,8 @@ void process(List<?> list)
 
 ## 2. ArrayList
 
+> Thực hành: [d02_arraylist](phase-01-core-advanced/src/main/java/phase01/d02_arraylist/)
+
 ### Kiến thức cần nắm
 
 Hiểu:
@@ -149,6 +153,8 @@ Hiểu khái niệm **amortized complexity**.
 
 ## 3. LinkedList
 
+> Thực hành: [d03_linkedlist](phase-01-core-advanced/src/main/java/phase01/d03_linkedlist/)
+
 ### Kiến thức cần nắm
 
 Hiểu:
@@ -178,6 +184,8 @@ Phải hiểu tìm được node cần insert có thể mất O(n).
 ---
 
 ## 4. HashMap
+
+> Thực hành: [d04_hashmap](phase-01-core-advanced/src/main/java/phase01/d04_hashmap/)
 
 ### Kiến thức cần nắm
 
@@ -239,6 +247,8 @@ value
 
 ## 5. equals() và hashCode()
 
+> Thực hành: [d05_equals_hashcode](phase-01-core-advanced/src/main/java/phase01/d05_equals_hashcode/)
+
 ### Kiến thức cần nắm
 
 Contract của equals:
@@ -280,6 +290,8 @@ Chiều ngược lại không bắt buộc.
 
 ## 6. HashSet
 
+> Thực hành: [d06_hashset](phase-01-core-advanced/src/main/java/phase01/d06_hashset/)
+
 ### Kiến thức cần nắm
 
 Hiểu rằng `HashSet` dựa trên HashMap.
@@ -304,6 +316,8 @@ Nắm:
 ---
 
 ## 7. Comparable & Comparator
+
+> Thực hành: [d07_comparable_comparator](phase-01-core-advanced/src/main/java/phase01/d07_comparable_comparator/)
 
 ### Kiến thức cần nắm
 
@@ -347,6 +361,8 @@ Comparator
 
 ## 8. Immutability
 
+> Thực hành: [d08_immutability](phase-01-core-advanced/src/main/java/phase01/d08_immutability/)
+
 ### Kiến thức cần nắm
 
 Immutable object:
@@ -383,6 +399,8 @@ Lưu ý `List.of(...)` và `Stream.toList()` tạo danh sách không cho sửa n
 
 ## 9. Lambda & Functional Interface
 
+> Thực hành: [d09_lambda](phase-01-core-advanced/src/main/java/phase01/d09_lambda/)
+
 ### Kiến thức cần nắm
 
 Functional Interface có đúng một abstract method.
@@ -415,6 +433,8 @@ Hiểu:
 ---
 
 ## 10. Stream API
+
+> Thực hành: [d10_stream](phase-01-core-advanced/src/main/java/phase01/d10_stream/)
 
 ### Kiến thức cần nắm
 
@@ -478,6 +498,8 @@ users.stream()
 
 ## 11. Optional
 
+> Thực hành: [d11_optional](phase-01-core-advanced/src/main/java/phase01/d11_optional/)
+
 ### Kiến thức cần nắm
 
 Optional biểu diễn giá trị có thể không tồn tại.
@@ -513,6 +535,8 @@ Không nên dùng Optional bừa bãi cho:
 
 ## 12. Date & Time API
 
+> Thực hành: [d12_datetime](phase-01-core-advanced/src/main/java/phase01/d12_datetime/)
+
 ### Kiến thức cần nắm
 
 Nắm:
@@ -547,6 +571,8 @@ Phân biệt:
 
 ## 13. Reflection
 
+> Thực hành: [d13_reflection](phase-01-core-advanced/src/main/java/phase01/d13_reflection/)
+
 ### Kiến thức cần nắm
 
 Reflection cho phép inspect/manipulate runtime metadata:
@@ -579,6 +605,8 @@ Nắm trade-off:
 
 ## 14. Annotation
 
+> Thực hành: [d14_annotation](phase-01-core-advanced/src/main/java/phase01/d14_annotation/)
+
 ### Kiến thức cần nắm
 
 Hiểu:
@@ -608,6 +636,8 @@ Retention:
 
 ## 15. Java hiện đại: record, sealed type, pattern matching
 
+> Thực hành: [d15_modern_java](phase-01-core-advanced/src/main/java/phase01/d15_modern_java/)
+
 ### Kiến thức cần nắm
 
 - Dùng `record` cho dữ liệu mang giá trị, hiểu constructor, `equals`/`hashCode` tự sinh và giới hạn về shallow immutability.
@@ -627,6 +657,8 @@ Retention:
 
 ## 16. Exception handling và quản lý tài nguyên
 
+> Thực hành: [d16_exceptions_resources](phase-01-core-advanced/src/main/java/phase01/d16_exceptions_resources/)
+
 ### Kiến thức cần nắm
 
 - Checked/unchecked exception, nguyên nhân gốc và ranh giới chuyển lỗi giữa các layer.
@@ -645,6 +677,8 @@ Retention:
 ---
 
 ## Bài thực hành tích hợp
+
+> Thực hành: [d17_capstone](phase-01-core-advanced/src/main/java/phase01/d17_capstone/)
 
 Viết công cụ đọc file CSV UTF-8 chứa đơn hàng (`id`, `customerId`, `createdAt`, `amount`, `status`), tạo báo cáo theo khách hàng.
 
