@@ -46,8 +46,9 @@ import phase01.support.Compiles;
  *   Hoàn thành khi: các test q03_* xanh; giải thích được vì sao `? super Integer` nhận
  *               được `List<Number>`/`List<Object>` nhưng không cho đọc phần tử ra kiểu Integer.
  *
- * Q4 [CODE] Giải thích PECS (Producer Extends, Consumer Super) bằng ví dụ thực tế.
- *   Bắt đầu   : `Ctrl+N` → gõ `Collections` → `Ctrl+F12` → tìm method `copy`, đọc chữ ký
+ * Q4 [CODE] Giải thích PECS bằng ví dụ thực tế.
+ *   Bắt đầu   : PECS = Producer Extends, Consumer Super. `Ctrl+N` → gõ `Collections` →
+ *               `Ctrl+F12` → tìm method `copy`, đọc chữ ký
  *               `copy(List<? super T> dest, List<? extends T> src)` của JDK để so sánh.
  *   Kiểm chứng: chạy q04_*; đặt breakpoint đầu copy() và max(), Debug test, F7 qua từng bước.
  *   Code      : copy() nối toàn bộ src vào cuối dst, giữ thứ tự; max() trả phần tử lớn nhất

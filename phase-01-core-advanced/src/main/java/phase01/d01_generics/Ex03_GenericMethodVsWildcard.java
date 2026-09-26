@@ -12,7 +12,7 @@ import phase01.support.Compiles;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q8 [DỰ ĐOÁN + CODE] So sánh `<T> void process(List<T> list)` và `void process(List<?> list)`.
+ * Q8 [DỰ ĐOÁN + CODE] So sánh: `<T> void process(List<T> list)` và `void process(List<?> list)`
  *   Bắt đầu   : điền 2 hằng Q8_* bên dưới; bỏ comment từng dòng mẫu ngay cạnh mỗi hằng
  *               (trên một biến `List<?> list`) để tự thấy dòng nào bị gạch đỏ, rồi comment lại.
  *   Kiểm chứng: chạy q08_*; đặt breakpoint trong swapHelper, Debug test, F7 để thấy

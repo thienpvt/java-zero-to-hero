@@ -14,7 +14,7 @@ import phase01.support.Compiles;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q5 [DỰ ĐOÁN + CODE] Tại sao không thể viết `T value = new T();` trong một generic method?
+ * Q5 [DỰ ĐOÁN + CODE] Tại sao không thể viết: `T value = new T();`
  *   Bắt đầu   : điền hằng Q5_NEW_T_COMPILES; bỏ comment thân method mẫu ngay dưới hằng
  *               để tự thấy lỗi đỏ "Cannot instantiate the type T", rồi comment lại.
  *   Kiểm chứng: chạy q05_*; đặt breakpoint trong newInstance(), Debug test, F7 vào
@@ -29,9 +29,11 @@ import phase01.support.Compiles;
  * Q6 [DỰ ĐOÁN] Type Erasure là gì?
  *   Bắt đầu   : điền hằng Q6_SAME_RUNTIME_CLASS.
  *   Kiểm chứng: chạy q06_prediction; sau đó `Alt+F12` mở Terminal trong IntelliJ, build
- *               (`mvnw.cmd -q -pl phase-01-core-advanced compile`) rồi chạy
- *               `javap -c -p target/classes/phase01/d01_generics/Ex02_TypeErasure.class`,
- *               tìm lệnh bytecode `checkcast` ngay sau lời gọi `get` trong isListOfStrings.
+ *               (`mvnw.cmd -q -pl phase-01-core-advanced test-compile`) rồi chạy
+ *               `javap -c -p target/test-classes/phase01/d01_generics/Ex02_TypeErasureTest.class`,
+ *               trong method `q10_prediction()` tìm lệnh `checkcast` lớp `java/lang/String`
+ *               ngay sau `invokeinterface java/util/List.get` (ứng với dòng `strings.get(1)`
+ *               trong test) — đó chính là checkcast ẩn do compiler chèn vì type erasure.
  *   Hoàn thành khi: q06_prediction xanh; giải thích được vì sao hai ArrayList với type
  *               argument khác nhau lại có cùng một đối tượng Class lúc runtime.
  *
@@ -42,7 +44,7 @@ import phase01.support.Compiles;
  *               `strings.get(1)`, Debug test, F7 để thấy add không lỗi nhưng get thì lỗi.
  *   Hoàn thành khi: q10_prediction xanh và viết xong khối ANSWER Q10 ở cuối file.
  *
- * Q7 [DỰ ĐOÁN + CODE] Tại sao Java không cho phép `if (obj instanceof List<String>)`?
+ * Q7 [DỰ ĐOÁN + CODE] Tại sao Java không cho phép: `if (obj instanceof List<String>)`
  *   Bắt đầu   : điền hằng Q7_INSTANCEOF_LIST_STRING_COMPILES; bỏ comment 2 dòng mẫu
  *               ngay dưới hằng để tự thấy lỗi đỏ "illegal generic type for instanceof".
  *   Kiểm chứng: chạy q07_*; đặt breakpoint trong isListOfStrings, F7 qua từng phần tử.
