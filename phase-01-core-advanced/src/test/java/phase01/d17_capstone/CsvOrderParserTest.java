@@ -103,7 +103,7 @@ class CsvOrderParserTest {
 
     @Test
     @DisplayName("B2 parse: dòng thiếu trường báo lỗi đúng số dòng, các dòng khác vẫn được đọc tiếp")
-    void b03_parseLineWithMissingFieldReportsCorrectLineNumber(@TempDir Path tempDir) throws Exception {
+    void b02_parseLineWithMissingFieldReportsCorrectLineNumber(@TempDir Path tempDir) throws Exception {
         Path file = tempDir.resolve("missing-field.csv");
         String content = CsvOrderParser.HEADER + "\n"
                 + "o1,an,2026-01-01T00:00:00Z,1.00\n" // dòng 2: thiếu trường status
@@ -122,7 +122,7 @@ class CsvOrderParserTest {
 
     @Test
     @DisplayName("B2 parse: amount âm báo lỗi tại đúng dòng đó")
-    void b03_parseNegativeAmountReportsErrorAtLine(@TempDir Path tempDir) throws Exception {
+    void b02_parseNegativeAmountReportsErrorAtLine(@TempDir Path tempDir) throws Exception {
         Path file = tempDir.resolve("negative-amount.csv");
         String content = CsvOrderParser.HEADER + "\n" + "o1,an,2026-01-01T00:00:00Z,-5.00,PAID\n";
         Files.writeString(file, content, StandardCharsets.UTF_8);
@@ -137,8 +137,8 @@ class CsvOrderParserTest {
     }
 
     @Test
-    @DisplayName("B3 parse: amount không phải số báo lỗi tiếng Việt nêu rõ trường 'amount' và giá trị gốc")
-    void b03_parseInvalidAmountReportsAmountFieldInVietnameseMessage(@TempDir Path tempDir) throws Exception {
+    @DisplayName("B2 parse: amount không phải số báo lỗi tiếng Việt nêu rõ trường 'amount' và giá trị gốc")
+    void b02_parseInvalidAmountReportsAmountFieldInVietnameseMessage(@TempDir Path tempDir) throws Exception {
         Path file = tempDir.resolve("invalid-amount.csv");
         String content = CsvOrderParser.HEADER + "\n" + "o1,an,2026-01-01T00:00:00Z,khong-phai-so,PAID\n";
         Files.writeString(file, content, StandardCharsets.UTF_8);
@@ -154,8 +154,8 @@ class CsvOrderParserTest {
     }
 
     @Test
-    @DisplayName("B3 parse: status không hợp lệ báo lỗi tiếng Việt nêu rõ trường 'status' và giá trị gốc")
-    void b03_parseInvalidStatusReportsStatusFieldInVietnameseMessage(@TempDir Path tempDir) throws Exception {
+    @DisplayName("B2 parse: status không hợp lệ báo lỗi tiếng Việt nêu rõ trường 'status' và giá trị gốc")
+    void b02_parseInvalidStatusReportsStatusFieldInVietnameseMessage(@TempDir Path tempDir) throws Exception {
         Path file = tempDir.resolve("invalid-status.csv");
         String content = CsvOrderParser.HEADER + "\n" + "o1,an,2026-01-01T00:00:00Z,10.00,SHIPPED\n";
         Files.writeString(file, content, StandardCharsets.UTF_8);
@@ -172,7 +172,7 @@ class CsvOrderParserTest {
 
     @Test
     @DisplayName("B2 parse: file không tồn tại thì ném NoSuchFileException, không bị nuốt")
-    void b03_parseMissingFileThrowsNoSuchFileException(@TempDir Path tempDir) {
+    void b02_parseMissingFileThrowsNoSuchFileException(@TempDir Path tempDir) {
         Path file = tempDir.resolve("khong-ton-tai-" + UUID.randomUUID() + ".csv");
         CsvOrderParser parser = new CsvOrderParser();
 

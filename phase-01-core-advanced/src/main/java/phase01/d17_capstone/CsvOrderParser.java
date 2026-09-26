@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,13 +21,13 @@ import java.util.Set;
  * làm từng test một, đọc thông báo lỗi để biết còn thiếu trường hợp nào.
  *
  * ─────────────────────────────────────────────────────────────────────
- * B2 [CODE] Parse bằng Files.newBufferedReader() và try-with-resources; ghi nhận dòng lỗi
+ * B2 [CODE] Parse bằng `Files.newBufferedReader()` và `try-with-resources`; ghi nhận dòng lỗi
  *     có số dòng mà không nuốt exception I/O.
  *   Bắt đầu   : mở CsvOrderParserTest, đọc test đọc file mẫu
  *               (orders-sample.csv) trước để biết hình dạng input/output mong đợi.
- *   Kiểm chứng: đặt breakpoint ngay dòng {@code lineNumber++} trong vòng lặp, Debug test
- *               đọc file mẫu, dùng Evaluate Expression (Alt+F8) để xem giá trị {@code line}
- *               ứng với từng {@code lineNumber} — đối chiếu với các dòng lỗi kỳ vọng (6, 8).
+ *   Kiểm chứng: đặt breakpoint trên biến đếm số dòng bạn khai báo trong vòng đọc, Debug test
+ *               đọc file mẫu, dùng Evaluate Expression (Alt+F8) để xem nội dung dòng ứng với
+ *               số dòng đó — đối chiếu với các dòng lỗi mà test kỳ vọng.
  *   Code      : cài {@code parse(Path file)}: đọc UTF-8 trong try-with-resources; dòng 1
  *               phải khớp {@code HEADER} (sai → 1 lỗi ở dòng 1, dừng ngay); bỏ qua dòng
  *               trống; mỗi dòng dữ liệu tách bằng {@code split(",", -1)} phải ra đúng 5
@@ -43,16 +42,16 @@ import java.util.Set;
  *   Hoàn thành khi: mọi test trong CsvOrderParserTest xanh; giải thích được vì sao dùng
  *               try-with-resources (đóng {@code BufferedReader} kể cả khi có exception).
  *
- * B3 [CODE] Chọn Map/Set phù hợp để phát hiện ID trùng; giải thích equals/hashCode của key.
- *   Bắt đầu   : trong thân {@code parse(...)}, xem chỗ khai báo tập hợp dùng để nhớ các id
- *               đã gặp trước khi quyết định một dòng có phải "trùng id" hay không.
- *   Kiểm chứng: chạy test có id trùng (o1 xuất hiện lại), đặt breakpoint ngay lệnh thêm vào
- *               tập hợp, dùng F7 Step Into vào {@code HashSet.add} → {@code HashMap.putVal}
- *               để thấy {@code String.hashCode()}/{@code equals} quyết định trùng hay không.
- *   Code      : dùng {@code Set<String>} (đã cài trong khối B2 phía trên) để phát hiện id đã
- *               thấy; dòng dữ liệu hợp lệ nhưng id trùng → ghi {@code LineError} "Trùng id: "
- *               + id, không thêm order thứ hai (giữ bản đầu tiên).
- *   Hoàn thành khi: giải thích được vì sao {@code HashSet<String>} phù hợp ở đây; xem khối
+ * B3 [CODE] Chọn `Map`/`Set` phù hợp để phát hiện ID trùng; giải thích `equals`/`hashCode` của key.
+ *   Bắt đầu   : trong {@code parse(...)}, bạn sẽ khai báo một tập hợp để nhớ các id đã chấp nhận
+ *               trước khi quyết định một dòng sau có trùng id hay không.
+ *   Kiểm chứng: chạy test có id trùng (o1 xuất hiện lại), đặt breakpoint ngay lệnh thêm id vào
+ *               tập hợp bạn vừa khai báo, F7 Step Into để xem {@code hashCode}/{@code equals}
+ *               của {@code String} quyết định trùng hay không.
+ *   Code      : khai báo một {@code Set} các id đã chấp nhận (cùng thân {@code parse} với B2);
+ *               dòng dữ liệu hợp lệ nhưng id đã có → ghi {@code LineError} mô tả trùng id,
+ *               không thêm order thứ hai (giữ bản đầu tiên).
+ *   Hoàn thành khi: giải thích được vì sao kiểu {@code Set} bạn chọn phù hợp; viết vào khối
  *               {@code ANSWER B3}.
  */
 public final class CsvOrderParser {
@@ -88,7 +87,7 @@ public final class CsvOrderParser {
         // SOLUTION-BEGIN throw B2
         List<Order> orders = new ArrayList<>();
         List<LineError> errors = new ArrayList<>();
-        Set<String> seenIds = new HashSet<>();
+        Set<String> seenIds = new java.util.HashSet<>();
         try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
             String headerLine = reader.readLine();
             if (headerLine == null) {

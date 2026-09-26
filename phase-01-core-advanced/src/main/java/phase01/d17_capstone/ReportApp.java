@@ -20,20 +20,19 @@ import phase01.d17_capstone.CustomerReportService.CustomerSummary;
  * khi test xanh, chạy thử từ Terminal (Alt+F12) bằng lệnh dòng lệnh ở cuối Javadoc này.
  *
  * ─────────────────────────────────────────────────────────────────────
- * B5 [CODE] Viết test cho file rỗng, dòng sai, ID trùng, múi giờ khác và kết quả không cho
- *     sửa ngoài ý muốn; "Đạt khi: chạy được từ dòng lệnh, test xanh".
+ * B5 [CODE] Cài {@code render} để các test (file rỗng, dòng sai, ID trùng, múi giờ khác và
+ *     kết quả không cho sửa ngoài ý muốn) xanh; "Đạt khi: chạy được từ dòng lệnh, test xanh".
  *   Bắt đầu   : mở ReportAppTest, đọc kỳ vọng của {@code render(...)} với 1 dòng dữ liệu và
  *               1 lỗi trước khi cài code.
  *   Kiểm chứng: đặt breakpoint đầu {@code render(...)}, Debug test, dùng Evaluate Expression
- *               (Alt+F8) để xem {@code sb.toString()} tăng dần qua từng dòng append.
+ *               (Alt+F8) để xem chuỗi báo cáo bạn đang ghép tăng dần qua từng dòng.
  *   Code      : cài {@code render(List<CustomerSummary> rows, List<LineError> errors)}: dòng
  *               tiêu đề {@code "customerId | orders | totalPaid | firstOrderDate"}; mỗi dòng
  *               dữ liệu {@code customerId | orderCount | totalPaid.toPlainString() |
  *               firstOrderDate}; các dòng phân tách bằng {@code "\n"}; nếu có lỗi, thêm một
  *               dòng trống rồi mỗi lỗi một dòng {@code "Dòng <n>: <message>"}.
  *   Hoàn thành khi: mọi test trong ReportAppTest xanh và chạy được lệnh dòng lệnh dưới đây
- *               trên file mẫu (orders-sample.csv) ra kết quả hợp lý (5 order, 2 lỗi ở dòng
- *               6 và 8, xem báo cáo Task 18).
+ *               trên file mẫu, ra báo cáo hợp lý (đối chiếu với test đọc file mẫu).
  *
  * <p>Chạy từ dòng lệnh (sau khi test xanh):
  * <pre>{@code

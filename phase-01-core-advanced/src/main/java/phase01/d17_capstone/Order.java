@@ -13,7 +13,7 @@ import java.util.Objects;
  * mục tiêu là hiểu lựa chọn kiểu dữ liệu trước khi sang {@code CsvOrderParser} (B2).
  *
  * ─────────────────────────────────────────────────────────────────────
- * B1 [CODE] Dùng record cho dữ liệu đầu vào; phân biệt timestamp tuyệt đối và ngày theo
+ * B1 [TỰ TRẢ LỜI] Dùng `record` cho dữ liệu đầu vào; phân biệt timestamp tuyệt đối và ngày theo
  *     múi giờ của báo cáo.
  *   Bắt đầu   : mở record {@code Order} và enum {@code Status} bên dưới (Ctrl+N → Order);
  *               toàn bộ đã cho sẵn, không cần sửa gì ở bước này.
@@ -25,7 +25,7 @@ import java.util.Objects;
  *   Code      : không có — record, enum và compact constructor đã hoàn chỉnh.
  *   Hoàn thành khi: giải thích được vì sao {@code createdAt} là {@code Instant} (một điểm
  *               tuyệt đối trên dòng thời gian UTC) chứ không phải {@code LocalDateTime}
- *               (chỉ là "giờ trên lịch", không gắn múi giờ); xem khối {@code ANSWER B1}
+ *               (chỉ là "giờ trên lịch", không gắn múi giờ); viết vào khối {@code ANSWER B1}
  *               ở cuối file.
  */
 public record Order(String id, String customerId, Instant createdAt, BigDecimal amount, Status status) {

@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -22,28 +21,27 @@ import java.util.stream.Collectors;
  * cho cả hai bằng {@code @ParameterizedTest}).
  *
  * ─────────────────────────────────────────────────────────────────────
- * B3 [CODE] Chọn Map/Set phù hợp để tổng hợp và giữ thứ tự báo cáo; giải thích equals/hashCode
+ * B3 [CODE] Chọn `Map`/`Set` phù hợp để tổng hợp và giữ thứ tự báo cáo; giải thích `equals`/`hashCode`
  *     của key.
  *   Bắt đầu   : đọc constructor và record {@code CustomerSummary} cho sẵn bên dưới trước khi
  *               cài B4.
- *   Kiểm chứng: đặt breakpoint ngay dòng gom nhóm theo {@code customerId} trong
- *               {@code summarizeWithLoop} (bên trong khối B4), Debug test với 3 khách hàng
- *               khác nhau để thấy nhóm được tạo theo đúng thứ tự xuất hiện trong list input.
- *   Code      : không có khối riêng ở đây — quyết định dùng {@code LinkedHashMap<String,
- *               List<Order>>} nằm ngay trong thân {@code summarizeWithLoop} (khối B4 phía
- *               dưới); xem khối {@code ANSWER B3} trong {@code CsvOrderParser.java} (câu này
- *               dùng chung một câu trả lời cho cả Set ở B2 và Map ở đây).
- *   Hoàn thành khi: giải thích được vì sao {@code LinkedHashMap} (không phải
- *               {@code HashMap}/{@code TreeMap}) phù hợp để gom nhóm trước khi sắp lại.
+ *   Kiểm chứng: đặt breakpoint ngay chỗ bạn gom nhóm theo {@code customerId} trong
+ *               {@code summarizeWithLoop}, Debug test với 3 khách hàng khác nhau, sau khi đã
+ *               viết code, tự xem thứ tự các nhóm so với list input.
+ *   Code      : không có phần TODO riêng — {@code Map} dùng để gom nhóm nằm trong thân
+ *               {@code summarizeWithLoop} (bước B4). Viết vào khối {@code ANSWER B3} trong
+ *               {@code CsvOrderParser.java} (dùng chung cho {@code Set} ở B2 và {@code Map} ở đây).
+ *   Hoàn thành khi: giải thích được vì sao kiểu {@code Map} bạn chọn giữ được thứ tự khách
+ *               hàng xuất hiện lần đầu, trước khi sắp lại theo customerId.
  *
  * B4 [CODE] Viết hai phiên bản tổng hợp bằng vòng lặp và Stream; tránh state mutable dùng
  *     chung trong Stream.
  *   Bắt đầu   : mở {@code CustomerReportServiceTest#b04_summarizeWithHoChiMinhZoneReturnsExpectedRows},
  *               đọc kỳ vọng cho từng khách hàng (an, khách-Đạt) trước khi cài code.
  *   Kiểm chứng: chạy test với tham số "loop" rồi "stream" (▶ cạnh từng dòng
- *               {@code @ParameterizedTest}, Ctrl+Shift+F10); nếu sai zone, đặt breakpoint
- *               ngay dòng {@code atZone(reportZone)} và F7 Step Into để xem
- *               {@code Instant.atZone} đổi giờ tuyệt đối thành {@code ZonedDateTime} thế nào.
+ *               {@code @ParameterizedTest}, Ctrl+Shift+F10); nếu ngày báo cáo lệch zone, đặt
+ *               breakpoint tại chỗ bạn đổi {@code Instant} thành ngày theo {@code reportZone},
+ *               F7 Step Into để xem mốc tuyệt đối được gắn zone thế nào.
  *   Code      : cài {@code summarizeWithLoop} (vòng lặp for, biến gom nhóm cục bộ) và
  *               {@code summarizeWithStream} (Stream, không có biến ngoài bị forEach sửa đổi
  *               dùng chung giữa các phần tử); cả hai: bỏ order {@code CANCELLED}; orderCount
@@ -53,7 +51,7 @@ import java.util.stream.Collectors;
  *               {@code CANCELLED} không xuất hiện; kết quả sắp theo customerId tăng dần và
  *               bất biến ({@code List.copyOf}/{@code toList()}).
  *   Hoàn thành khi: mọi test tham số ("loop", "stream") trong CustomerReportServiceTest xanh;
- *               xem khối {@code ANSWER B4} để so sánh hai cách viết.
+ *               viết vào khối {@code ANSWER B4} để so sánh hai cách viết.
  */
 public final class CustomerReportService {
 
@@ -76,7 +74,7 @@ public final class CustomerReportService {
     public List<CustomerSummary> summarizeWithLoop(List<Order> orders) {
         // SOLUTION-BEGIN throw B4
         // B3: LinkedHashMap giữ thứ tự khách hàng xuất hiện lần đầu trong khi gom nhóm.
-        Map<String, List<Order>> byCustomer = new LinkedHashMap<>();
+        Map<String, List<Order>> byCustomer = new java.util.LinkedHashMap<>();
         for (Order order : orders) {
             if (order.status() == Order.Status.CANCELLED) {
                 continue;
@@ -112,7 +110,7 @@ public final class CustomerReportService {
         // SOLUTION-BEGIN throw B4
         Map<String, List<Order>> byCustomer = orders.stream()
                 .filter(order -> order.status() != Order.Status.CANCELLED)
-                .collect(Collectors.groupingBy(Order::customerId, LinkedHashMap::new, Collectors.toList()));
+                .collect(Collectors.groupingBy(Order::customerId, java.util.LinkedHashMap::new, Collectors.toList()));
         return byCustomer.entrySet().stream()
                 .map(entry -> {
                     List<Order> customerOrders = entry.getValue();
