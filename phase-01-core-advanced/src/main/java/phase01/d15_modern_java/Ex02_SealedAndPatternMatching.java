@@ -37,8 +37,9 @@ import phase01.support.Compiles;
  *               điền dự đoán, tự đọc simple name của exception.
  *   Code      : cài đặt static String describe(Object value) bằng switch pattern matching
  *               kèm guard `when`.
- *   Hoàn thành khi: q05_* xanh; giải thích được exhaustiveness của switch expression và của
- *               switch statement (kiểu cũ so với pattern matching) khác nhau thế nào.
+ *   Hoàn thành khi: q05_* xanh; giải thích được: switch expression luôn phải đủ nhánh;
+ *               switch statement kiểu cũ trên int/String/enum (không pattern, không null)
+ *               không bắt buộc đủ nhánh; switch pattern — kể cả dạng statement — phải đủ nhánh.
  */
 public class Ex02_SealedAndPatternMatching {
 
@@ -78,9 +79,13 @@ public class Ex02_SealedAndPatternMatching {
 
     /**
      * Cho sẵn để minh họa Q5: switch pattern matching trên kiểu tham chiếu, nếu không có
-     * nhánh {@code case null} tường minh, sẽ ném {@link NullPointerException} ngay khi
-     * input là {@code null} — khác với switch trên hằng số kiểu cũ vốn cũng NPE nhưng vì
-     * lý do khác (không unbox được).
+     * nhánh {@code case null} tường minh, sẽ ném {@link NullPointerException} khi input
+     * là {@code null}.
+     *
+     * <p>Switch statement kiểu cũ cũng có thể NPE trên {@code null}, nhưng không phải vì
+     * unboxing trong mọi trường hợp: switch trên {@code String} dereference {@code hashCode()}
+     * ẩn, switch trên enum dereference {@code ordinal()}. Chỉ switch trên kiểu boxed
+     * ({@code Integer}, {@code Long}, ...) NPE vì unboxing ({@code intValue()} và tương đương).
      */
     static String describeWithoutNullCase(Object value) {
         return switch (value) {
@@ -110,7 +115,10 @@ public class Ex02_SealedAndPatternMatching {
  * Thêm `record Triangle(double base, double height) implements Shape` vào permits của
  * Shape rồi build: compiler báo lỗi ngay tại switch trong area() vì switch đó không có
  * default và không còn cover hết các subtype — kiểu lỗi
- * "the switch expression does not cover all possible input values" (javac) / IDE gạch đỏ
+ * "the switch expression does not cover all possible input values" (javac). Cùng tình huống
+ * viết bằng switch statement (pattern, thiếu một case) thì javac báo
+ * "the switch statement does not cover all possible input values". Switch statement kiểu cũ
+ * trên int/String/enum (không pattern, không null) thì không bắt buộc đủ nhánh. IDE gạch đỏ
  * dòng `switch (shape)`. Nhờ vậy compiler chỉ đúng từng vị trí switch-trên-Shape cần sửa,
  * không cần tự rà soát toàn bộ codebase để tìm chỗ thiếu xử lý subtype mới.
  * SOLUTION-END

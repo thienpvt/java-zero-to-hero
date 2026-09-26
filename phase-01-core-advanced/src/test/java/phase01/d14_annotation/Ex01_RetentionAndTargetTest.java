@@ -66,7 +66,8 @@ class Ex01_RetentionAndTargetTest {
         assertPrediction("Q4_FIELD_ONLY_ON_METHOD_COMPILES",
                 Compiles.NO,
                 Ex01_RetentionAndTarget.Q4_FIELD_ONLY_ON_METHOD_COMPILES,
-                "@FieldOnly chỉ khai báo @Target(FIELD) nên đặt lên method sẽ lỗi biên dịch.");
+                "@FieldOnly chỉ khai báo @Target(FIELD). javac báo "
+                        + "\"annotation interface not applicable to this kind of declaration\".");
     }
 
     @Test

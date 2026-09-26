@@ -163,7 +163,9 @@ public class Ex02_TypeErasure {
  * type argument khác nhau trả về đúng cùng một đối tượng Class (ArrayList). instanceof chỉ
  * kiểm tra được kiểu runtime còn sót lại sau erasure (List, hoặc List<?> nhờ cú pháp đặc
  * biệt cho unbounded wildcard), không thể kiểm tra type argument đã bị xóa mất — đó cũng
- * là lý do Java cấm cú pháp `instanceof List<String>` ngay từ lúc biên dịch (Q7): kiểm tra
- * đó không thể nào thực hiện được lúc chạy.
+ * là lý do từ {@code Object} không viết được {@code instanceof List<String>}: javac báo
+ * "Object cannot be safely cast to List<String>". Từ Java 16 cú pháp này được phép khi
+ * phép ép kiểu an toàn về mặt tĩnh, ví dụ biến đang là {@code Collection<String>} — compiler
+ * chứng minh được cast. Nói "Java cấm mọi instanceof List<String>" là nói quá.
  * SOLUTION-END
  */

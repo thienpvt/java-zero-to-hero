@@ -21,16 +21,20 @@ import phase01.support.Compiles;
 class Ex02_TypeErasureTest {
 
     private static final String HINT_Q5 =
-            "new T() không được vì JVM không biết T là gì lúc chạy (type erasure); "
-                    + "dùng Supplier<T> hoặc Class<T>.getDeclaredConstructor().newInstance() thay thế.";
+            "new T() không được vì JVM không biết T là gì lúc chạy (type erasure). javac báo "
+                    + "\"unexpected type\" / \"found: type parameter T\" (required: class). "
+                    + "Dùng Supplier<T> hoặc Class<T>.getDeclaredConstructor().newInstance() thay thế.";
     private static final String HINT_Q6 =
-            "Chạy javap -c -p trên Ex02_TypeErasure.class (Alt+F12) để thấy cả hai ArrayList "
-                    + "chỉ còn lại một kiểu bytecode ArrayList sau khi erasure.";
+            "Alt+F12, chạy javap -c -p trên Ex02_TypeErasureTest.class (không phải "
+                    + "Ex02_TypeErasure.class). Trong method q10_prediction, ngay sau "
+                    + "invokeinterface java/util/List.get, tìm lệnh checkcast java/lang/String "
+                    + "— checkcast ẩn do type erasure. Hai ArrayList khác type argument vẫn cùng một Class.";
     private static final String HINT_Q10 =
             "raw.add(42) không kiểm tra kiểu vì raw type bỏ qua generic; checkcast ẩn chỉ chèn ở get().";
     private static final String HINT_Q7 =
-            "List<String> không tồn tại như một kiểu runtime riêng sau erasure nên JVM không "
-                    + "thể kiểm tra instanceof List<String> — chỉ còn kiểm tra được List hoặc List<?>.";
+            "Từ Object, javac báo \"Object cannot be safely cast to List<String>\". "
+                    + "Từ Java 16, instanceof List<String> được phép khi cast an toàn về mặt tĩnh "
+                    + "(ví dụ từ Collection<String>). Sau erasure, runtime chỉ còn kiểm tra được List hoặc List<?>.";
 
     @Test
     @DisplayName("Q5 dự đoán: new T() trong generic method có biên dịch được không?")
