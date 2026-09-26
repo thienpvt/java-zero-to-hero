@@ -1,0 +1,145 @@
+package phase01.d17_capstone;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Instant;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * Bài tích hợp — CsvOrderParser (đọc file CSV thành Order + danh sách lỗi)
+ *
+ * Nguồn: 01-java-core-advanced.md, mục "Bài thực hành tích hợp", bước 2 và 3.
+ * Cần làm trước: Order (B1) — biết cấu trúc và ràng buộc của một đơn hàng hợp lệ.
+ * Cách làm: cài {@code parse(...)} rồi chạy CsvOrderParserTest bằng nút ▶ (Ctrl+Shift+F10);
+ * làm từng test một, đọc thông báo lỗi để biết còn thiếu trường hợp nào.
+ *
+ * ─────────────────────────────────────────────────────────────────────
+ * B2 [CODE] Parse bằng Files.newBufferedReader() và try-with-resources; ghi nhận dòng lỗi
+ *     có số dòng mà không nuốt exception I/O.
+ *   Bắt đầu   : mở CsvOrderParserTest, đọc test đọc file mẫu
+ *               (orders-sample.csv) trước để biết hình dạng input/output mong đợi.
+ *   Kiểm chứng: đặt breakpoint ngay dòng {@code lineNumber++} trong vòng lặp, Debug test
+ *               đọc file mẫu, dùng Evaluate Expression (Alt+F8) để xem giá trị {@code line}
+ *               ứng với từng {@code lineNumber} — đối chiếu với các dòng lỗi kỳ vọng (6, 8).
+ *   Code      : cài {@code parse(Path file)}: đọc UTF-8 trong try-with-resources; dòng 1
+ *               phải khớp {@code HEADER} (sai → 1 lỗi ở dòng 1, dừng ngay); bỏ qua dòng
+ *               trống; mỗi dòng dữ liệu tách bằng {@code split(",", -1)} phải ra đúng 5
+ *               trường rồi parse {@code Instant}/{@code BigDecimal}/{@code Order.Status};
+ *               lỗi ở một dòng chỉ ghi nhận rồi đọc tiếp, không dừng cả file;
+ *               {@code IOException} (kể cả {@code NoSuchFileException}) phải được ném ra
+ *               nguyên vẹn, không bắt/nuốt trong try-with-resources.
+ *   Hoàn thành khi: mọi test trong CsvOrderParserTest xanh; giải thích được vì sao dùng
+ *               try-with-resources (đóng {@code BufferedReader} kể cả khi có exception).
+ *
+ * B3 [CODE] Chọn Map/Set phù hợp để phát hiện ID trùng; giải thích equals/hashCode của key.
+ *   Bắt đầu   : trong thân {@code parse(...)}, xem chỗ khai báo tập hợp dùng để nhớ các id
+ *               đã gặp trước khi quyết định một dòng có phải "trùng id" hay không.
+ *   Kiểm chứng: chạy test có id trùng (o1 xuất hiện lại), đặt breakpoint ngay lệnh thêm vào
+ *               tập hợp, dùng F7 Step Into vào {@code HashSet.add} → {@code HashMap.putVal}
+ *               để thấy {@code String.hashCode()}/{@code equals} quyết định trùng hay không.
+ *   Code      : dùng {@code Set<String>} (đã cài trong khối B2 phía trên) để phát hiện id đã
+ *               thấy; dòng dữ liệu hợp lệ nhưng id trùng → ghi {@code LineError} "Trùng id: "
+ *               + id, không thêm order thứ hai (giữ bản đầu tiên).
+ *   Hoàn thành khi: giải thích được vì sao {@code HashSet<String>} phù hợp ở đây; xem khối
+ *               {@code ANSWER B3}.
+ */
+public final class CsvOrderParser {
+
+    /** Dòng tiêu đề CSV hợp lệ duy nhất mà {@link #parse(Path)} chấp nhận. */
+    public static final String HEADER = "id,customerId,createdAt,amount,status";
+
+    /** Một lỗi khi parse: số dòng (1-based, tính cả header) và mô tả tiếng Việt. */
+    public record LineError(int lineNumber, String message) {
+    }
+
+    /** Kết quả parse: danh sách order hợp lệ và danh sách lỗi, cả hai đều bất biến. */
+    public record ParseResult(List<Order> orders, List<LineError> errors) {
+        public ParseResult {
+            orders = List.copyOf(orders);
+            errors = List.copyOf(errors);
+        }
+    }
+
+    /**
+     * Đọc file CSV UTF-8 {@code file} và trả về các order hợp lệ cùng danh sách lỗi.
+     *
+     * <p>Quy tắc: dòng 1 phải đúng {@link #HEADER} (sai → 1 lỗi ở dòng 1, dừng luôn, không
+     * order nào); dòng trống bị bỏ qua; mỗi dòng dữ liệu phải tách ra đúng 5 trường và parse
+     * thành công {@code Instant}, {@code BigDecimal}, {@code Order.Status} (sai bất kỳ phần
+     * nào → 1 {@link LineError} ở đúng số dòng đó, rồi đọc tiếp); id trùng với một order đã
+     * chấp nhận trước đó → 1 {@link LineError}, giữ nguyên order đầu tiên.
+     *
+     * @throws IOException nếu không đọc được file (kể cả {@code NoSuchFileException} khi
+     *                      file không tồn tại) — không bị bắt/nuốt bên trong method này
+     */
+    public ParseResult parse(Path file) throws IOException {
+        // SOLUTION-BEGIN throw B2
+        List<Order> orders = new ArrayList<>();
+        List<LineError> errors = new ArrayList<>();
+        Set<String> seenIds = new HashSet<>();
+        try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
+            String headerLine = reader.readLine();
+            if (headerLine == null) {
+                return new ParseResult(orders, errors);
+            }
+            if (!HEADER.equals(headerLine)) {
+                errors.add(new LineError(1, "Header không hợp lệ"));
+                return new ParseResult(orders, errors);
+            }
+            String line;
+            int lineNumber = 1;
+            while ((line = reader.readLine()) != null) {
+                lineNumber++;
+                if (line.isEmpty()) {
+                    continue;
+                }
+                String[] fields = line.split(",", -1);
+                if (fields.length != 5) {
+                    errors.add(new LineError(lineNumber,
+                            "Cần đúng 5 trường (id,customerId,createdAt,amount,status), có " + fields.length));
+                    continue;
+                }
+                String id = fields[0];
+                String customerId = fields[1];
+                try {
+                    Instant createdAt = Instant.parse(fields[2]);
+                    BigDecimal amount = new BigDecimal(fields[3]);
+                    Order.Status status = Order.Status.valueOf(fields[4]);
+                    Order order = new Order(id, customerId, createdAt, amount, status);
+                    // B3: Set<String> phát hiện id đã thấy để giữ đúng một bản đầu tiên.
+                    if (!seenIds.add(id)) {
+                        errors.add(new LineError(lineNumber, "Trùng id: " + id));
+                        continue;
+                    }
+                    orders.add(order);
+                } catch (DateTimeParseException | IllegalArgumentException e) {
+                    errors.add(new LineError(lineNumber, "Dòng dữ liệu không hợp lệ: " + e.getMessage()));
+                }
+            }
+        }
+        return new ParseResult(orders, errors);
+        // SOLUTION-END
+    }
+}
+
+/* ANSWER B3:
+ * SOLUTION-BEGIN
+ * HashSet<String> seenIds chỉ cần trả lời "đã thấy id này chưa" theo O(1) trung bình, không
+ * cần thứ tự và không cần lưu giá trị đi kèm — equals/hashCode của String so sánh theo nội
+ * dung ký tự (value-based, không phải theo identity), nên hai chuỗi "o1" được tạo ra từ hai
+ * lần split() khác nhau vẫn được coi là trùng, đúng ngữ nghĩa "trùng id" mong muốn; nếu dùng
+ * một List rồi contains() tuyến tính thì đúng nhưng chậm O(n) mỗi dòng. Ở CustomerReportService
+ * (B4), việc gom order theo customerId lại dùng LinkedHashMap<String, List<Order>> vì lúc đó
+ * cần vừa tra cứu O(1) vừa giữ thứ tự xuất hiện đầu tiên của từng khách trong khi gom nhóm,
+ * trước khi sắp lại theo customerId — chọn cấu trúc theo đúng thứ tự truy cập/duyệt cần dùng,
+ * không dùng cùng một cấu trúc cho mọi việc.
+ * SOLUTION-END
+ */

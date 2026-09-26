@@ -1,0 +1,9 @@
+id,customerId,createdAt,amount,status
+o1,khách-Đạt,2026-01-01T17:30:00Z,100.00,PAID
+o2,khách-Đạt,2026-01-03T01:00:00Z,50.50,PAID
+o3,an,2026-01-02T08:00:00Z,20.00,NEW
+o4,an,2026-01-01T00:00:00Z,999.00,CANCELLED
+o5,binh,khong-phai-ngay,10.00,PAID
+
+o1,an,2026-01-04T00:00:00Z,5.00,PAID
+o6,chi,2026-01-05T00:00:00Z,7.00,CANCELLED
