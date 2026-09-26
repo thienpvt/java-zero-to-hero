@@ -96,6 +96,17 @@ class Ex02_LazinessAndPipelineTest {
     }
 
     @Test
+    @DisplayName("Q11 code: filter trước thì map chạy đúng 2 lần, map trước thì đúng 10 lần")
+    void q11_mapCalls_filterTruocTraVe2_mapTruocTraVe10() {
+        List<Integer> numbers = IntStream.rangeClosed(1, 10).boxed().toList();
+
+        assertEquals(2, Ex02_LazinessAndPipeline.mapCallsWhenFilterFirst(numbers),
+                "Filter n % 5 == 0 đứng trước thì map chỉ gặp 5 và 10.");
+        assertEquals(10, Ex02_LazinessAndPipeline.mapCallsWhenMapFirst(numbers),
+                "Map đứng trước thì phải chạy trên cả 10 số trước khi filter loại bớt.");
+    }
+
+    @Test
     @DisplayName("Ví dụ activeUniqueEmails: chỉ email của user active, loại trùng, giữ thứ tự gặp đầu")
     void vd_activeUniqueEmails_locUserActiveVaLoaiTrungGiuThuTuGapDau() {
         List<User> users = List.of(
