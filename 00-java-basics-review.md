@@ -12,6 +12,8 @@ Xác định ứng viên đã đủ nền tảng để bắt đầu `01-java-cor
 
 ## 1. JDK, JVM và cấu trúc chương trình
 
+> Thực hành: [d01_jdk_program](phase-00-java-basics/src/main/java/phase00/d01_jdk_program/)
+
 ### Kiến thức cần nắm
 
 - Phân biệt JDK, JVM, `javac`, `java`, source `.java` và bytecode `.class`.
@@ -31,6 +33,8 @@ Tạo hai class trong cùng package: một class chứa hàm tính tổng, một
 ---
 
 ## 2. Biến, kiểu dữ liệu và phép toán
+
+> Thực hành: [d02_types](phase-00-java-basics/src/main/java/phase00/d02_types/)
 
 ### Kiến thức cần nắm
 
@@ -54,6 +58,8 @@ Viết hàm tính tổng tiền của nhiều mặt hàng bằng `BigDecimal`; t
 
 ## 3. Điều khiển luồng và phương thức
 
+> Thực hành: [d03_flow](phase-00-java-basics/src/main/java/phase00/d03_flow/)
+
 ### Kiến thức cần nắm
 
 - `if/else`, `switch`, `for`, `while`, `break`, `continue`.
@@ -74,6 +80,8 @@ Viết hàm phân loại điểm số, kiểm tra ranh giới (0, 1, 49, 50, 99,
 ---
 
 ## 4. Array, String và enum
+
+> Thực hành: [d04_text](phase-00-java-basics/src/main/java/phase00/d04_text/)
 
 ### Kiến thức cần nắm
 
@@ -97,6 +105,8 @@ Viết hàm phân loại điểm số, kiểm tra ranh giới (0, 1, 49, 50, 99,
 
 ## 5. Class, object và đóng gói
 
+> Thực hành: [d05_encapsulation](phase-00-java-basics/src/main/java/phase00/d05_encapsulation/)
+
 ### Kiến thức cần nắm
 
 - Field, constructor, method, `this`; object được tạo bằng `new`.
@@ -118,6 +128,8 @@ Viết class `BankAccount` có mã tài khoản và số dư; chỉ cho phép n�
 ---
 
 ## 6. Kế thừa, đa hình, interface và abstract class
+
+> Thực hành: [d06_polymorphism](phase-00-java-basics/src/main/java/phase00/d06_polymorphism/)
 
 ### Kiến thức cần nắm
 
@@ -141,6 +153,8 @@ Tạo interface `ShippingFeePolicy` với hai implementation: phí cố định 
 
 ## 7. Object, so sánh và biểu diễn dữ liệu
 
+> Thực hành: [d07_equality](phase-00-java-basics/src/main/java/phase00/d07_equality/)
+
 ### Kiến thức cần nắm
 
 - `==` trên reference kiểm tra cùng object; `equals()` thường dùng cho bằng nhau theo giá trị nếu class định nghĩa như vậy.
@@ -160,6 +174,8 @@ Viết value object `ProductCode` bất biến (có thể dùng `record` nếu J
 ---
 
 ## 8. Exception và quản lý tài nguyên
+
+> Thực hành: [d08_exceptions](phase-00-java-basics/src/main/java/phase00/d08_exceptions/)
 
 ### Kiến thức cần nắm
 
@@ -181,6 +197,8 @@ Viết hàm parse số lượng từ chuỗi; xử lý chuỗi trống, không p
 ---
 
 ## 9. Collections ở mức sử dụng
+
+> Thực hành: [d09_collections](phase-00-java-basics/src/main/java/phase00/d09_collections/)
 
 ### Kiến thức cần nắm
 
@@ -204,6 +222,8 @@ Nhận một `List<String>` mã sản phẩm; trả về số lần mỗi mã xu
 
 ## 10. Generics ở mức cơ bản
 
+> Thực hành: [d10_generics](phase-00-java-basics/src/main/java/phase00/d10_generics/)
+
 ### Kiến thức cần nắm
 
 - Viết `List<String>`, `Map<String, Integer>`; compiler kiểm tra kiểu phần tử.
@@ -223,6 +243,8 @@ Viết generic method trả phần tử đầu tiên của một `List<T>`; đ�
 ---
 
 ## 11. File I/O và thời gian cơ bản
+
+> Thực hành: [d11_io_time](phase-00-java-basics/src/main/java/phase00/d11_io_time/)
 
 ### Kiến thức cần nắm
 
@@ -244,6 +266,8 @@ Viết generic method trả phần tử đầu tiên của một `List<T>`; đ�
 
 ## 12. Test, debug và build cơ bản
 
+> Thực hành: [d12_testing](phase-00-java-basics/src/main/java/phase00/d12_testing/)
+
 ### Kiến thức cần nắm
 
 - Chạy project bằng Maven hoặc Gradle; đọc kết quả build/test; dùng Git giữ lịch sử thay đổi.
@@ -264,6 +288,8 @@ Viết generic method trả phần tử đầu tiên của một `List<T>`; đ�
 ---
 
 ## Bài tổng hợp — Quản lý đơn hàng ở bộ nhớ
+
+> Thực hành: [d13_capstone](phase-00-java-basics/src/main/java/phase00/d13_capstone/)
 
 Viết ứng dụng console nhỏ để ôn lại 12 mục, không dùng Spring hoặc database.
 
