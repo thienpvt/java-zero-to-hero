@@ -6,48 +6,63 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 /**
- * Reflection — Bài 2: MiniContainer — dependency injection bằng reflection
+ * Reflection — Bài 2: Mini DI container (tự viết) và chi phí gọi reflective
  *
  * Nguồn: 01-java-core-advanced.md, mục 13 (Reflection), câu 2, 3, 6.
- * Cần làm trước: Ex01_InspectAndInvoke (getDeclaredMethod, setAccessible, invoke).
+ * Cần làm trước: Ex01_InspectAndInvoke (invokePrivate, hiểu setAccessible/invoke).
  * Cách làm: làm lần lượt từng câu; chạy test tương ứng trong Ex02_MiniDiContainerTest
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
  * Q2 [CODE + TỰ TRẢ LỜI] Spring có thể sử dụng reflection ở đâu?
- *   Bắt đầu   : đọc các class mẫu Repo/Service/Controller/CycleA/CycleB/TwoConstructors bên
- *               dưới; cài đặt MiniContainer.get(Class) theo Javadoc của method.
- *   Kiểm chứng: Ctrl+N mở java.lang.reflect.Constructor, Ctrl+F12 xem newInstance(Object...);
- *               Debug q02_get_buildsFullDependencyChain, F7 Step Into vào constructor.newInstance
- *               để thấy chuỗi Repo → Service → Controller được dựng đệ quy.
- *   Code      : MiniContainer.get(Class<T> type) — singleton lười (cache theo type); lấy
- *               getConstructors() (chỉ constructor public); nhiều hơn một → IllegalArgumentException;
- *               giải từng tham số bằng cách gọi get() đệ quy; interface/abstract → IllegalArgumentException;
- *               đang giải một type mà type đó lại xuất hiện lại (vòng lặp) → IllegalStateException
- *               với message chứa tên cả hai class trong vòng lặp.
- *   Hoàn thành khi: các test q02_* xanh; viết xong khối ANSWER Q2 nêu được ít nhất 2 nơi Spring
- *               dùng reflection ngoài constructor injection (ví dụ đọc annotation, tạo proxy).
+ *   Bắt đầu   : đọc các class mẫu Repo/Service/Controller/CycleA/CycleB/TwoConstructors
+ *               bên dưới; cài đặt MiniContainer.get(Class&lt;T&gt;).
+ *   Kiểm chứng: Ctrl+N → Class → Ctrl+F12 → getDeclaredConstructors, đặt breakpoint ngay
+ *               đầu get(...), Debug q02_get_buildsFullDependencyChain, F7 để thấy đệ quy
+ *               get(Repo.class) → get(Service.class) → get(Controller.class) xảy ra theo
+ *               thứ tự nào; Alt+F8 Evaluate Expression trên resolving để xem tập class
+ *               đang được dựng dở khi test vòng lặp chạy.
+ *   Code      : static final class MiniContainer { &lt;T&gt; T get(Class&lt;T&gt; type) } —
+ *               cache singleton theo Class; nếu type là interface/abstract → IAE; chọn
+ *               constructor public duy nhất của type (getDeclaredConstructors lọc
+ *               Modifier.isPublic, khác 1 kết quả → IAE); với mỗi tham số constructor,
+ *               gọi get(paramType) đệ quy để lấy dependency (cũng được cache); nếu type
+ *               đang được dựng dở mà bị get lại (đang có trong tập "resolving") → ISE có
+ *               message chứa tên cả hai class trong vòng lặp; dựng instance bằng
+ *               constructor.newInstance(args) rồi cache lại trước khi trả về.
+ *   Hoàn thành khi: các test q02_* xanh; giải thích được bằng lời (khối ANSWER Q2) Spring
+ *               dùng đúng cơ chế reflection tương tự (đọc constructor/field để autowire,
+ *               tạo bean) ở những điểm nào.
  *
  * Q3 [DỰ ĐOÁN] Reflection có nhược điểm gì?
- *   Bắt đầu   : điền hằng Q3_COMPILER_CHECKS_REFLECTIVE_CALL_NAMES (thay null); xem lại Q5 ở
- *               Ex01 (getDeclaredMethod với tên sai vẫn biên dịch được, chỉ lỗi lúc chạy).
- *   Kiểm chứng: chạy q03_prediction.
- *   Hoàn thành khi: q03_* xanh; kể được ít nhất 3 nhược điểm: mất compile-time checking, chậm
- *               hơn gọi trực tiếp, phá vỡ encapsulation (setAccessible vượt qua private/final).
+ *   Bắt đầu   : điền Q3_COMPILER_CHECKS_REFLECTIVE_CALL_NAMES = false (đáp án cố định,
+ *               không cần đo — giống Q5 của Ex01: tên method/field truyền vào reflection
+ *               API là String, javac không kiểm được).
+ *   Kiểm chứng: chạy q03_*; nhìn lại IllegalArgumentException ở Q2 khi TwoConstructors có
+ *               2 constructor public — đó là lỗi runtime, không phải lỗi compile, dù bạn
+ *               gọi get(TwoConstructors.class) hoàn toàn hợp lệ về mặt cú pháp.
+ *   Hoàn thành khi: test q03_* xanh; giải thích được (cùng Q6) các nhược điểm: mất type
+ *               safety lúc compile, chậm hơn gọi trực tiếp, code khó đọc/khó debug, dễ vi
+ *               phạm encapsulation.
  *
- * Q6 [THÍ NGHIỆM + TỰ TRẢ LỜI] Vì sao business code thông thường không nên lạm dụng reflection?
- *   Bắt đầu   : chạy main() bên dưới (Shift+F10) để xem báo cáo thời gian gọi trực tiếp so với
- *               Method.invoke và MethodHandle.invokeExact trên cùng một method square(int).
- *   Kiểm chứng: chạy q06_experimentRuns (smoke test, n nhỏ); muốn số liệu rõ hơn thì chạy main
- *               với n lớn hơn và so sánh nhiều lần (kết quả không tất định, không dùng để assert).
- *   Hoàn thành khi: q06_* xanh; viết xong khối OBSERVATION Q6 (số liệu quan sát được khi tự chạy
- *               main trên máy bạn) và khối ANSWER Q6 (giải thích bằng lời, có nêu trade-off).
+ * Q6 [THÍ NGHIỆM + TỰ TRẢ LỜI] Vì sao business code thông thường không nên lạm dụng
+ *     reflection?
+ *   Bắt đầu   : chạy main() với n lớn (10_000_000), đọc báo cáo runExperiment so 3 cách
+ *               gọi square(x): trực tiếp, Method.invoke, MethodHandle.invokeExact.
+ *   Kiểm chứng: đặt breakpoint trong Method.invoke (Ctrl+N → Method → Ctrl+F12 → invoke),
+ *               F7 vào MethodAccessor để thấy có một tầng gọi gián tiếp so với gọi trực
+ *               tiếp; chạy q06_experimentRuns để thấy runExperiment luôn trả báo cáo có
+ *               đủ ba nhãn.
+ *   Hoàn thành khi: test q06_* xanh; viết xong khối OBSERVATION Q6 (số liệu từ lần bạn tự
+ *               chạy main()) và ANSWER Q6 (trade-off tốc độ/độ linh hoạt).
  */
 public class Ex02_MiniDiContainer {
 
@@ -63,7 +78,7 @@ public class Ex02_MiniDiContainer {
             this.repo = repo;
         }
 
-        Repo repo() {
+        Repo getRepo() {
             return repo;
         }
     }
@@ -75,7 +90,7 @@ public class Ex02_MiniDiContainer {
             this.service = service;
         }
 
-        Service service() {
+        Service getService() {
             return service;
         }
     }
@@ -87,7 +102,7 @@ public class Ex02_MiniDiContainer {
             this.b = b;
         }
 
-        CycleB b() {
+        CycleB getB() {
             return b;
         }
     }
@@ -99,7 +114,7 @@ public class Ex02_MiniDiContainer {
             this.a = a;
         }
 
-        CycleA a() {
+        CycleA getA() {
             return a;
         }
     }
@@ -112,29 +127,25 @@ public class Ex02_MiniDiContainer {
         }
     }
 
-    // Q3 — sự thật cố định của reflection trong Java: xem lại Q5 ở Ex01 (getDeclaredMethod với
-    // tên "revael" gõ sai vẫn biên dịch được, javac không hề kiểm tra chuỗi tên method).
+    // Q3 — đáp án cố định: getDeclaredMethod/getDeclaredConstructor nhận tên/kiểu tham số
+    // dưới dạng String/Class, nên javac không thể kiểm tra tại compile-time là lời gọi đó
+    // đúng hay sai (xem lại Q5 của Ex01_InspectAndInvoke).
     static final Boolean Q3_COMPILER_CHECKS_REFLECTIVE_CALL_NAMES = false; // SOLUTION-VALUE
 
     /**
-     * Container DI tối giản: {@link #get(Class)} tự dựng instance bằng constructor public duy
-     * nhất của {@code type}, đệ quy giải từng tham số constructor, cache lại thành singleton.
+     * Container DI tí hon: lazy singleton theo {@link Class}, tự chọn constructor public
+     * duy nhất và giải các tham số của nó bằng đệ quy.
      *
-     * <p>Không hỗ trợ field/setter injection, chỉ constructor injection — đủ để minh họa cách
-     * Spring dùng reflection dựng bean.
+     * @throws IllegalArgumentException nếu {@code type} là interface/abstract class, hoặc
+     *                                    không có đúng một constructor public
+     * @throws IllegalStateException    nếu phát hiện vòng lặp phụ thuộc (message chứa tên
+     *                                    các class trong vòng lặp), hoặc constructor ném
+     *                                    lỗi khi {@code newInstance}
      */
     static final class MiniContainer {
         private final Map<Class<?>, Object> singletons = new HashMap<>();
         private final Set<Class<?>> resolving = new LinkedHashSet<>();
 
-        /**
-         * Trả về (và cache) instance duy nhất của {@code type}.
-         *
-         * @throws IllegalArgumentException nếu {@code type} là interface/abstract class, hoặc
-         *                                   có khác đúng một constructor public
-         * @throws IllegalStateException    nếu {@code type} phụ thuộc (trực tiếp hay gián tiếp)
-         *                                   vào chính nó — message chứa tên mọi class trong vòng lặp
-         */
         <T> T get(Class<T> type) {
             // SOLUTION-BEGIN throw Q2
             Object cached = singletons.get(type);
@@ -143,141 +154,149 @@ public class Ex02_MiniDiContainer {
             }
             if (type.isInterface() || Modifier.isAbstract(type.getModifiers())) {
                 throw new IllegalArgumentException(
-                        "Không thể khởi tạo interface/abstract class: " + type.getName());
+                        "Không thể tự khởi tạo interface/abstract class: " + type.getName());
             }
-            if (resolving.contains(type)) {
-                throw cycleException(type);
+            if (!resolving.add(type)) {
+                StringBuilder cyclePath = new StringBuilder();
+                for (Class<?> inProgress : resolving) {
+                    cyclePath.append(inProgress.getSimpleName()).append(" -> ");
+                }
+                cyclePath.append(type.getSimpleName());
+                throw new IllegalStateException("Phát hiện vòng lặp phụ thuộc: " + cyclePath);
             }
-            resolving.add(type);
             try {
-                Constructor<?>[] constructors = type.getConstructors();
-                if (constructors.length != 1) {
-                    throw new IllegalArgumentException(type.getSimpleName()
-                            + " phải có đúng một constructor public, hiện có " + constructors.length + ".");
+                List<Constructor<?>> publicConstructors = new ArrayList<>();
+                for (Constructor<?> constructor : type.getDeclaredConstructors()) {
+                    if (Modifier.isPublic(constructor.getModifiers())) {
+                        publicConstructors.add(constructor);
+                    }
                 }
-                Constructor<?> constructor = constructors[0];
-                Class<?>[] paramTypes = constructor.getParameterTypes();
-                Object[] args = new Object[paramTypes.length];
-                for (int i = 0; i < paramTypes.length; i++) {
-                    args[i] = get(paramTypes[i]);
+                if (publicConstructors.size() != 1) {
+                    throw new IllegalArgumentException(type.getName()
+                            + " phải có đúng một constructor public để MiniContainer chọn tự động,"
+                            + " hiện có " + publicConstructors.size() + ".");
                 }
-                Object instance = constructor.newInstance(args);
+                Constructor<?> constructor = publicConstructors.get(0);
+                Class<?>[] parameterTypes = constructor.getParameterTypes();
+                Object[] args = new Object[parameterTypes.length];
+                for (int i = 0; i < parameterTypes.length; i++) {
+                    args[i] = get(parameterTypes[i]);
+                }
+                Object instance;
+                try {
+                    instance = constructor.newInstance(args);
+                } catch (ReflectiveOperationException e) {
+                    throw new IllegalStateException(
+                            "Không thể khởi tạo " + type.getName() + " bằng reflection.", e);
+                }
                 singletons.put(type, instance);
                 return type.cast(instance);
-            } catch (ReflectiveOperationException e) {
-                throw new IllegalStateException(
-                        "Không khởi tạo được " + type.getName() + " bằng reflection.", e);
             } finally {
                 resolving.remove(type);
             }
             // SOLUTION-END
         }
-
-        private IllegalStateException cycleException(Class<?> type) {
-            StringBuilder chain = new StringBuilder();
-            for (Class<?> c : resolving) {
-                chain.append(c.getSimpleName()).append(" -> ");
-            }
-            chain.append(type.getSimpleName());
-            return new IllegalStateException("Phát hiện vòng lặp dependency: " + chain);
-        }
     }
 
-    /** Cho sẵn: method đơn giản dùng để so 3 cách gọi ở Q6 (trực tiếp/Method.invoke/MethodHandle). */
+    /** Cho sẵn: phép tính đơn giản dùng làm mục tiêu gọi bằng 3 cách khác nhau ở Q6. */
     static int square(int x) {
         return x * x;
     }
 
     /**
-     * Đo thô (không thay cho benchmark thật) thời gian gọi {@code n} lần method {@link #square(int)}
-     * bằng ba cách: gọi trực tiếp, {@link Method#invoke}, và {@link MethodHandle#invokeExact}. Có
-     * vòng warm-up trước khi đo để JIT kịp làm nóng. Giai đoạn 2 sẽ học đo đúng cách bằng JMH.
+     * Cho sẵn: so sánh thời gian gọi {@link #square(int)} {@code n} lần bằng 3 cách — gọi
+     * trực tiếp, {@link Method#invoke} bằng reflection, và {@link MethodHandle#invokeExact}
+     * — có vòng warm-up trước khi đo, đo thô bằng {@link System#nanoTime()} (Giai đoạn 2 sẽ
+     * học đo đúng cách bằng JMH). Trả về báo cáo dạng văn bản có đủ 3 nhãn.
      */
     static String runExperiment(int n) {
         try {
-            Method method = Ex02_MiniDiContainer.class.getDeclaredMethod("square", int.class);
+            Method reflectMethod = Ex02_MiniDiContainer.class.getDeclaredMethod("square", int.class);
             MethodHandle handle = MethodHandles.lookup()
                     .findStatic(Ex02_MiniDiContainer.class, "square", MethodType.methodType(int.class, int.class));
 
+            // Warm-up: chạy vài nghìn lần trước để JIT có cơ hội biên dịch/inline.
             for (int i = 0; i < 2_000; i++) {
                 square(i);
-                method.invoke(null, i);
-                int warmupResult = (int) handle.invokeExact(i);
-                if (warmupResult < 0) {
-                    throw new AssertionError("square(int) không thể âm.");
-                }
+                reflectMethod.invoke(null, i);
+                int ignored = (int) handle.invokeExact(i);
             }
 
-            long sumDirect = 0;
-            long startDirect = System.nanoTime();
+            long directStart = System.nanoTime();
+            long directSum = 0;
             for (int i = 0; i < n; i++) {
-                sumDirect += square(i);
+                directSum += square(i);
             }
-            long directNanos = System.nanoTime() - startDirect;
+            long directNanos = System.nanoTime() - directStart;
 
-            long sumReflect = 0;
-            long startReflect = System.nanoTime();
+            long invokeStart = System.nanoTime();
+            long invokeSum = 0;
             for (int i = 0; i < n; i++) {
-                sumReflect += (int) method.invoke(null, i);
+                invokeSum += (int) reflectMethod.invoke(null, i);
             }
-            long reflectNanos = System.nanoTime() - startReflect;
+            long invokeNanos = System.nanoTime() - invokeStart;
 
-            long sumHandle = 0;
-            long startHandle = System.nanoTime();
+            long handleStart = System.nanoTime();
+            long handleSum = 0;
             for (int i = 0; i < n; i++) {
-                sumHandle += (int) handle.invokeExact(i);
+                handleSum += (int) handle.invokeExact(i);
             }
-            long handleNanos = System.nanoTime() - startHandle;
+            long handleNanos = System.nanoTime() - handleStart;
 
-            return "n=" + n + " tổng(direct=" + sumDirect + ", reflect=" + sumReflect + ", handle=" + sumHandle
-                    + ") | Gọi trực tiếp: " + directNanos + " ns; Method.invoke: " + reflectNanos
-                    + " ns; MethodHandle.invokeExact: " + handleNanos
-                    + " ns (đo thô bằng System.nanoTime(), có warm-up; Giai đoạn 2 học đo đúng cách bằng JMH).";
-        } catch (Throwable t) {
-            throw new IllegalStateException("Không chạy được thí nghiệm reflection.", t);
+            return "n=" + n + ", tong kiem tra (phai bang nhau)=" + directSum + "/" + invokeSum + "/" + handleSum
+                    + "\nDirect              : " + directNanos + " ns\n"
+                    + "Method.invoke       : " + invokeNanos + " ns\n"
+                    + "MethodHandle.invokeExact: " + handleNanos + " ns\n";
+        } catch (Throwable e) {
+            throw new IllegalStateException("Lỗi khi chạy thí nghiệm Q6.", e);
         }
     }
 
     public static void main(String[] args) {
-        System.out.println(runExperiment(1_000_000));
+        System.out.println(runExperiment(10_000_000));
     }
 }
 
 /* ANSWER Q2:
  * SOLUTION-BEGIN
- * Ngoài dựng bean bằng constructor (như MiniContainer ở trên), Spring còn dùng reflection để:
- * (1) đọc annotation trên class/field/method (@Component, @Autowired, @Value...) để biết bean
- * nào cần tạo và dependency nào cần inject; (2) field/setter injection — set giá trị field private
- * bằng Field.set sau setAccessible(true), không qua constructor; (3) tạo proxy động (JDK dynamic
- * proxy hoặc CGLIB subclass) để chèn logic AOP như @Transactional, @Cacheable; (4) gọi method
- * lifecycle như @PostConstruct bằng Method.invoke. Trade-off: linh hoạt, giảm boilerplate, nhưng
- * lỗi cấu hình (thiếu bean, sai kiểu) chỉ lộ ra lúc chạy ứng dụng, không phải lúc biên dịch.
- * SOLUTION-END
- */
-
-/* ANSWER Q6:
- * SOLUTION-BEGIN
- * Reflection (Method.invoke) chậm hơn gọi trực tiếp vì mỗi lần gọi phải kiểm tra quyền truy cập,
- * đóng gói/mở gói tham số kiểu nguyên thủy qua Object[], và JIT khó inline qua lớp bọc phản chiếu
- * — dù JVM có "inflate" thành bytecode accessor sau nhiều lần gọi để đỡ chậm hơn. MethodHandle
- * (invokeExact) được thiết kế để JIT tối ưu tốt hơn Method.invoke, thường nhanh gần bằng gọi trực
- * tiếp sau warm-up. Ngoài tốc độ, reflection còn mất compile-time checking (tên sai chỉ lộ lúc
- * chạy — xem Q5 ở Ex01) và có thể phá encapsulation qua setAccessible. Vì vậy business code
- * thông thường nên gọi trực tiếp; reflection chỉ nên dùng ở lớp framework (DI, serialization) nơi
- * cần tính tổng quát và chấp nhận đổi tốc độ + an toàn kiểu để lấy sự linh hoạt.
+ * Spring dùng reflection chủ yếu ở giai đoạn khởi tạo application context, không phải
+ * trên đường nghiệp vụ chạy lặp lại: (1) quét classpath để tìm class có @Component/
+ * @Service/@Repository; (2) chọn constructor để autowire (giống MiniContainer.get() ở
+ * trên — Spring gọi getDeclaredConstructors, ưu tiên constructor có @Autowired hoặc
+ * constructor public duy nhất); (3) set field/setter được @Autowired bằng
+ * Field.setAccessible(true) + Field.set(...); (4) gọi method @Bean bằng Method.invoke
+ * để lấy instance; (5) tạo proxy AOP (JDK dynamic proxy hoặc CGLIB) rồi dùng reflection
+ * để invoke method gốc bên trong proxy. Vì việc này chỉ chạy một lần lúc start-up, chi
+ * phí reflection (xem Q6) không ảnh hưởng runtime nghiệp vụ.
  * SOLUTION-END
  */
 
 /* OBSERVATION Q6:
  * SOLUTION-BEGIN
- * Chạy main() với n = 1 000 000 ba lần trên máy tác giả (JDK 21, sau warm-up 2 000 lần), đơn vị
- * nanosecond cho toàn bộ 1 000 000 lần gọi: gọi trực tiếp ~3 599 000–4 134 300 ns; Method.invoke
- * ~15 881 700–18 139 400 ns (chậm hơn trực tiếp khoảng 4–5 lần, ổn định qua các lần chạy); còn
- * MethodHandle.invokeExact ~3 399 000–5 192 500 ns — nằm sát gọi trực tiếp, có lần còn nhanh hơn
- * (nằm trong nhiễu đo đạc), khác hẳn Method.invoke luôn chậm rõ rệt. Kết quả khớp với lý do:
- * Method.invoke phải đóng/mở gói tham số qua Object[] và kiểm tra quyền truy cập ở mỗi lần gọi;
- * MethodHandle được JIT tối ưu gần bằng lệnh gọi tĩnh sau warm-up. Số ns tuyệt đối dao động giữa
- * các lần chạy (phụ thuộc máy, tải hệ thống) nên không hard-code vào test — chỉ dùng để quan sát
- * thứ tự tương đối, không dùng để assert chính xác.
+ * Chạy runExperiment(10_000_000) sau warm-up 2 000 lần, ba lần chạy liên tiếp trên máy tác
+ * giả (JDK 21.0.12.1, Windows), tổng kiểm tra ba cách luôn khớp nhau (17247549629376):
+ *   Direct                  : ~5.9-6.2 triệu ns  (~0.6 ns/lần gọi)
+ *   Method.invoke           : ~87-88 triệu ns    (~8.7 ns/lần gọi, chậm hơn Direct ~14 lần)
+ *   MethodHandle.invokeExact: ~15.6-16.2 triệu ns (~1.6 ns/lần gọi, chậm hơn Direct ~2.6 lần,
+ *                              nhưng nhanh hơn Method.invoke ~5.5 lần)
+ * Method.invoke chậm nhất vì mỗi lần gọi phải qua kiểm tra access-check, box/unbox tham số
+ * và kết quả (int -> Integer -> int) qua một MethodAccessor gián tiếp. invokeExact được
+ * JVM hỗ trợ gần với invokedynamic nên tối ưu tốt hơn nhiều sau warm-up, nhưng vẫn chưa
+ * bằng gọi trực tiếp. Số liệu là đo thô (System.nanoTime, không dùng JMH) nên chỉ để so
+ * sánh tương đối giữa 3 cách, không phải số tuyệt đối đáng tin cho mọi môi trường.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q6:
+ * SOLUTION-BEGIN
+ * Gọi trực tiếp được JIT inline/devirtualize dễ dàng. Method.invoke phải tra cứu
+ * access-check, boxing/unboxing tham số và kết quả (int -> Integer -> int), qua thêm một
+ * tầng MethodAccessor — chậm hơn gọi trực tiếp dù JIT có tối ưu dần theo số lần gọi.
+ * MethodHandle.invokeExact được JVM hỗ trợ tốt hơn (invokedynamic, có thể inline sau khi
+ * đã "làm nóng" đủ), thường nhanh hơn Method.invoke rõ rệt và có thể gần bằng gọi trực
+ * tiếp sau warm-up dài, nhưng vẫn có overhead thiết lập ban đầu (lookup, kiểm tra kiểu
+ * chính xác của invokeExact). Trade-off: business code lặp lại nhiều (hot path) nên gọi
+ * trực tiếp; chỉ dùng reflection ở nơi chạy một lần hoặc ít lần (khởi tạo bean, xử lý
+ * annotation) như MiniContainer/Spring ở Q2, không dùng cho vòng lặp tính toán nghiệp vụ.
  * SOLUTION-END
  */

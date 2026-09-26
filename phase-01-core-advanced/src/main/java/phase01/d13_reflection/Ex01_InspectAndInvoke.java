@@ -45,11 +45,12 @@ import phase01.support.Compiles;
  *               ReflectiveOperationException khác (kể cả InvocationTargetException với
  *               cause không phải RuntimeException) → bọc trong IllegalStateException,
  *               giữ nguyên cause gốc.
- *   Hoàn thành khi: các test q04_* xanh; giải thích được vì sao module java.base không
- *               "opens java.lang" cho code ứng dụng (từ JDK 9, JEP 261) nên setAccessible
- *               trên field private của String ném InaccessibleObjectException, còn field/
- *               method private của class tự viết (không khai báo module hạn chế) thì gọi
- *               được bình thường.
+ *   Hoàn thành khi: các test q04_* xanh; giải thích được vì sao module java.base (một
+ *               module trong Java Platform Module System, có từ JDK 9) không
+ *               "opens java.lang" cho code ứng dụng nên setAccessible trên field private
+ *               của String ném InaccessibleObjectException, còn field/method private của
+ *               class tự viết (không nằm trong module nào hạn chế) thì gọi được bình
+ *               thường.
  *
  * Q5 [DỰ ĐOÁN] Reflection ảnh hưởng compile-time checking ra sao?
  *   Bắt đầu   : điền Q5_TYPO_METHOD_NAME_COMPILES = Compiles.YES và
@@ -126,7 +127,7 @@ public class Ex01_InspectAndInvoke {
                 throw runtimeCause;
             }
             throw new IllegalStateException(
-                    "Method '" + methodName + "' ném lỗi không phải RuntimeException khi invoke.", e.getCause());
+                    "Method '" + methodName + "' ném lỗi không phải RuntimeException khi invoke.", e);
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException("Không thể gọi method '" + methodName + "' bằng reflection.", e);
         }
