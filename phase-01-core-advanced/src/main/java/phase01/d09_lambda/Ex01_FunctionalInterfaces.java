@@ -54,7 +54,10 @@ public class Ex01_FunctionalInterfaces {
         boolean validate(T value);
 
         default Validator<T> and(Validator<? super T> other) {
-            throw new UnsupportedOperationException("TODO Q1");
+            // SOLUTION-BEGIN throw Q1
+            Objects.requireNonNull(other, "other không được null trong Validator.and()");
+            return value -> this.validate(value) && other.validate(value);
+            // SOLUTION-END
         }
     }
 
@@ -66,21 +69,28 @@ public class Ex01_FunctionalInterfaces {
     // }
 
     // Q1 — có biên dịch được không?
-    static final Compiles Q1_TWO_ABSTRACT_METHODS_WITH_ANNOTATION_COMPILES = null;
+    static final Compiles Q1_TWO_ABSTRACT_METHODS_WITH_ANNOTATION_COMPILES = Compiles.NO; // SOLUTION-VALUE
     // Q1 — default method có được tính là abstract method thứ hai không?
-    static final Boolean Q1_DEFAULT_METHODS_ALLOWED = null;
+    static final Boolean Q1_DEFAULT_METHODS_ALLOWED = true; // SOLUTION-VALUE
 
     // Q2 — kiểu trả về nguyên thủy của Predicate<T>.test(T)
-    static final String Q2_PREDICATE_TEST_RETURN_TYPE = null;
+    static final String Q2_PREDICATE_TEST_RETURN_TYPE = "boolean"; // SOLUTION-VALUE
     // Q3 — kiểu trả về của Consumer<T>.accept(T)
-    static final String Q3_CONSUMER_ACCEPT_RETURN_TYPE = null;
+    static final String Q3_CONSUMER_ACCEPT_RETURN_TYPE = "void"; // SOLUTION-VALUE
 
     static Validator<String> notBlank() {
-        throw new UnsupportedOperationException("TODO Q1");
+        // SOLUTION-BEGIN throw Q1
+        return value -> value != null && !value.isBlank();
+        // SOLUTION-END
     }
 
     static Validator<String> maxLength(int max) {
-        throw new UnsupportedOperationException("TODO Q1");
+        // SOLUTION-BEGIN throw Q1
+        if (max < 0) {
+            throw new IllegalArgumentException("max không được âm: " + max);
+        }
+        return value -> value != null && value.length() <= max;
+        // SOLUTION-END
     }
 
     /**
@@ -91,6 +101,16 @@ public class Ex01_FunctionalInterfaces {
      */
     static List<String> process(List<String> input, Predicate<String> keep, Function<String, String> transform,
             Consumer<String> audit) {
-        throw new UnsupportedOperationException("TODO Q3");
+        // SOLUTION-BEGIN throw Q3
+        List<String> result = new ArrayList<>();
+        for (String item : input) {
+            if (keep.test(item)) {
+                String transformed = transform.apply(item);
+                audit.accept(transformed);
+                result.add(transformed);
+            }
+        }
+        return result;
+        // SOLUTION-END
     }
 }

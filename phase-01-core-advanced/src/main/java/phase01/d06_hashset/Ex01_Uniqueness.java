@@ -50,8 +50,8 @@ import java.util.Set;
 public class Ex01_Uniqueness {
 
     // Q1 — kịch bản: Set<String> set = new HashSet<>(); set.add("a"); set.add("a") lần hai
-    static final Boolean Q1_ADD_DUPLICATE_RETURNS = null;
-    static final String Q1_BACKING_MAP_CLASS = null;
+    static final Boolean Q1_ADD_DUPLICATE_RETURNS = false; // SOLUTION-VALUE
+    static final String Q1_BACKING_MAP_CLASS = "HashMap"; // SOLUTION-VALUE
 
     /**
      * Trả về các phần tử bị trùng trong {@code items}, mỗi phần tử trùng xuất hiện đúng
@@ -60,7 +60,17 @@ public class Ex01_Uniqueness {
      * @throws NullPointerException nếu {@code items} là {@code null}
      */
     static <T> List<T> duplicates(List<T> items) {
-        throw new UnsupportedOperationException("TODO Q2");
+        // SOLUTION-BEGIN throw Q2
+        Objects.requireNonNull(items, "items");
+        Set<T> seen = new HashSet<>();
+        Set<T> duplicates = new LinkedHashSet<>();
+        for (T item : items) {
+            if (!seen.add(item)) {
+                duplicates.add(item);
+            }
+        }
+        return new ArrayList<>(duplicates);
+        // SOLUTION-END
     }
 
     /**
@@ -68,7 +78,10 @@ public class Ex01_Uniqueness {
      * @throws NullPointerException nếu {@code items} là {@code null}
      */
     static <T> boolean hasDuplicates(Collection<T> items) {
-        throw new UnsupportedOperationException("TODO Q2");
+        // SOLUTION-BEGIN throw Q2
+        Objects.requireNonNull(items, "items");
+        return new HashSet<>(items).size() != items.size();
+        // SOLUTION-END
     }
 
     /**
@@ -131,13 +144,28 @@ public class Ex01_Uniqueness {
     }
 
     // Q4 — kịch bản: set.add(new Tag("a")); rồi tag.name = "b"; set.remove(tag)
-    static final Boolean Q4_REMOVE_AFTER_MUTATION_WORKS = null;
+    static final Boolean Q4_REMOVE_AFTER_MUTATION_WORKS = false; // SOLUTION-VALUE
 }
 
 /* OBSERVATION Q2:
- *
+ * SOLUTION-BEGIN
+ * Số liệu mẫu trên máy phát triển (tương đối, không phải benchmark chuẩn): với n = 20 000,
+ * ArrayList.contains() tốn khoảng 80 ms cho toàn bộ n lần gọi (mỗi lần duyệt tuần tự, so
+ * equals từng phần tử, O(n)) trong khi HashSet.contains() tốn dưới 1 ms cho toàn bộ n lần
+ * gọi (mỗi lần chỉ tính hashCode() rồi nhảy thẳng tới bucket, trung bình O(1)) — chênh lệch
+ * cỡ vài trăm lần. Chênh lệch càng rõ khi n càng lớn vì thời gian của ArrayList cho toàn bộ
+ * thí nghiệm tăng theo n^2 (n lần gọi, mỗi lần O(n)), còn HashSet chỉ tăng theo n.
+ * SOLUTION-END
  */
 
 /* ANSWER Q4:
- *
+ * SOLUTION-BEGIN
+ * hashCode() của Tag phụ thuộc name; khi name đổi sau khi add(), bucket tính từ hashCode()
+ * mới không còn chứa phần tử đó nữa — remove()/contains() dùng key hiện tại (đã đổi) thất
+ * bại, còn phần tử cũ vẫn "kẹt" trong bucket cũ (size không giảm) — cùng bản chất với vấn đề
+ * ở d05_equals_hashcode, Ex03_RecordsAndMutableEntities Q7 (Customer/StableCustomer): field
+ * tham gia equals/hashCode đổi sau khi add cũng làm contains/remove bằng key hiện tại thất bại.
+ * Phòng tránh: chỉ cho field bất biến tham gia equals/hashCode (như StableCustomer chỉ dùng
+ * id), hoặc remove trước khi đổi field rồi add lại như đã thấy ở d04_hashmap.changeIdSafely.
+ * SOLUTION-END
  */

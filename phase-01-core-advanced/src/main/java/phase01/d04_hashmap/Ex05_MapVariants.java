@@ -55,11 +55,13 @@ public class Ex05_MapVariants {
 
     // Q13 — kịch bản: nhiều thread cùng sửa một HashMap. Hằng hỏi: HashMap có thread-safe
     // không? Đọc source putVal hoặc chạy thí nghiệm rồi mới điền.
-    static final Boolean Q13_HASHMAP_IS_THREAD_SAFE = null;
+    static final Boolean Q13_HASHMAP_IS_THREAD_SAFE = false; // SOLUTION-VALUE
 
     /** Map đếm dùng được an toàn từ nhiều luồng cùng lúc. */
     static Map<String, Integer> concurrentCounter() {
-        throw new UnsupportedOperationException("TODO Q13");
+        // SOLUTION-BEGIN throw Q13
+        return new ConcurrentHashMap<>();
+        // SOLUTION-END
     }
 
     private static String raceMerge(Map<String, Integer> map, int perThread, int keyCount) {
@@ -122,25 +124,37 @@ public class Ex05_MapVariants {
     }
 
     // Q14 — kịch bản: HashMap<String, String> put(null, "a") rồi put(null, "b").
-    static final Integer Q14_SIZE_AFTER_TWO_NULL_KEYS = null;
-    static final String Q14_VALUE_FOR_NULL_KEY = null;
+    static final Integer Q14_SIZE_AFTER_TWO_NULL_KEYS = 1; // SOLUTION-VALUE
+    static final String Q14_VALUE_FOR_NULL_KEY = "b"; // SOLUTION-VALUE
     // Q14 — kịch bản: new TreeMap<String, String>().put(null, "x").
-    static final String Q14_TREEMAP_NULL_KEY_EXCEPTION = null;
+    static final String Q14_TREEMAP_NULL_KEY_EXCEPTION = "NullPointerException"; // SOLUTION-VALUE
 
     // Q15 — kịch bản: độ phức tạp của TreeMap.get. Đọc Javadoc TreeMap về cấu trúc lưu trữ
     // rồi điền Complexity — sau khi đã điền dự đoán.
-    static final Complexity Q15_TREEMAP_GET = null;
+    static final Complexity Q15_TREEMAP_GET = Complexity.O_LOG_N; // SOLUTION-VALUE
     // Q15 — kịch bản: HashMap có cam kết thứ tự lặp không? Đọc Javadoc HashMap.
-    static final Boolean Q15_HASHMAP_GUARANTEES_ORDER = null;
+    static final Boolean Q15_HASHMAP_GUARANTEES_ORDER = false; // SOLUTION-VALUE
 
     /** Đếm số lần xuất hiện của mỗi từ, giữ đúng thứ tự từ xuất hiện lần đầu tiên. */
     static Map<String, Integer> wordCountsInFirstSeenOrder(List<String> words) {
-        throw new UnsupportedOperationException("TODO Q15");
+        // SOLUTION-BEGIN throw Q15
+        Map<String, Integer> counts = new LinkedHashMap<>();
+        for (String word : words) {
+            counts.merge(word, 1, Integer::sum);
+        }
+        return counts;
+        // SOLUTION-END
     }
 
     /** Đếm số lần xuất hiện của mỗi từ, khóa được sắp xếp tăng dần theo thứ tự tự nhiên. */
     static SortedMap<String, Integer> wordCountsSorted(List<String> words) {
-        throw new UnsupportedOperationException("TODO Q15");
+        // SOLUTION-BEGIN throw Q15
+        SortedMap<String, Integer> counts = new TreeMap<>();
+        for (String word : words) {
+            counts.merge(word, 1, Integer::sum);
+        }
+        return counts;
+        // SOLUTION-END
     }
 
     /**
@@ -150,10 +164,28 @@ public class Ex05_MapVariants {
      * @throws IllegalArgumentException nếu {@code maxEntries} nhỏ hơn 1
      */
     static <K, V> Map<K, V> lruCache(int maxEntries) {
-        throw new UnsupportedOperationException("TODO Q15");
+        // SOLUTION-BEGIN throw Q15
+        if (maxEntries < 1) {
+            throw new IllegalArgumentException("maxEntries phải >= 1: " + maxEntries);
+        }
+        return new LinkedHashMap<>(16, 0.75f, true) {
+            @Override
+            protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
+                return size() > maxEntries;
+            }
+        };
+        // SOLUTION-END
     }
 }
 
 /* OBSERVATION Q13:
- *
+ * SOLUTION-BEGIN
+ * Chạy main() nhiều lần (4 luồng x 1000 lần merge() mỗi luồng) cho thấy HashMap thường không
+ * tất định: có lần ném ConcurrentModificationException (bucket bị hai luồng sửa cấu trúc cùng
+ * lúc), có lần không ném gì nhưng tổng đếm lại thiếu (ví dụ 3961 thay vì 4000 kỳ vọng) — một số
+ * lần merge() bị "mất" vì hai luồng cùng đọc/ghi một Node mà không đồng bộ. ConcurrentHashMap ở
+ * cùng kịch bản luôn ra đúng 4000 vì merge() của nó nguyên tử theo từng bucket. Kết luận: HashMap
+ * không an toàn khi nhiều luồng cùng ghi; dùng ConcurrentHashMap (hoặc đồng bộ hóa ngoài) khi cần
+ * chia sẻ map giữa nhiều luồng viết.
+ * SOLUTION-END
  */

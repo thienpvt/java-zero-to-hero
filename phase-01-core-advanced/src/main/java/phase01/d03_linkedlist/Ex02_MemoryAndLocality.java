@@ -131,17 +131,46 @@ public class Ex02_MemoryAndLocality {
 }
 
 /* OBSERVATION Q3:
- *
+ * SOLUTION-BEGIN
+ * Chạy runExperiment(2_000_000) trên JDK 21 64-bit (compressed oops mặc định): dòng
+ * "byte/phần tử" thường cho ArrayList<Integer> khoảng 24–32 byte/phần tử, còn
+ * LinkedList<Integer> khoảng 48–56 byte/phần tử — gấp khoảng 1.5–2 lần ArrayList. Số tuyệt
+ * đối dao động giữa các lần chạy vì phụ thuộc thời điểm GC/kích thước heap hiện tại, nhưng
+ * LinkedList luôn cho số byte/phần tử lớn hơn rõ rệt so với ArrayList, đúng như giải thích ở
+ * ANSWER Q3.
+ * SOLUTION-END
  */
 
 /* ANSWER Q3:
- *
+ * SOLUTION-BEGIN
+ * Mỗi phần tử của ArrayList chỉ tốn một ô tham chiếu trong mảng Object[] (elementData) được
+ * cấp phát liên tục, cộng với object Integer mà nó trỏ tới (có thể tái dùng qua Integer cache
+ * cho giá trị nhỏ). Mỗi phần tử của LinkedList lại cần thêm một object Node riêng biệt: object
+ * header (thường 12–16 byte tuỳ JVM) cộng 3 tham chiếu (item, prev, next), rồi Node đó mới trỏ
+ * tới object Integer. Vì vậy tổng chi phí byte/phần tử của LinkedList luôn lớn hơn ArrayList,
+ * kể cả khi chỉ so sánh tương đối bằng Runtime.totalMemory()-freeMemory() như trên.
+ * SOLUTION-END
  */
 
 /* OBSERVATION Q5:
- *
+ * SOLUTION-BEGIN
+ * Ở phần đo thời gian duyệt trong báo cáo, thứ tự thường là int[] nhanh nhất, ArrayList<Integer>
+ * theo sát ngay sau, còn LinkedList<Integer> chậm hơn rõ rệt (thường vài lần) dù cả ba đều chỉ
+ * làm một lượt for-each O(n). Số ns tuyệt đối dao động giữa các lần chạy (JIT chưa warm-up hết,
+ * GC chạy giữa lúc đo), nhưng thứ tự nhanh–chậm giữa ba cấu trúc ổn định qua nhiều lần chạy lại
+ * main() với n lớn.
+ * SOLUTION-END
  */
 
 /* ANSWER Q6:
- *
+ * SOLUTION-BEGIN
+ * CPU đọc bộ nhớ theo từng cache line (thường 64 byte) và tự động prefetch các cache line kế
+ * tiếp khi phát hiện truy cập tuần tự (spatial locality). ArrayList lưu các tham chiếu liên tiếp
+ * trong một mảng nên duyệt for-each gần như luôn "trúng cache" — CPU nạp trước dữ liệu sắp cần.
+ * LinkedList thì mỗi Node được cấp phát riêng lẻ trên heap tại thời điểm gọi new, không đảm bảo
+ * nằm gần nhau; duyệt qua next/prev là "pointer chasing" — mỗi bước có thể nhảy tới một vùng nhớ
+ * khác, gây cache miss và phải chờ nạp lại từ bộ nhớ chính (chậm hơn cache nhiều bậc). Đây là lý
+ * do chính khiến ArrayList thường nhanh hơn LinkedList trên workload thực tế, dù độ phức tạp
+ * Big-O của việc duyệt là O(n) như nhau ở cả hai.
+ * SOLUTION-END
  */

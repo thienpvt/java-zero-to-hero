@@ -31,11 +31,13 @@ public class Ex03_InconsistentWithEquals {
     }
 
     // Q4 — kịch bản: TreeSet(Comparator.comparingInt(Person::age)) thêm An(30), Bình(30), Chi(25)
-    static final Integer Q4_TREESET_SIZE = null;
-    static final Integer Q4_HASHSET_SIZE = null;
-    static final Boolean Q4_TREESET_CONTAINS_BINH = null;
+    static final Integer Q4_TREESET_SIZE = 2; // SOLUTION-VALUE
+    static final Integer Q4_HASHSET_SIZE = 3; // SOLUTION-VALUE
+    static final Boolean Q4_TREESET_CONTAINS_BINH = true; // SOLUTION-VALUE
 
     static Comparator<Person> consistentByAge() {
-        throw new UnsupportedOperationException("TODO Q4");
+        // SOLUTION-BEGIN throw Q4
+        return Comparator.comparingInt(Person::age).thenComparing(Person::name);
+        // SOLUTION-END
     }
 }

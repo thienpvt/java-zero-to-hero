@@ -31,8 +31,8 @@ public class Ex01_MapVsFlatMap {
 
     // Q1 — kịch bản: Stream.of(List.of(1, 2), List.of(3)); map(l -> l) so với
     // flatMap(List::stream); đếm số phần tử bằng count().
-    static final Integer Q1_MAP_COUNT = null;
-    static final Integer Q1_FLATMAP_COUNT = null;
+    static final Integer Q1_MAP_COUNT = 2; // SOLUTION-VALUE
+    static final Integer Q1_FLATMAP_COUNT = 3; // SOLUTION-VALUE
 
     /** Một đơn hàng, gồm mã đơn và danh sách tên các mặt hàng (có thể trùng tên). */
     record Order(String id, List<String> items) {
@@ -45,7 +45,9 @@ public class Ex01_MapVsFlatMap {
      * @throws NullPointerException nếu {@code orders} là {@code null}
      */
     static List<Integer> itemCounts(List<Order> orders) {
-        throw new UnsupportedOperationException("TODO Q1");
+        // SOLUTION-BEGIN throw Q1
+        return orders.stream().map(o -> o.items().size()).toList();
+        // SOLUTION-END
     }
 
     /**
@@ -55,6 +57,12 @@ public class Ex01_MapVsFlatMap {
      * @throws NullPointerException nếu {@code orders} là {@code null}
      */
     static List<String> allItemsDistinctSorted(List<Order> orders) {
-        throw new UnsupportedOperationException("TODO Q1");
+        // SOLUTION-BEGIN throw Q1
+        return orders.stream()
+                .flatMap(o -> o.items().stream())
+                .distinct()
+                .sorted()
+                .toList();
+        // SOLUTION-END
     }
 }

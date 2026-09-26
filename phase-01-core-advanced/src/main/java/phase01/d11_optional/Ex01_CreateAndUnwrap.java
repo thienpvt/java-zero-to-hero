@@ -60,14 +60,14 @@ public class Ex01_CreateAndUnwrap {
     }
 
     // Q1 — Optional.of(null) ném exception gì?
-    static final String Q1_OF_NULL_EXCEPTION = null;
+    static final String Q1_OF_NULL_EXCEPTION = "NullPointerException"; // SOLUTION-VALUE
     // Q1 — Optional.ofNullable(null).isPresent() có trả true không?
-    static final Boolean Q1_OF_NULLABLE_NULL_IS_PRESENT = null;
+    static final Boolean Q1_OF_NULLABLE_NULL_IS_PRESENT = false; // SOLUTION-VALUE
 
     // Q2 — Optional.of("x").orElse(expensiveDefault()): expensiveDefault() có bị gọi không?
-    static final Integer Q2_ORELSE_CALLS_WHEN_PRESENT = null;
+    static final Integer Q2_ORELSE_CALLS_WHEN_PRESENT = 1; // SOLUTION-VALUE
     // Q2 — Optional.of("x").orElseGet(Ex01_CreateAndUnwrap::expensiveDefault): có bị gọi không?
-    static final Integer Q2_ORELSEGET_CALLS_WHEN_PRESENT = null;
+    static final Integer Q2_ORELSEGET_CALLS_WHEN_PRESENT = 0; // SOLUTION-VALUE
 
     /**
      * Trả về biệt danh nếu {@code nickname} có giá trị và không blank; ngược lại gọi
@@ -79,6 +79,8 @@ public class Ex01_CreateAndUnwrap {
      * @return biệt danh hợp lệ, hoặc kết quả của {@code fullNameLookup.get()}
      */
     static String displayName(Optional<String> nickname, Supplier<String> fullNameLookup) {
-        throw new UnsupportedOperationException("TODO Q3");
+        // SOLUTION-BEGIN throw Q3
+        return nickname.filter(n -> !n.isBlank()).orElseGet(fullNameLookup);
+        // SOLUTION-END
     }
 }

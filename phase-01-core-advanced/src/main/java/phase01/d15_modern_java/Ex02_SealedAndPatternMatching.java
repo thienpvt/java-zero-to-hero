@@ -56,7 +56,13 @@ public class Ex02_SealedAndPatternMatching {
     }
 
     static double area(Shape shape) {
-        throw new UnsupportedOperationException("TODO Q3");
+        // SOLUTION-BEGIN throw Q3
+        return switch (shape) {
+            case Circle c -> Math.PI * c.radius() * c.radius();
+            case Rectangle r -> r.width() * r.height();
+            case Square s -> s.side() * s.side();
+        };
+        // SOLUTION-END
     }
 
     // Q5 — mẫu: switch expression trên Shape, thiếu nhánh Square. Bỏ comment, xem IDE báo
@@ -67,9 +73,9 @@ public class Ex02_SealedAndPatternMatching {
     //         case Rectangle r -> r.width() * r.height();
     //     };
     // }
-    static final Compiles Q5_SWITCH_EXPRESSION_MISSING_CASE_COMPILES = null;
+    static final Compiles Q5_SWITCH_EXPRESSION_MISSING_CASE_COMPILES = Compiles.NO; // SOLUTION-VALUE
 
-    static final String Q5_SWITCH_ON_NULL_WITHOUT_CASE_NULL = null;
+    static final String Q5_SWITCH_ON_NULL_WITHOUT_CASE_NULL = "NullPointerException"; // SOLUTION-VALUE
 
     /**
      * Cho sẵn để minh họa Q5: gọi với {@code null} và quan sát (Debug hoặc chạy test q05_*)
@@ -90,10 +96,30 @@ public class Ex02_SealedAndPatternMatching {
     }
 
     static String describe(Object value) {
-        throw new UnsupportedOperationException("TODO Q5");
+        // SOLUTION-BEGIN throw Q5
+        return switch (value) {
+            case null -> "null";
+            case Integer i when i < 0 -> "số âm";
+            case Integer i -> "số nguyên";
+            case String s when s.isEmpty() -> "chuỗi rỗng";
+            case String s -> "chuỗi";
+            case Shape shape -> "hình";
+            default -> "khác";
+        };
+        // SOLUTION-END
     }
 }
 
 /* ANSWER Q4:
- *
+ * SOLUTION-BEGIN
+ * Thêm `record Triangle(double base, double height) implements Shape` vào permits của
+ * Shape rồi build: compiler báo lỗi ngay tại switch trong area() vì switch đó không có
+ * default và không còn cover hết các subtype — kiểu lỗi
+ * "the switch expression does not cover all possible input values" (javac). Cùng tình huống
+ * viết bằng switch statement (pattern, thiếu một case) thì javac báo
+ * "the switch statement does not cover all possible input values". Switch statement kiểu cũ
+ * trên int/String/enum (không pattern, không null) thì không bắt buộc đủ nhánh. IDE gạch đỏ
+ * dòng `switch (shape)`. Nhờ vậy compiler chỉ đúng từng vị trí switch-trên-Shape cần sửa,
+ * không cần tự rà soát toàn bộ codebase để tìm chỗ thiếu xử lý subtype mới.
+ * SOLUTION-END
  */

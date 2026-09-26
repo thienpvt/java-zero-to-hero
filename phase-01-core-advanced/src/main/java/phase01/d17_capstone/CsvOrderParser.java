@@ -84,10 +84,92 @@ public final class CsvOrderParser {
      *                      file không tồn tại) — không bị bắt/nuốt bên trong method này
      */
     public ParseResult parse(Path file) throws IOException {
-        throw new UnsupportedOperationException("TODO B2");
+        // SOLUTION-BEGIN throw B2
+        List<Order> orders = new ArrayList<>();
+        List<LineError> errors = new ArrayList<>();
+        Set<String> seenIds = new java.util.HashSet<>();
+        try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
+            String headerLine = reader.readLine();
+            if (headerLine == null) {
+                return new ParseResult(orders, errors);
+            }
+            if (!HEADER.equals(headerLine)) {
+                errors.add(new LineError(1, "Header không hợp lệ"));
+                return new ParseResult(orders, errors);
+            }
+            String line;
+            int lineNumber = 1;
+            while ((line = reader.readLine()) != null) {
+                lineNumber++;
+                if (line.isEmpty()) {
+                    continue;
+                }
+                String[] fields = line.split(",", -1);
+                if (fields.length != 5) {
+                    errors.add(new LineError(lineNumber, "Cần đúng 5 trường, nhận được " + fields.length));
+                    continue;
+                }
+                String id = fields[0];
+                String customerId = fields[1];
+
+                Instant createdAt;
+                try {
+                    createdAt = Instant.parse(fields[2]);
+                } catch (DateTimeParseException e) {
+                    errors.add(new LineError(lineNumber,
+                            "createdAt không đúng định dạng ISO-8601: " + fields[2]));
+                    continue;
+                }
+
+                BigDecimal amount;
+                try {
+                    amount = new BigDecimal(fields[3]);
+                } catch (NumberFormatException e) {
+                    errors.add(new LineError(lineNumber, "amount không phải số: " + fields[3]));
+                    continue;
+                }
+
+                Order.Status status;
+                try {
+                    status = Order.Status.valueOf(fields[4]);
+                } catch (IllegalArgumentException e) {
+                    errors.add(new LineError(lineNumber,
+                            "status không hợp lệ: " + fields[4] + " (chỉ nhận NEW, PAID, CANCELLED)"));
+                    continue;
+                }
+
+                Order order;
+                try {
+                    order = new Order(id, customerId, createdAt, amount, status);
+                } catch (IllegalArgumentException e) {
+                    // amount âm: Order tự ném IllegalArgumentException với message tiếng Việt sẵn có.
+                    errors.add(new LineError(lineNumber, e.getMessage()));
+                    continue;
+                }
+
+                // B3: Set<String> phát hiện id đã thấy để giữ đúng một bản đầu tiên.
+                if (!seenIds.add(id)) {
+                    errors.add(new LineError(lineNumber, "Trùng id: " + id));
+                    continue;
+                }
+                orders.add(order);
+            }
+        }
+        return new ParseResult(orders, errors);
+        // SOLUTION-END
     }
 }
 
 /* ANSWER B3:
- *
+ * SOLUTION-BEGIN
+ * HashSet<String> seenIds chỉ cần trả lời "đã thấy id này chưa" theo O(1) trung bình, không
+ * cần thứ tự và không cần lưu giá trị đi kèm — equals/hashCode của String so sánh theo nội
+ * dung ký tự (value-based, không phải theo identity), nên hai chuỗi "o1" được tạo ra từ hai
+ * lần split() khác nhau vẫn được coi là trùng, đúng ngữ nghĩa "trùng id" mong muốn; nếu dùng
+ * một List rồi contains() tuyến tính thì đúng nhưng chậm O(n) mỗi dòng. Ở CustomerReportService
+ * (B4), việc gom order theo customerId lại dùng LinkedHashMap<String, List<Order>> vì lúc đó
+ * cần vừa tra cứu O(1) vừa giữ thứ tự xuất hiện đầu tiên của từng khách trong khi gom nhóm,
+ * trước khi sắp lại theo customerId — chọn cấu trúc theo đúng thứ tự truy cập/duyệt cần dùng,
+ * không dùng cùng một cấu trúc cho mọi việc.
+ * SOLUTION-END
  */

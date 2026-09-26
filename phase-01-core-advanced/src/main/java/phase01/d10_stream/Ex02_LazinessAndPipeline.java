@@ -74,21 +74,21 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Ex02_LazinessAndPipeline {
 
     // Q2 — kịch bản: pipeline filter + map có ghi log, không gọi terminal operation nào.
-    static final Integer Q2_LOG_SIZE_WITHOUT_TERMINAL = null;
+    static final Integer Q2_LOG_SIZE_WITHOUT_TERMINAL = 0; // SOLUTION-VALUE
 
     // Q4 — kịch bản: Stream.of("a", "bb", "ccc")
     //   .filter(s -> { log.add("filter " + s); return s.length() > 1; })
     //   .map(s -> { log.add("map " + s); return s; })
     //   .findFirst();  — log nối bằng ", ".
-    static final String Q4_LOG_WITH_FIND_FIRST = null;
+    static final String Q4_LOG_WITH_FIND_FIRST = "filter a, filter bb, map bb"; // SOLUTION-VALUE
 
     // Q3 — kịch bản: gọi count() hai lần trên cùng một Stream.
-    static final String Q3_REUSE_EXCEPTION = null;
+    static final String Q3_REUSE_EXCEPTION = "IllegalStateException"; // SOLUTION-VALUE
 
     // Q11 — kịch bản: 10 số 1..10; so số lần lambda map được gọi khi filter (n % 5 == 0)
     // đứng trước map so với khi map đứng trước filter.
-    static final Integer Q11_MAP_CALLS_WHEN_FILTER_FIRST = null;
-    static final Integer Q11_MAP_CALLS_WHEN_MAP_FIRST = null;
+    static final Integer Q11_MAP_CALLS_WHEN_FILTER_FIRST = 2; // SOLUTION-VALUE
+    static final Integer Q11_MAP_CALLS_WHEN_MAP_FIRST = 10; // SOLUTION-VALUE
 
     /**
      * Lọc {@code numbers} còn số chia hết cho 5 TRƯỚC, rồi mới đi qua bước "tính toán" (chỉ
@@ -97,7 +97,17 @@ public class Ex02_LazinessAndPipeline {
      * @throws NullPointerException nếu {@code numbers} là {@code null}
      */
     static int mapCallsWhenFilterFirst(List<Integer> numbers) {
-        throw new UnsupportedOperationException("TODO Q11");
+        // SOLUTION-BEGIN throw Q11
+        AtomicInteger mapCalls = new AtomicInteger();
+        numbers.stream()
+                .filter(n -> n % 5 == 0)
+                .map(n -> {
+                    mapCalls.incrementAndGet();
+                    return n;
+                })
+                .toList();
+        return mapCalls.get();
+        // SOLUTION-END
     }
 
     /**
@@ -107,7 +117,17 @@ public class Ex02_LazinessAndPipeline {
      * @throws NullPointerException nếu {@code numbers} là {@code null}
      */
     static int mapCallsWhenMapFirst(List<Integer> numbers) {
-        throw new UnsupportedOperationException("TODO Q11");
+        // SOLUTION-BEGIN throw Q11
+        AtomicInteger mapCalls = new AtomicInteger();
+        numbers.stream()
+                .map(n -> {
+                    mapCalls.incrementAndGet();
+                    return n;
+                })
+                .filter(n -> n % 5 == 0)
+                .toList();
+        return mapCalls.get();
+        // SOLUTION-END
     }
 
     /** Người dùng, dùng cho ví dụ pipeline lọc + map + distinct trong tài liệu. */
@@ -129,10 +149,26 @@ public class Ex02_LazinessAndPipeline {
      * @throws NullPointerException nếu {@code users} là {@code null}
      */
     static List<String> activeUniqueEmails(List<User> users) {
-        throw new UnsupportedOperationException("TODO V1");
+        // SOLUTION-BEGIN throw V1
+        return users.stream()
+                .filter(User::isActive)
+                .map(User::getEmail)
+                .distinct()
+                .toList();
+        // SOLUTION-END
     }
 }
 
 /* ANSWER V1 (giải thích pipeline của ví dụ users.stream()):
- *
+ * SOLUTION-BEGIN
+ * users.stream() chỉ tạo ra một Stream nguồn — chưa chạy gì. filter(User::isActive) và
+ * map(User::getEmail) là STATELESS: xử lý dọc từng User một, không cần nhớ gì về các User
+ * đã đi qua trước đó. distinct() là STATEFUL: nó phải giữ một tập hợp nội bộ (cài đặt bằng
+ * HashSet) các email đã thấy để biết email hiện tại có trùng hay không — vì vậy mỗi phần tử
+ * đi qua distinct() vẫn được xử lý một-tại-một-thời-điểm, chỉ khác là distinct() phải tra
+ * cứu/ghi thêm vào tập nhớ đó ở mỗi lần. Toàn bộ pipeline chỉ thực sự chạy khi gặp
+ * toList() (terminal): với sequential stream, từng User được kéo qua đủ 4 bước (filter →
+ * nếu active thì map → distinct → thêm vào kết quả) rồi mới tới User kế tiếp, không phải
+ * chạy hết filter cho mọi User rồi mới map cho mọi User.
+ * SOLUTION-END
  */

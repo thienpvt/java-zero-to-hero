@@ -102,14 +102,24 @@ public class Ex01_CapacityAndResize {
          */
         @SuppressWarnings("unchecked")
         E get(int index) {
-            throw new UnsupportedOperationException("TODO Q1");
+            // SOLUTION-BEGIN throw Q1
+            if (index < 0 || index >= size) {
+                throw new IndexOutOfBoundsException("index=" + index + ", size=" + size);
+            }
+            return (E) elementData[index];
+            // SOLUTION-END
         }
 
         /**
          * Thêm {@code element} vào cuối danh sách; tự động {@link #grow()} nếu mảng đã đầy.
          */
         void add(E element) {
-            throw new UnsupportedOperationException("TODO Q2");
+            // SOLUTION-BEGIN throw Q2
+            if (size == elementData.length) {
+                grow();
+            }
+            elementData[size++] = element;
+            // SOLUTION-END
         }
 
         /**
@@ -117,7 +127,12 @@ public class Ex01_CapacityAndResize {
          * {@code max(old + (old >> 1), old + 1)}. Tăng {@code resizeCount} mỗi lần gọi.
          */
         private void grow() {
-            throw new UnsupportedOperationException("TODO Q3");
+            // SOLUTION-BEGIN throw Q3
+            int oldCapacity = elementData.length;
+            int newCapacity = Math.max(oldCapacity + (oldCapacity >> 1), oldCapacity + 1);
+            elementData = Arrays.copyOf(elementData, newCapacity);
+            resizeCount++;
+            // SOLUTION-END
         }
 
         /**
@@ -127,7 +142,17 @@ public class Ex01_CapacityAndResize {
          * @throws IndexOutOfBoundsException nếu {@code index} ngoài phạm vi {@code [0, size]}
          */
         void add(int index, E element) {
-            throw new UnsupportedOperationException("TODO Q2");
+            // SOLUTION-BEGIN throw Q2
+            if (index < 0 || index > size) {
+                throw new IndexOutOfBoundsException("index=" + index + ", size=" + size);
+            }
+            if (size == elementData.length) {
+                grow();
+            }
+            System.arraycopy(elementData, index, elementData, index + 1, size - index);
+            elementData[index] = element;
+            size++;
+            // SOLUTION-END
         }
 
         /**
@@ -137,34 +162,63 @@ public class Ex01_CapacityAndResize {
          */
         @SuppressWarnings("unchecked")
         E remove(int index) {
-            throw new UnsupportedOperationException("TODO Q2");
+            // SOLUTION-BEGIN throw Q2
+            if (index < 0 || index >= size) {
+                throw new IndexOutOfBoundsException("index=" + index + ", size=" + size);
+            }
+            E removed = (E) elementData[index];
+            int numMoved = size - index - 1;
+            if (numMoved > 0) {
+                System.arraycopy(elementData, index + 1, elementData, index, numMoved);
+            }
+            size--;
+            elementData[size] = null;
+            return removed;
+            // SOLUTION-END
         }
     }
 
     // Q3 — kịch bản: MiniArrayList() (capacity 10 mặc định), add 100 phần tử liên tiếp.
     // Đếm số lần grow() (resizeCount), không chép công thức capacity vào hằng số.
-    static final Integer Q3_RESIZES_FOR_100_ADDS = null;
+    static final Integer Q3_RESIZES_FOR_100_ADDS = 6; // SOLUTION-VALUE
 
     // Q4 — kịch bản: MiniArrayList() (capacity 10 mặc định), add 11 phần tử liên tiếp.
-    static final Integer Q4_SIZE_AFTER_11_ADDS = null;
-    static final Integer Q4_CAPACITY_AFTER_11_ADDS = null;
+    static final Integer Q4_SIZE_AFTER_11_ADDS = 11; // SOLUTION-VALUE
+    static final Integer Q4_CAPACITY_AFTER_11_ADDS = 15; // SOLUTION-VALUE
 
     // Q6 — kịch bản: MiniArrayList(100) (biết trước kích thước), add 100 phần tử liên tiếp.
-    static final Integer Q6_RESIZES_WITH_INITIAL_CAPACITY_100 = null;
+    static final Integer Q6_RESIZES_WITH_INITIAL_CAPACITY_100 = 0; // SOLUTION-VALUE
 }
 
 /* ANSWER Q1:
- *
+ * SOLUTION-BEGIN
+ * get(index) chỉ tính địa chỉ = base + index * kích_thước_phần_tử rồi đọc trực tiếp ô đó,
+ * không phải dò qua các phần tử trước như LinkedList. Vì vậy chi phí luôn là một phép tính
+ * hằng số, không phụ thuộc size của danh sách.
+ * SOLUTION-END
  */
 
 /* ANSWER Q2:
- *
+ * SOLUTION-BEGIN
+ * Hầu hết lần add chỉ ghi vào ô trống ở cuối mảng — O(1). Chỉ khi mảng đầy mới gọi grow()
+ * (copy toàn bộ phần tử sang mảng mới, tốn O(n)); nhưng vì capacity tăng theo tỉ lệ (không
+ * phải +1), tổng chi phí copy chia đều cho tất cả lần add vẫn ra trung bình O(1) mỗi lần —
+ * đó là ý nghĩa của "amortized O(1)".
+ * SOLUTION-END
  */
 
 /* ANSWER Q3:
- *
+ * SOLUTION-BEGIN
+ * Khi mảng đầy (size == capacity), grow() cấp một mảng mới lớn hơn (capacity + capacity/2,
+ * hoặc +1 nếu capacity đang nhỏ) rồi copy toàn bộ phần tử cũ sang mảng mới, sau đó phần tử
+ * mới mới được thêm vào. Đây chính là lý do add() không phải luôn luôn là O(1) tại chỗ.
+ * SOLUTION-END
  */
 
 /* ANSWER Q6:
- *
+ * SOLUTION-BEGIN
+ * Khi biết trước (hoặc ước lượng được) số phần tử tối đa sẽ add, nên truyền initialCapacity
+ * đủ lớn để tránh nhiều lần grow() — mỗi lần grow() tốn O(n) để copy mảng. Trade-off: nếu
+ * ước lượng sai và truyền quá lớn, sẽ cấp dư bộ nhớ không dùng tới.
+ * SOLUTION-END
  */

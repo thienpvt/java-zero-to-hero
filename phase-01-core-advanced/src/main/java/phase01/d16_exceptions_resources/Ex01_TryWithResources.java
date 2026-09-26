@@ -64,12 +64,12 @@ public class Ex01_TryWithResources {
     }
 
     // Q1 — kịch bản: try (A; B) {} không lỗi, rồi log được nối bằng ","
-    static final String Q1_CLOSE_ORDER = null;
+    static final String Q1_CLOSE_ORDER = "B,A"; // SOLUTION-VALUE
 
     // Q2 — kịch bản: thân try ném exception, đồng thời resource A có failOnClose.
     // Ghi message của exception bắt được ở catch và số phần tử getSuppressed().
-    static final String Q2_PRIMARY_MESSAGE = null;
-    static final Integer Q2_SUPPRESSED_COUNT = null;
+    static final String Q2_PRIMARY_MESSAGE = "body failed"; // SOLUTION-VALUE
+    static final Integer Q2_SUPPRESSED_COUNT = 1; // SOLUTION-VALUE
 
     /**
      * Đóng tất cả {@code resources} theo thứ tự ngược lại so với danh sách truyền vào, đóng hết dù
@@ -80,6 +80,22 @@ public class Ex01_TryWithResources {
      *         sau đó được gắn vào exception này bằng {@link Throwable#addSuppressed(Throwable)}
      */
     static void closeAll(List<? extends AutoCloseable> resources) throws Exception {
-        throw new UnsupportedOperationException("TODO Q1");
+        // SOLUTION-BEGIN throw Q1
+        Exception primary = null;
+        for (int i = resources.size() - 1; i >= 0; i--) {
+            try {
+                resources.get(i).close();
+            } catch (Exception e) {
+                if (primary == null) {
+                    primary = e;
+                } else {
+                    primary.addSuppressed(e);
+                }
+            }
+        }
+        if (primary != null) {
+            throw primary;
+        }
+        // SOLUTION-END
     }
 }

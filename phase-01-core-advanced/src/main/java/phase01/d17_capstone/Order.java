@@ -54,5 +54,14 @@ public record Order(String id, String customerId, Instant createdAt, BigDecimal 
 }
 
 /* ANSWER B1:
- *
+ * SOLUTION-BEGIN
+ * Instant lưu một thời điểm tuyệt đối trên dòng thời gian UTC (số nano-giây kể từ epoch),
+ * không phụ thuộc múi giờ của máy đọc — phù hợp cho createdAt vì đây là mốc "việc này xảy
+ * ra lúc nào trên toàn cầu", cần so sánh/sắp xếp chính xác dù báo cáo được xem ở đâu.
+ * LocalDateTime chỉ là "giờ trên lịch" không gắn múi giờ; cùng một LocalDateTime ở hai múi
+ * giờ khác nhau là hai thời điểm vật lý khác nhau, nên dùng nó cho createdAt sẽ mơ hồ khi
+ * tổng hợp nhiều đơn hàng cho nhiều báo cáo ở nhiều vùng. Ngày hiển thị (firstOrderDate)
+ * chỉ nên suy ra ở bước tổng hợp (B4), bằng cách áp một ZoneId cụ thể (reportZone) lên
+ * Instant — tách bạch "thời điểm xảy ra" (tuyệt đối) khỏi "ngày hiển thị" (phụ thuộc vùng).
+ * SOLUTION-END
  */

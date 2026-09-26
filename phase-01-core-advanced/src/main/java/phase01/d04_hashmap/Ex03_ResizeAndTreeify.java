@@ -54,11 +54,25 @@ public class Ex03_ResizeAndTreeify {
     // Q7 — kịch bản: ngưỡng resize mặc định của java.util.HashMap (capacity ban đầu nhân
     // load factor, làm tròn về int). Hai hằng JDK là package-private, đọc bằng Ctrl+F12
     // rồi tự tính — sau khi đã điền dự đoán mới chạy test.
-    static final Integer Q7_DEFAULT_THRESHOLD = null;
+    static final Integer Q7_DEFAULT_THRESHOLD = 12; // SOLUTION-VALUE
 
     /** Lũy thừa 2 nhỏ nhất ≥ capacity (thuật toán bit-or-shift giống HashMap.tableSizeFor cũ). */
     static int tableSizeFor(int capacity) {
-        throw new UnsupportedOperationException("TODO Q7");
+        // SOLUTION-BEGIN throw Q7
+        if (capacity <= 1) {
+            return 1;
+        }
+        if (capacity > (1 << 30)) {
+            return 1 << 30;
+        }
+        int n = capacity - 1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        return n + 1;
+        // SOLUTION-END
     }
 
     /**
@@ -67,7 +81,12 @@ public class Ex03_ResizeAndTreeify {
      * @throws IllegalArgumentException nếu {@code expectedSize} âm
      */
     static int capacityFor(int expectedSize) {
-        throw new UnsupportedOperationException("TODO Q7");
+        // SOLUTION-BEGIN throw Q7
+        if (expectedSize < 0) {
+            throw new IllegalArgumentException("expectedSize không được âm: " + expectedSize);
+        }
+        return tableSizeFor((int) Math.ceil(expectedSize / 0.75));
+        // SOLUTION-END
     }
 
     /**
@@ -77,7 +96,25 @@ public class Ex03_ResizeAndTreeify {
      * @throws IllegalArgumentException nếu {@code initialTableSize} không phải lũy thừa 2 dương
      */
     static int resizesNeeded(int inserts, int initialTableSize) {
-        throw new UnsupportedOperationException("TODO Q7");
+        // SOLUTION-BEGIN throw Q7
+        if (initialTableSize <= 0 || (initialTableSize & (initialTableSize - 1)) != 0) {
+            throw new IllegalArgumentException(
+                    "initialTableSize phải là lũy thừa của 2 và dương: " + initialTableSize);
+        }
+        int tableSize = initialTableSize;
+        int threshold = (int) (tableSize * 0.75);
+        int size = 0;
+        int resizes = 0;
+        for (int i = 0; i < inserts; i++) {
+            size++;
+            if (size > threshold) {
+                tableSize *= 2;
+                threshold = (int) (tableSize * 0.75);
+                resizes++;
+            }
+        }
+        return resizes;
+        // SOLUTION-END
     }
 
     /** Key va chạm hash cố ý, KHÔNG Comparable — dùng để so sánh với ComparableCollidingKey. */
@@ -200,19 +237,30 @@ public class Ex03_ResizeAndTreeify {
 
     // Q11 — kịch bản: worst-case lookup khi mọi key rơi vào một bucket dạng danh sách liên
     // kết, so với bucket đã treeify và key Comparable. Điền Complexity, không đo runtime.
-    static final Complexity Q11_WORST_CASE_LINKED_BUCKET = null;
-    static final Complexity Q11_WORST_CASE_TREE_BIN_COMPARABLE_KEYS = null;
+    static final Complexity Q11_WORST_CASE_LINKED_BUCKET = Complexity.O_N; // SOLUTION-VALUE
+    static final Complexity Q11_WORST_CASE_TREE_BIN_COMPARABLE_KEYS = Complexity.O_LOG_N; // SOLUTION-VALUE
 
     // Q12 — TREEIFY_THRESHOLD và MIN_TREEIFY_CAPACITY của java.util.HashMap (package-private
     // trong source JDK nên không gọi được trực tiếp, chỉ đọc bằng Ctrl+F12 rồi chép lại).
-    static final Integer Q12_TREEIFY_THRESHOLD = null;
-    static final Integer Q12_MIN_TREEIFY_CAPACITY = null;
+    static final Integer Q12_TREEIFY_THRESHOLD = 8; // SOLUTION-VALUE
+    static final Integer Q12_MIN_TREEIFY_CAPACITY = 64; // SOLUTION-VALUE
 }
 
 /* OBSERVATION Q8:
- *
+ * SOLUTION-BEGIN
+ * HashMap.newHashMap(n) cấp sẵn bảng đủ lớn cho n phần tử nên tránh được các lần gấp đôi +
+ * rehash toàn bộ entry giữa chừng; với n lớn (ví dụ 50 000), bản báo trước capacity thường đo
+ * nhanh hơn rõ rệt so với new HashMap<>() (phải resize nhiều lần từ 16 lên dần). Trade-off: phải
+ * biết trước (ước lượng) số phần tử, và nếu ước lượng dư quá nhiều thì tốn bộ nhớ vô ích.
+ * SOLUTION-END
  */
 
 /* OBSERVATION Q12:
- *
+ * SOLUTION-BEGIN
+ * Khi một bucket có ≥ TREEIFY_THRESHOLD (8) entry và bảng có capacity ≥ MIN_TREEIFY_CAPACITY
+ * (64), HashMap chuyển bucket đó từ danh sách liên kết sang cây đỏ-đen (TreeNode), đưa worst-case
+ * lookup trong bucket từ O(n) xuống O(log n). Cây cần một cách sắp thứ tự: nếu key Comparable thì
+ * dùng compareTo() (ổn định, nhanh); nếu không, HashMap dùng thứ tự phụ (so tên class, rồi
+ * System.identityHashCode) chỉ để tie-break, không hiệu quả bằng so sánh Comparable thật.
+ * SOLUTION-END
  */

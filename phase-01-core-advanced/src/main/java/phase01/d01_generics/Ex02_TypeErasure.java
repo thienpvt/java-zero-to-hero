@@ -73,7 +73,7 @@ public class Ex02_TypeErasure {
     // static <T> T brokenFactory() {
     //     return new T();
     // }
-    static final Compiles Q5_NEW_T_COMPILES = null;
+    static final Compiles Q5_NEW_T_COMPILES = Compiles.NO; // SOLUTION-VALUE
 
     /**
      * Gọi {@code factory.get()} đúng {@code n} lần và trả về danh sách các kết quả.
@@ -81,7 +81,16 @@ public class Ex02_TypeErasure {
      * @throws IllegalArgumentException nếu {@code n < 0}
      */
     static <T> List<T> createN(Supplier<? extends T> factory, int n) {
-        throw new UnsupportedOperationException("TODO Q5");
+        // SOLUTION-BEGIN throw Q5
+        if (n < 0) {
+            throw new IllegalArgumentException("n không được âm: " + n);
+        }
+        List<T> result = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            result.add(factory.get());
+        }
+        return result;
+        // SOLUTION-END
     }
 
     /**
@@ -92,35 +101,71 @@ public class Ex02_TypeErasure {
      *     cập được hoặc việc khởi tạo thất bại; nguyên nhân gốc được giữ lại qua {@code getCause()}
      */
     static <T> T newInstance(Class<T> type) {
-        throw new UnsupportedOperationException("TODO Q5");
+        // SOLUTION-BEGIN throw Q5
+        try {
+            return type.getDeclaredConstructor().newInstance();
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalArgumentException("Không có constructor không tham số cho " + type.getName(), e);
+        }
+        // SOLUTION-END
     }
 
     // Q6 — kịch bản: so sánh Class runtime của hai ArrayList với type argument khác nhau
-    static final Boolean Q6_SAME_RUNTIME_CLASS = null;
+    static final Boolean Q6_SAME_RUNTIME_CLASS = true; // SOLUTION-VALUE
 
     // Q10 — kịch bản: List<String> strings = new ArrayList<>(List.of("a")); List raw = strings;
     // raw.add(42); rồi strings.get(1) — bước nào thực sự ném ClassCastException?
-    static final FailurePoint Q10_HEAP_POLLUTION_FAILS_AT = null;
+    static final FailurePoint Q10_HEAP_POLLUTION_FAILS_AT = FailurePoint.GET; // SOLUTION-VALUE
 
     // Q7 — mẫu: Object sample, rồi `sample instanceof List<String>`.
     // Bỏ comment 2 dòng dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
     // Object sample = List.of("a");
     // if (sample instanceof List<String>) {}
-    static final Compiles Q7_INSTANCEOF_LIST_STRING_COMPILES = null;
+    static final Compiles Q7_INSTANCEOF_LIST_STRING_COMPILES = Compiles.NO; // SOLUTION-VALUE
 
     /**
      * {@code true} nếu {@code obj} là một {@code List<?>} và mọi phần tử của nó là {@code String}.
      * List rỗng trả về {@code true}; nếu có phần tử {@code null} thì trả về {@code false}.
      */
     static boolean isListOfStrings(Object obj) {
-        throw new UnsupportedOperationException("TODO Q7");
+        // SOLUTION-BEGIN throw Q7
+        if (!(obj instanceof List<?> list)) {
+            return false;
+        }
+        for (Object item : list) {
+            if (!(item instanceof String)) {
+                return false;
+            }
+        }
+        return true;
+        // SOLUTION-END
     }
 }
 
 /* ANSWER Q10:
- *
+ * SOLUTION-BEGIN
+ * Generic dùng type parameter để compiler chèn checkcast ẩn và chặn lỗi kiểu ngay lúc
+ * biên dịch — đó là "type safety" ở mức compile-time. Nhưng vì type erasure, thông tin
+ * type argument (String, Integer,...) không tồn tại trong bytecode lúc runtime: List<String>
+ * và raw List thực chất là cùng một kiểu List. Vì vậy raw.add(42) không lỗi — raw type bỏ
+ * qua toàn bộ kiểm tra kiểu của phần tử được add. Lỗi ClassCastException chỉ lộ ra ở
+ * strings.get(1), vì đó là nơi compiler chèn checkcast (String) ẩn để "giả vờ" phần tử
+ * luôn là String. Kết luận: type safety của generic chỉ đúng khi không trộn raw type với
+ * generic type — dùng @SuppressWarnings để tắt cảnh báo unchecked mà không sửa code là
+ * đang tự tắt lưới an toàn này.
+ * SOLUTION-END
  */
 
 /* ANSWER Q11:
- *
+ * SOLUTION-BEGIN
+ * Vì type erasure xóa type argument lúc biên dịch: List<String> và List<Integer> đều biên
+ * dịch thành cùng bytecode List, và như quan sát ở Q6, getClass() của hai ArrayList với
+ * type argument khác nhau trả về đúng cùng một đối tượng Class (ArrayList). instanceof chỉ
+ * kiểm tra được kiểu runtime còn sót lại sau erasure (List, hoặc List<?> nhờ cú pháp đặc
+ * biệt cho unbounded wildcard), không thể kiểm tra type argument đã bị xóa mất — đó cũng
+ * là lý do từ {@code Object} không viết được {@code instanceof List<String>}: javac báo
+ * "Object cannot be safely cast to List<String>". Từ Java 16 cú pháp này được phép khi
+ * phép ép kiểu an toàn về mặt tĩnh, ví dụ biến đang là {@code Collection<String>} — compiler
+ * chứng minh được cast. Nói "Java cấm mọi instanceof List<String>" là nói quá.
+ * SOLUTION-END
  */

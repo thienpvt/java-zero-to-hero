@@ -46,11 +46,11 @@ import java.time.ZoneId;
 public class Ex01_TimeTypes {
 
     // Q1 — kịch bản: LocalDateTime.of(2026, 1, 1, 9, 0) gắn Asia/Ho_Chi_Minh và Europe/London
-    static final Boolean Q1_SAME_LOCAL_DATETIME_SAME_INSTANT_IN_TWO_ZONES = null;
+    static final Boolean Q1_SAME_LOCAL_DATETIME_SAME_INSTANT_IN_TWO_ZONES = false; // SOLUTION-VALUE
 
     // Q3 — kịch bản: Instant.parse("2026-01-01T02:00:00Z") gắn Asia/Ho_Chi_Minh và UTC
-    static final Boolean Q3_ZONED_EQUALS = null;
-    static final Boolean Q3_ZONED_IS_EQUAL = null;
+    static final Boolean Q3_ZONED_EQUALS = false; // SOLUTION-VALUE
+    static final Boolean Q3_ZONED_IS_EQUAL = true; // SOLUTION-VALUE
 
     /**
      * Chuyển giờ địa phương {@code local} (không mang thông tin múi giờ) sang mốc thời gian
@@ -61,7 +61,9 @@ public class Ex01_TimeTypes {
      * @return mốc thời gian tuyệt đối tương ứng
      */
     static Instant toInstant(LocalDateTime local, ZoneId zone) {
-        throw new UnsupportedOperationException("TODO Q1");
+        // SOLUTION-BEGIN throw Q1
+        return local.atZone(zone).toInstant();
+        // SOLUTION-END
     }
 
     /**
@@ -73,10 +75,19 @@ public class Ex01_TimeTypes {
      * @return ngày địa phương tương ứng, tuỳ zone mà có thể lệch ngày so với UTC
      */
     static LocalDate localDateOf(Instant timestamp, ZoneId zone) {
-        throw new UnsupportedOperationException("TODO Q1");
+        // SOLUTION-BEGIN throw Q1
+        return timestamp.atZone(zone).toLocalDate();
+        // SOLUTION-END
     }
 }
 
 /* ANSWER Q2:
- *
+ * SOLUTION-BEGIN
+ * Instant là mốc thời gian tuyệt đối, không phụ thuộc múi giờ đọc/viết dữ liệu, nên nhiều
+ * server ở nhiều vùng miền đều lưu và so sánh ra cùng một giá trị — sắp xếp theo thời gian,
+ * tính khoảng cách giữa hai mốc luôn đúng và tất định.
+ * Nếu lưu LocalDateTime (không kèm zone) thì giá trị đó vô nghĩa nếu không biết ứng dụng đã
+ * dùng múi giờ nào để tạo ra nó; hai server ở hai múi giờ khác nhau có thể hiểu sai giá trị,
+ * hoặc khi đổi cấu hình múi giờ hệ thống thì dữ liệu cũ bị hiểu sai theo giờ mới.
+ * SOLUTION-END
  */

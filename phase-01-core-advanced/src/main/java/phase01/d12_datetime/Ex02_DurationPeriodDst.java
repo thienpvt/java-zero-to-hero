@@ -52,13 +52,13 @@ import java.time.ZonedDateTime;
 public class Ex02_DurationPeriodDst {
 
     // Q4 — kịch bản: bắt đầu 2026-03-07T12:00 America/New_York (trước mốc DST bắt đầu 2026-03-08)
-    static final Integer Q4_PLUS_PERIOD_1_DAY_LOCAL_HOUR = null;
-    static final Integer Q4_PLUS_DURATION_24H_LOCAL_HOUR = null;
+    static final Integer Q4_PLUS_PERIOD_1_DAY_LOCAL_HOUR = 12; // SOLUTION-VALUE
+    static final Integer Q4_PLUS_DURATION_24H_LOCAL_HOUR = 13; // SOLUTION-VALUE
 
     // Q6 — kịch bản: DST tại America/New_York năm 2026 (bắt đầu 2026-03-08, kết thúc 2026-11-01)
-    static final Integer Q6_GAP_TIME_RESOLVED_HOUR = null;
-    static final String Q6_OVERLAP_CHOSEN_OFFSET = null;
-    static final Integer Q6_HOURS_IN_DST_START_DAY = null;
+    static final Integer Q6_GAP_TIME_RESOLVED_HOUR = 3; // SOLUTION-VALUE
+    static final String Q6_OVERLAP_CHOSEN_OFFSET = "-04:00"; // SOLUTION-VALUE
+    static final Integer Q6_HOURS_IN_DST_START_DAY = 23; // SOLUTION-VALUE
 
     /**
      * Số giờ thực tế trôi qua trong ngày {@code date} tại múi giờ {@code zone}, tính bằng
@@ -71,7 +71,11 @@ public class Ex02_DurationPeriodDst {
      * @return số giờ tuyệt đối trôi qua trong ngày đó
      */
     static int hoursInLocalDay(LocalDate date, ZoneId zone) {
-        throw new UnsupportedOperationException("TODO Q6");
+        // SOLUTION-BEGIN throw Q6
+        ZonedDateTime start = date.atStartOfDay(zone);
+        ZonedDateTime end = date.plusDays(1).atStartOfDay(zone);
+        return (int) Duration.between(start, end).toHours();
+        // SOLUTION-END
     }
 
     /**
@@ -83,10 +87,20 @@ public class Ex02_DurationPeriodDst {
      * @return số giờ tuyệt đối giữa hai mốc; có thể âm nếu {@code to} trước {@code from}
      */
     static long hoursBetween(ZonedDateTime from, ZonedDateTime to) {
-        throw new UnsupportedOperationException("TODO Q6");
+        // SOLUTION-BEGIN throw Q6
+        return Duration.between(from, to).toHours();
+        // SOLUTION-END
     }
 }
 
 /* ANSWER Q5:
- *
+ * SOLUTION-BEGIN
+ * Cộng/trừ offset thủ công (ví dụ cộng "+7 giờ" bằng tay) coi offset là một số cố định, nhưng
+ * offset thật của một zone thay đổi theo lịch DST (như Q6): cùng một zone, cùng một ngày trong
+ * năm nhưng năm khác luật DST có thể khác, và ngay trong năm cũng đổi hai lần (mùa hè/mùa đông).
+ * Nếu cộng cứng offset, code sẽ tính sai giờ ngay khi băng qua mốc DST (lệch 1 giờ so với thực
+ * tế), hoặc gặp giờ không tồn tại/tồn tại hai lần (gap/overlap) mà không biết xử lý ra sao.
+ * Nên luôn dùng `ZoneId` + API của `java.time` (atZone, plus) để JDK tự tra đúng luật DST hiện
+ * hành, thay vì tự cộng/trừ số giờ cố định.
+ * SOLUTION-END
  */

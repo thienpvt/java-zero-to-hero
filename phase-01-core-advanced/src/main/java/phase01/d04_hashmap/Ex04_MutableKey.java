@@ -55,10 +55,10 @@ public class Ex04_MutableKey {
     }
 
     // Q10 — kịch bản: map.put(new MutableKey(1), "A"); rồi key.id = 2
-    static final Boolean Q10_GET_BY_SAME_REFERENCE_FINDS_VALUE = null;
-    static final Boolean Q10_GET_BY_NEW_KEY_1_FINDS_VALUE = null;
-    static final Boolean Q10_GET_BY_NEW_KEY_2_FINDS_VALUE = null;
-    static final Integer Q10_SIZE_AFTER_MUTATION = null;
+    static final Boolean Q10_GET_BY_SAME_REFERENCE_FINDS_VALUE = false; // SOLUTION-VALUE
+    static final Boolean Q10_GET_BY_NEW_KEY_1_FINDS_VALUE = false; // SOLUTION-VALUE
+    static final Boolean Q10_GET_BY_NEW_KEY_2_FINDS_VALUE = false; // SOLUTION-VALUE
+    static final Integer Q10_SIZE_AFTER_MUTATION = 1; // SOLUTION-VALUE
 
     /**
      * Đổi id của {@code key} sao cho sau đó {@code map.get(key)} vẫn trả về value cũ.
@@ -66,10 +66,23 @@ public class Ex04_MutableKey {
      * @throws IllegalArgumentException nếu {@code key} hiện không tìm thấy trong map (map giữ nguyên)
      */
     static <V> void changeIdSafely(Map<MutableKey, V> map, MutableKey key, int newId) {
-        throw new UnsupportedOperationException("TODO Q10");
+        // SOLUTION-BEGIN throw Q10
+        if (!map.containsKey(key)) {
+            throw new IllegalArgumentException("Key không có trong map: " + key);
+        }
+        V value = map.remove(key);
+        key.id = newId;
+        map.put(key, value);
+        // SOLUTION-END
     }
 }
 
 /* ANSWER Q9:
- *
+ * SOLUTION-BEGIN
+ * Không nên, trừ khi các field tham gia equals/hashCode không bao giờ đổi sau khi put.
+ * Khi field đổi, hash mới trỏ sang bucket khác nên get/containsKey/remove không tìm thấy
+ * entry cũ, trong khi entry cũ vẫn nằm trong map (size không giảm) — dữ liệu "ma", rò rỉ bộ nhớ.
+ * Phòng tránh: dùng key bất biến (record, String, id final); nếu buộc phải đổi thì
+ * remove → đổi → put lại như changeIdSafely().
+ * SOLUTION-END
  */

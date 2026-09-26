@@ -56,7 +56,7 @@ public class Ex02_EqualsWithoutHashCode {
     }
 
     // Q6 — kịch bản: HashSet chứa hai EqualsOnlyPoint(1, 2) tạo từ hai lệnh new khác nhau.
-    static final Integer Q6_HASHSET_SIZE_TWO_EQUAL_POINTS = null;
+    static final Integer Q6_HASHSET_SIZE_TWO_EQUAL_POINTS = 2; // SOLUTION-VALUE
 
     /** Điểm 2D bất biến, tuân theo contract equals()/hashCode(). */
     static final class Point {
@@ -70,12 +70,16 @@ public class Ex02_EqualsWithoutHashCode {
 
         @Override
         public boolean equals(Object o) {
-            throw new UnsupportedOperationException("TODO Q6");
+            // SOLUTION-BEGIN throw Q6
+            return o instanceof Point p && p.x == x && p.y == y;
+            // SOLUTION-END
         }
 
         @Override
         public int hashCode() {
-            throw new UnsupportedOperationException("TODO Q6");
+            // SOLUTION-BEGIN throw Q6
+            return Objects.hash(x, y);
+            // SOLUTION-END
         }
     }
 }

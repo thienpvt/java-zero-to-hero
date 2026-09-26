@@ -81,11 +81,11 @@ public class Ex01_InspectAndInvoke {
     // Q5 — mẫu: SecretBox.class.getDeclaredMethod("revael", String.class) (đúng tên method
     // là "reveal", ở đây cố tình viết sai "revael"). Dòng gọi thật nằm trong test q05_*;
     // ở đây chỉ ghi lại hai hằng số dự đoán.
-    static final Compiles Q5_TYPO_METHOD_NAME_COMPILES = null;
-    static final String Q5_TYPO_FAILS_AT_RUNTIME_WITH = null;
+    static final Compiles Q5_TYPO_METHOD_NAME_COMPILES = Compiles.YES; // SOLUTION-VALUE
+    static final String Q5_TYPO_FAILS_AT_RUNTIME_WITH = "NoSuchMethodException"; // SOLUTION-VALUE
 
     // Q4 — kịch bản: String.class.getDeclaredField("value").setAccessible(true).
-    static final String Q4_SETACCESSIBLE_ON_STRING_VALUE_EXCEPTION = null;
+    static final String Q4_SETACCESSIBLE_ON_STRING_VALUE_EXCEPTION = "InaccessibleObjectException"; // SOLUTION-VALUE
 
     /**
      * Trả về tên các field khai báo trực tiếp trong {@code type} (không tính field kế
@@ -94,7 +94,16 @@ public class Ex01_InspectAndInvoke {
      * @throws NullPointerException nếu {@code type} là {@code null}
      */
     static List<String> declaredFieldNames(Class<?> type) {
-        throw new UnsupportedOperationException("TODO Q1");
+        // SOLUTION-BEGIN throw Q1
+        List<String> names = new ArrayList<>();
+        for (Field field : type.getDeclaredFields()) {
+            if (!field.isSynthetic()) {
+                names.add(field.getName());
+            }
+        }
+        names.sort(Comparator.naturalOrder());
+        return names;
+        // SOLUTION-END
     }
 
     /**
@@ -108,7 +117,21 @@ public class Ex01_InspectAndInvoke {
      *                                ra, nếu đó là một {@link RuntimeException}
      */
     static Object invokePrivate(Object target, String methodName, Class<?>[] parameterTypes, Object... args) {
-        throw new UnsupportedOperationException("TODO Q4");
+        // SOLUTION-BEGIN throw Q4
+        try {
+            Method method = target.getClass().getDeclaredMethod(methodName, parameterTypes);
+            method.setAccessible(true);
+            return method.invoke(target, args);
+        } catch (InvocationTargetException e) {
+            if (e.getCause() instanceof RuntimeException runtimeCause) {
+                throw runtimeCause;
+            }
+            throw new IllegalStateException(
+                    "Method '" + methodName + "' ném lỗi không phải RuntimeException khi invoke.", e);
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("Không thể gọi method '" + methodName + "' bằng reflection.", e);
+        }
+        // SOLUTION-END
     }
 
     public static void main(String[] args) {

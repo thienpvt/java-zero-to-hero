@@ -85,14 +85,38 @@ public class Ex01_NodeTraversal {
          * Thêm {@code e} vào cuối danh sách. O(1).
          */
         void addLast(E e) {
-            throw new UnsupportedOperationException("TODO Q2");
+            // SOLUTION-BEGIN throw Q2
+            Node<E> node = new Node<>();
+            node.item = e;
+            node.prev = last;
+            node.next = null;
+            if (last == null) {
+                first = node;
+            } else {
+                last.next = node;
+            }
+            last = node;
+            size++;
+            // SOLUTION-END
         }
 
         /**
          * Thêm {@code e} vào đầu danh sách. O(1).
          */
         void addFirst(E e) {
-            throw new UnsupportedOperationException("TODO Q2");
+            // SOLUTION-BEGIN throw Q2
+            Node<E> node = new Node<>();
+            node.item = e;
+            node.next = first;
+            node.prev = null;
+            if (first == null) {
+                last = node;
+            } else {
+                first.prev = node;
+            }
+            first = node;
+            size++;
+            // SOLUTION-END
         }
 
         /**
@@ -102,7 +126,28 @@ public class Ex01_NodeTraversal {
          * @throws IndexOutOfBoundsException nếu {@code index < 0 || index >= size()}
          */
         Node<E> nodeAt(int index) {
-            throw new UnsupportedOperationException("TODO Q1");
+            // SOLUTION-BEGIN throw Q1
+            if (index < 0 || index >= size) {
+                throw new IndexOutOfBoundsException("index: " + index + ", size: " + size);
+            }
+            Node<E> node;
+            int steps;
+            if (index < (size >> 1)) {
+                node = first;
+                steps = index;
+                for (int i = 0; i < steps; i++) {
+                    node = node.next;
+                }
+            } else {
+                node = last;
+                steps = size - 1 - index;
+                for (int i = 0; i < steps; i++) {
+                    node = node.prev;
+                }
+            }
+            lastTraversalSteps = steps;
+            return node;
+            // SOLUTION-END
         }
 
         /**
@@ -111,7 +156,9 @@ public class Ex01_NodeTraversal {
          * @throws IndexOutOfBoundsException nếu {@code index} ngoài khoảng hợp lệ
          */
         E get(int index) {
-            throw new UnsupportedOperationException("TODO Q1");
+            // SOLUTION-BEGIN throw Q1
+            return nodeAt(index).item;
+            // SOLUTION-END
         }
 
         /**
@@ -121,16 +168,29 @@ public class Ex01_NodeTraversal {
          * @return node mới được tạo cho {@code e}
          */
         Node<E> insertAfter(Node<E> node, E e) {
-            throw new UnsupportedOperationException("TODO Q2");
+            // SOLUTION-BEGIN throw Q2
+            Node<E> newNode = new Node<>();
+            newNode.item = e;
+            newNode.prev = node;
+            newNode.next = node.next;
+            if (node.next != null) {
+                node.next.prev = newNode;
+            } else {
+                last = newNode;
+            }
+            node.next = newNode;
+            size++;
+            return newNode;
+            // SOLUTION-END
         }
     }
 
     // Q1 — kịch bản: MiniLinkedList<Integer> có 10 000 phần tử giá trị 0..9999 (thêm bằng
     // addLast theo thứ tự), gọi get(index) rồi đọc lastTraversalSteps() ngay sau đó.
-    static final Integer Q1_STEPS_GET_5000_OF_10000 = null;
-    static final Integer Q1_STEPS_GET_10_OF_10000 = null;
+    static final Integer Q1_STEPS_GET_5000_OF_10000 = 4999; // SOLUTION-VALUE
+    static final Integer Q1_STEPS_GET_10_OF_10000 = 10; // SOLUTION-VALUE
 
     // Q2 — kịch bản: chèn vào giữa khi chưa cầm sẵn Node, tính cả bước tìm vị trí.
     // Hằng hỏi: toàn bộ thao tác đó có luôn là O(1) không?
-    static final Boolean Q2_INSERT_MIDDLE_O1_INCLUDING_SEARCH = null;
+    static final Boolean Q2_INSERT_MIDDLE_O1_INCLUDING_SEARCH = false; // SOLUTION-VALUE
 }

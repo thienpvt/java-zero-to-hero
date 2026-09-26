@@ -58,7 +58,7 @@ public class Ex02_CaptureAndMethodRef {
     // static Runnable brokenCapture(int x) {
     //     return () -> { x = x + 1; System.out.println(x); };
     // }
-    static final Compiles Q4_MODIFY_CAPTURED_LOCAL_COMPILES = null;
+    static final Compiles Q4_MODIFY_CAPTURED_LOCAL_COMPILES = Compiles.NO; // SOLUTION-VALUE
 
     // Q4 — mẫu mutateField: lambda gán lại field tĩnh sharedCounter.
     // Bỏ comment, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán:
@@ -66,14 +66,14 @@ public class Ex02_CaptureAndMethodRef {
     // static Runnable mutateField() {
     //     return () -> { sharedCounter = sharedCounter + 1; };
     // }
-    static final Compiles Q4_MODIFY_FIELD_IN_LAMBDA_COMPILES = null;
+    static final Compiles Q4_MODIFY_FIELD_IN_LAMBDA_COMPILES = Compiles.YES; // SOLUTION-VALUE
 
     // Q4 — mẫu mutateArrayElement: lambda gán box[0], không gán lại biến box.
     // Bỏ comment, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán:
     // static Runnable mutateArrayElement(int[] box) {
     //     return () -> { box[0] = box[0] + 1; };
     // }
-    static final Compiles Q4_MODIFY_ARRAY_ELEMENT_COMPILES = null;
+    static final Compiles Q4_MODIFY_ARRAY_ELEMENT_COMPILES = Compiles.YES; // SOLUTION-VALUE
 
     /**
      * Tạo một {@link Supplier} vô trạng thái bên ngoài: mỗi lần {@code get()} trả về
@@ -83,26 +83,53 @@ public class Ex02_CaptureAndMethodRef {
      * @return supplier tăng dần độc lập với mọi supplier khác tạo từ lệnh gọi khác
      */
     static Supplier<Integer> counter(int start) {
-        throw new UnsupportedOperationException("TODO Q4");
+        // SOLUTION-BEGIN throw Q4
+        AtomicInteger current = new AtomicInteger(start);
+        return current::getAndIncrement;
+        // SOLUTION-END
     }
 
     static Function<String, Integer> length() {
-        throw new UnsupportedOperationException("TODO Q5");
+        // SOLUTION-BEGIN throw Q5
+        return String::length;
+        // SOLUTION-END
     }
 
     static BiPredicate<String, String> equalsIgnoreCase() {
-        throw new UnsupportedOperationException("TODO Q5");
+        // SOLUTION-BEGIN throw Q5
+        return String::equalsIgnoreCase;
+        // SOLUTION-END
     }
 
     static Supplier<List<String>> listFactory() {
-        throw new UnsupportedOperationException("TODO Q5");
+        // SOLUTION-BEGIN throw Q5
+        return ArrayList::new;
+        // SOLUTION-END
     }
 }
 
 /* ANSWER Q5:
- *
+ * SOLUTION-BEGIN
+ * Không khác về bản chất chạy: cả hai đều được biên dịch thành một lệnh invokedynamic tại chỗ
+ * gọi, bootstrap qua LambdaMetafactory để tạo instance implement functional interface — không có
+ * class ẩn danh riêng như kiểu cũ (anonymous inner class). Khác biệt nằm ở chỗ method reference
+ * "trỏ thẳng" tới một method đã tồn tại (String.length, String.equalsIgnoreCase, constructor của
+ * ArrayList) nên javac KHÔNG cần sinh thêm method ẩn danh chứa thân lambda — đã kiểm chứng bằng
+ * javap -c -p: length()/equalsIgnoreCase()/listFactory() chỉ có một invokedynamic, không có method
+ * lambda$...$n nào trong class. Một lambda viết tay tương đương như s -> s.length() thì luôn sinh
+ * thêm một method private static lambda$length$0(String) chứa đúng thân đó. Trade-off: method
+ * reference ngắn, dễ đọc khi đã có method sẵn khớp signature; lambda linh hoạt hơn khi cần thân
+ * nhiều dòng hoặc logic không map 1:1 với method có sẵn.
+ * SOLUTION-END
  */
 
 /* ANSWER Q6:
- *
+ * SOLUTION-BEGIN
+ * Không nên. Lambda hợp với biểu thức ngắn, một hành vi rõ ràng; khi thân dài (20–30 dòng) hoặc có
+ * nhiều side effect (log, I/O, sửa state ngoài), lambda mất các lợi thế của method thường: không
+ * có tên riêng để đọc lướt hiểu ý định, stack trace chỉ hiện lambda$tênMethod$n nên khó biết đang ở
+ * bước nào khi debug, và IDE khó tách nhỏ/step qua từng đoạn như với method có tên. Nên rút thành
+ * method hoặc class riêng (đặt tên theo hành vi) rồi truyền method reference vào, giữ lambda chỉ để
+ * nối các bước ngắn với nhau.
+ * SOLUTION-END
  */

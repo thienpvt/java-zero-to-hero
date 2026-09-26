@@ -72,7 +72,34 @@ public final class CustomerReportService {
      * trong kết quả; kết quả sắp theo {@code customerId} tăng dần và không thể sửa được.
      */
     public List<CustomerSummary> summarizeWithLoop(List<Order> orders) {
-        throw new UnsupportedOperationException("TODO B4");
+        // SOLUTION-BEGIN throw B4
+        // B3: LinkedHashMap giữ thứ tự khách hàng xuất hiện lần đầu trong khi gom nhóm.
+        Map<String, List<Order>> byCustomer = new java.util.LinkedHashMap<>();
+        for (Order order : orders) {
+            if (order.status() == Order.Status.CANCELLED) {
+                continue;
+            }
+            byCustomer.computeIfAbsent(order.customerId(), key -> new ArrayList<>()).add(order);
+        }
+        List<CustomerSummary> result = new ArrayList<>();
+        for (Map.Entry<String, List<Order>> entry : byCustomer.entrySet()) {
+            List<Order> customerOrders = entry.getValue();
+            BigDecimal totalPaid = BigDecimal.ZERO;
+            Order earliest = null;
+            for (Order order : customerOrders) {
+                if (order.status() == Order.Status.PAID) {
+                    totalPaid = totalPaid.add(order.amount());
+                }
+                if (earliest == null || order.createdAt().isBefore(earliest.createdAt())) {
+                    earliest = order;
+                }
+            }
+            LocalDate firstOrderDate = earliest.createdAt().atZone(reportZone).toLocalDate();
+            result.add(new CustomerSummary(entry.getKey(), customerOrders.size(), totalPaid, firstOrderDate));
+        }
+        result.sort(Comparator.comparing(CustomerSummary::customerId));
+        return List.copyOf(result);
+        // SOLUTION-END
     }
 
     /**
@@ -80,10 +107,43 @@ public final class CustomerReportService {
      * gom nhóm bị sửa đổi (mutate) dùng chung giữa các phần tử của stream.
      */
     public List<CustomerSummary> summarizeWithStream(List<Order> orders) {
-        throw new UnsupportedOperationException("TODO B4");
+        // SOLUTION-BEGIN throw B4
+        Map<String, List<Order>> byCustomer = orders.stream()
+                .filter(order -> order.status() != Order.Status.CANCELLED)
+                .collect(Collectors.groupingBy(Order::customerId, java.util.LinkedHashMap::new, Collectors.toList()));
+        return byCustomer.entrySet().stream()
+                .map(entry -> {
+                    List<Order> customerOrders = entry.getValue();
+                    BigDecimal totalPaid = customerOrders.stream()
+                            .filter(order -> order.status() == Order.Status.PAID)
+                            .map(Order::amount)
+                            .reduce(BigDecimal.ZERO, BigDecimal::add);
+                    Instant firstInstant = customerOrders.stream()
+                            .map(Order::createdAt)
+                            .min(Comparator.naturalOrder())
+                            .orElseThrow();
+                    LocalDate firstOrderDate = firstInstant.atZone(reportZone).toLocalDate();
+                    return new CustomerSummary(entry.getKey(), customerOrders.size(), totalPaid, firstOrderDate);
+                })
+                .sorted(Comparator.comparing(CustomerSummary::customerId))
+                .toList();
+        // SOLUTION-END
     }
 }
 
 /* ANSWER B4:
- *
+ * SOLUTION-BEGIN
+ * Hai bản cho cùng kết quả nhưng khác cách quản lý trạng thái. Bản vòng lặp dùng các biến
+ * cục bộ có thể gán lại (totalPaid, earliest) bên trong một for — dễ đọc tuần tự, nhưng nếu
+ * lỡ khai báo biến đó ở ngoài stream/forEach và để nhiều luồng cùng sửa thì sẽ có race; ở đây
+ * vẫn an toàn vì mỗi vòng lặp qua customerOrders là tuần tự, đơn luồng. Bản Stream không có
+ * biến nào bị "sửa dần" qua nhiều bước: totalPaid được tính bằng reduce (mỗi bước tạo giá trị
+ * mới, không mutate), firstInstant bằng min(), rồi map() tạo trực tiếp một CustomerSummary bất
+ * biến cho mỗi khách — không có forEach nào ghi vào một List/Map bên ngoài dùng chung. Nhược
+ * điểm của bản Stream: nhiều bước trung gian (groupingBy → entrySet().stream() → map) khó
+ * debug từng dòng hơn vòng lặp, và groupingBy tốn thêm một Map trung gian; ưu điểm là an toàn
+ * hơn khi sau này người khác cố "tối ưu" bằng parallel Stream (không có state mutable dùng
+ * chung nên song song hoá không gây lỗi, trong khi bản vòng lặp nếu song song hoá ẩu sẽ hỏng
+ * ngay tại các biến totalPaid/earliest bị nhiều luồng cùng gán).
+ * SOLUTION-END
  */

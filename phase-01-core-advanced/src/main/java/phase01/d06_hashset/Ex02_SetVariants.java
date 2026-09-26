@@ -52,7 +52,7 @@ import java.util.TreeSet;
 public class Ex02_SetVariants {
 
     // Q3 — kịch bản: HashSet có cam kết thứ tự duyệt không? Đọc Javadoc HashSet, rồi điền.
-    static final Boolean Q3_HASHSET_GUARANTEES_ORDER = null;
+    static final Boolean Q3_HASHSET_GUARANTEES_ORDER = false; // SOLUTION-VALUE
 
     /**
      * Trả về các phần tử phân biệt trong {@code items}, theo đúng thứ tự lần xuất hiện
@@ -61,11 +61,13 @@ public class Ex02_SetVariants {
      * @throws NullPointerException nếu {@code items} là {@code null}
      */
     static <T> List<T> distinctInFirstSeenOrder(List<T> items) {
-        throw new UnsupportedOperationException("TODO Q5");
+        // SOLUTION-BEGIN throw Q5
+        return new ArrayList<>(new LinkedHashSet<>(items));
+        // SOLUTION-END
     }
 
     // Q6 — kịch bản: new TreeSet<Object>().add(new Object())
-    static final String Q6_TREESET_NON_COMPARABLE_EXCEPTION = null;
+    static final String Q6_TREESET_NON_COMPARABLE_EXCEPTION = "ClassCastException"; // SOLUTION-VALUE
 
     /** Người, dùng cho các câu về TreeSet: sắp theo tuổi rồi theo tên khi cần thứ tự tất định. */
     record Person(String name, int age) {
@@ -77,7 +79,9 @@ public class Ex02_SetVariants {
      * @throws NullPointerException nếu {@code items} là {@code null}
      */
     static <T extends Comparable<? super T>> List<T> distinctSorted(Collection<T> items) {
-        throw new UnsupportedOperationException("TODO Q6");
+        // SOLUTION-BEGIN throw Q6
+        return new ArrayList<>(new TreeSet<>(items));
+        // SOLUTION-END
     }
 
     /**
@@ -87,7 +91,12 @@ public class Ex02_SetVariants {
      * @throws NullPointerException nếu {@code people} là {@code null}
      */
     static NavigableSet<Person> byAgeThenName(Collection<Person> people) {
-        throw new UnsupportedOperationException("TODO Q6");
+        // SOLUTION-BEGIN throw Q6
+        NavigableSet<Person> result =
+                new TreeSet<>(Comparator.comparingInt(Person::age).thenComparing(Person::name));
+        result.addAll(people);
+        return result;
+        // SOLUTION-END
     }
 
     public static void main(String[] args) {
