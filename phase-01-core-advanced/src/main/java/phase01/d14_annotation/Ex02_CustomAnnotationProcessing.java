@@ -112,28 +112,7 @@ public class Ex02_CustomAnnotationProcessing {
      *     dần; rỗng nếu {@code bean} hợp lệ
      */
     static List<String> validate(Object bean) {
-        // SOLUTION-BEGIN throw Q6
-        List<String> violations = new ArrayList<>();
-        for (Field field : bean.getClass().getDeclaredFields()) {
-            field.setAccessible(true);
-            Object value;
-            try {
-                value = field.get(bean);
-            } catch (IllegalAccessException e) {
-                throw new IllegalStateException("Không đọc được field " + field.getName(), e);
-            }
-            NotBlank notBlank = field.getAnnotation(NotBlank.class);
-            if (notBlank != null && (value == null || value.toString().isBlank())) {
-                violations.add(field.getName() + ": " + notBlank.message());
-            }
-            MaxLength maxLength = field.getAnnotation(MaxLength.class);
-            if (maxLength != null && value != null && value.toString().length() > maxLength.value()) {
-                violations.add(field.getName() + ": dài tối đa " + maxLength.value() + " ký tự");
-            }
-        }
-        violations.sort(Comparator.naturalOrder());
-        return violations;
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 
     /**
@@ -145,41 +124,14 @@ public class Ex02_CustomAnnotationProcessing {
      *     vừa tạo bằng constructor không tham số
      */
     static Map<Class<?>, Object> instantiateComponents(List<Class<?>> candidates) {
-        // SOLUTION-BEGIN throw Q5
-        Map<Class<?>, Object> result = new LinkedHashMap<>();
-        for (Class<?> candidate : candidates) {
-            if (!candidate.isAnnotationPresent(Component.class)) {
-                continue;
-            }
-            try {
-                Constructor<?> constructor = candidate.getDeclaredConstructor();
-                result.put(candidate, constructor.newInstance());
-            } catch (ReflectiveOperationException e) {
-                throw new IllegalStateException("Không tạo được instance của " + candidate.getName(), e);
-            }
-        }
-        return result;
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q5");
     }
 }
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Spring quét classpath lúc khởi động (component scan) để tìm class có @Component hoặc
- * annotation meta-annotate bởi @Component (@Service, @Repository, @Controller...), rồi dùng
- * reflection để tạo bean qua constructor (ưu tiên constructor có @Autowired nếu có nhiều),
- * tiêm dependency vào field/setter @Autowired, và có thể bọc bean bằng proxy
- * (BeanPostProcessor, AOP) trước khi đưa vào ApplicationContext.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Nên tạo custom annotation khi có một ràng buộc/metadata lặp lại ở nhiều field/class (validation,
- * cấu hình, đánh dấu để framework xử lý) và annotation giúp code khai báo ngắn, dễ đọc hơn so với
- * gọi hàm thủ công lặp đi lặp lại. Trade-off: annotation chỉ là dữ liệu, luôn cần một processor
- * (reflection, annotation processor, bytecode weaving) đọc và diễn giải nó thì mới có hành vi; lỗi
- * cấu hình (ví dụ quên gắn annotation) chỉ lộ ra lúc chạy chứ không phải lúc gõ code như gọi hàm
- * bình thường.
- * SOLUTION-END
+ *
  */

@@ -73,8 +73,8 @@ public class Ex01_EqualsContract {
     }
 
     // Q1 — kịch bản: new CaseInsensitiveName("Alice").equals("alice") so với chiều ngược lại.
-    static final Boolean Q1_NAME_EQUALS_STRING = true; // SOLUTION-VALUE
-    static final Boolean Q1_STRING_EQUALS_NAME = false; // SOLUTION-VALUE
+    static final Boolean Q1_NAME_EQUALS_STRING = null;
+    static final Boolean Q1_STRING_EQUALS_NAME = null;
 
     /** Số tiền bất biến gồm giá trị nhỏ nhất (ví dụ cent) và mã tiền tệ ISO. */
     static final class Money {
@@ -91,22 +91,12 @@ public class Ex01_EqualsContract {
          */
         @Override
         public boolean equals(Object o) {
-            // SOLUTION-BEGIN throw Q1
-            if (this == o) {
-                return true;
-            }
-            if (!(o instanceof Money other)) {
-                return false;
-            }
-            return amountMinor == other.amountMinor && Objects.equals(currency, other.currency);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q1");
         }
 
         @Override
         public int hashCode() {
-            // SOLUTION-BEGIN throw Q1
-            return Objects.hash(amountMinor, currency);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q1");
         }
 
         @Override
@@ -116,8 +106,8 @@ public class Ex01_EqualsContract {
     }
 
     // Q5 — kịch bản: new String("hi") == new String("hi") so với các biến thể literal/Integer cache.
-    static final Boolean Q5_NEW_STRINGS_DOUBLE_EQUALS = false; // SOLUTION-VALUE
-    static final Boolean Q5_STRING_LITERALS_DOUBLE_EQUALS = true; // SOLUTION-VALUE
-    static final Boolean Q5_INTEGER_127_DOUBLE_EQUALS = true; // SOLUTION-VALUE
-    static final Boolean Q5_INTEGER_128_DOUBLE_EQUALS = false; // SOLUTION-VALUE
+    static final Boolean Q5_NEW_STRINGS_DOUBLE_EQUALS = null;
+    static final Boolean Q5_STRING_LITERALS_DOUBLE_EQUALS = null;
+    static final Boolean Q5_INTEGER_127_DOUBLE_EQUALS = null;
+    static final Boolean Q5_INTEGER_128_DOUBLE_EQUALS = null;
 }

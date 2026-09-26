@@ -61,16 +61,16 @@ public class Ex01_InvarianceAndWildcards {
     // Q1 — mẫu: List<Object> objects = new ArrayList<String>();
     // Bỏ comment dòng dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
     // List<Object> objects = new ArrayList<String>();
-    static final Compiles Q1_LIST_STRING_TO_LIST_OBJECT_COMPILES = Compiles.NO; // SOLUTION-VALUE
+    static final Compiles Q1_LIST_STRING_TO_LIST_OBJECT_COMPILES = null;
 
     // Q1 — mẫu: Object[] objects = new String[1];
     // Bỏ comment dòng dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
     // Object[] objects = new String[1];
-    static final Compiles Q1_STRING_ARRAY_TO_OBJECT_ARRAY_COMPILES = Compiles.YES; // SOLUTION-VALUE
+    static final Compiles Q1_STRING_ARRAY_TO_OBJECT_ARRAY_COMPILES = null;
 
     // Q1 — kịch bản: Object[] trỏ tới new String[1], gán một phần tử không phải String.
     // Ghi simple name của exception lúc chạy.
-    static final String Q1_ARRAY_STORE_EXCEPTION = "ArrayStoreException"; // SOLUTION-VALUE
+    static final String Q1_ARRAY_STORE_EXCEPTION = null;
 
     /**
      * Tổng {@code doubleValue()} của mọi phần tử trong {@code numbers}.
@@ -78,13 +78,7 @@ public class Ex01_InvarianceAndWildcards {
      * @return {@code 0.0} nếu {@code numbers} rỗng
      */
     static double sum(Collection<? extends Number> numbers) {
-        // SOLUTION-BEGIN throw Q2
-        double total = 0.0;
-        for (Number n : numbers) {
-            total += n.doubleValue();
-        }
-        return total;
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q2");
     }
 
     /**
@@ -93,14 +87,7 @@ public class Ex01_InvarianceAndWildcards {
      * @throws IllegalArgumentException nếu {@code count < 0}; khi đó {@code target} giữ nguyên
      */
     static void addNumbers(List<? super Integer> target, int count) {
-        // SOLUTION-BEGIN throw Q3
-        if (count < 0) {
-            throw new IllegalArgumentException("count không được âm: " + count);
-        }
-        for (int i = 0; i < count; i++) {
-            target.add(i);
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q3");
     }
 
     /**
@@ -108,11 +95,7 @@ public class Ex01_InvarianceAndWildcards {
      * Producer nên dùng {@code extends}, dst là Consumer nên dùng {@code super}).
      */
     static <T> void copy(List<? super T> dst, List<? extends T> src) {
-        // SOLUTION-BEGIN throw Q4
-        for (T item : src) {
-            dst.add(item);
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q4");
     }
 
     /**
@@ -121,30 +104,10 @@ public class Ex01_InvarianceAndWildcards {
      * @throws NoSuchElementException nếu {@code items} rỗng
      */
     static <T> T max(Collection<? extends T> items, Comparator<? super T> comparator) {
-        // SOLUTION-BEGIN throw Q4
-        T best = null;
-        boolean found = false;
-        for (T item : items) {
-            if (!found || comparator.compare(item, best) > 0) {
-                best = item;
-                found = true;
-            }
-        }
-        if (!found) {
-            throw new NoSuchElementException("items rỗng, không có phần tử lớn nhất");
-        }
-        return best;
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q4");
     }
 }
 
 /* ANSWER Q9:
- * SOLUTION-BEGIN
- * Generic invariance nghĩa là List<A> và List<B> không có quan hệ subtype với nhau cho
- * dù A là subtype của B (trừ khi A và B là cùng một kiểu). Ở Q1, List<String> KHÔNG phải
- * subtype của List<Object> nên gán trực tiếp bị lỗi biên dịch — khác với mảng String[]
- * là subtype của Object[] (covariant), gán được nhưng đổi lại rủi ro ArrayStoreException
- * lúc chạy như quan sát ở Q1. Invariance đổi lỗi từ runtime sang compile-time, đánh đổi
- * sự linh hoạt để lấy an toàn kiểu ngay lúc biên dịch.
- * SOLUTION-END
+ *
  */

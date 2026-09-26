@@ -55,11 +55,11 @@ public class Ex04_ParallelStreams {
 
     // Q8 — kịch bản: parallelStream so với stream tuần tự trên vài kích thước khác nhau.
     // Hằng hỏi: bản song song có luôn nhanh hơn không? Chạy main() rồi mới điền.
-    static final Boolean Q8_PARALLEL_ALWAYS_FASTER = false; // SOLUTION-VALUE
+    static final Boolean Q8_PARALLEL_ALWAYS_FASTER = null;
 
     // Q9 — kịch bản: đọc tên thread in từ main() khi chạy parallel stream, chép phần tiền tố
     // đứng trước số thứ tự worker. Đối chiếu ForkJoinPool.commonPool() nếu cần.
-    static final String Q9_COMMON_POOL_THREAD_NAME_PREFIX = "ForkJoinPool.commonPool-worker-"; // SOLUTION-VALUE
+    static final String Q9_COMMON_POOL_THREAD_NAME_PREFIX = null;
 
     /** Cho sẵn: đo thời gian (ms) chạy {@code action}, có 1 vòng warm-up bị bỏ qua trước đó. */
     private static long timeMillis(Runnable action) {
@@ -169,41 +169,13 @@ public class Ex04_ParallelStreams {
 }
 
 /* OBSERVATION Q8:
- * SOLUTION-BEGIN
- * Chạy thực tế main() (qua runExperiment(100_000)) trên máy đang phát triển
- * (ForkJoinPool.commonPool().getParallelism() = 19) đo được: ở LongStream nhỏ (100 000
- * phần tử) — tuần tự 0 ms, song song 2 ms (song song CHẬM HƠN — chi phí ForkJoinPool chia
- * việc thành nhiều đoạn nhỏ rồi gộp kết quả không "bõ" so với việc chỉ cộng 100 000 số
- * long). Ở LongStream lớn (50 000 000 phần tử) — tuần tự 9 ms, song song 1 ms (song song
- * nhanh hơn rõ rệt vì phần việc mỗi thread đủ lớn để bù chi phí chia/gộp). Kết luận: cùng
- * một đoạn code (chỉ khác .parallel()), kết quả nhanh/chậm phụ thuộc hoàn toàn vào quy mô
- * dữ liệu — không có câu trả lời "luôn luôn" cho parallelStream().
- * SOLUTION-END
+ *
  */
 
 /* OBSERVATION Q10:
- * SOLUTION-BEGIN
- * Chạy thực tế main() đo được ở phần (c): parallelStream() trên 32 tác vụ Thread.sleep(20)
- * mất 62 ms, còn Executors.newFixedThreadPool(32) chỉ mất 35 ms — parallelStream() CHẬM
- * HƠN gần gấp đôi. Trên máy này commonPool có getParallelism() = 19 < 32, nên 32 tác vụ
- * "chờ" phải chia làm 2 lô (19 rồi 13) thay vì chạy hết trong 1 lô như fixedThreadPool(32)
- * (có đủ 32 thread ngay từ đầu, không phụ thuộc số core CPU).
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q10:
- * SOLUTION-BEGIN
- * parallelStream() luôn chạy trên ForkJoinPool.commonPool() — một pool CÓ SỐ THREAD CỐ ĐỊNH
- * (mặc định = số core - 1), được thiết kế cho việc CPU-bound "chia để trị" (fork/join), chứ
- * không tăng số thread khi có việc đang bị block chờ I/O. Khi 32 tác vụ đều gọi blocking I/O
- * (ở đây giả lập bằng Thread.sleep), mỗi thread trong commonPool bị "giữ" suốt thời gian chờ
- * mà không làm gì hữu ích, nên tổng thời gian tỉ lệ với số lô = ceil(số tác vụ / P) thay vì
- * chạy hết trong một lô như một ExecutorService có đủ thread. Nghiêm trọng hơn: vì
- * commonPool được CHIA SẺ cho toàn JVM, nếu một phần code khác trong ứng dụng cũng đang
- * dùng parallelStream() cho việc CPU-bound, nó sẽ phải chờ các thread đang bị "kẹt" vì I/O ở
- * nơi khác — một use case blocking I/O có thể làm chậm những use case hoàn toàn không liên
- * quan. Cách làm đúng hơn cho I/O: dùng ExecutorService/thread pool riêng có kích thước phù
- * hợp với workload I/O (ví dụ nhiều hơn số core), hoặc dùng CompletableFuture với executor
- * tùy chỉnh, để không chiếm dụng commonPool dùng chung.
- * SOLUTION-END
+ *
  */

@@ -95,24 +95,9 @@ public class Ex02_InsertRemoveCost {
 }
 
 /* OBSERVATION Q5:
- * SOLUTION-BEGIN
- * Số liệu mẫu (máy phát triển, n = 50 000, có thể khác trên máy khác):
- * ArrayList - đầu ~ vài trăm ms; ArrayDeque - addFirst ~ dưới 10 ms; LinkedList - đầu cũng
- * chỉ vài ms. ArrayList.add(0, x) phải System.arraycopy toàn bộ size phần tử hiện có sang
- * phải 1 ô trước khi ghi phần tử mới vào ô trống — chi phí tuyến tính theo size, nên chèn n
- * phần tử liên tiếp ở đầu tốn O(n^2) tổng. LinkedList/ArrayDeque chỉ tạo 1 node mới trỏ vào
- * đầu — O(1) mỗi lần, không phải dời gì cả.
- * SOLUTION-END
+ *
  */
 
 /* OBSERVATION Q10:
- * SOLUTION-BEGIN
- * Chèn/xóa giữa cả hai đều tốn O(n) để tới được vị trí (ArrayList dời mảng bằng arraycopy,
- * LinkedList phải duyệt con trỏ next/prev từ đầu hoặc cuối tới node cần chèn), nhưng
- * ArrayList thường vẫn nhanh hơn trong thực tế vì mảng nằm liền một vùng nhớ — CPU cache
- * đọc tuần tự rất hiệu quả (cache locality), trong khi mỗi node của LinkedList là một object
- * riêng nằm rải rác trên heap, mỗi bước next/prev thường là một cache miss, cộng thêm chi phí
- * bộ nhớ cho 2 con trỏ + header object mỗi node. LinkedList chỉ thật sự có lợi khi chỉ cần
- * insert/remove ở đầu hoặc cuối (dùng như Deque/Queue) mà không cần random access theo index.
- * SOLUTION-END
+ *
  */

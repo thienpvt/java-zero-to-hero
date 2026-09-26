@@ -55,9 +55,9 @@ public class Ex03_RecordsAndMutableEntities {
     }
 
     // Q6 — kịch bản: Point(1,2) so với Point(1,2) khác instance; Blob cùng nội dung khác mảng.
-    static final Boolean Q6_RECORD_EQUAL_BY_VALUE = true; // SOLUTION-VALUE
-    static final Boolean Q6_RECORD_SAME_HASH = true; // SOLUTION-VALUE
-    static final Boolean Q6_ARRAY_COMPONENT_EQUAL_BY_CONTENT = false; // SOLUTION-VALUE
+    static final Boolean Q6_RECORD_EQUAL_BY_VALUE = null;
+    static final Boolean Q6_RECORD_SAME_HASH = null;
+    static final Boolean Q6_ARRAY_COMPONENT_EQUAL_BY_CONTENT = null;
 
     /**
      * Record an toàn cho dữ liệu nhị phân: defensive copy ở cả compact constructor và
@@ -67,38 +67,27 @@ public class Ex03_RecordsAndMutableEntities {
     record SafeBlob(byte[] data) {
 
         SafeBlob {
-            // SOLUTION-BEGIN throw Q6
-            Objects.requireNonNull(data, "data");
-            data = data.clone();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
 
         @Override
         public byte[] data() {
-            // SOLUTION-BEGIN throw Q6
-            return data.clone();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
 
         @Override
         public boolean equals(Object o) {
-            // SOLUTION-BEGIN throw Q6
-            return o instanceof SafeBlob other && Arrays.equals(data, other.data);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
 
         @Override
         public int hashCode() {
-            // SOLUTION-BEGIN throw Q6
-            return Arrays.hashCode(data);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
 
         @Override
         public String toString() {
-            // SOLUTION-BEGIN throw Q6
-            return "SafeBlob" + Arrays.toString(data);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
     }
 
@@ -132,9 +121,9 @@ public class Ex03_RecordsAndMutableEntities {
     }
 
     // Q7 — kịch bản: add Customer, đổi email (đổi hashCode), rồi contains/remove/re-add.
-    static final Boolean Q7_CONTAINS_AFTER_MUTATION = false; // SOLUTION-VALUE
-    static final Boolean Q7_REMOVE_AFTER_MUTATION_SUCCEEDS = false; // SOLUTION-VALUE
-    static final Integer Q7_SIZE_AFTER_READD = 2; // SOLUTION-VALUE
+    static final Boolean Q7_CONTAINS_AFTER_MUTATION = null;
+    static final Boolean Q7_REMOVE_AFTER_MUTATION_SUCCEEDS = null;
+    static final Integer Q7_SIZE_AFTER_READD = null;
 
     /**
      * Entity ổn định: equals()/hashCode() chỉ dựa trên {@code id} bất biến, nên vẫn
@@ -151,16 +140,12 @@ public class Ex03_RecordsAndMutableEntities {
 
         @Override
         public boolean equals(Object o) {
-            // SOLUTION-BEGIN throw Q7
-            return o instanceof StableCustomer other && id.equals(other.id);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q7");
         }
 
         @Override
         public int hashCode() {
-            // SOLUTION-BEGIN throw Q7
-            return id.hashCode();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q7");
         }
 
         @Override

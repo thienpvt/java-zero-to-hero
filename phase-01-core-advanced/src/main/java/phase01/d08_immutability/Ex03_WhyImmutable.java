@@ -132,41 +132,13 @@ public class Ex03_WhyImmutable {
 }
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Immutable object không có method nào đổi state sau khi constructor chạy xong, nên không
- * tồn tại "khoảng thời gian" mà một thread đang sửa còn thread khác đang đọc field đó — mọi
- * thread luôn thấy đúng một giá trị duy nhất kể từ lúc object được publish an toàn (ví dụ
- * qua final field). Vì vậy không cần synchronized/lock khi nhiều thread cùng đọc chung một
- * SafeTeam hay Playlist; race condition (đọc thấy state nửa-cập-nhật) đơn giản là không thể
- * xảy ra vì chẳng có "cập nhật" nào để nửa chừng.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Nhược điểm: mỗi lần "sửa" phải tạo object mới, tốn cấp phát bộ nhớ và công GC dọn object
- * cũ — với vòng lặp chạy nhiều lần (nối chuỗi bằng +=, hay tạo lại Point liên tục), chi phí
- * này cộng dồn rõ rệt so với sửa tại chỗ một buffer/object mutable (StringBuilder,
- * MutablePoint). Nên chọn mutable khi: vòng lặp nóng (hot loop) sửa rất nhiều lần trong một
- * hàm, dữ liệu không cần chia sẻ ra ngoài, và không có yêu cầu thread-safety cho đối tượng
- * tạm đó — ví dụ dùng StringBuilder trong một method rồi chỉ trả về String (immutable) ở
- * bước cuối, thay vì nối chuỗi bằng += trong vòng lặp.
- * SOLUTION-END
+ *
  */
 
 /* OBSERVATION Q6:
- * SOLUTION-BEGIN
- * Chạy main() với n = 200 000 ba lần trên máy tác giả (kết quả tham khảo, có thể khác trên
- * máy khác — số đo thô bằng nanoTime, chỉ có tính minh hoạ chứ không phải benchmark chuẩn):
- *   +=            : ~1512-1514 ms — cực chậm, vì mỗi vòng String cũ (dài dần) bị copy toàn bộ
- *                    sang String mới dài hơn 1 ký tự (độ phức tạp toàn vòng lặp gần O(n^2)).
- *   StringBuilder : ~3-4 ms — buffer nội bộ chỉ cấp phát lại (grow) theo cấp số nhân, tổng
- *                    chi phí gần O(n); nhanh hơn += khoảng 400-500 lần ở n = 200 000.
- *   Point.withX   : ~1.7-1.9 ms — tạo 200 000 record Point mới, nhưng object rất nhỏ (2 int)
- *                    nên chi phí cấp phát/GC vẫn thấp, chỉ chậm hơn MutablePoint ~1.5 lần.
- *   MutablePoint  : ~1.1-1.2 ms — chỉ set một field int tại chỗ, không cấp phát gì thêm.
- * Kết luận: chênh lệch khủng khiếp nằm ở nối chuỗi (String tăng kích thước mỗi vòng khiến
- * copy toàn bộ nội dung cũ lặp lại O(n) lần); với object nhỏ và cố định kích thước như
- * Point, chi phí tạo mới liên tục vẫn rất nhỏ ở quy mô này (không giống String).
- * SOLUTION-END
+ *
  */

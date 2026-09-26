@@ -52,24 +52,7 @@ public final class ReportApp {
      * một báo cáo văn bản nhiều dòng, phân tách bằng {@code "\n"}.
      */
     static String render(List<CustomerSummary> rows, List<LineError> errors) {
-        // SOLUTION-BEGIN throw B5
-        StringBuilder sb = new StringBuilder();
-        sb.append("customerId | orders | totalPaid | firstOrderDate");
-        for (CustomerSummary row : rows) {
-            sb.append('\n')
-                    .append(row.customerId()).append(" | ")
-                    .append(row.orderCount()).append(" | ")
-                    .append(row.totalPaid().toPlainString()).append(" | ")
-                    .append(row.firstOrderDate());
-        }
-        if (!errors.isEmpty()) {
-            sb.append('\n');
-            for (LineError error : errors) {
-                sb.append('\n').append("Dòng ").append(error.lineNumber()).append(": ").append(error.message());
-            }
-        }
-        return sb.toString();
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO B5");
     }
 
     /**

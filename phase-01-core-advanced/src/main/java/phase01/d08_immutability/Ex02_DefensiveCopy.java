@@ -66,10 +66,7 @@ public class Ex02_DefensiveCopy {
          *         hoặc {@code members} chứa phần tử null
          */
         SafeTeam(String name, List<String> members) {
-            // SOLUTION-BEGIN throw Q3
-            this.name = Objects.requireNonNull(name, "name không được null");
-            this.members = List.copyOf(members);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q3");
         }
 
         String name() {
@@ -86,7 +83,7 @@ public class Ex02_DefensiveCopy {
 
     // Q5 — kịch bản: List<String> src = new ArrayList<>(List.of("a")); Bag bag = new Bag(src);
     // src.add("b"); bag.items() có chứa "b" không?
-    static final Boolean Q5_RECORD_IS_DEEPLY_IMMUTABLE = false; // SOLUTION-VALUE
+    static final Boolean Q5_RECORD_IS_DEEPLY_IMMUTABLE = null;
 
     record Playlist(String name, List<String> songs) {
         /**
@@ -94,10 +91,7 @@ public class Ex02_DefensiveCopy {
          *         hoặc {@code songs} chứa phần tử null
          */
         Playlist {
-            // SOLUTION-BEGIN throw Q5
-            name = Objects.requireNonNull(name, "name không được null");
-            songs = List.copyOf(songs);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
     }
 }

@@ -51,9 +51,7 @@ public class Ex03_AppointmentModeling {
          * @return mốc thời gian tuyệt đối tương ứng
          */
         Instant startInstant() {
-            // SOLUTION-BEGIN throw Q7
-            return localStart.atZone(zone).toInstant();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q7");
         }
     }
 
@@ -68,23 +66,10 @@ public class Ex03_AppointmentModeling {
      * @throws DateTimeException nếu {@code zoneId} không phải một múi giờ hợp lệ
      */
     static Appointment parse(String isoLocalDateTime, String zoneId) {
-        // SOLUTION-BEGIN throw Q7
-        LocalDateTime localStart = LocalDateTime.parse(isoLocalDateTime);
-        ZoneId zone = ZoneId.of(zoneId);
-        return new Appointment(localStart, zone);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q7");
     }
 }
 
 /* ANSWER Q7:
- * SOLUTION-BEGIN
- * Nên lưu giờ địa phương (LocalDateTime, ví dụ "09:00") cùng với zone ID (ví dụ
- * "America/New_York"), không chỉ lưu offset cố định (ví dụ "-04:00") hay Instant đã tính sẵn.
- * Chỉ tính Instant khi cần dùng (hiển thị, so sánh, sắp lịch), bằng cách tra quy tắc DST hiện
- * hành của chính zone đó tại thời điểm tính.
- * Lý do: luật DST của một zone có thể thay đổi qua các năm (chính phủ đổi luật DST), nên nếu
- * chỉ lưu offset/Instant tại thời điểm tạo cuộc hẹn, khi luật đổi thì "09:00 giờ địa phương"
- * ban đầu sẽ lệch giờ hiển thị thực tế — mất đúng ý định ban đầu của người đặt hẹn. Lưu cả zone
- * giúp hệ thống luôn tính lại đúng theo luật hiện hành, kể cả khi luật đổi sau khi đã đặt hẹn.
- * SOLUTION-END
+ *
  */

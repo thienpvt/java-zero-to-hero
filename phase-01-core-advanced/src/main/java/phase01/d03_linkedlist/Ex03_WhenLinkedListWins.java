@@ -39,29 +39,10 @@ public class Ex03_WhenLinkedListWins {
      * @param toInsert giá trị được chèn ngay sau mỗi phần tử khớp {@code match}
      */
     static void insertAfterEach(List<String> list, Predicate<String> match, String toInsert) {
-        // SOLUTION-BEGIN throw Q4
-        ListIterator<String> it = list.listIterator();
-        while (it.hasNext()) {
-            String current = it.next();
-            if (match.test(current)) {
-                it.add(toInsert);
-            }
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q4");
     }
 }
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * LinkedList thực sự có lợi khi: (1) bạn đã "cầm sẵn" một Node/ListIterator đang đứng đúng
- * tại vị trí cần chèn hoặc xóa — không phải duyệt lại từ đầu để tìm vị trí đó — ví dụ chèn xen
- * kẽ trong một lượt duyệt như insertAfterEach ở trên, nơi chi phí tìm vị trí (duyệt for-each)
- * đã được "trả" đúng một lần cho cả việc đọc và việc chèn; (2) cần thêm/xóa liên tục ở hai đầu
- * (dùng như deque) mà không cần truy cập ngẫu nhiên theo index. Trong thực tế, java.util.ArrayDeque
- * thường nhanh hơn LinkedList cho vai trò deque/queue vì không cần cấp phát Node riêng và có
- * locality tốt hơn (xem Ex02), nên LinkedList ngày nay hiếm khi là lựa chọn tối ưu tuyệt đối —
- * nó chủ yếu còn hữu ích khi thuật toán cần thao tác trực tiếp trên Node (giữ tham chiếu Node
- * qua nhiều bước) hoặc chèn/xóa nhiều lần ở giữa một danh sách rất dài trong khi vẫn giữ
- * nguyên vị trí iterator giữa các lần, tránh phải dịch phần tử như ArrayList.
- * SOLUTION-END
+ *
  */

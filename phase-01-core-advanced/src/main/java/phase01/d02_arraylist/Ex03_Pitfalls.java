@@ -57,17 +57,17 @@ public class Ex03_Pitfalls {
     // Q9 — kịch bản: for-each trên new ArrayList<>(List.of("a", "b", "c")), gặp phần tử thì
     // gọi list.remove(phầnTử) (không dùng iterator.remove()). Ghi lại simple name của
     // exception bị ném ra, hoặc "none" nếu không ném gì.
-    static final String Q9_FOREACH_REMOVE_FIRST_EXCEPTION = "ConcurrentModificationException"; // SOLUTION-VALUE
+    static final String Q9_FOREACH_REMOVE_FIRST_EXCEPTION = null;
     // Kịch bản tương tự nhưng remove phần tử kế cuối ("b" trong 3 phần tử) — có ném lỗi không?
-    static final Boolean Q9_FOREACH_REMOVE_SECOND_LAST_THROWS = false; // SOLUTION-VALUE
+    static final Boolean Q9_FOREACH_REMOVE_SECOND_LAST_THROWS = null;
 
     // Q8 — kịch bản: ArrayList<String> rồi add(null) hai lần.
-    static final Boolean Q8_CAN_ADD_NULL = true; // SOLUTION-VALUE
-    static final Integer Q8_SIZE_AFTER_TWO_NULLS = 2; // SOLUTION-VALUE
+    static final Boolean Q8_CAN_ADD_NULL = null;
+    static final Integer Q8_SIZE_AFTER_TWO_NULLS = null;
 
     // Q7 — kịch bản: nhiều thread cùng add vào một ArrayList thường. Hằng hỏi: add() có
     // được đồng bộ hóa (thread-safe) không? Đọc source hoặc chạy main() rồi mới điền.
-    static final Boolean Q7_ARRAYLIST_IS_THREAD_SAFE = false; // SOLUTION-VALUE
+    static final Boolean Q7_ARRAYLIST_IS_THREAD_SAFE = null;
 
     /**
      * Xóa tại chỗ (trong {@code list}) mọi phần tử {@code null} hoặc {@code isBlank()}.
@@ -75,9 +75,7 @@ public class Ex03_Pitfalls {
      * @throws NullPointerException nếu {@code list} là {@code null}
      */
     static void removeBlank(List<String> list) {
-        // SOLUTION-BEGIN throw Q9
-        list.removeIf(s -> s == null || s.isBlank());
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q9");
     }
 
     /**
@@ -86,9 +84,7 @@ public class Ex03_Pitfalls {
      * {@code add}) trở thành atomic khi có nhiều thread cùng dùng.
      */
     static <T> List<T> threadSafeList() {
-        // SOLUTION-BEGIN throw Q7
-        return Collections.synchronizedList(new ArrayList<>());
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q7");
     }
 
     /**
@@ -163,14 +159,5 @@ public class Ex03_Pitfalls {
 }
 
 /* OBSERVATION Q7:
- * SOLUTION-BEGIN
- * ArrayList thường không đồng bộ: add() đọc size, ghi phần tử vào elementData[size], rồi
- * size++ — ba bước này không atomic. Khi nhiều thread add đồng thời, chúng có thể đọc cùng
- * giá trị size, ghi đè lên cùng một ô (mất dữ liệu, size cuối nhỏ hơn tổng mong đợi), hoặc
- * cùng lúc trigger grow() gây ArrayIndexOutOfBoundsException khi ghi vào mảng cũ đã bị thay
- * bởi thread khác. Collections.synchronizedList bọc mọi method bằng cùng một lock nên mỗi
- * lần add() trở thành atomic — kết quả size cuối luôn đúng và tất định. Trade-off: for-each
- * trên synchronizedList KHÔNG tự động an toàn (chỉ từng lệnh gọi method riêng lẻ được lock),
- * nên vẫn phải tự "synchronized (list) { for (... : list) ... }" khi iterate.
- * SOLUTION-END
+ *
  */

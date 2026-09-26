@@ -52,7 +52,7 @@ public class Ex01_Records {
     // }
     // record BadPoint(int x, int y) extends Shape {
     // }
-    static final Compiles Q1_RECORD_EXTENDS_CLASS_COMPILES = Compiles.NO; // SOLUTION-VALUE
+    static final Compiles Q1_RECORD_EXTENDS_CLASS_COMPILES = null;
 
     // Q1 — mẫu: record implements một interface và cài method của interface đó.
     // Bỏ comment, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
@@ -64,37 +64,24 @@ public class Ex01_Records {
     //         return side * side;
     //     }
     // }
-    static final Compiles Q1_RECORD_IMPLEMENTS_INTERFACE_COMPILES = Compiles.YES; // SOLUTION-VALUE
+    static final Compiles Q1_RECORD_IMPLEMENTS_INTERFACE_COMPILES = null;
 
-    static final String Q1_RECORD_TO_STRING = "Point[x=1, y=2]"; // SOLUTION-VALUE
+    static final String Q1_RECORD_TO_STRING = null;
 
     record Email(String value) {
         Email {
-            // SOLUTION-BEGIN throw Q1
-            Objects.requireNonNull(value, "value không được null");
-            String normalized = value.trim().toLowerCase(Locale.ROOT);
-            int at = normalized.indexOf('@');
-            boolean missingOrDuplicateAt = at < 0 || at != normalized.lastIndexOf('@');
-            boolean emptySideOfAt = at == 0 || at == normalized.length() - 1;
-            if (missingOrDuplicateAt || emptySideOfAt) {
-                throw new IllegalArgumentException("Email không hợp lệ: " + value);
-            }
-            value = normalized;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q1");
         }
     }
 
     record RawOrder(String id, List<String> lines) {
     }
 
-    static final Boolean Q2_LIST_COMPONENT_CHANGES_WITHOUT_COPY = true; // SOLUTION-VALUE
+    static final Boolean Q2_LIST_COMPONENT_CHANGES_WITHOUT_COPY = null;
 
     record Order(String id, List<String> lines) {
         Order {
-            // SOLUTION-BEGIN throw Q2
-            Objects.requireNonNull(id, "id không được null");
-            lines = List.copyOf(lines);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q2");
         }
     }
 }

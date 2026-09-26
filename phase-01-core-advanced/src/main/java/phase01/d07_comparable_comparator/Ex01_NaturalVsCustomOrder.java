@@ -75,17 +75,7 @@ public class Ex01_NaturalVsCustomOrder {
 
         @Override
         public int compareTo(Version other) {
-            // SOLUTION-BEGIN throw Q1
-            int cmp = Integer.compare(major, other.major);
-            if (cmp != 0) {
-                return cmp;
-            }
-            cmp = Integer.compare(minor, other.minor);
-            if (cmp != 0) {
-                return cmp;
-            }
-            return Integer.compare(patch, other.patch);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q1");
         }
 
         @Override
@@ -105,20 +95,16 @@ public class Ex01_NaturalVsCustomOrder {
     }
 
     // Q3 — ví dụ: "1.10.0".compareTo("1.2.0")
-    static final Boolean Q3_STRING_ORDER_PUTS_1_10_BEFORE_1_2 = true; // SOLUTION-VALUE
+    static final Boolean Q3_STRING_ORDER_PUTS_1_10_BEFORE_1_2 = null;
 
     record Product(String name, BigDecimal price) {
 
         static Comparator<Product> byPrice() {
-            // SOLUTION-BEGIN throw Q2
-            return Comparator.comparing(Product::price);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q2");
         }
 
         static Comparator<Product> byNameIgnoreCase() {
-            // SOLUTION-BEGIN throw Q2
-            return Comparator.comparing(Product::name, String.CASE_INSENSITIVE_ORDER);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q2");
         }
     }
 }

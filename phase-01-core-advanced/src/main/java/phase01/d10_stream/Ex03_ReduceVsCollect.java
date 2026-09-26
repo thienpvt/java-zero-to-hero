@@ -69,9 +69,7 @@ public class Ex03_ReduceVsCollect {
      * @throws NullPointerException nếu {@code numbers} là {@code null}
      */
     static int sumWithReduce(List<Integer> numbers) {
-        // SOLUTION-BEGIN throw Q5
-        return numbers.stream().reduce(0, Integer::sum);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q5");
     }
 
     /**
@@ -81,15 +79,13 @@ public class Ex03_ReduceVsCollect {
      * @throws NullPointerException nếu {@code numbers} là {@code null}
      */
     static Optional<Integer> maxWithReduce(List<Integer> numbers) {
-        // SOLUTION-BEGIN throw Q5
-        return numbers.stream().reduce(Integer::max);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q5");
     }
 
     // Q6 — kịch bản: thử add() vào Stream.of(1).toList().
-    static final Boolean Q6_STREAM_TOLIST_IS_MODIFIABLE = false; // SOLUTION-VALUE
+    static final Boolean Q6_STREAM_TOLIST_IS_MODIFIABLE = null;
     // Q6 — kịch bản: thử add() vào Stream.of(1).collect(Collectors.toList()).
-    static final Boolean Q6_COLLECTORS_TOLIST_ADD_WORKS_ON_THIS_JDK = true; // SOLUTION-VALUE
+    static final Boolean Q6_COLLECTORS_TOLIST_ADD_WORKS_ON_THIS_JDK = null;
 
     /**
      * Đếm số từ (bỏ qua chuỗi rỗng) theo chữ cái đầu, so khóa không phân biệt hoa/thường
@@ -98,11 +94,7 @@ public class Ex03_ReduceVsCollect {
      * @throws NullPointerException nếu {@code words} là {@code null}
      */
     static Map<Character, Long> countByFirstLetter(List<String> words) {
-        // SOLUTION-BEGIN throw Q6
-        return words.stream()
-                .filter(w -> !w.isEmpty())
-                .collect(Collectors.groupingBy(w -> Character.toLowerCase(w.charAt(0)), Collectors.counting()));
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 
     /**
@@ -111,14 +103,12 @@ public class Ex03_ReduceVsCollect {
      * @throws NullPointerException nếu {@code parts} hoặc {@code separator} là {@code null}
      */
     static String joinWithCollect(List<String> parts, String separator) {
-        // SOLUTION-BEGIN throw Q6
-        return parts.stream().collect(Collectors.joining(separator));
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 
     // Q7 — kịch bản: squaresBuggy ghi vào một ArrayList chia sẻ từ parallelStream().forEach.
     // Hằng hỏi: mọi lần chạy có luôn ra đúng kết quả không? Chạy main() rồi mới điền.
-    static final Boolean Q7_BUGGY_VERSION_ALWAYS_CORRECT = false; // SOLUTION-VALUE
+    static final Boolean Q7_BUGGY_VERSION_ALWAYS_CORRECT = null;
 
     /**
      * Cho sẵn: cách làm SAI — tính bình phương từng số bằng {@code parallelStream().forEach}
@@ -139,9 +129,7 @@ public class Ex03_ReduceVsCollect {
      * @throws NullPointerException nếu {@code numbers} là {@code null}
      */
     static List<Integer> squares(List<Integer> numbers) {
-        // SOLUTION-BEGIN throw Q7
-        return numbers.parallelStream().map(n -> n * n).toList();
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q7");
     }
 
     /**
@@ -173,17 +161,5 @@ public class Ex03_ReduceVsCollect {
 }
 
 /* OBSERVATION Q7:
- * SOLUTION-BEGIN
- * Chạy thực tế runExperiment(100_000) (qua main()) cho ra "squaresBuggy sai 20/20 lần chạy"
- * — TẤT CẢ 20 lần đều sai ở n lớn: có lần "size hoặc thứ tự khác kỳ vọng" (một số phần tử
- * bị mất do race khi nhiều thread cùng đọc/ghi trường nội bộ của ArrayList lúc add()), có
- * lần ném ArrayIndexOutOfBoundsException ngay giữa lúc một thread khác đang resize mảng
- * bên trong.
- * squares() dùng map() nên không có side effect nào: mỗi phần tử được tính n * n độc lập
- * từ input của nó, và toList() tự gộp lại đúng thứ tự nguồn thông qua cơ chế Spliterator
- * nội bộ của Stream — không có ô nhớ chia sẻ nào bị nhiều thread cùng ghi. Bài học: parallel
- * stream chỉ an toàn khi lambda không side effect (stateless); nếu cần side effect, phải tự
- * đồng bộ hoặc dùng collect() với một Collector có combiner đúng, thay vì forEach() + add()
- * thủ công vào một collection thường.
- * SOLUTION-END
+ *
  */

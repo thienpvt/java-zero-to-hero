@@ -40,26 +40,17 @@ public class Ex02_ComparatorComposition {
     }
 
     // Q6 — ví dụ: Comparator.comparing(Employee::age).compare(emp1, empVoiAgeNull)
-    static final String Q6_SORT_NULL_AGE_EXCEPTION = "NullPointerException"; // SOLUTION-VALUE
+    static final String Q6_SORT_NULL_AGE_EXCEPTION = null;
 
     static Comparator<Employee> byDepartmentThenAgeDescThenName() {
-        // SOLUTION-BEGIN throw Q5
-        return Comparator.comparing(Employee::department)
-                .thenComparing(Employee::age, Comparator.reverseOrder())
-                .thenComparing(Employee::name);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q5");
     }
 
     static Comparator<Employee> byAgeNullsLast() {
-        // SOLUTION-BEGIN throw Q6
-        return Comparator.comparing(Employee::age, Comparator.nullsLast(Comparator.naturalOrder()));
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 
     static Comparator<Employee> byDepartmentNullsFirstThenName() {
-        // SOLUTION-BEGIN throw Q6
-        return Comparator.comparing(Employee::department, Comparator.nullsFirst(Comparator.naturalOrder()))
-                .thenComparing(Employee::name);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 }

@@ -97,22 +97,22 @@ public class Ex01_RetentionAndTarget {
     }
 
     // Q1 — kịch bản: gọi greet("An") khi method có @LogCalls. CALL_LOG có thêm dòng không?
-    static final Boolean Q1_ANNOTATION_ALONE_PRODUCES_LOG = false; // SOLUTION-VALUE
+    static final Boolean Q1_ANNOTATION_ALONE_PRODUCES_LOG = null;
 
     // Q2 — kịch bản: method có @RuntimeNote. isAnnotationPresent lúc chạy có true không?
-    static final Boolean Q2_RUNTIME_NOTE_VISIBLE = true; // SOLUTION-VALUE
+    static final Boolean Q2_RUNTIME_NOTE_VISIBLE = null;
 
     // Q3 — kịch bản: method có @SourceNote và @ClassNote. isAnnotationPresent lúc chạy
     // có true không? Đọc RetentionPolicy, rồi javap nếu cần, sau khi đã điền dự đoán.
-    static final Boolean Q3_SOURCE_NOTE_VISIBLE = false; // SOLUTION-VALUE
-    static final Boolean Q3_CLASS_NOTE_VISIBLE = false; // SOLUTION-VALUE
+    static final Boolean Q3_SOURCE_NOTE_VISIBLE = null;
+    static final Boolean Q3_CLASS_NOTE_VISIBLE = null;
 
     // Q4 — mẫu: @FieldOnly (Target FIELD) đặt trên một method.
     // Bỏ comment hai dòng dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán:
     // @FieldOnly
     // void sampleMethodWithWrongTarget() {
     // }
-    static final Compiles Q4_FIELD_ONLY_ON_METHOD_COMPILES = Compiles.NO; // SOLUTION-VALUE
+    static final Compiles Q4_FIELD_ONLY_ON_METHOD_COMPILES = null;
 
     /**
      * Đọc {@code @Target} khai báo trên {@code annotationType} và trả về tập {@link ElementType}
@@ -123,12 +123,6 @@ public class Ex01_RetentionAndTarget {
      *     không khai báo {@code @Target} (nghĩa là không có ràng buộc nào được ghi rõ)
      */
     static Set<ElementType> targetsOf(Class<? extends Annotation> annotationType) {
-        // SOLUTION-BEGIN throw Q4
-        Target target = annotationType.getAnnotation(Target.class);
-        if (target == null) {
-            return EnumSet.noneOf(ElementType.class);
-        }
-        return EnumSet.copyOf(Arrays.asList(target.value()));
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q4");
     }
 }

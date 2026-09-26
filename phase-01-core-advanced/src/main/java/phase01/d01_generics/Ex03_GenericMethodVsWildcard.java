@@ -30,24 +30,19 @@ public class Ex03_GenericMethodVsWildcard {
     // Q8 — mẫu: với một biến `List<?> list = new ArrayList<>(List.of("a"));`,
     // bỏ comment dòng dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
     // list.add("x");
-    static final Compiles Q8_ADD_STRING_TO_WILDCARD_LIST_COMPILES = Compiles.NO; // SOLUTION-VALUE
+    static final Compiles Q8_ADD_STRING_TO_WILDCARD_LIST_COMPILES = null;
 
     // Q8 — mẫu: cùng biến `List<?> list`, bỏ comment dòng dưới, xem IDE báo gì, rồi
     // comment lại — sau khi đã điền dự đoán.
     // list.add(null);
-    static final Compiles Q8_ADD_NULL_TO_WILDCARD_LIST_COMPILES = Compiles.YES; // SOLUTION-VALUE
+    static final Compiles Q8_ADD_NULL_TO_WILDCARD_LIST_COMPILES = null;
 
     /**
      * Đổi chỗ phần tử đầu và phần tử cuối của {@code list}. Nếu {@code list} có ít hơn 2
      * phần tử thì giữ nguyên.
      */
     static void swapFirstLast(List<?> list) {
-        // SOLUTION-BEGIN throw Q8
-        if (list.size() < 2) {
-            return;
-        }
-        swapHelper(list);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q8");
     }
 
     /**
@@ -55,24 +50,10 @@ public class Ex03_GenericMethodVsWildcard {
      * {@code swapFirstLast} để có thể {@code get}/{@code set} an toàn kiểu.
      */
     private static <T> void swapHelper(List<T> list) {
-        // SOLUTION-BEGIN throw Q8
-        T first = list.get(0);
-        T last = list.get(list.size() - 1);
-        list.set(0, last);
-        list.set(list.size() - 1, first);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q8");
     }
 }
 
 /* ANSWER Q8:
- * SOLUTION-BEGIN
- * Dùng type parameter <T> khi cần diễn tả quan hệ giữa nhiều tham số hoặc giữa tham số và
- * giá trị trả về — ví dụ cần lấy một phần tử ra (get) rồi ghi lại đúng kiểu đó (set) như
- * swapHelper, hoặc method trả về T dựa trên list đầu vào. Dùng wildcard <?> khi method chỉ
- * cần đọc phần tử ra Object hoặc gọi các thao tác không phụ thuộc kiểu phần tử cụ thể (như
- * size(), hoặc add(null)) và không cần liên kết kiểu đó với bất cứ chỗ nào khác — API gọn
- * hơn cho người gọi vì họ không cần biết/khai type argument. Đổi lại, List<?> gần như
- * read-only: không add(T)/set(T) được (trừ null) vì compiler không biết ? đại diện cho kiểu
- * gì, đó là lý do swapFirstLast phải "capture" wildcard qua swapHelper mới set() được.
- * SOLUTION-END
+ *
  */

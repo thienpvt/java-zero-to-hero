@@ -50,10 +50,10 @@ public class Ex02_HashCodeRules {
 
     // Q2 — kịch bản: so hashCode và equals của "Aa" với "BB".
     // Hằng hỏi: cùng hashCode có suy ra equals() là true không?
-    static final Boolean Q2_SAME_HASH_IMPLIES_EQUALS = false; // SOLUTION-VALUE
+    static final Boolean Q2_SAME_HASH_IMPLIES_EQUALS = null;
 
     // Q3 — kịch bản: hai String equals nhau (ví dụ new String("test") hai lần) có cùng hashCode.
-    static final Boolean Q3_EQUALS_REQUIRES_SAME_HASH = true; // SOLUTION-VALUE
+    static final Boolean Q3_EQUALS_REQUIRES_SAME_HASH = null;
 
     /**
      * Minh họa bug kinh điển: equals() theo email nhưng không override hashCode(),
@@ -76,8 +76,8 @@ public class Ex02_HashCodeRules {
     }
 
     // Q4 — kịch bản: add hai EqualsOnlyUser cùng email (equals true) vào HashSet.
-    static final Integer Q4_HASHSET_SIZE_TWO_EQUAL_USERS = 2; // SOLUTION-VALUE
-    static final Boolean Q4_HASHSET_CONTAINS_EQUAL_USER = false; // SOLUTION-VALUE
+    static final Integer Q4_HASHSET_SIZE_TWO_EQUAL_USERS = null;
+    static final Boolean Q4_HASHSET_CONTAINS_EQUAL_USER = null;
 
     /** User có equals()/hashCode() nhất quán, chuẩn hóa email trước khi so sánh. */
     static final class User {
@@ -91,16 +91,12 @@ public class Ex02_HashCodeRules {
 
         @Override
         public boolean equals(Object o) {
-            // SOLUTION-BEGIN throw Q4
-            return o instanceof User other && email.equals(other.email);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
 
         @Override
         public int hashCode() {
-            // SOLUTION-BEGIN throw Q4
-            return email.hashCode();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
 
         @Override

@@ -78,7 +78,7 @@ public class Ex02_MapFlatMapAndUsage {
     }
 
     // Q6 — Optional.of(c).map(Ex02_MapFlatMapAndUsage::addressOpt).get() có phải instanceof Optional?
-    static final Boolean Q6_MAP_WITH_OPTIONAL_FUNCTION_NESTS = true; // SOLUTION-VALUE
+    static final Boolean Q6_MAP_WITH_OPTIONAL_FUNCTION_NESTS = null;
 
     /**
      * Trả city viết hoa ({@link Locale#ROOT}) nếu {@code customer}, address của nó và city
@@ -88,13 +88,7 @@ public class Ex02_MapFlatMapAndUsage {
      * @return Optional chứa city viết hoa, hoặc empty
      */
     static Optional<String> cityUpper(Customer customer) {
-        // SOLUTION-BEGIN throw Q6
-        return Optional.ofNullable(customer)
-                .flatMap(Ex02_MapFlatMapAndUsage::addressOpt)
-                .map(Address::city)
-                .filter(city -> !city.isBlank())
-                .map(city -> city.toUpperCase(Locale.ROOT));
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 
     /**
@@ -104,27 +98,16 @@ public class Ex02_MapFlatMapAndUsage {
      * @return Optional chứa zip, hoặc empty nếu thiếu customer/address/zip
      */
     static Optional<String> zipOf(Optional<Customer> customer) {
-        // SOLUTION-BEGIN throw Q6
-        return customer
-                .flatMap(Ex02_MapFlatMapAndUsage::addressOpt)
-                .map(Address::zip);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 
     // Q5 — bỏ comment dòng dưới để xem có lỗi biên dịch không, rồi comment lại:
     // Optional<String> o = null;
-    static final Compiles Q5_ASSIGN_NULL_TO_OPTIONAL_COMPILES = Compiles.YES; // SOLUTION-VALUE
+    static final Compiles Q5_ASSIGN_NULL_TO_OPTIONAL_COMPILES = null;
     // Q5 — Optional.empty().get() ném exception gì?
-    static final String Q5_GET_ON_EMPTY_EXCEPTION = "NoSuchElementException"; // SOLUTION-VALUE
+    static final String Q5_GET_ON_EMPTY_EXCEPTION = null;
 }
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Không nên. Javadoc của Optional ghi rõ trong "API Note": "Optional is primarily intended
- * for use as a method return type...". Dùng Optional làm tham số buộc mọi caller phải bọc
- * giá trị (kể cả khi đã chắc chắn không null), tăng boilerplate, và biến Optional đó vẫn có
- * thể là null (xem Q5) nên không thực sự loại bỏ được rủi ro NPE mà chỉ dịch chuyển nó sang
- * chỗ khác. Cách thay thế: overload method (một bản có tham số, một bản không), hoặc nhận
- * tham số kiểu thường và để caller tự kiểm tra null/dùng giá trị mặc định trước khi gọi.
- * SOLUTION-END
+ *
  */

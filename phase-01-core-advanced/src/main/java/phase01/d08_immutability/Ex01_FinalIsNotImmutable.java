@@ -52,11 +52,11 @@ public class Ex01_FinalIsNotImmutable {
 
     // Q1 — kịch bản: final Counter c = new Counter(); int before = c.value();
     // c.increment(); int after = c.value(); so before với after.
-    static final Boolean Q1_FINAL_CLASS_STATE_CHANGED = true; // SOLUTION-VALUE
+    static final Boolean Q1_FINAL_CLASS_STATE_CHANGED = null;
 
     // Q2 — kịch bản: final List<String> list = new ArrayList<>(); list.add("a");
     // add() có chạy được không (không ném ngoại lệ)?
-    static final Boolean Q2_CAN_ADD_TO_FINAL_LIST = true; // SOLUTION-VALUE
+    static final Boolean Q2_CAN_ADD_TO_FINAL_LIST = null;
 
     // Q2 — mẫu: bỏ comment cả khối static {} dưới đây, xem IDE báo gì, rồi comment lại
     // — sau khi đã điền dự đoán — trước khi chạy test.
@@ -64,13 +64,13 @@ public class Ex01_FinalIsNotImmutable {
     //     final List<String> immutableRef = new ArrayList<>();
     //     immutableRef = new ArrayList<>();
     // }
-    static final Compiles Q2_REASSIGN_FINAL_LIST_COMPILES = Compiles.NO; // SOLUTION-VALUE
+    static final Compiles Q2_REASSIGN_FINAL_LIST_COMPILES = null;
 
     // Q2 — kịch bản: List.of("a").add("b") ném ngoại lệ gì (tên lớp, không kèm package)?
-    static final String Q2_LIST_OF_ADD_EXCEPTION = "UnsupportedOperationException"; // SOLUTION-VALUE
+    static final String Q2_LIST_OF_ADD_EXCEPTION = null;
 
     // Q2 — kịch bản: List<String> backing = new ArrayList<>(List.of("a"));
     // List<String> view = Collections.unmodifiableList(backing); backing.add("b");
     // view.contains("b") có true không?
-    static final Boolean Q2_UNMODIFIABLE_VIEW_SEES_BACKING_CHANGE = true; // SOLUTION-VALUE
+    static final Boolean Q2_UNMODIFIABLE_VIEW_SEES_BACKING_CHANGE = null;
 }

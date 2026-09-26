@@ -79,7 +79,7 @@ public class Ex02_FileIo {
 
     // Q3 — kịch bản: Files.readString có nạp toàn bộ nội dung file vào bộ nhớ không?
     // Đọc Javadoc JDK (Ctrl+Q) rồi mới điền.
-    static final Boolean Q3_READSTRING_LOADS_WHOLE_FILE = true; // SOLUTION-VALUE
+    static final Boolean Q3_READSTRING_LOADS_WHOLE_FILE = null;
 
     /**
      * Đếm số dòng còn nội dung sau khi trim trong {@code file}, đọc theo kiểu streaming (không tải
@@ -90,11 +90,7 @@ public class Ex02_FileIo {
      * @throws IOException nếu không đọc được file (không tồn tại, không có quyền, lỗi I/O khác...)
      */
     static long countNonBlankLines(Path file) throws IOException {
-        // SOLUTION-BEGIN throw Q3
-        try (Stream<String> lines = Files.lines(file, StandardCharsets.UTF_8)) {
-            return lines.filter(line -> !line.trim().isEmpty()).count();
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q3");
     }
 
     /**
@@ -108,42 +104,10 @@ public class Ex02_FileIo {
      *         nếu file không chứa {@code key} (không có cause)
      */
     static String readConfigValue(Path file, String key) {
-        // SOLUTION-BEGIN throw Q4
-        List<String> lines;
-        try {
-            lines = Files.readAllLines(file, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new ConfigException("Không đọc được cấu hình: " + file, e);
-        }
-        for (String rawLine : lines) {
-            String trimmed = rawLine.trim();
-            if (trimmed.isEmpty() || trimmed.startsWith("#")) {
-                continue;
-            }
-            int eq = trimmed.indexOf('=');
-            if (eq < 0) {
-                continue;
-            }
-            String k = trimmed.substring(0, eq).trim();
-            String v = trimmed.substring(eq + 1).trim();
-            if (k.equals(key)) {
-                return v;
-            }
-        }
-        throw new ConfigException("Thiếu khóa: " + key);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q4");
     }
 }
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * catch (Exception e) {} (như swallowingLoad) bắt luôn cả lỗi logic ngoài ý muốn (NPE, lỗi lập
- * trình...) lẫn lỗi I/O thật, rồi trả null mà không log, không giữ lại message/stack trace gốc.
- * Khi vận hành, hệ thống chỉ thấy "kết quả null"/hành vi sai ở một nơi khác xa chỗ gây lỗi, không
- * còn cách nào biết nguyên nhân gốc để sửa hoặc để cảnh báo (alerting) đúng lúc.
- * So với readConfigValue (Q4): phân loại rõ "lỗi đọc file" và "thiếu khóa", giữ nguyên cause khi bọc
- * exception nên log/stack trace vẫn truy được tới gốc, dễ debug và dễ giám sát production.
- * Trade-off: xử lý exception cụ thể như vậy tốn thêm code hơn "nuốt hết"; nhưng ngược lại vận hành
- * và bảo trì lâu dài lại đỡ tốn công hơn nhiều.
- * SOLUTION-END
+ *
  */

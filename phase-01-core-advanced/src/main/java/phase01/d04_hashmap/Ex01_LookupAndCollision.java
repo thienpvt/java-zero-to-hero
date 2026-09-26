@@ -113,44 +113,11 @@ public class Ex01_LookupAndCollision {
         }
 
         V put(K key, V value) {
-            // SOLUTION-BEGIN throw Q1
-            int h = hash(key);
-            int index = indexFor(h, table.length);
-            Entry<K, V> prev = null;
-            for (Entry<K, V> e = table[index]; e != null; e = e.next) {
-                if (e.hash == h && Objects.equals(e.key, key)) {
-                    V old = e.value;
-                    e.value = value;
-                    return old;
-                }
-                prev = e;
-            }
-            Entry<K, V> created = new Entry<>(key, h, value);
-            if (prev == null) {
-                table[index] = created;
-            } else {
-                prev.next = created;
-            }
-            size++;
-            return null;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q1");
         }
 
         V get(Object key) {
-            // SOLUTION-BEGIN throw Q1
-            int h = hash(key);
-            int index = indexFor(h, table.length);
-            int probes = 0;
-            for (Entry<K, V> e = table[index]; e != null; e = e.next) {
-                probes++;
-                if (e.hash == h && Objects.equals(e.key, key)) {
-                    lastProbeCount = probes;
-                    return e.value;
-                }
-            }
-            lastProbeCount = probes;
-            return null;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q1");
         }
     }
 
@@ -223,31 +190,19 @@ public class Ex01_LookupAndCollision {
     }
 
     // Q2 — kịch bản: put(new HashCodeOnlyKey(1), ...); get(new HashCodeOnlyKey(1) khác instance)
-    static final Boolean Q2_HASHCODE_ONLY_KEY_FOUND_BY_EQUAL_INSTANCE = false; // SOLUTION-VALUE
+    static final Boolean Q2_HASHCODE_ONLY_KEY_FOUND_BY_EQUAL_INSTANCE = null;
 
     // Q4 — kịch bản: put hai ConstantHashKey với id khác nhau (cùng hashCode 42) vào java.util.HashMap
-    static final Integer Q4_SIZE_WITH_TWO_COLLIDING_UNEQUAL_KEYS = 2; // SOLUTION-VALUE
+    static final Integer Q4_SIZE_WITH_TWO_COLLIDING_UNEQUAL_KEYS = null;
 
     // Q5 — kịch bản: put(new EqualsOnlyKey(1), ...); get(new EqualsOnlyKey(1) khác instance)
-    static final Boolean Q5_EQUALS_ONLY_KEY_FOUND_BY_EQUAL_INSTANCE = false; // SOLUTION-VALUE
+    static final Boolean Q5_EQUALS_ONLY_KEY_FOUND_BY_EQUAL_INSTANCE = null;
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * get(key) tính hash(key) (trộn hashCode() gốc với phần cao 16 bit để giảm collision khi
- * bảng nhỏ), dùng hash & (length - 1) để chọn đúng một bucket, rồi duyệt tuần tự chuỗi entry
- * trong bucket đó: so sánh hash trước (rẻ) rồi mới equals() (đắt hơn) để xác định entry đúng.
- * Nếu không entry nào khớp cả hash và equals(), trả về null. Đây chính là lý do cả hashCode()
- * và equals() đều bắt buộc: hashCode() định vị bucket, equals() xác nhận đúng key trong bucket.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Collision là khi hai key khác nhau (equals() false) nhưng rơi vào cùng một bucket, tức
- * indexFor(hash(k1), n) == indexFor(hash(k2), n). Với ConstantHashKey (hashCode() luôn 42),
- * cả 100 entry collide vào đúng 1 bucket nên get() phải duyệt tới lastProbeCount == 100 mới
- * thấy entry cuối; với GoodKey (hash rải đều 16 bucket) thì lastProbeCount nhỏ (≤ ~7). Collision
- * nhiều làm bucket dài ra, biến lookup từ gần O(1) thành O(n) trong bucket đó.
- * SOLUTION-END
+ *
  */
