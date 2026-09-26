@@ -2,6 +2,7 @@ package javaroadmap.tools;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 
@@ -91,5 +92,16 @@ class StripSolutionsTest {
     @Test
     void rejectsEndWithoutBegin() {
         assertThrows(IllegalArgumentException.class, () -> StripSolutions.strip("x\n// SOLUTION-END\n"));
+    }
+
+    @Test
+    void rejectsMarkerVariantsThatAreNotStripped() {
+        IllegalArgumentException value = assertThrows(IllegalArgumentException.class,
+                () -> StripSolutions.strip("    static final Integer Q1 = 1; //SOLUTION-VALUE\n"));
+        assertTrue(value.getMessage().contains("dòng 1"), value.getMessage());
+
+        IllegalArgumentException block = assertThrows(IllegalArgumentException.class,
+                () -> StripSolutions.strip("/* SOLUTION-BEGIN */\nreturn 1;\n"));
+        assertTrue(block.getMessage().contains("dòng 1"), block.getMessage());
     }
 }

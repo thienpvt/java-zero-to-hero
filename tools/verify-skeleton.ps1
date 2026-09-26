@@ -76,7 +76,7 @@ try {
             $name = "$($case.classname)#$($case.name)"
             $problems = @($case.failure) + @($case.error) | Where-Object { $_ }
             if (-not $problems) {
-                if ($case.name -notmatch 'experimentRuns') { $violations.Add("GREEN on skeleton (must be red): $name") }
+                if ($case.name -notmatch '_experimentRuns(\(\))?$') { $violations.Add("GREEN on skeleton (must be red): $name") }
                 continue
             }
             $text = ($problems | ForEach-Object { "$($_.message) $($_.InnerText)" }) -join ' '

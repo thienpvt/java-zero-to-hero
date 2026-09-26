@@ -57,6 +57,12 @@ public final class StripSolutions {
         if (openedAt >= 0) {
             throw new IllegalArgumentException("SOLUTION-BEGIN chưa đóng ở dòng " + (openedAt + 1));
         }
+        for (int i = 0; i < out.size(); i++) {
+            if (out.get(i).contains("SOLUTION-")) {
+                throw new IllegalArgumentException(
+                        "Còn marker SOLUTION- sau khi strip, dòng " + (i + 1) + ": " + out.get(i).trim());
+            }
+        }
         return String.join(newline, out);
     }
 
