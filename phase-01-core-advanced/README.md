@@ -19,7 +19,12 @@ Có thể gặp nhãn ghép, ví dụ `[DỰ ĐOÁN + CODE]`.
 
 - **JDK 21** (khuyến nghị Temurin 21). Trong IntelliJ: *File → Project Structure → SDKs → + → Download JDK → version 21*.
 - Mở **thư mục gốc repo** (có `pom.xml` và `mvnw.cmd`); IntelliJ nhận Maven multi-module tự động.
-- Terminal (PowerShell): đặt `JAVA_HOME` trỏ tới JDK 21 nếu chưa có trên PATH.
+- Terminal (PowerShell): đặt `JAVA_HOME` trỏ tới JDK 21 nếu chưa có trên PATH. JDK tải bằng IntelliJ thường nằm trong thư mục người dùng:
+
+  ```powershell
+  $env:JAVA_HOME = "$env:USERPROFILE\.jdks\<tên-thư-mục-jdk-21>"
+  $env:Path = "$env:JAVA_HOME\bin;$env:Path"
+  ```
 
 ## Quy trình học (5 bước)
 
@@ -52,6 +57,18 @@ Có thể gặp nhãn ghép, ví dụ `[DỰ ĐOÁN + CODE]`.
   ```
 
 Trên nhánh **`phase01-exercises`** (bản khung), hầu hết test **đỏ** là trạng thái mong đợi (`UnsupportedOperationException("TODO Qn")`, hằng dự đoán `null`, v.v.). Chỉ test thí nghiệm (tên chứa `experimentRuns`) được phép xanh ngay trên khung. Nhánh **`solutions`** (và nhánh làm việc của biên soạn như `phase01-work`) phải xanh toàn bộ.
+
+## Chạy ReportApp từ dòng lệnh
+
+Console Windows mặc định không in UTF-8, nên tên khách hàng tiếng Việt trong báo cáo bị lỗi font. Đổi code page, rồi chạy JVM với encoding UTF-8. File mẫu:
+
+`phase-01-core-advanced/src/test/resources/phase01/d17_capstone/orders-sample.csv`
+
+```powershell
+chcp 65001
+.\mvnw.cmd -q -pl phase-01-core-advanced compile
+java -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8 -cp phase-01-core-advanced/target/classes phase01.d17_capstone.ReportApp phase-01-core-advanced/src/test/resources/phase01/d17_capstone/orders-sample.csv Asia/Ho_Chi_Minh
+```
 
 ## Checklist theo domain
 
@@ -115,9 +132,29 @@ Kiểm tra skeleton (biên dịch, không còn marker, test đỏ đúng lý do,
 .\tools\verify-skeleton.ps1 -Module phase-01-core-advanced -Package d04_hashmap -ExpectedQuestions 15
 ```
 
-**Nhánh git (sau khi gộp đủ 17 domain):**
+**Nhánh git:**
 
-- Tạo `phase01-exercises` từ snapshot lời giải, chạy `StripSolutions` trên `phase-01-core-advanced/src/main/java`, commit bản khung.
-- Tạo `solutions` từ `phase01-exercises`, `git revert --no-edit HEAD` để khôi phục lời giải; diff giữa hai nhánh chỉ thay đổi phần đã đánh dấu trong `src/main/java`.
+- `phase01-work`: nhánh người biên soạn. Mã đã giải **có** marker `SOLUTION-*`, kèm `docs/` (nguồn sự thật).
+- `phase01-exercises`: sinh từ `phase01-work` bằng **một** commit chạy `StripSolutions` rồi xóa `docs/superpowers` (plan/spec chứa đáp án).
+- `solutions`: `phase01-exercises` cộng **một** commit khôi phục `phase-01-core-advanced/src/main/java` từ `phase01-work`.
 
-Ứng viên làm trên `phase01-exercises`; lời giải tham khảo nằm trên `solutions`.
+Sửa một bài: sửa trên `phase01-work` (giữ marker), chạy test và `verify-skeleton`, rồi tạo lại hai nhánh kia bằng đúng hai bước dưới. Không merge `solutions` vào `phase01-exercises`.
+
+Người học đã có `my-work`: `git fetch`, rồi rebase `my-work` lên `phase01-exercises` mới (hoặc cherry-pick các commit của mình).
+
+```powershell
+# Đang đứng trên phase01-work, test và verify-skeleton đã OK.
+git branch -D phase01-exercises
+git switch -c phase01-exercises
+java tools/src/main/java/javaroadmap/tools/StripSolutions.java phase-01-core-advanced/src/main/java
+Remove-Item -Recurse -Force docs/superpowers
+git add -A
+git commit -m "chore(phase01): generate exercise skeleton"
+
+git branch -D solutions
+git switch -c solutions
+git checkout phase01-work -- phase-01-core-advanced/src/main/java
+git add phase-01-core-advanced/src/main/java
+git commit -m "chore(phase01): restore solved sources"
+git switch phase01-work
+```

@@ -34,10 +34,12 @@ import phase01.d17_capstone.CustomerReportService.CustomerSummary;
  *   Hoàn thành khi: mọi test trong ReportAppTest xanh và chạy được lệnh dòng lệnh dưới đây
  *               trên file mẫu, ra báo cáo hợp lý (đối chiếu với test đọc file mẫu).
  *
- * <p>Chạy từ dòng lệnh (sau khi test xanh):
+ * <p>Chạy từ dòng lệnh (sau khi test xanh). Console Windows mặc định không phải UTF-8,
+ * nên tiếng Việt bị lỗi font nếu thiếu {@code chcp 65001} và hai cờ encoding:
  * <pre>{@code
+ * chcp 65001
  * .\mvnw.cmd -q -pl phase-01-core-advanced compile
- * java -cp phase-01-core-advanced/target/classes phase01.d17_capstone.ReportApp <file.csv> Asia/Ho_Chi_Minh
+ * java -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8 -cp phase-01-core-advanced/target/classes phase01.d17_capstone.ReportApp phase-01-core-advanced/src/test/resources/phase01/d17_capstone/orders-sample.csv Asia/Ho_Chi_Minh
  * }</pre>
  */
 public final class ReportApp {
