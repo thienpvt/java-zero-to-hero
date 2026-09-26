@@ -26,8 +26,9 @@ import phase01.support.Complexity;
  *               thấy runExperiment cho sẵn so sánh HashMap thường (kết quả có thể sai/đứng)
  *               với ConcurrentHashMap (luôn đúng).
  *   Code      : concurrentCounter() trả về một ConcurrentHashMap rỗng.
- *   Hoàn thành khi: mọi test q13_* xanh + giải thích được vì sao HashMap thường không an
- *               toàn khi nhiều luồng cùng ghi (đọc/ghi cấu trúc bucket không đồng bộ).
+ *   Hoàn thành khi: mọi test q13_* xanh + viết xong khối OBSERVATION Q13 nêu vì sao HashMap
+ *               thường không an toàn khi nhiều luồng cùng ghi (mất update thầm lặng hoặc ném
+ *               ConcurrentModificationException) trong khi ConcurrentHashMap luôn cho tổng đúng.
  *
  * Q14 [DỰ ĐOÁN] `HashMap` cho phép bao nhiêu null key?
  *   Bắt đầu   : viết đoạn code tạm trong Evaluate Expression (Alt+F8) hoặc Scratch file:
@@ -174,3 +175,15 @@ public class Ex05_MapVariants {
         // SOLUTION-END
     }
 }
+
+/* OBSERVATION Q13:
+ * SOLUTION-BEGIN
+ * Chạy main() nhiều lần (4 luồng x 1000 lần merge() mỗi luồng) cho thấy HashMap thường không
+ * tất định: có lần ném ConcurrentModificationException (bucket bị hai luồng sửa cấu trúc cùng
+ * lúc), có lần không ném gì nhưng tổng đếm lại thiếu (ví dụ 3961 thay vì 4000 kỳ vọng) — một số
+ * lần merge() bị "mất" vì hai luồng cùng đọc/ghi một Node mà không đồng bộ. ConcurrentHashMap ở
+ * cùng kịch bản luôn ra đúng 4000 vì merge() của nó nguyên tử theo từng bucket. Kết luận: HashMap
+ * không an toàn khi nhiều luồng cùng ghi; dùng ConcurrentHashMap (hoặc đồng bộ hóa ngoài) khi cần
+ * chia sẻ map giữa nhiều luồng viết.
+ * SOLUTION-END
+ */

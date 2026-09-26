@@ -51,7 +51,11 @@ class Ex05_MapVariantsTest {
             thread.start();
         }
         for (Thread thread : threads) {
-            thread.join();
+            thread.join(10_000);
+        }
+        for (Thread thread : threads) {
+            assertFalse(thread.isAlive(),
+                    "Luồng vẫn chưa xong sau 10s — nghi kẹt do đua tranh, ConcurrentHashMap.merge() phải luôn kết thúc nhanh.");
         }
         long total = counter.values().stream().mapToLong(Integer::longValue).sum();
         assertEquals(40_000L, total, "Tổng đếm qua ConcurrentHashMap.merge() đa luồng phải chính xác và tất định.");
