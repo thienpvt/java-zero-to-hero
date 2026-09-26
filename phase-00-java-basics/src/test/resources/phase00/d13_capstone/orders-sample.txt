@@ -1,0 +1,4 @@
+o1,khách-An,2026-09-26,10.50,NEW
+o2,khách-An,2026-09-27,0,PAID
+
+o3,khách-Bình,2026-09-26,3,SHIPPED
