@@ -1,5 +1,7 @@
 package phase01.d08_immutability;
 
+import java.util.ArrayList;
+import java.util.List;
 import phase01.support.Compiles;
 
 /**
@@ -23,9 +25,9 @@ import phase01.support.Compiles;
  *
  * Q2 [DỰ ĐOÁN] `final List<String>` có immutable không?
  *   Bắt đầu   : điền 4 hằng Q2_* bên dưới (thay null từng hằng theo đúng kiểu khai báo).
- *               Với Q2_REASSIGN_FINAL_LIST_COMPILES: bỏ comment 2 dòng trong
- *               reassignScratchpad() ở dưới để tự thấy dòng nào gạch đỏ lúc biên dịch,
- *               rồi comment lại (không xoá) trước khi chạy test.
+ *               Với Q2_REASSIGN_FINAL_LIST_COMPILES: bỏ comment 2 dòng mẫu ngay trên hằng
+ *               đó để tự thấy dòng nào gạch đỏ lúc biên dịch, rồi comment lại (không xoá)
+ *               trước khi chạy test.
  *   Kiểm chứng: chạy q02_prediction. Với Q2_LIST_OF_ADD_EXCEPTION và
  *               Q2_UNMODIFIABLE_VIEW_SEES_BACKING_CHANGE, đặt con trỏ lên `List.of` hoặc
  *               `Collections.unmodifiableList` trong file test rồi Ctrl+B (hoặc Ctrl+Click)
@@ -59,8 +61,12 @@ public class Ex01_FinalIsNotImmutable {
     // add() có chạy được không (không ném ngoại lệ)?
     static final Boolean Q2_CAN_ADD_TO_FINAL_LIST = true; // SOLUTION-VALUE
 
-    // Q2 — mẫu: bỏ comment 2 dòng trong reassignScratchpad() dưới đây để tự thấy lỗi đỏ
-    // lúc biên dịch (gán lại giá trị cho biến final), rồi comment lại trước khi chạy test.
+    // Q2 — mẫu: bỏ comment cả khối static {} dưới đây để tự thấy lỗi đỏ lúc biên dịch
+    // (gán lại giá trị cho biến final), rồi comment lại trước khi chạy test.
+    // static {
+    //     final List<String> immutableRef = new ArrayList<>();
+    //     immutableRef = new ArrayList<>();
+    // }
     static final Compiles Q2_REASSIGN_FINAL_LIST_COMPILES = Compiles.NO; // SOLUTION-VALUE
 
     // Q2 — kịch bản: List.of("a").add("b") ném ngoại lệ gì (tên lớp, không kèm package)?
@@ -70,13 +76,4 @@ public class Ex01_FinalIsNotImmutable {
     // List<String> view = Collections.unmodifiableList(backing); backing.add("b");
     // view.contains("b") có true không?
     static final Boolean Q2_UNMODIFIABLE_VIEW_SEES_BACKING_CHANGE = true; // SOLUTION-VALUE
-
-    /**
-     * Chỗ trống dùng để thử gán lại một biến {@code final} (không được gọi ở đâu cả; chỉ
-     * để bỏ comment và quan sát lỗi biên dịch, sau đó comment lại).
-     */
-    private static void reassignScratchpad() {
-        // final java.util.List<String> list = new java.util.ArrayList<>();
-        // list = new java.util.ArrayList<>();
-    }
 }

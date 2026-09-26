@@ -26,10 +26,16 @@ package phase01.d08_immutability;
  *               object mới) với sửa tại chỗ một MutablePoint.
  *   Kiểm chứng: chạy q06_experimentRuns (n nhỏ, chỉ kiểm tra có báo cáo, không so tốc độ
  *               vì máy có thể chập chờn); sau đó tự chạy main() với n lớn (200 000) để
- *               thấy số nanoTime chênh lệch rõ giữa hai cách. Đặt breakpoint trong
- *               concatWithPlus và concatWithBuilder, Debug, F8 (Step Over) từng vòng lặp
- *               để thấy {@code +=} tạo String mới mỗi lần (Ctrl+B vào String.concat nếu
- *               muốn xem sâu hơn), còn StringBuilder.append sửa buffer nội bộ tại chỗ.
+ *               thấy số nanoTime chênh lệch rõ giữa hai cách. Build project (Ctrl+F9), mở
+ *               Terminal (Alt+F12) và chạy
+ *               {@code javap -c -p target/classes/phase01/d08_immutability/Ex03_WhyImmutable.class},
+ *               tìm dòng {@code invokedynamic ... makeConcatWithConstants} bên trong vòng
+ *               lặp của concatWithPlus (JDK 21 dịch {@code +=} trên String thành
+ *               invokedynamic gọi StringConcatFactory, KHÔNG phải String.concat) — mỗi lần
+ *               chạy là một lần tạo String mới bằng cách copy toàn bộ nội dung cũ cộng thêm
+ *               ký tự mới; so sánh với concatWithBuilder chỉ có
+ *               {@code invokevirtual ... StringBuilder.append}, sửa buffer nội bộ tại chỗ,
+ *               không tạo lại object mỗi vòng.
  *   Hoàn thành khi: q06_experimentRuns xanh; viết xong khối OBSERVATION Q6 với số đo thật
  *               từ main() của bạn, và khối ANSWER Q6 nêu được ít nhất một tình huống nên
  *               chọn mutable (vòng lặp nóng, nhiều lần sửa) thay vì tạo lại object mới.
