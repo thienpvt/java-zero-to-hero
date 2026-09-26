@@ -54,4 +54,21 @@ class ReportAppTest {
         assertEquals("customerId | orders | totalPaid | firstOrderDate", rendered,
                 "Không có dữ liệu và không có lỗi thì báo cáo chỉ còn đúng dòng tiêu đề.");
     }
+
+    @Test
+    @DisplayName("B5 render: không có dòng dữ liệu nhưng có lỗi thì vẫn có dòng trống rồi các dòng lỗi")
+    void b05_renderWithNoRowsButWithErrorsHasBlankLineThenErrors() {
+        LineError error1 = new LineError(6, "createdAt không đúng định dạng ISO-8601: khong-phai-ngay");
+        LineError error2 = new LineError(8, "Trùng id: o1");
+
+        String rendered = ReportApp.render(List.of(), List.of(error1, error2));
+
+        String expected = "customerId | orders | totalPaid | firstOrderDate\n"
+                + "\n"
+                + "Dòng 6: createdAt không đúng định dạng ISO-8601: khong-phai-ngay\n"
+                + "Dòng 8: Trùng id: o1";
+        assertEquals(expected, rendered,
+                "Không có khách hàng nào (0 order hợp lệ) nhưng vẫn có lỗi thì phải giữ dòng tiêu đề, "
+                        + "thêm một dòng trống, rồi mỗi lỗi một dòng — không được bỏ qua phần lỗi.");
+    }
 }

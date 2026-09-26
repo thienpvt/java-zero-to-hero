@@ -2,6 +2,7 @@ package phase01.d17_capstone;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.time.DateTimeException;
 import java.time.ZoneId;
 import java.util.List;
 
@@ -72,8 +73,10 @@ public final class ReportApp {
 
     /**
      * Đọc file CSV ở {@code args[0]}, tổng hợp báo cáo theo múi giờ {@code args[1]}, in ra
-     * {@code System.out}. Thiếu tham số → hướng dẫn ra {@code stderr}, exit code 2. Lỗi đọc
-     * file (I/O) → thông báo ra {@code stderr}, exit code 1.
+     * {@code System.out}. Thiếu tham số, hoặc {@code args[1]} không phải một zone id hợp lệ
+     * (ví dụ gõ sai như {@code "Asia/Ho-Chi-Minh"} thay vì {@code "Asia/Ho_Chi_Minh"}) →
+     * hướng dẫn/lỗi ra {@code stderr}, exit code 2. Lỗi đọc file (I/O) → thông báo ra
+     * {@code stderr}, exit code 1.
      */
     public static void main(String[] args) {
         if (args.length != 2) {
@@ -82,7 +85,14 @@ public final class ReportApp {
             return;
         }
         Path file = Path.of(args[0]);
-        ZoneId zone = ZoneId.of(args[1]);
+        ZoneId zone;
+        try {
+            zone = ZoneId.of(args[1]);
+        } catch (DateTimeException e) {
+            System.err.println("Múi giờ không hợp lệ: '" + args[1] + "'. Ví dụ hợp lệ: Asia/Ho_Chi_Minh, UTC.");
+            System.exit(2);
+            return;
+        }
         try {
             CsvOrderParser parser = new CsvOrderParser();
             ParseResult parseResult = parser.parse(file);

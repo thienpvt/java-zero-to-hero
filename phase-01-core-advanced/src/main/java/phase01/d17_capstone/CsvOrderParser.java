@@ -32,10 +32,14 @@ import java.util.Set;
  *   Code      : cài {@code parse(Path file)}: đọc UTF-8 trong try-with-resources; dòng 1
  *               phải khớp {@code HEADER} (sai → 1 lỗi ở dòng 1, dừng ngay); bỏ qua dòng
  *               trống; mỗi dòng dữ liệu tách bằng {@code split(",", -1)} phải ra đúng 5
- *               trường rồi parse {@code Instant}/{@code BigDecimal}/{@code Order.Status};
- *               lỗi ở một dòng chỉ ghi nhận rồi đọc tiếp, không dừng cả file;
- *               {@code IOException} (kể cả {@code NoSuchFileException}) phải được ném ra
- *               nguyên vẹn, không bắt/nuốt trong try-with-resources.
+ *               trường rồi parse riêng từng trường {@code Instant}/{@code BigDecimal}/
+ *               {@code Order.Status} — mỗi trường có {@code try/catch} riêng để biết đúng
+ *               trường nào sai và ghi một mô tả tiếng Việt nêu rõ trường + giá trị gốc (không
+ *               lộ nguyên văn thông báo lỗi tiếng Anh của JDK, ví dụ không dùng trực tiếp
+ *               {@code e.getMessage()} của {@code DateTimeParseException}); lỗi ở một dòng
+ *               chỉ ghi nhận rồi đọc tiếp, không dừng cả file; {@code IOException} (kể cả
+ *               {@code NoSuchFileException}) phải được ném ra nguyên vẹn, không bắt/nuốt
+ *               trong try-with-resources.
  *   Hoàn thành khi: mọi test trong CsvOrderParserTest xanh; giải thích được vì sao dùng
  *               try-with-resources (đóng {@code BufferedReader} kể cả khi có exception).
  *
@@ -103,26 +107,53 @@ public final class CsvOrderParser {
                 }
                 String[] fields = line.split(",", -1);
                 if (fields.length != 5) {
-                    errors.add(new LineError(lineNumber,
-                            "Cần đúng 5 trường (id,customerId,createdAt,amount,status), có " + fields.length));
+                    errors.add(new LineError(lineNumber, "Cần đúng 5 trường, nhận được " + fields.length));
                     continue;
                 }
                 String id = fields[0];
                 String customerId = fields[1];
+
+                Instant createdAt;
                 try {
-                    Instant createdAt = Instant.parse(fields[2]);
-                    BigDecimal amount = new BigDecimal(fields[3]);
-                    Order.Status status = Order.Status.valueOf(fields[4]);
-                    Order order = new Order(id, customerId, createdAt, amount, status);
-                    // B3: Set<String> phát hiện id đã thấy để giữ đúng một bản đầu tiên.
-                    if (!seenIds.add(id)) {
-                        errors.add(new LineError(lineNumber, "Trùng id: " + id));
-                        continue;
-                    }
-                    orders.add(order);
-                } catch (DateTimeParseException | IllegalArgumentException e) {
-                    errors.add(new LineError(lineNumber, "Dòng dữ liệu không hợp lệ: " + e.getMessage()));
+                    createdAt = Instant.parse(fields[2]);
+                } catch (DateTimeParseException e) {
+                    errors.add(new LineError(lineNumber,
+                            "createdAt không đúng định dạng ISO-8601: " + fields[2]));
+                    continue;
                 }
+
+                BigDecimal amount;
+                try {
+                    amount = new BigDecimal(fields[3]);
+                } catch (NumberFormatException e) {
+                    errors.add(new LineError(lineNumber, "amount không phải số: " + fields[3]));
+                    continue;
+                }
+
+                Order.Status status;
+                try {
+                    status = Order.Status.valueOf(fields[4]);
+                } catch (IllegalArgumentException e) {
+                    errors.add(new LineError(lineNumber,
+                            "status không hợp lệ: " + fields[4] + " (chỉ nhận NEW, PAID, CANCELLED)"));
+                    continue;
+                }
+
+                Order order;
+                try {
+                    order = new Order(id, customerId, createdAt, amount, status);
+                } catch (IllegalArgumentException e) {
+                    // amount âm: Order tự ném IllegalArgumentException với message tiếng Việt sẵn có.
+                    errors.add(new LineError(lineNumber, e.getMessage()));
+                    continue;
+                }
+
+                // B3: Set<String> phát hiện id đã thấy để giữ đúng một bản đầu tiên.
+                if (!seenIds.add(id)) {
+                    errors.add(new LineError(lineNumber, "Trùng id: " + id));
+                    continue;
+                }
+                orders.add(order);
             }
         }
         return new ParseResult(orders, errors);

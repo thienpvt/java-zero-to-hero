@@ -45,6 +45,10 @@ class CsvOrderParserTest {
         LineError second = result.errors().get(1);
         assertEquals(6, first.lineNumber(), "Lỗi đầu tiên (ngày sai của o5) phải ở dòng 6.");
         assertEquals(8, second.lineNumber(), "Lỗi thứ hai (o1 trùng id) phải ở dòng 8.");
+        assertTrue(first.message().contains("createdAt"),
+                "Thông báo lỗi ngày sai phải nêu rõ trường 'createdAt', không phải thông báo JDK nguyên văn.");
+        assertTrue(first.message().contains("khong-phai-ngay"),
+                "Thông báo lỗi phải nêu giá trị gốc bị sai ('khong-phai-ngay').");
         assertTrue(second.message().contains("o1"), "Thông báo lỗi trùng id phải nêu rõ id 'o1' bị trùng.");
     }
 
@@ -110,6 +114,8 @@ class CsvOrderParserTest {
 
         assertEquals(1, result.errors().size(), "Chỉ dòng 2 thiếu trường mới bị lỗi.");
         assertEquals(2, result.errors().get(0).lineNumber(), "Dòng thiếu trường là dòng 2.");
+        assertEquals("Cần đúng 5 trường, nhận được 4", result.errors().get(0).message(),
+                "Thông báo lỗi thiếu trường phải nêu rõ số trường nhận được.");
         assertEquals(List.of("o2"), result.orders().stream().map(Order::id).toList(),
                 "Dòng 3 hợp lệ vẫn phải được đọc tiếp sau khi dòng 2 lỗi.");
     }
@@ -126,6 +132,42 @@ class CsvOrderParserTest {
         assertTrue(result.orders().isEmpty(), "amount âm thì order không được tạo.");
         assertEquals(1, result.errors().size(), "amount âm phải tạo đúng 1 lỗi.");
         assertEquals(2, result.errors().get(0).lineNumber(), "Lỗi amount âm phải ở dòng 2.");
+        assertTrue(result.errors().get(0).message().contains("âm"),
+                "Thông báo lỗi amount âm phải là tiếng Việt, nêu rõ lý do (âm), không phải text JDK.");
+    }
+
+    @Test
+    @DisplayName("B3 parse: amount không phải số báo lỗi tiếng Việt nêu rõ trường 'amount' và giá trị gốc")
+    void b03_parseInvalidAmountReportsAmountFieldInVietnameseMessage(@TempDir Path tempDir) throws Exception {
+        Path file = tempDir.resolve("invalid-amount.csv");
+        String content = CsvOrderParser.HEADER + "\n" + "o1,an,2026-01-01T00:00:00Z,khong-phai-so,PAID\n";
+        Files.writeString(file, content, StandardCharsets.UTF_8);
+
+        ParseResult result = new CsvOrderParser().parse(file);
+
+        assertTrue(result.orders().isEmpty(), "amount không parse được thì order không được tạo.");
+        assertEquals(1, result.errors().size(), "amount sai định dạng phải tạo đúng 1 lỗi.");
+        LineError error = result.errors().get(0);
+        assertEquals(2, error.lineNumber(), "Lỗi amount sai phải ở dòng 2.");
+        assertEquals("amount không phải số: khong-phai-so", error.message(),
+                "Thông báo phải nêu rõ trường 'amount' và giá trị gốc, không lộ nguyên văn NumberFormatException.");
+    }
+
+    @Test
+    @DisplayName("B3 parse: status không hợp lệ báo lỗi tiếng Việt nêu rõ trường 'status' và giá trị gốc")
+    void b03_parseInvalidStatusReportsStatusFieldInVietnameseMessage(@TempDir Path tempDir) throws Exception {
+        Path file = tempDir.resolve("invalid-status.csv");
+        String content = CsvOrderParser.HEADER + "\n" + "o1,an,2026-01-01T00:00:00Z,10.00,SHIPPED\n";
+        Files.writeString(file, content, StandardCharsets.UTF_8);
+
+        ParseResult result = new CsvOrderParser().parse(file);
+
+        assertTrue(result.orders().isEmpty(), "status không hợp lệ thì order không được tạo.");
+        assertEquals(1, result.errors().size(), "status sai phải tạo đúng 1 lỗi.");
+        LineError error = result.errors().get(0);
+        assertEquals(2, error.lineNumber(), "Lỗi status sai phải ở dòng 2.");
+        assertEquals("status không hợp lệ: SHIPPED (chỉ nhận NEW, PAID, CANCELLED)", error.message(),
+                "Thông báo phải nêu rõ trường 'status' và giá trị gốc, không lộ nguyên văn IllegalArgumentException.");
     }
 
     @Test
