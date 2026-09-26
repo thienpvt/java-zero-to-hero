@@ -77,7 +77,6 @@ public class Ex02_SetVariants {
      * Trả về các phần tử phân biệt trong {@code items}, sắp xếp tăng dần theo thứ tự tự nhiên.
      *
      * @throws NullPointerException nếu {@code items} là {@code null}
-     * @throws ClassCastException nếu các phần tử không so sánh được với nhau
      */
     static <T extends Comparable<? super T>> List<T> distinctSorted(Collection<T> items) {
         // SOLUTION-BEGIN throw Q6
