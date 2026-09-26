@@ -1,0 +1,112 @@
+package phase01.d06_hashset;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.NavigableSet;
+import java.util.Set;
+import java.util.TreeSet;
+
+/**
+ * HashSet — Bài 2: HashSet, LinkedHashSet, TreeSet
+ *
+ * Nguồn: 01-java-core-advanced.md, mục 6 (HashSet), câu 3, 5, 6.
+ * Cần làm trước: Ex01_Uniqueness (luồng add() → backing HashMap).
+ * Cách làm: làm lần lượt từng câu; chạy test tương ứng trong Ex02_SetVariantsTest bằng nút ▶
+ * cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
+ *
+ * ─────────────────────────────────────────────────────────────────────
+ * Q3 [DỰ ĐOÁN] HashSet có đảm bảo iteration order không?
+ *   Bắt đầu   : chạy main() bên dưới (nút ▶ cạnh main) để thấy thứ tự in ra thật của
+ *               "banana","apple","cherry","date" sau khi add vào HashSet.
+ *   Kiểm chứng: điền Q3_HASHSET_GUARANTEES_ORDER; Ctrl+Q khi con trỏ ở tên HashSet để đọc
+ *               đoạn Javadoc "no guarantees ... iteration order".
+ *   Code      : không.
+ *   Hoàn thành khi: q03_prediction xanh, giải thích được thứ tự in ra phụ thuộc
+ *               hashCode() và cấu trúc bucket của HashMap phía sau, không phải thứ tự add.
+ *
+ * Q5 [CODE] LinkedHashSet khác HashSet ra sao?
+ *   Bắt đầu   : cài đặt distinctInFirstSeenOrder(List) bên dưới bằng LinkedHashSet.
+ *   Kiểm chứng: chạy q05_*; Ctrl+N mở LinkedHashSet, Ctrl+F12 tìm nested class Entry của
+ *               LinkedHashMap, xem field before/after (danh sách liên kết đôi giữ thứ tự)
+ *               so với HashMap.Node (chỉ có next).
+ *   Code      : distinctInFirstSeenOrder(List<T>).
+ *   Hoàn thành khi: test q05_* xanh, giải thích được LinkedHashSet giữ đúng thứ tự chèn
+ *               nhờ danh sách liên kết phụ, đổi lại tốn thêm bộ nhớ/thời gian so với HashSet.
+ *
+ * Q6 [DỰ ĐOÁN + CODE] TreeSet cần Comparable/Comparator vì sao?
+ *   Bắt đầu   : điền Q6_TREESET_NON_COMPARABLE_EXCEPTION; cài đặt distinctSorted(Collection)
+ *               và byAgeThenName(Collection) bên dưới.
+ *   Kiểm chứng: chạy q06_prediction; nếu sai, Ctrl+B vào TreeSet.add(E) rồi F7 Step Into
+ *               tới TreeMap.put, thấy compare(k1, k2) ném ClassCastException khi phần tử
+ *               không phải Comparable và TreeSet không có Comparator.
+ *   Code      : distinctSorted, byAgeThenName (dùng
+ *               Comparator.comparingInt(Person::age).thenComparing(Person::name)).
+ *   Hoàn thành khi: test q06_* xanh, giải thích được TreeSet dùng compare()/compareTo()
+ *               (không phải equals/hashCode) để vừa sắp xếp vừa coi hai phần tử compare
+ *               bằng 0 là "trùng" nên bị loại.
+ */
+public class Ex02_SetVariants {
+
+    // Q3 — cố định: HashSet không đảm bảo iteration order (xem Javadoc HashSet).
+    static final Boolean Q3_HASHSET_GUARANTEES_ORDER = false; // SOLUTION-VALUE
+
+    /**
+     * Trả về các phần tử phân biệt trong {@code items}, theo đúng thứ tự lần xuất hiện
+     * <b>đầu tiên</b> của mỗi phần tử.
+     *
+     * @throws NullPointerException nếu {@code items} là {@code null}
+     */
+    static <T> List<T> distinctInFirstSeenOrder(List<T> items) {
+        // SOLUTION-BEGIN throw Q5
+        return new ArrayList<>(new LinkedHashSet<>(items));
+        // SOLUTION-END
+    }
+
+    // Q6 — kịch bản: new TreeSet<Object>().add(new Object())
+    static final String Q6_TREESET_NON_COMPARABLE_EXCEPTION = "ClassCastException"; // SOLUTION-VALUE
+
+    /** Người, dùng cho các câu về TreeSet: sắp theo tuổi rồi theo tên khi cần thứ tự tất định. */
+    record Person(String name, int age) {
+    }
+
+    /**
+     * Trả về các phần tử phân biệt trong {@code items}, sắp xếp tăng dần theo thứ tự tự nhiên.
+     *
+     * @throws NullPointerException nếu {@code items} là {@code null}
+     * @throws ClassCastException nếu các phần tử không so sánh được với nhau
+     */
+    static <T extends Comparable<? super T>> List<T> distinctSorted(Collection<T> items) {
+        // SOLUTION-BEGIN throw Q6
+        return new ArrayList<>(new TreeSet<>(items));
+        // SOLUTION-END
+    }
+
+    /**
+     * Trả về {@code people} dưới dạng {@link NavigableSet}, sắp theo tuổi tăng dần, cùng
+     * tuổi thì sắp theo tên; hai người cùng tuổi và cùng tên coi là trùng (chỉ giữ một).
+     *
+     * @throws NullPointerException nếu {@code people} là {@code null}
+     */
+    static NavigableSet<Person> byAgeThenName(Collection<Person> people) {
+        // SOLUTION-BEGIN throw Q6
+        NavigableSet<Person> result =
+                new TreeSet<>(Comparator.comparingInt(Person::age).thenComparing(Person::name));
+        result.addAll(people);
+        return result;
+        // SOLUTION-END
+    }
+
+    public static void main(String[] args) {
+        Set<String> fruits = new HashSet<>();
+        fruits.add("banana");
+        fruits.add("apple");
+        fruits.add("cherry");
+        fruits.add("date");
+        System.out.println("Thứ tự thêm : banana, apple, cherry, date");
+        System.out.println("Thứ tự duyệt: " + fruits);
+    }
+}
