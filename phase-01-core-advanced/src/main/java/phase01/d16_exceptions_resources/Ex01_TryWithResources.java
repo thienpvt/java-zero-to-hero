@@ -16,9 +16,8 @@ import java.util.List;
  *               false); var b = new TrackedResource("B", log, false)) {}` trong Alt+F8 (Evaluate Expression)
  *               khi debug, rồi điền hằng số Q1_CLOSE_ORDER (thay null).
  *   Kiểm chứng: chạy q01_closeOrderPrediction; đặt breakpoint trong TrackedResource.close() (Ctrl+N →
- *               gõ "Ex01_TryWithResources" → mở, Ctrl+F12 để thấy method close()), Debug test: lần
- *               dừng đầu tiên là close() của B, bấm Resume (F9) một lần để thấy lần dừng kế tiếp là
- *               close() của A.
+ *               gõ "Ex01_TryWithResources" → mở, Ctrl+F12 để thấy method close()), Debug test, sau khi
+ *               đã điền dự đoán, ghi lại tên resource mỗi lần breakpoint dừng (F9 để sang lần kế).
  *   Code      : cài đặt closeAll(List<? extends AutoCloseable>) — đóng các resource theo thứ tự
  *               ngược lại so với danh sách truyền vào, đóng hết mọi resource dù có lỗi xảy ra; lỗi
  *               đầu tiên gặp phải được ném ra, các lỗi đóng sau đó được gắn vào bằng addSuppressed().
@@ -26,9 +25,9 @@ import java.util.List;
  *               báo sau cùng trước tiên (giống cách pop phần tử ra khỏi một ngăn xếp/stack).
  *
  * Q2 [DỰ ĐOÁN] Nếu thao tác chính và `close()` cùng ném exception thì kiểm tra thông tin lỗi ở đâu?
- *   Bắt đầu   : trong q02_primaryAndSuppressed, thân try ném IllegalStateException("body failed") còn
- *               resource A có failOnClose = true; điền Q2_PRIMARY_MESSAGE và Q2_SUPPRESSED_COUNT (thay null)
- *               dựa trên exception mà bạn nghĩ sẽ bắt được ở catch bên ngoài.
+ *   Bắt đầu   : đọc q02_primaryAndSuppressed để thấy thân try ném exception gì và resource nào
+ *               có failOnClose; điền Q2_PRIMARY_MESSAGE và Q2_SUPPRESSED_COUNT (thay null) dựa trên
+ *               exception bắt được ở catch — sau khi đã tự debug, đừng chép message trước.
  *   Kiểm chứng: đặt breakpoint ngay tại dòng catch trong test, Debug q02_primaryAndSuppressed, dùng
  *               Alt+F8 (Evaluate Expression) gọi caught.getMessage() và caught.getSuppressed() để xem
  *               trực tiếp mảng suppressed exception.
@@ -67,7 +66,8 @@ public class Ex01_TryWithResources {
     // Q1 — kịch bản: try (A; B) {} không lỗi, rồi log được nối bằng ","
     static final String Q1_CLOSE_ORDER = "B,A"; // SOLUTION-VALUE
 
-    // Q2 — kịch bản: thân try ném "body failed", resource A (failOnClose=true) ném "close A" khi đóng
+    // Q2 — kịch bản: thân try ném exception, đồng thời resource A có failOnClose.
+    // Ghi message của exception bắt được ở catch và số phần tử getSuppressed().
     static final String Q2_PRIMARY_MESSAGE = "body failed"; // SOLUTION-VALUE
     static final Integer Q2_SUPPRESSED_COUNT = 1; // SOLUTION-VALUE
 

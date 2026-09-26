@@ -14,7 +14,8 @@ import phase01.support.Compiles;
  * ─────────────────────────────────────────────────────────────────────
  * Q8 [DỰ ĐOÁN + CODE] So sánh: `<T> void process(List<T> list)` và `void process(List<?> list)`
  *   Bắt đầu   : điền 2 hằng Q8_* bên dưới; bỏ comment từng dòng mẫu ngay cạnh mỗi hằng
- *               (trên một biến `List<?> list`) để tự thấy dòng nào bị gạch đỏ, rồi comment lại.
+ *               (trên một biến `List<?> list`), xem IDE báo gì, rồi comment lại — sau khi
+ *               đã điền dự đoán.
  *   Kiểm chứng: chạy q08_*; đặt breakpoint trong swapHelper, Debug test, F7 để thấy
  *               compiler "capture" wildcard `?` của swapFirstLast thành một kiểu T cụ thể
  *               khi gọi sang swapHelper.
@@ -27,11 +28,12 @@ import phase01.support.Compiles;
 public class Ex03_GenericMethodVsWildcard {
 
     // Q8 — mẫu: với một biến `List<?> list = new ArrayList<>(List.of("a"));`,
-    // bỏ comment dòng dưới để thấy lỗi đỏ (không rõ ? là kiểu gì nên không cho add "x")
+    // bỏ comment dòng dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
     // list.add("x");
     static final Compiles Q8_ADD_STRING_TO_WILDCARD_LIST_COMPILES = Compiles.NO; // SOLUTION-VALUE
 
-    // Q8 — mẫu: bỏ comment dòng dưới, KHÔNG lỗi vì null gán được cho mọi kiểu tham chiếu
+    // Q8 — mẫu: cùng biến `List<?> list`, bỏ comment dòng dưới, xem IDE báo gì, rồi
+    // comment lại — sau khi đã điền dự đoán.
     // list.add(null);
     static final Compiles Q8_ADD_NULL_TO_WILDCARD_LIST_COMPILES = Compiles.YES; // SOLUTION-VALUE
 

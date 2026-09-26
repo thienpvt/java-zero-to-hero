@@ -28,14 +28,13 @@ import java.util.Objects;
  * Q3 [DỰ ĐOÁN + CODE] Natural ordering nghĩa là gì?
  *   Bắt đầu   : đọc hằng số Q3_STRING_ORDER_PUTS_1_10_BEFORE_1_2 bên dưới; bỏ comment
  *               dòng ví dụ ngay cạnh, Alt+F8 (Evaluate Expression) gõ
- *               "1.10.0".compareTo("1.2.0") để tự thấy dấu kết quả trước khi điền dự đoán,
- *               rồi comment dòng ví dụ lại.
- *   Kiểm chứng: chạy q03_*; nếu sai, Ctrl+B trên String.compareTo để đọc Javadoc (so theo
- *               UTF-16 code unit từng ký tự một, không so theo giá trị số của cả chuỗi).
+ *               "1.10.0".compareTo("1.2.0"), ghi nhận dấu kết quả, rồi comment dòng ví dụ
+ *               lại — điền hằng sau khi đã tự chạy.
+ *   Kiểm chứng: chạy q03_*; nếu sai, Ctrl+B trên String.compareTo, đọc Javadoc cách so sánh
+ *               — sau khi đã điền dự đoán.
  *   Code      : không cần viết thêm — chỉ điền hằng số dự đoán ở trên.
- *   Hoàn thành khi: q03_* xanh; giải thích được vì sao String coi ký tự '1' < '2' nên
- *               "1.10.0" đứng trước "1.2.0" theo natural ordering (String.compareTo), trong
- *               khi Version.compareTo ở Q1 lại cho kết quả khác vì so theo giá trị số nguyên.
+ *   Hoàn thành khi: q03_* xanh; giải thích được vì sao thứ tự natural của String khác
+ *               Version.compareTo ở Q1.
  *
  * Q2 [CODE] Khi nào nên dùng Comparator thay vì Comparable?
  *   Bắt đầu   : đọc record Product bên dưới — Product không implements Comparable vì

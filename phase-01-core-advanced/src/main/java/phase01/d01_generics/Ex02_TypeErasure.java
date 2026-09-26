@@ -15,8 +15,8 @@ import phase01.support.Compiles;
  *
  * ─────────────────────────────────────────────────────────────────────
  * Q5 [DỰ ĐOÁN + CODE] Tại sao không thể viết: `T value = new T();`
- *   Bắt đầu   : điền hằng Q5_NEW_T_COMPILES; bỏ comment thân method mẫu ngay dưới hằng
- *               để tự thấy lỗi đỏ "Cannot instantiate the type T", rồi comment lại.
+ *   Bắt đầu   : điền hằng Q5_NEW_T_COMPILES; bỏ comment thân method mẫu ngay dưới hằng,
+ *               xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
  *   Kiểm chứng: chạy q05_*; đặt breakpoint trong newInstance(), Debug test, F7 vào
  *               `Class.getDeclaredConstructor()` (Ctrl+B trên tên method) để thấy cơ chế
  *               thay thế cho `new T()`.
@@ -41,12 +41,13 @@ import phase01.support.Compiles;
  *     tại ở runtime?
  *   Bắt đầu   : điền hằng Q10_HEAP_POLLUTION_FAILS_AT (kiểu FailurePoint khai báo bên dưới).
  *   Kiểm chứng: chạy q10_prediction; đặt breakpoint tại `raw.add(42)` và tại
- *               `strings.get(1)`, Debug test, F7 để thấy add không lỗi nhưng get thì lỗi.
+ *               `strings.get(1)`, Debug test, F7 — sau khi đã điền dự đoán, tự xem bước
+ *               nào ném ClassCastException.
  *   Hoàn thành khi: q10_prediction xanh và viết xong khối ANSWER Q10 ở cuối file.
  *
  * Q7 [DỰ ĐOÁN + CODE] Tại sao Java không cho phép: `if (obj instanceof List<String>)`
  *   Bắt đầu   : điền hằng Q7_INSTANCEOF_LIST_STRING_COMPILES; bỏ comment 2 dòng mẫu
- *               ngay dưới hằng để tự thấy lỗi đỏ "illegal generic type for instanceof".
+ *               ngay dưới hằng, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
  *   Kiểm chứng: chạy q07_*; đặt breakpoint trong isListOfStrings, F7 qua từng phần tử.
  *   Code      : isListOfStrings trả true nếu obj là List<?> và mọi phần tử là String
  *               (list rỗng → true; có phần tử null → false; không phải List → false).
@@ -67,8 +68,8 @@ public class Ex02_TypeErasure {
         GET
     }
 
-    // Q5 — mẫu: bỏ comment method dưới đây (đặt tạm trong file khác hoặc xem trong Javadoc)
-    // để thấy lỗi đỏ "Cannot instantiate the type T":
+    // Q5 — mẫu: bỏ comment method dưới đây, xem IDE báo gì, rồi comment lại
+    // — sau khi đã điền dự đoán:
     // static <T> T brokenFactory() {
     //     return new T();
     // }
@@ -116,7 +117,8 @@ public class Ex02_TypeErasure {
     // raw.add(42); rồi strings.get(1) — bước nào thực sự ném ClassCastException?
     static final FailurePoint Q10_HEAP_POLLUTION_FAILS_AT = FailurePoint.GET; // SOLUTION-VALUE
 
-    // Q7 — mẫu: bỏ comment 2 dòng dưới để tự thấy lỗi đỏ "illegal generic type for instanceof"
+    // Q7 — mẫu: Object sample, rồi `sample instanceof List<String>`.
+    // Bỏ comment 2 dòng dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
     // Object sample = List.of("a");
     // if (sample instanceof List<String>) {}
     static final Compiles Q7_INSTANCEOF_LIST_STRING_COMPILES = Compiles.NO; // SOLUTION-VALUE

@@ -53,7 +53,8 @@ import phase01.support.Complexity;
  */
 public class Ex05_MapVariants {
 
-    // Q13 — cố định: HashMap không đồng bộ hóa bất kỳ thao tác nào.
+    // Q13 — kịch bản: nhiều thread cùng sửa một HashMap. Hằng hỏi: HashMap có thread-safe
+    // không? Đọc source putVal hoặc chạy thí nghiệm rồi mới điền.
     static final Boolean Q13_HASHMAP_IS_THREAD_SAFE = false; // SOLUTION-VALUE
 
     /** Map đếm dùng được an toàn từ nhiều luồng cùng lúc. */
@@ -128,9 +129,10 @@ public class Ex05_MapVariants {
     // Q14 — kịch bản: new TreeMap<String, String>().put(null, "x").
     static final String Q14_TREEMAP_NULL_KEY_EXCEPTION = "NullPointerException"; // SOLUTION-VALUE
 
-    // Q15 — cố định: TreeMap dựa trên cây đỏ-đen (Red-Black Tree).
+    // Q15 — kịch bản: độ phức tạp của TreeMap.get. Đọc Javadoc TreeMap về cấu trúc lưu trữ
+    // rồi điền Complexity — sau khi đã điền dự đoán.
     static final Complexity Q15_TREEMAP_GET = Complexity.O_LOG_N; // SOLUTION-VALUE
-    // Q15 — cố định: HashMap không cam kết thứ tự lặp (phụ thuộc hash/bucket/resize).
+    // Q15 — kịch bản: HashMap có cam kết thứ tự lặp không? Đọc Javadoc HashMap.
     static final Boolean Q15_HASHMAP_GUARANTEES_ORDER = false; // SOLUTION-VALUE
 
     /** Đếm số lần xuất hiện của mỗi từ, giữ đúng thứ tự từ xuất hiện lần đầu tiên. */

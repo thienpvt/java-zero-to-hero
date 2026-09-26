@@ -30,25 +30,22 @@ import java.util.concurrent.TimeUnit;
  *   Code      : static void removeBlank(List&lt;String&gt;) — xóa tại chỗ các phần tử
  *               null hoặc isBlank() bằng Iterator.remove() hoặc List.removeIf() (an toàn,
  *               không ném ConcurrentModificationException).
- *   Hoàn thành khi: các test q09_* xanh; giải thích được vì sao removeBlank() không ném
- *               lỗi còn vòng for-each gọi list.remove() trực tiếp thì có (hoặc đôi khi
- *               không, tùy vị trí).
+ *   Hoàn thành khi: các test q09_* xanh; giải thích được vì sao removeBlank() an toàn còn
+ *               vòng for-each gọi list.remove() trực tiếp thì phụ thuộc vị trí phần tử bị xóa.
  *
  * Q8 [DỰ ĐOÁN] `ArrayList` có thể chứa `null` không?
  *   Bắt đầu   : viết thử code add(null) hai lần vào một ArrayList rồi điền 2 hằng số
  *               Q8_*.
  *   Kiểm chứng: chạy q08_*; nếu còn nghi ngờ, Ctrl+N → ArrayList → Ctrl+F12 → add, đọc
- *               Javadoc (Ctrl+Q) — không có điều kiện chặn null nào trong add().
- *   Hoàn thành khi: test q08_* xanh; giải thích được ArrayList cho phép nhiều null, khác
- *               với một số cấu trúc dữ liệu khác (ví dụ TreeSet tự nhiên) sẽ ném lỗi.
+ *               Javadoc (Ctrl+Q) xem add() nói gì về null — sau khi đã điền dự đoán.
+ *   Hoàn thành khi: test q08_* xanh; giải thích được ArrayList xử lý null thế nào so với
+ *               một số cấu trúc khác (ví dụ TreeSet theo natural order).
  *
  * Q7 [DỰ ĐOÁN + CODE + THÍ NGHIỆM] `ArrayList` có thread-safe không?
- *   Bắt đầu   : điền Q7_ARRAYLIST_IS_THREAD_SAFE = false (đáp án cố định, không cần đo);
- *               cài đặt threadSafeList().
- *   Kiểm chứng: chạy main() với perThread lớn (100_000) nhiều lần, quan sát dòng
- *               "ArrayList thường" — có lần ném ArrayIndexOutOfBoundsException, có lần
- *               size cuối nhỏ hơn mong đợi (do race), tùy lần chạy; dòng
- *               "Collections.synchronizedList" luôn đúng.
+ *   Bắt đầu   : điền Q7_ARRAYLIST_IS_THREAD_SAFE (thay null) sau khi đã đọc source add()
+ *               hoặc chạy thí nghiệm; cài đặt threadSafeList().
+ *   Kiểm chứng: chạy main() với perThread lớn (100_000) nhiều lần, sau khi đã điền dự
+ *               đoán, tự so size cuối của "ArrayList thường" với "Collections.synchronizedList".
  *   Code      : static &lt;T&gt; List&lt;T&gt; threadSafeList() → trả về
  *               Collections.synchronizedList(new ArrayList&lt;&gt;()).
  *   Hoàn thành khi: test q07_* xanh; giải thích được vì sao add() của ArrayList thường
@@ -68,7 +65,8 @@ public class Ex03_Pitfalls {
     static final Boolean Q8_CAN_ADD_NULL = true; // SOLUTION-VALUE
     static final Integer Q8_SIZE_AFTER_TWO_NULLS = 2; // SOLUTION-VALUE
 
-    // Q7 — đáp án cố định: ArrayList không có bất kỳ đồng bộ hóa nào trong add()/remove().
+    // Q7 — kịch bản: nhiều thread cùng add vào một ArrayList thường. Hằng hỏi: add() có
+    // được đồng bộ hóa (thread-safe) không? Đọc source hoặc chạy main() rồi mới điền.
     static final Boolean Q7_ARRAYLIST_IS_THREAD_SAFE = false; // SOLUTION-VALUE
 
     /**

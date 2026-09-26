@@ -36,10 +36,10 @@ import phase01.support.Compiles;
  * Q2 [DỰ ĐOÁN] `RetentionPolicy.RUNTIME` có ý nghĩa gì?
  *   Bắt đầu   : điền Q2_RUNTIME_NOTE_VISIBLE (thay null) trước khi chạy test.
  *   Kiểm chứng: chạy q02_prediction; trong lúc debug, Alt+F8 (Evaluate Expression) và gõ
- *               Annotated.class.isAnnotationPresent(RuntimeNote.class) để tự thấy kết quả true.
+ *               Annotated.class.isAnnotationPresent(RuntimeNote.class), sau khi đã điền dự
+ *               đoán, tự đọc giá trị boolean.
  *   Code      : không.
- *   Hoàn thành khi: q02_prediction xanh; giải thích được RUNTIME nghĩa là annotation được giữ lại
- *               trong .class file và JVM nạp nó vào runtime nên đọc được bằng reflection.
+ *   Hoàn thành khi: q02_prediction xanh; giải thích được RUNTIME giữ annotation tới giai đoạn nào.
  *
  * Q3 [DỰ ĐOÁN] SOURCE và RUNTIME khác nhau thế nào?
  *   Bắt đầu   : điền Q3_SOURCE_NOTE_VISIBLE và Q3_CLASS_NOTE_VISIBLE.
@@ -48,15 +48,12 @@ import phase01.support.Compiles;
  *               `javap -v -p phase-01-core-advanced\target\classes\phase01\d14_annotation\Ex01_RetentionAndTarget$Annotated.class`
  *               và tìm hai khối `RuntimeVisibleAnnotations` / `RuntimeInvisibleAnnotations`.
  *   Code      : không.
- *   Hoàn thành khi: q03_prediction xanh; đọc được output javap và nói đúng: SOURCE bị compiler
- *               bỏ hoàn toàn (không xuất hiện trong .class), CLASS còn nằm trong .class
- *               (RuntimeInvisibleAnnotations) nhưng JVM không nạp vào runtime, RUNTIME thì cả
- *               .class (RuntimeVisibleAnnotations) và runtime đều đọc được.
+ *   Hoàn thành khi: q03_prediction xanh; đọc được output javap và giải thích được SOURCE,
+ *               CLASS và RUNTIME mỗi cái còn lại ở đâu (.class và/hoặc runtime).
  *
  * Q4 [DỰ ĐOÁN + CODE] `@Target` dùng để làm gì?
- *   Bắt đầu   : điền Q4_FIELD_ONLY_ON_METHOD_COMPILES; bỏ comment đoạn mẫu ngay cạnh hằng số để
- *               tự thấy lỗi đỏ "annotation type not applicable to this kind of declaration",
- *               rồi comment lại để file biên dịch được.
+ *   Bắt đầu   : điền Q4_FIELD_ONLY_ON_METHOD_COMPILES; bỏ comment đoạn mẫu ngay cạnh hằng số,
+ *               xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán — để file biên dịch được.
  *   Kiểm chứng: chạy q04_prediction và q04_targetsOf; Ctrl+B (hoặc Ctrl+Click) trên Target trong
  *               khai báo @LogCalls để xem @Target khai báo method value() kiểu ElementType[].
  *   Code      : cài đặt targetsOf(Class) đọc annotation @Target bằng
@@ -99,18 +96,19 @@ public class Ex01_RetentionAndTarget {
         }
     }
 
-    // Q1 — @LogCalls không kèm code nào tự thực thi: gọi greet() không ghi vào CALL_LOG.
+    // Q1 — kịch bản: gọi greet("An") khi method có @LogCalls. CALL_LOG có thêm dòng không?
     static final Boolean Q1_ANNOTATION_ALONE_PRODUCES_LOG = false; // SOLUTION-VALUE
 
-    // Q2 — RUNTIME giữ annotation tới lúc chạy, đọc được bằng isAnnotationPresent.
+    // Q2 — kịch bản: method có @RuntimeNote. isAnnotationPresent lúc chạy có true không?
     static final Boolean Q2_RUNTIME_NOTE_VISIBLE = true; // SOLUTION-VALUE
 
-    // Q3 — SOURCE bị compiler bỏ hẳn; CLASS còn trong .class nhưng JVM không nạp vào runtime.
+    // Q3 — kịch bản: method có @SourceNote và @ClassNote. isAnnotationPresent lúc chạy
+    // có true không? Đọc RetentionPolicy, rồi javap nếu cần, sau khi đã điền dự đoán.
     static final Boolean Q3_SOURCE_NOTE_VISIBLE = false; // SOLUTION-VALUE
     static final Boolean Q3_CLASS_NOTE_VISIBLE = false; // SOLUTION-VALUE
 
-    // Q4 — bỏ comment hai dòng dưới để tự thấy lỗi đỏ
-    // "annotation type not applicable to this kind of declaration":
+    // Q4 — mẫu: @FieldOnly (Target FIELD) đặt trên một method.
+    // Bỏ comment hai dòng dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán:
     // @FieldOnly
     // void sampleMethodWithWrongTarget() {
     // }

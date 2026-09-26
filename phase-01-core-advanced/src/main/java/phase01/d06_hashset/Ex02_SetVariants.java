@@ -28,7 +28,7 @@ import java.util.TreeSet;
  *   Hoàn thành khi: q03_prediction xanh, giải thích được thứ tự in ra phụ thuộc
  *               hashCode() và cấu trúc bucket của HashMap phía sau, không phải thứ tự add.
  *
- * Q5 [CODE] LinkedHashSet khác HashSet ra sao?
+ * Q5 [CODE] `LinkedHashSet` khác HashSet ra sao?
  *   Bắt đầu   : cài đặt distinctInFirstSeenOrder(List) bên dưới bằng LinkedHashSet.
  *   Kiểm chứng: chạy q05_*; Ctrl+N mở LinkedHashSet, Ctrl+F12 tìm nested class Entry của
  *               LinkedHashMap, xem field before/after (danh sách liên kết đôi giữ thứ tự)
@@ -37,7 +37,7 @@ import java.util.TreeSet;
  *   Hoàn thành khi: test q05_* xanh, giải thích được LinkedHashSet giữ đúng thứ tự chèn
  *               nhờ danh sách liên kết phụ, đổi lại tốn thêm bộ nhớ/thời gian so với HashSet.
  *
- * Q6 [DỰ ĐOÁN + CODE] TreeSet cần Comparable/Comparator vì sao?
+ * Q6 [DỰ ĐOÁN + CODE] `TreeSet` cần Comparable/Comparator vì sao?
  *   Bắt đầu   : điền Q6_TREESET_NON_COMPARABLE_EXCEPTION; cài đặt distinctSorted(Collection)
  *               và byAgeThenName(Collection) bên dưới.
  *   Kiểm chứng: chạy q06_prediction; nếu sai, Ctrl+B vào TreeSet.add(E) rồi F7 Step Into
@@ -51,7 +51,7 @@ import java.util.TreeSet;
  */
 public class Ex02_SetVariants {
 
-    // Q3 — cố định: HashSet không đảm bảo iteration order (xem Javadoc HashSet).
+    // Q3 — kịch bản: HashSet có cam kết thứ tự duyệt không? Đọc Javadoc HashSet, rồi điền.
     static final Boolean Q3_HASHSET_GUARANTEES_ORDER = false; // SOLUTION-VALUE
 
     /**

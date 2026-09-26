@@ -30,8 +30,8 @@ import java.util.function.Supplier;
  *               q02_prediction, xem breakpoint có dừng lại khi gọi orElse so với orElseGet
  *               hay không (đếm số lần dừng).
  *   Code      : không.
- *   Hoàn thành khi: q02_prediction xanh; giải thích được vì sao orElse() luôn gọi tham số
- *               của nó trong khi orElseGet() chỉ gọi Supplier khi cần.
+ *   Hoàn thành khi: q02_prediction xanh; giải thích được orElse và orElseGet khác nhau ở
+ *               thời điểm tham số được tính.
  *
  * Q3 [DỰ ĐOÁN + CODE] Tại sao khác biệt trên có thể ảnh hưởng performance?
  *   Bắt đầu   : dựa vào kết quả quan sát ở Q2, cài đặt displayName(nickname, fullNameLookup)

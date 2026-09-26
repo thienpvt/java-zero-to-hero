@@ -20,11 +20,10 @@ import phase01.support.Compiles;
  * Q4 [DỰ ĐOÁN + CODE] Vì sao local variable được lambda capture phải effectively final?
  *   Bắt đầu   : điền 3 hằng số Q4_* bên dưới (thay null) dựa trên 3 đoạn code mẫu comment ngay
  *               cạnh mỗi hằng.
- *   Kiểm chứng: bỏ comment từng đoạn mẫu (brokenCapture, mutateField, mutateArrayElement) để thấy
- *               đoạn nào báo lỗi đỏ "local variables referenced from a lambda expression must be
- *               final or effectively final" (chỉ brokenCapture báo lỗi này), rồi comment lại; chạy
+ *   Kiểm chứng: bỏ comment từng đoạn mẫu (brokenCapture, mutateField, mutateArrayElement), xem
+ *               IDE báo gì với từng đoạn, rồi comment lại — sau khi đã điền dự đoán; chạy
  *               q04_prediction.
- *   Code      : cài đặt counter(int start) (khối throw Q4) dùng AtomicInteger — mỗi lần get() trả
+ *   Code      : cài đặt counter(int start) (phần TODO Q4) dùng AtomicInteger — mỗi lần get() trả
  *               lần lượt start, start+1, start+2, ...
  *   Hoàn thành khi: q04_* xanh; giải thích được compiler chỉ chặn *gán lại* biến local được capture
  *               (x = x + 1), không chặn việc đổi state bên trong field tĩnh hoặc phần tử của array
@@ -34,15 +33,14 @@ import phase01.support.Compiles;
  *   Bắt đầu   : cài đặt length(), equalsIgnoreCase(), listFactory() bằng method reference.
  *   Kiểm chứng: build project (Ctrl+F9), mở Terminal (Alt+F12), chạy
  *               javap -c -p target/classes/phase01/d09_lambda/Ex02_CaptureAndMethodRef.class,
- *               so sánh phần bytecode của length()/equalsIgnoreCase()/listFactory() (chỉ có một
- *               lệnh invokedynamic, KHÔNG sinh thêm method lambda$...) với một lambda tương đương
- *               viết tay như {@code s -> s.length()} (sinh thêm một method private static
- *               lambda$...$0 chứa thân lambda) — đặt breakpoint không áp dụng ở đây vì đây là kiểm
- *               tra tĩnh trên bytecode.
+ *               so sánh bytecode của length(), equalsIgnoreCase() và listFactory() với một lambda
+ *               viết tay như {@code s -> s.length()}: tìm lệnh invokedynamic và method dạng
+ *               lambda$, tự ghi nhận method nào sinh thêm method ẩn — sau khi đã cài đặt.
+ *               Đây là kiểm tra tĩnh trên bytecode, không đặt breakpoint.
  *   Code      : length() (String::length), equalsIgnoreCase() (String::equalsIgnoreCase),
- *               listFactory() (ArrayList::new) — mỗi cái một khối throw Q5.
- *   Hoàn thành khi: q05_* xanh và khối ANSWER Q5 đã viết, nêu được vì sao method reference "trỏ
- *               thẳng" tới method có sẵn còn lambda luôn cần một method ẩn danh chứa thân lambda.
+ *               listFactory() (ArrayList::new) — mỗi cái một phần TODO Q5.
+ *   Hoàn thành khi: q05_* xanh và khối ANSWER Q5 đã viết, nêu được javap cho thấy method reference
+ *               và lambda khác nhau thế nào ở bytecode.
  *
  * Q6 [TỰ TRẢ LỜI] Lambda có phù hợp với logic dài và nhiều side effect không?
  *   Bắt đầu   : đọc lại process() ở Ex01_FunctionalInterfaces và counter() ở trên, tưởng tượng viết
@@ -55,23 +53,23 @@ import phase01.support.Compiles;
  */
 public class Ex02_CaptureAndMethodRef {
 
-    // Bỏ comment để thấy lỗi đỏ "local variables referenced from a lambda expression must be
-    // final or effectively final" (x bị gán lại bên trong lambda):
+    // Q4 — mẫu brokenCapture: lambda gán lại biến local x.
+    // Bỏ comment, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán:
     // static Runnable brokenCapture(int x) {
     //     return () -> { x = x + 1; System.out.println(x); };
     // }
     static final Compiles Q4_MODIFY_CAPTURED_LOCAL_COMPILES = Compiles.NO; // SOLUTION-VALUE
 
-    // Bỏ comment để thấy vẫn biên dịch được: field tĩnh không phải "local variable" nên không bị
-    // ràng buộc effectively final:
+    // Q4 — mẫu mutateField: lambda gán lại field tĩnh sharedCounter.
+    // Bỏ comment, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán:
     // static int sharedCounter = 0;
     // static Runnable mutateField() {
     //     return () -> { sharedCounter = sharedCounter + 1; };
     // }
     static final Compiles Q4_MODIFY_FIELD_IN_LAMBDA_COMPILES = Compiles.YES; // SOLUTION-VALUE
 
-    // Bỏ comment để thấy vẫn biên dịch được: biến "box" (tham chiếu tới array) không bị gán lại,
-    // chỉ có phần tử box[0] bên trong array đổi:
+    // Q4 — mẫu mutateArrayElement: lambda gán box[0], không gán lại biến box.
+    // Bỏ comment, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán:
     // static Runnable mutateArrayElement(int[] box) {
     //     return () -> { box[0] = box[0] + 1; };
     // }

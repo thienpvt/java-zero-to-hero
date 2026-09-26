@@ -18,14 +18,14 @@ import java.util.Objects;
  * Q7 [CODE + TỰ TRẢ LỜI] Một cuộc hẹn lúc 09:00 theo múi giờ địa phương nên lưu những thông tin
  *     gì để không lệch sau thay đổi DST?
  *   Bắt đầu   : đọc record `Appointment` bên dưới (constructor nén đã cho sẵn, chỉ kiểm tra
- *               null); cài đặt `startInstant()` bằng `localStart.atZone(zone).toInstant()` và
- *               `parse(String, String)` bằng `LocalDateTime.parse(isoLocalDateTime)` +
- *               `ZoneId.of(zoneId)`.
+ *               null). `startInstant()` đổi giờ địa phương kèm zone thành một mốc tuyệt đối;
+ *               `parse` nhận chuỗi ISO không múi giờ và mã zone. Tự chọn API `java.time`
+ *               (Ctrl+Q trên `LocalDateTime` và `ZoneId`).
  *   Kiểm chứng: chạy q07_parseComputesInstantInSummerOffset và
- *               q07_parseComputesInstantInWinterOffset, so sánh Instant trả về để thấy cùng
- *               "09:00 giờ địa phương" nhưng ra giờ UTC khác nhau giữa mùa hè (EDT) và mùa đông
- *               (EST); dùng Ctrl+B trên `ZoneId.of` để xem điều kiện ném `DateTimeException`.
- *   Code      : cài đặt `startInstant()` và `parse(String, String)` như trên.
+ *               q07_parseComputesInstantInWinterOffset, sau khi đã cài đặt, tự so Instant
+ *               của cùng giờ địa phương ở hai mùa; Ctrl+B trên `ZoneId.of` để xem điều kiện
+ *               ném `DateTimeException`.
+ *   Code      : cài đặt `startInstant()` và `parse(String, String)`.
  *   Hoàn thành khi: các test q07_* xanh; viết xong khối ANSWER Q7 giải thích tại sao phải lưu
  *               cả giờ địa phương lẫn zone (không chỉ offset cố định hay Instant đã tính sẵn)
  *               mới giữ đúng ý định ban đầu của người đặt hẹn khi luật DST đổi.

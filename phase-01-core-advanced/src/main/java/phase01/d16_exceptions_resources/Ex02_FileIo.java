@@ -17,10 +17,9 @@ import java.util.stream.Stream;
  *
  * ─────────────────────────────────────────────────────────────────────
  * Q3 [DỰ ĐOÁN + CODE] Vì sao `Files.readString()` không phù hợp với file nhiều GB?
- *   Bắt đầu   : gõ `Files.readString(` ở đâu đó, đặt con trỏ lên tên method rồi Ctrl+Q để xem Javadoc —
- *               đọc phần "Reads all content from a file into a string" và dòng
- *               "@throws OutOfMemoryError if the file is extremely large, for example larger than 2GB";
- *               điền Q3_READSTRING_LOADS_WHOLE_FILE (thay null).
+ *   Bắt đầu   : gõ `Files.readString(` ở đâu đó, đặt con trỏ lên tên method rồi Ctrl+Q để xem Javadoc,
+ *               tự kết luận method này đọc file thế nào; điền Q3_READSTRING_LOADS_WHOLE_FILE (thay null)
+ *               sau khi đã đọc.
  *   Kiểm chứng: chạy q03_readStringLoadsWholeFilePrediction (đây là hằng số cố định lấy từ Javadoc
  *               JDK vì tạo file thật nhiều GB trong test là không thực tế).
  *   Code      : cài đặt countNonBlankLines(Path) — đọc file theo kiểu streaming (Files.lines(Path,
@@ -78,9 +77,8 @@ public class Ex02_FileIo {
         }
     }
 
-    // Q3 — cố định theo Javadoc JDK của Files.readString: nạp toàn bộ nội dung file vào một String
-    // trong bộ nhớ; Javadoc ghi rõ "@throws OutOfMemoryError if the file is extremely large,
-    // for example larger than 2GB".
+    // Q3 — kịch bản: Files.readString có nạp toàn bộ nội dung file vào bộ nhớ không?
+    // Đọc Javadoc JDK (Ctrl+Q) rồi mới điền.
     static final Boolean Q3_READSTRING_LOADS_WHOLE_FILE = true; // SOLUTION-VALUE
 
     /**

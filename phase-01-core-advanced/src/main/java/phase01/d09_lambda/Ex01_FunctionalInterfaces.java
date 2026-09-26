@@ -20,34 +20,32 @@ import phase01.support.Compiles;
  * Q1 [DỰ ĐOÁN + CODE] Functional Interface là gì?
  *   Bắt đầu   : mở interface Validator ngay bên dưới (Ctrl+N gõ Ex01_FunctionalInterfaces), điền
  *               2 hằng số Q1_* (thay null) dựa trên đoạn interface TwoAbstract mẫu.
- *   Kiểm chứng: bỏ comment đoạn interface TwoAbstract mẫu để thấy lỗi đỏ "TwoAbstract is not a
- *               functional interface" / "multiple non-overriding abstract methods found", rồi
- *               comment lại; chạy q01_prediction để xác nhận cả 2 hằng.
- *   Code      : cài đặt and() (khối throw Q1): true khi cả hai validate() đều true; NPE ngay khi
+ *   Kiểm chứng: bỏ comment đoạn interface TwoAbstract mẫu, xem IDE báo gì, rồi comment lại
+ *               — sau khi đã điền dự đoán; chạy q01_prediction để xác nhận cả 2 hằng.
+ *   Code      : cài đặt and() (phần TODO Q1): true khi cả hai validate() đều true; NPE ngay khi
  *               other == null; short-circuit (không gọi other.validate khi vế đầu false).
  *               notBlank(); maxLength(int max) (max &lt; 0 → IllegalArgumentException; value
  *               null → false).
- *   Hoàn thành khi: q01_* xanh; giải thích được vì sao @FunctionalInterface với 2 abstract method
- *               không biên dịch, nhưng thêm default method vào interface 1-abstract-method thì vẫn
- *               biên dịch bình thường.
+ *   Hoàn thành khi: q01_* xanh; giải thích được @FunctionalInterface cho phép bao nhiêu abstract
+ *               method, và default method có bị tính vào số đó không.
  *
  * Q2 [DỰ ĐOÁN + CODE] `Predicate` và `Function` khác nhau thế nào?
  *   Bắt đầu   : Ctrl+N mở Predicate (java.util.function.Predicate), Ctrl+F12 xem method test(T).
  *   Kiểm chứng: chạy q02_prediction; Ctrl+Q trên Predicate rồi trên Function để so Javadoc.
- *   Code      : dùng chung method process() cài ở câu Q3 (khối throw Q3) — Predicate.test() quyết
+ *   Code      : dùng chung method process() cài ở câu Q3 (phần TODO Q3) — Predicate.test() quyết
  *               định phần tử nào được giữ, Function.apply() biến đổi phần tử đó.
- *   Hoàn thành khi: q02_prediction xanh; giải thích được Predicate luôn trả boolean nguyên thủy
- *               (dùng để lọc/rẽ nhánh) còn Function trả về kiểu R tùy ý (dùng để biến đổi dữ liệu).
+ *   Hoàn thành khi: q02_prediction xanh; giải thích được kiểu trả về của Predicate.test so với
+ *               Function.apply, và mỗi cái dùng để làm gì.
  *
  * Q3 [DỰ ĐOÁN + CODE] `Consumer` có return value không?
  *   Bắt đầu   : Ctrl+N mở Consumer, Ctrl+F12 xem method accept(T).
  *   Kiểm chứng: chạy q03_prediction.
  *   Code      : cài đặt process(List&lt;String&gt;, Predicate&lt;String&gt;,
- *               Function&lt;String,String&gt;, Consumer&lt;String&gt;) (khối throw Q3): lọc theo
+ *               Function&lt;String,String&gt;, Consumer&lt;String&gt;) (phần TODO Q3): lọc theo
  *               keep, biến đổi theo transform, gọi audit với từng kết quả đã biến đổi theo đúng
  *               thứ tự, trả về list mới (không sửa input).
- *   Hoàn thành khi: q03_* xanh; giải thích được vì sao Consumer không "trả" giá trị mà chỉ tạo
- *               side effect (accept() trả void).
+ *   Hoàn thành khi: q03_* xanh; giải thích được Consumer.accept có trả giá trị không, và side
+ *               effect nằm ở đâu.
  */
 public class Ex01_FunctionalInterfaces {
 
@@ -63,8 +61,7 @@ public class Ex01_FunctionalInterfaces {
         }
     }
 
-    // Bỏ comment để xem lỗi đỏ "TwoAbstract is not a functional interface" /
-    // "multiple non-overriding abstract methods found in interface TwoAbstract":
+    // Bỏ comment đoạn dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán:
     // @FunctionalInterface
     // interface TwoAbstract<T> {
     //     boolean validate(T value);

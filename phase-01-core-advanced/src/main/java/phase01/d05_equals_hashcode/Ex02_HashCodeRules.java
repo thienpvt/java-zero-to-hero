@@ -13,8 +13,8 @@ import java.util.Objects;
  *
  * ─────────────────────────────────────────────────────────────────────
  * Q2 [DỰ ĐOÁN] Hai object cùng hashCode có bắt buộc equals không?
- *   Bắt đầu   : Alt+F8 mở Evaluate Expression, thử "Aa".hashCode() và "BB".hashCode()
- *               để tự thấy hai chuỗi khác nhau vẫn cho cùng hashCode (hash collision).
+ *   Bắt đầu   : Alt+F8 mở Evaluate Expression, thử "Aa".hashCode(), "BB".hashCode() và
+ *               "Aa".equals("BB"); điền hằng sau khi đã tự chạy.
  *   Kiểm chứng: chạy q02_prediction_sameHashDoesNotImplyEquals; Ctrl+Q trên String.hashCode
  *               để đọc công thức s[0]*31^(n-1) + ... + s[n-1] rồi tự tính tay để hiểu vì sao trùng.
  *   Code      : không có; câu này chỉ dự đoán dựa trên việc chạy code thật trong test.
@@ -23,11 +23,9 @@ import java.util.Objects;
  *
  * Q3 [DỰ ĐOÁN] Hai object equals có bắt buộc cùng hashCode không?
  *   Bắt đầu   : Ctrl+N → gõ "Object" → mở class, Ctrl+F12 tìm method hashCode(),
- *               Ctrl+Q xem Javadoc đoạn "If two objects are equal according to the
- *               equals(Object) method, then calling hashCode() ... must produce the
- *               same integer result".
+ *               Ctrl+Q đọc Javadoc về quan hệ giữa equals và hashCode, rồi mới điền hằng.
  *   Kiểm chứng: Alt+F8 Evaluate Expression thử new String("test").hashCode() hai lần
- *               (hai instance khác nhau, cùng value) để tự thấy luôn trùng.
+ *               (hai instance khác nhau, cùng value), sau khi đã điền dự đoán, tự so hai số.
  *   Code      : không có; câu này chỉ dự đoán dựa trên việc chạy code thật trong test.
  *   Hoàn thành khi: q03_* xanh; giải thích được vì sao đây là yêu cầu bắt buộc
  *               (nếu không, HashMap/HashSet sẽ tìm hai object "bằng nhau" ở hai bucket khác nhau).
@@ -49,7 +47,8 @@ import java.util.Objects;
  */
 public class Ex02_HashCodeRules {
 
-    // Q2 — kịch bản: "Aa".hashCode() == "BB".hashCode() (hash collision) nhưng "Aa".equals("BB").
+    // Q2 — kịch bản: so hashCode và equals của "Aa" với "BB".
+    // Hằng hỏi: cùng hashCode có suy ra equals() là true không?
     static final Boolean Q2_SAME_HASH_IMPLIES_EQUALS = false; // SOLUTION-VALUE
 
     // Q3 — kịch bản: hai String equals nhau (ví dụ new String("test") hai lần) có cùng hashCode.

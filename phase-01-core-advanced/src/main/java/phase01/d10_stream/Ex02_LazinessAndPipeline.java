@@ -17,9 +17,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  *               filter(...).map(...) có ghi log mỗi lần lambda chạy, nhưng KHÔNG gọi bất
  *               kỳ terminal operation nào (không toList(), forEach(), count()...); điền
  *               hằng số Q2_LOG_SIZE_WITHOUT_TERMINAL.
- *   Kiểm chứng: đặt breakpoint trong lambda của filter và map, Debug test — breakpoint
- *               không bao giờ bị chạm, vì không có terminal operation nào "kéo" phần tử
- *               qua pipeline (Ctrl+Shift+F10 chạy lại, xem log rỗng khi in ra).
+ *   Kiểm chứng: đặt breakpoint trong lambda của filter và map, Debug test, sau khi đã điền
+ *               dự đoán, tự xem breakpoint có bị chạm không và log có bao nhiêu dòng.
  *   Hoàn thành khi: test q02_* xanh; giải thích được vì sao chỉ gọi filter()/map() không
  *               làm gì cả — mọi intermediate operation chỉ mô tả "công thức", chờ terminal
  *               operation gọi Iterator/Spliterator của Stream để thực sự chạy.
@@ -30,8 +29,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  *               "filter " + s / "map " + s vào log; điền hằng số Q4_LOG_WITH_FIND_FIRST
  *               (log nối các phần bằng ", ").
  *   Kiểm chứng: đặt breakpoint trong lambda của filter, Debug test, F8 (Step Over) nhiều
- *               lần — thấy "a" bị filter loại (không tới map), "bb" qua filter rồi tới map,
- *               rồi findFirst() dừng ngay (không có "filter ccc" trong log).
+ *               lần, sau khi đã điền dự đoán, tự ghi lại thứ tự các dòng log cho tới khi
+ *               findFirst() dừng.
  *   Hoàn thành khi: test q04_* xanh; giải thích được Stream xử lý DỌC theo từng phần tử
  *               một (filter rồi map rồi kiểm tra điều kiện dừng của findFirst) cho tới khi
  *               tìm được kết quả, không phải chạy filter cho tất cả phần tử trước rồi mới
@@ -41,9 +40,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  *   Bắt đầu   : trong q03_prediction, tạo một biến Stream&lt;Integer&gt;, gọi count() lần
  *               đầu, rồi gọi count() lần hai trên CHÍNH biến đó; bắt exception ném ra, điền
  *               Q3_REUSE_EXCEPTION bằng simple name của exception.
- *   Kiểm chứng: Ctrl+N → AbstractPipeline → đọc message của exception (hoặc Ctrl+B từ
- *               dòng gọi count() lần hai) để thấy dòng "stream has already been operated
- *               upon or closed".
+ *   Kiểm chứng: Ctrl+N → AbstractPipeline, hoặc Ctrl+B từ dòng gọi count() lần hai, đọc
+ *               simple name và message của exception — sau khi đã điền dự đoán.
  *   Hoàn thành khi: test q03_* xanh; giải thích được một Stream chỉ được "tiêu thụ"
  *               (traverse) đúng một lần bởi một terminal operation; muốn dùng lại logic
  *               phải tạo Stream mới từ source (ví dụ gọi lại list.stream()).
@@ -53,10 +51,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  *               method bằng cách đặt filter(n % 5 == 0) trước hoặc sau map (map ở đây chỉ
  *               tăng một AtomicInteger để đếm số lần bị gọi, mô phỏng một phép tính tốn
  *               kém).
- *   Kiểm chứng: chạy q11_*, đặt breakpoint trong lambda map ở mỗi method, Debug, xem số
- *               lần breakpoint bị chạm — chỉ 2 lần khi filter đứng trước (vì chỉ 2 trong 10
- *               số 1..10 chia hết cho 5), còn 10 lần khi map đứng trước (map phải chạy trên
- *               toàn bộ số rồi filter mới lọc sau).
+ *   Kiểm chứng: chạy q11_*, đặt breakpoint trong lambda map ở mỗi method, Debug, sau khi
+ *               đã điền dự đoán, tự đếm số lần breakpoint bị chạm ở từng thứ tự filter/map.
  *   Code      : static int mapCallsWhenFilterFirst(List&lt;Integer&gt; numbers) — filter
  *               n % 5 == 0 rồi map (đếm); static int mapCallsWhenMapFirst(List&lt;Integer&gt;
  *               numbers) — map (đếm) rồi filter n % 5 == 0.
@@ -115,8 +111,8 @@ public class Ex02_LazinessAndPipeline {
     }
 
     /**
-     * Đi qua bước "tính toán" (chỉ đếm số lần gọi ở đây) trên TOÀN BỘ {@code numbers} trước,
-     * rồi mới lọc còn số chia hết cho 5; trả về số lần lambda map được gọi.
+     * Đi qua bước "tính toán" (chỉ đếm số lần gọi ở đây) trước, rồi mới lọc còn số chia hết
+     * cho 5; trả về số lần lambda map được gọi.
      *
      * @throws NullPointerException nếu {@code numbers} là {@code null}
      */

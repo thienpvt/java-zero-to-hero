@@ -28,14 +28,12 @@ import java.util.Objects;
  * Q5 [DỰ ĐOÁN] `==` và `equals()` khác nhau thế nào?
  *   Bắt đầu   : Ctrl+N → gõ "Integer" → mở class, Ctrl+F12 xem danh sách method,
  *               tìm class lồng bên trong tên IntegerCache.
- *   Kiểm chứng: Ctrl+B (hoặc Ctrl+Click) vào Integer.valueOf(int) để đọc ngưỡng cache
- *               -128..127; Alt+F8 Evaluate Expression thử `Integer a = 200, b = 200; a == b`
- *               để tự thấy false ngoài ngưỡng cache.
+ *   Kiểm chứng: Ctrl+B (hoặc Ctrl+Click) vào Integer.valueOf(int) để đọc ngưỡng cache;
+ *               Alt+F8 Evaluate Expression thử `Integer a = 200, b = 200; a == b`, sau khi
+ *               đã điền dự đoán, tự đọc kết quả.
  *   Code      : không có; câu này chỉ dự đoán dựa trên việc chạy code thật trong test.
- *   Hoàn thành khi: q05_* xanh; giải thích được vì sao `new String("hi") == new String("hi")`
- *               luôn false (hai object khác nhau trên heap) trong khi hai literal String
- *               có thể trỏ cùng object trong string pool, và vì sao Integer 127 dùng cache
- *               còn 128 thì không.
+ *   Hoàn thành khi: q05_* xanh; giải thích được == khác equals thế nào với String tạo bằng
+ *               new, String literal, và Integer nằm trong hay ngoài vùng cache.
  */
 public class Ex01_EqualsContract {
 

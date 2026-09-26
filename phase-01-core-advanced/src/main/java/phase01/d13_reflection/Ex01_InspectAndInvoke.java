@@ -20,7 +20,8 @@ import phase01.support.Compiles;
  * Q1 [CODE] Reflection giải quyết vấn đề gì?
  *   Bắt đầu   : đọc class SecretBox bên dưới; cài đặt declaredFieldNames(Class&lt;?&gt;).
  *   Kiểm chứng: Ctrl+N → Class → Ctrl+F12 → getDeclaredFields, Ctrl+Q trên Field để đọc
- *               Javadoc isSynthetic(); chạy q01_* để tự thấy kết quả là [secret, size].
+ *               Javadoc isSynthetic(); chạy q01_* sau khi đã cài đặt, tự đối chiếu danh sách
+ *               tên field.
  *   Code      : static List&lt;String&gt; declaredFieldNames(Class&lt;?&gt; type) — lấy tên các
  *               field khai báo trực tiếp (getDeclaredFields, không tính field kế thừa), bỏ
  *               field synthetic (isSynthetic()), sắp xếp tăng dần theo tên.
@@ -34,9 +35,9 @@ import phase01.support.Compiles;
  *               Q4_SETACCESSIBLE_ON_STRING_VALUE_EXCEPTION (chạy thử đoạn code trong
  *               main() để thấy tên exception thật).
  *   Kiểm chứng: đặt breakpoint tại AccessibleObject.checkCanSetAccessible (Ctrl+N →
- *               AccessibleObject → Ctrl+F12 → checkCanSetAccessible), Debug
- *               q04_setAccessibleOnStringValue_throwsInaccessibleObjectException, F7 để
- *               thấy điều kiện nào false khiến exception bị ném khi caller là code của
+ *               AccessibleObject → Ctrl+F12 → checkCanSetAccessible), Debug test q04_* về
+ *               setAccessible trên field của String, F7, sau khi đã điền dự đoán, tự đọc
+ *               simple name của exception khi caller là code của
  *               bạn nhưng declaringClass (String) nằm trong module java.base không mở.
  *   Code      : static Object invokePrivate(Object target, String methodName,
  *               Class&lt;?&gt;[] parameterTypes, Object... args) — getDeclaredMethod,
@@ -53,11 +54,10 @@ import phase01.support.Compiles;
  *               thường.
  *
  * Q5 [DỰ ĐOÁN] Reflection ảnh hưởng compile-time checking ra sao?
- *   Bắt đầu   : điền Q5_TYPO_METHOD_NAME_COMPILES = Compiles.YES và
- *               Q5_TYPO_FAILS_AT_RUNTIME_WITH; đọc chú thích ngay dưới hai hằng số.
- *   Kiểm chứng: chạy q05_* để thấy getDeclaredMethod("revael", String.class) — tên method
- *               bị viết sai (đúng là "reveal") — biên dịch hoàn toàn bình thường vì tham
- *               số chỉ là một String, và lỗi NoSuchMethodException chỉ xuất hiện lúc chạy.
+ *   Bắt đầu   : điền Q5_TYPO_METHOD_NAME_COMPILES và Q5_TYPO_FAILS_AT_RUNTIME_WITH (thay
+ *               null); đọc chú thích ngay dưới hai hằng số.
+ *   Kiểm chứng: chạy q05_*, sau khi đã điền dự đoán, tự xem lời gọi getDeclaredMethod với
+ *               tên viết sai có biên dịch không và exception lúc chạy (nếu có) thuộc lớp nào.
  *   Hoàn thành khi: test q05_* xanh; giải thích được getDeclaredMethod/getDeclaredField
  *               nhận tên dưới dạng String nên javac không thể kiểm tra method/field đó có
  *               tồn tại hay không, khác với lời gọi trực tiếp box.reveal(...) — trường hợp

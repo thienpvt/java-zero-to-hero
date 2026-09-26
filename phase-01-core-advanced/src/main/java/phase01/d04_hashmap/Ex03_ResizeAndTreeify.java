@@ -51,8 +51,9 @@ import phase01.support.Complexity;
  */
 public class Ex03_ResizeAndTreeify {
 
-    // Q7 — DEFAULT_INITIAL_CAPACITY (16) * DEFAULT_LOAD_FACTOR (0.75f) của java.util.HashMap;
-    // hai hằng số này là package-private trong source JDK nên không gọi được trực tiếp.
+    // Q7 — kịch bản: ngưỡng resize mặc định của java.util.HashMap (capacity ban đầu nhân
+    // load factor, làm tròn về int). Hai hằng JDK là package-private, đọc bằng Ctrl+F12
+    // rồi tự tính — sau khi đã điền dự đoán mới chạy test.
     static final Integer Q7_DEFAULT_THRESHOLD = 12; // SOLUTION-VALUE
 
     /** Lũy thừa 2 nhỏ nhất ≥ capacity (thuật toán bit-or-shift giống HashMap.tableSizeFor cũ). */
@@ -234,7 +235,8 @@ public class Ex03_ResizeAndTreeify {
         System.out.println(runExperiment(50_000));
     }
 
-    // Q11 — cố định: dựa vào cấu trúc dữ liệu của bucket, không đo runtime.
+    // Q11 — kịch bản: worst-case lookup khi mọi key rơi vào một bucket dạng danh sách liên
+    // kết, so với bucket đã treeify và key Comparable. Điền Complexity, không đo runtime.
     static final Complexity Q11_WORST_CASE_LINKED_BUCKET = Complexity.O_N; // SOLUTION-VALUE
     static final Complexity Q11_WORST_CASE_TREE_BIN_COMPARABLE_KEYS = Complexity.O_LOG_N; // SOLUTION-VALUE
 

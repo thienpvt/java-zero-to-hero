@@ -25,7 +25,7 @@ import phase01.support.Compiles;
  *
  * Q5 [DỰ ĐOÁN] Optional có thực sự loại bỏ NullPointerException không?
  *   Bắt đầu   : bỏ comment dòng {@code Optional<String> o = null;} ngay trên hằng số Q5_*
- *               bên dưới, quan sát IDE KHÔNG báo lỗi đỏ (biên dịch được), rồi comment lại;
+ *               bên dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán;
  *               điền 2 hằng số Q5_*.
  *   Kiểm chứng: chạy q05_prediction; nếu sai, đặt breakpoint trong Optional.get()
  *               (Ctrl+N → Optional → Ctrl+F12 → get), Debug q05_prediction, F7 Step Into

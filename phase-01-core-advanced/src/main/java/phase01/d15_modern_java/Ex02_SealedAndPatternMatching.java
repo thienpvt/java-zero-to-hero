@@ -13,9 +13,9 @@ import phase01.support.Compiles;
  * ─────────────────────────────────────────────────────────────────────
  * Q3 [CODE] `sealed` mang lại lợi ích gì cho `switch` trên các subtype?
  *   Bắt đầu   : đọc sealed interface Shape và 3 record cài đặt bên dưới; cài đặt area().
- *   Kiểm chứng: tạm xóa nhánh `case Square` trong switch của area(), build (Ctrl+F9) để
- *               thấy compiler báo lỗi "the switch expression does not cover all possible
- *               input values" dù không có default — rồi hoàn tác lại nhánh đã xóa.
+ *   Kiểm chứng: tạm xóa nhánh `case Square` trong switch của area(), build (Ctrl+F9), tự
+ *               đọc thông báo của compiler về exhaustiveness dù không có default — rồi hoàn
+ *               tác lại nhánh đã xóa. Ghi nguyên văn thông báo đó vào ANSWER Q4.
  *   Code      : cài đặt static double area(Shape shape) bằng switch pattern matching trên
  *               Circle/Rectangle/Square, không viết default.
  *   Hoàn thành khi: q03_* xanh; giải thích được vì sao switch không default vẫn an toàn
@@ -23,21 +23,22 @@ import phase01.support.Compiles;
  *
  * Q4 [TỰ TRẢ LỜI] Khi thêm subtype mới, compiler có thể giúp tìm những chỗ nào cần sửa?
  *   Bắt đầu   : thêm `record Triangle(double base, double height) implements Shape` vào
- *               danh sách `permits` của Shape, build (Ctrl+F9), đọc lỗi đỏ xuất hiện ở
+ *               danh sách `permits` của Shape, build (Ctrl+F9), đọc thông báo compiler xuất hiện ở
  *               area() (switch không còn exhaustive), rồi hoàn tác cả hai thay đổi.
  *   Kiểm chứng: ghi lại đúng nội dung lỗi compiler đã thấy vào ANSWER Q4.
  *   Hoàn thành khi: viết xong khối ANSWER Q4, có trích dẫn nguyên văn thông báo lỗi compiler.
  *
  * Q5 [DỰ ĐOÁN + CODE] `switch` expression khác statement ở giá trị trả về và tính đầy đủ của nhánh thế nào?
  *   Bắt đầu   : bỏ comment đoạn mẫu cạnh Q5_SWITCH_EXPRESSION_MISSING_CASE_COMPILES (thiếu
- *               nhánh Square), build (Ctrl+F9) để thấy lỗi "not exhaustive", rồi comment lại.
+ *               nhánh Square), build (Ctrl+F9), xem IDE báo gì, rồi comment lại — sau khi
+ *               đã điền dự đoán.
  *   Kiểm chứng: chạy q05_prediction; đặt breakpoint trong describeWithoutNullCase
- *               (Ctrl+N → Ex02_SealedAndPatternMatching), Debug để xem NullPointerException
- *               được JVM ném ra ngay khi bắt đầu switch vì không có `case null`.
+ *               (Ctrl+N → Ex02_SealedAndPatternMatching), Debug với input null, sau khi đã
+ *               điền dự đoán, tự đọc simple name của exception.
  *   Code      : cài đặt static String describe(Object value) bằng switch pattern matching
  *               kèm guard `when`.
- *   Hoàn thành khi: q05_* xanh; giải thích được vì sao switch expression buộc phải đầy đủ
- *               nhánh (vì luôn phải trả về giá trị) còn switch statement thì không buộc.
+ *   Hoàn thành khi: q05_* xanh; giải thích được exhaustiveness của switch expression và của
+ *               switch statement (kiểu cũ so với pattern matching) khác nhau thế nào.
  */
 public class Ex02_SealedAndPatternMatching {
 
@@ -63,7 +64,8 @@ public class Ex02_SealedAndPatternMatching {
         // SOLUTION-END
     }
 
-    // Q5 — mẫu: bỏ comment (thiếu nhánh Square) để build và xem lỗi "not exhaustive"
+    // Q5 — mẫu: switch expression trên Shape, thiếu nhánh Square. Bỏ comment, xem IDE báo
+    // gì, rồi comment lại — sau khi đã điền dự đoán.
     // static double areaMissingCase(Shape shape) {
     //     return switch (shape) {
     //         case Circle c -> Math.PI * c.radius() * c.radius();

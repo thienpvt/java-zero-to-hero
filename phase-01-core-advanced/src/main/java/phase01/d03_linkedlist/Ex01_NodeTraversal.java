@@ -21,22 +21,20 @@ import java.util.List;
  *               tự xác nhận liên kết hai chiều đã được nối đúng.
  *   Code      : insertAfter(Node<E> node, E e) chỉ nối lại prev/next quanh vị trí chèn (O(1)),
  *               cập nhật last khi node đang là phần tử cuối — không được duyệt list.
- *   Hoàn thành khi: q02_* xanh; giải thích được "insert O(1)" chỉ đúng cho bước chèn khi đã
- *               cầm sẵn Node — còn *tìm* node để chèn (ví dụ qua nodeAt) vẫn có thể mất O(n),
- *               nên khẳng định "insert LinkedList luôn O(1)" là sai nếu tính cả bước tìm.
+ *   Hoàn thành khi: q02_* xanh; giải thích được phần nào của thao tác chèn là O(1) và phần
+ *               nào có thể tốn O(n) nếu tính cả bước tìm node.
  *
  * Q1 [DỰ ĐOÁN + CODE] `LinkedList.get(5000)` hoạt động thế nào?
  *   Bắt đầu   : làm Q2 trước (test q01_* gọi addLast()). Cài đặt nodeAt(int) và get(int)
- *               bên dưới (thay throw); điền hai hằng số Q1_STEPS_* (thay null).
+ *               bên dưới (thay phần TODO); điền hai hằng số Q1_STEPS_* (thay null).
  *   Kiểm chứng: chạy các test q01_*; đặt breakpoint trong java.util.LinkedList.node(int)
  *               (Ctrl+N → LinkedList → Ctrl+F12 → node(int)), Debug một test bất kỳ gọi
  *               get(...), dùng F7 Step Into để so sánh chiến lược duyệt với nodeAt của bạn.
- *   Code      : nodeAt(int index) duyệt từ first khi index < size/2 (bước = index), từ last
- *               khi ngược lại (bước = size - 1 - index); ghi số bước vào lastTraversalSteps;
- *               ngoài khoảng [0, size) ném IndexOutOfBoundsException. get(int index) gọi
- *               nodeAt(index).item.
- *   Hoàn thành khi: các test q01_* xanh; giải thích được vì sao get(9990) trên list 10 000
- *               phần tử chỉ tốn 9 bước duyệt thay vì 9990 bước.
+ *   Code      : nodeAt(int index) duyệt từ đầu gần hơn (first hoặc last) và ghi số bước vào
+ *               lastTraversalSteps; ngoài khoảng [0, size) ném IndexOutOfBoundsException.
+ *               get(int index) trả item của node tại index đó.
+ *   Hoàn thành khi: các test q01_* xanh; giải thích được vì sao số bước của get không phải
+ *               lúc nào cũng bằng index.
  */
 public class Ex01_NodeTraversal {
 
@@ -190,8 +188,7 @@ public class Ex01_NodeTraversal {
     static final Integer Q1_STEPS_GET_5000_OF_10000 = 4999; // SOLUTION-VALUE
     static final Integer Q1_STEPS_GET_10_OF_10000 = 10; // SOLUTION-VALUE
 
-    // Q2 — "tính cả việc tìm node" nghĩa là: chèn tại một index bất kỳ (chưa cầm sẵn Node)
-    // luôn tốn O(1) kể cả bước tìm vị trí chèn. Điều này sai: bước tìm (qua nodeAt/duyệt)
-    // vẫn có thể mất O(n); chỉ bước nối prev/next khi đã có Node là O(1).
+    // Q2 — kịch bản: chèn vào giữa khi chưa cầm sẵn Node, tính cả bước tìm vị trí.
+    // Hằng hỏi: toàn bộ thao tác đó có luôn là O(1) không?
     static final Boolean Q2_INSERT_MIDDLE_O1_INCLUDING_SEARCH = false; // SOLUTION-VALUE
 }

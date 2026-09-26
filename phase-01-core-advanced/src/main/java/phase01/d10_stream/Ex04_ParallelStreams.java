@@ -19,12 +19,10 @@ import java.util.stream.LongStream;
  *
  * ─────────────────────────────────────────────────────────────────────
  * Q8 [DỰ ĐOÁN + THÍ NGHIỆM] `parallelStream()` có luôn nhanh hơn không?
- *   Bắt đầu   : điền Q8_PARALLEL_ALWAYS_FASTER = false (đáp án cố định, không cần đo).
- *   Kiểm chứng: chạy main(), đọc báo cáo của runExperiment — với LongStream nhỏ, bản tuần
- *               tự thường NHANH HƠN bản song song (chi phí chia việc + tạo/đồng bộ các
- *               thread lớn hơn lợi ích); với LongStream rất lớn thì song song mới có cơ hội
- *               thắng; với List&lt;Integer&gt; đã boxed, chi phí autoboxing/theo dõi tham
- *               chiếu càng làm giảm lợi ích song song so với kiểu nguyên thủy (long/int).
+ *   Bắt đầu   : điền Q8_PARALLEL_ALWAYS_FASTER sau khi đã chạy main() (thay null).
+ *   Kiểm chứng: chạy main(), đọc báo cáo của runExperiment, sau khi đã điền dự đoán, tự so
+ *               thời gian bản tuần tự và bản song song trên từng kích thước và từng kiểu
+ *               (LongStream so với List đã boxed).
  *   Hoàn thành khi: test q08_* xanh; giải thích được ít nhất một trường hợp cụ thể trong
  *               báo cáo mà bản song song KHÔNG nhanh hơn bản tuần tự.
  *
@@ -55,12 +53,12 @@ import java.util.stream.LongStream;
  */
 public class Ex04_ParallelStreams {
 
-    // Q8 — đáp án cố định: song song có overhead chia việc + gộp kết quả + tranh chấp
-    // ForkJoinPool.commonPool(); chỉ thắng khi việc đủ lớn/đủ tốn CPU trên mỗi phần tử.
+    // Q8 — kịch bản: parallelStream so với stream tuần tự trên vài kích thước khác nhau.
+    // Hằng hỏi: bản song song có luôn nhanh hơn không? Chạy main() rồi mới điền.
     static final Boolean Q8_PARALLEL_ALWAYS_FASTER = false; // SOLUTION-VALUE
 
-    // Q9 — đáp án cố định: tên thread của ForkJoinPool.commonPool() luôn có dạng
-    // "ForkJoinPool.commonPool-worker-<số>" (xem ForkJoinPool.commonPool()).
+    // Q9 — kịch bản: đọc tên thread in từ main() khi chạy parallel stream, chép phần tiền tố
+    // đứng trước số thứ tự worker. Đối chiếu ForkJoinPool.commonPool() nếu cần.
     static final String Q9_COMMON_POOL_THREAD_NAME_PREFIX = "ForkJoinPool.commonPool-worker-"; // SOLUTION-VALUE
 
     /** Cho sẵn: đo thời gian (ms) chạy {@code action}, có 1 vòng warm-up bị bỏ qua trước đó. */

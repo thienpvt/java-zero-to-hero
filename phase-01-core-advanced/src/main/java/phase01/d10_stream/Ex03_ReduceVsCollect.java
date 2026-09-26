@@ -34,10 +34,9 @@ import java.util.stream.IntStream;
  *   Bắt đầu   : trong q06_prediction, thử add() vào kết quả của Stream.of(1).toList() và
  *               vào kết quả của Stream.of(1).collect(Collectors.toList()); điền 2 hằng số
  *               Q6_*.
- *   Kiểm chứng: Ctrl+Q trên Stream.toList() đọc "unmodifiable List"; Ctrl+Q trên
- *               Collectors.toList() đọc "no guarantees ... type, mutability,
- *               serializability" — hành vi "add() được" hiện tại chỉ là chi tiết cài đặt
- *               của JDK này (ArrayList phía trong), KHÔNG phải hợp đồng được đảm bảo.
+ *   Kiểm chứng: Ctrl+Q trên Stream.toList() và trên Collectors.toList(), đọc Javadoc xem
+ *               list trả về có được phép sửa không và hợp đồng có cam kết mutability không
+ *               — sau khi đã điền dự đoán.
  *   Code      : static Map&lt;Character, Long&gt; countByFirstLetter(List&lt;String&gt;
  *               words) dùng Collectors.groupingBy + Collectors.counting; static String
  *               joinWithCollect(List&lt;String&gt; parts, String separator) dùng
@@ -50,11 +49,9 @@ import java.util.stream.IntStream;
  * Q7 [DỰ ĐOÁN + CODE + THÍ NGHIỆM] Side effect trong Stream có vấn đề gì?
  *   Bắt đầu   : đọc squaresBuggy (cho sẵn) bên dưới — nó add() vào một ArrayList thường
  *               (không đồng bộ) từ nhiều thread của parallelStream().forEach(); điền
- *               Q7_BUGGY_VERSION_ALWAYS_CORRECT = false (đáp án cố định, không cần đo).
- *   Kiểm chứng: chạy main() vài lần, đọc báo cáo của runExperiment — trong 20 lần chạy
- *               squaresBuggy trên danh sách lớn, một số lần size khác n hoặc ném
- *               ArrayIndexOutOfBoundsException vì ArrayList.add() không atomic khi nhiều
- *               thread cùng gọi.
+ *               Q7_BUGGY_VERSION_ALWAYS_CORRECT sau khi đã chạy thí nghiệm (thay null).
+ *   Kiểm chứng: chạy main() vài lần, đọc báo cáo của runExperiment, sau khi đã điền dự
+ *               đoán, tự xem squaresBuggy trên danh sách lớn có luôn đúng size không.
  *   Code      : static List&lt;Integer&gt; squares(List&lt;Integer&gt; numbers) — dùng
  *               map() (không side effect) để giữ đúng thứ tự và luôn ra đúng kết quả dù có
  *               dùng parallelStream().
@@ -119,8 +116,8 @@ public class Ex03_ReduceVsCollect {
         // SOLUTION-END
     }
 
-    // Q7 — đáp án cố định: side effect (ghi vào collection chia sẻ không đồng bộ) trong
-    // forEach() của parallel stream luôn có nguy cơ race, dù đôi lúc "may" ra kết quả đúng.
+    // Q7 — kịch bản: squaresBuggy ghi vào một ArrayList chia sẻ từ parallelStream().forEach.
+    // Hằng hỏi: mọi lần chạy có luôn ra đúng kết quả không? Chạy main() rồi mới điền.
     static final Boolean Q7_BUGGY_VERSION_ALWAYS_CORRECT = false; // SOLUTION-VALUE
 
     /**

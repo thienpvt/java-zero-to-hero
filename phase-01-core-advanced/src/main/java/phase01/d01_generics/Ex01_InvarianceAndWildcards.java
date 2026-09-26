@@ -17,12 +17,12 @@ import phase01.support.Compiles;
  * ─────────────────────────────────────────────────────────────────────
  * Q1 [DỰ ĐOÁN] `List<String>` có phải subtype của `List<Object>` không? Tại sao?
  *   Bắt đầu   : điền 3 hằng số Q1_* bên dưới (thay null); bỏ comment từng dòng mẫu
- *               ngay cạnh mỗi hằng `Compiles` để tự thấy dòng nào bị gạch đỏ lúc biên dịch,
- *               rồi comment lại trước khi chạy test.
+ *               ngay cạnh mỗi hằng `Compiles`, xem IDE báo gì, rồi comment lại — sau khi
+ *               đã điền dự đoán — trước khi chạy test.
  *   Kiểm chứng: chạy q01_prediction; hằng Q1_ARRAY_STORE_EXCEPTION được test tính bằng
  *               cách chạy thật `Object[] arr = new String[1]; arr[0] = 1;` và bắt lỗi.
- *   Hoàn thành khi: q01_prediction xanh; giải thích được vì sao mảng cho biên dịch qua
- *               (covariant) rồi lỗi lúc chạy, còn generic chặn ngay lúc biên dịch (invariant).
+ *   Hoàn thành khi: q01_prediction xanh; giải thích được quy tắc gán của mảng khác quy tắc
+ *               gán của generic ở chỗ nào, và lỗi (nếu có) xảy ra lúc biên dịch hay lúc chạy.
  *
  * Q9 [TỰ TRẢ LỜI] Generic invariance là gì?
  *   Bắt đầu   : làm Q1 trước, dùng chính kết quả quan sát được ở Q1 để trả lời.
@@ -40,7 +40,7 @@ import phase01.support.Compiles;
  * Q3 [CODE] Khi nào dùng `? super T`?
  *   Bắt đầu   : cài đặt addNumbers(List<? super Integer> target, int count) bên dưới.
  *   Kiểm chứng: chạy q03_*; thử tạm đổi tham số thành `List<Integer>` rồi gọi với
- *               `List<Number>` để tự thấy lỗi đỏ (đổi lại `? super Integer` trước khi nộp).
+ *               `List<Number>`, xem IDE báo gì, rồi đổi lại `? super Integer` trước khi nộp.
  *   Code      : thêm các số 0..count-1 vào target theo thứ tự tăng dần;
  *               count < 0 ném IllegalArgumentException, không đổi target.
  *   Hoàn thành khi: các test q03_* xanh; giải thích được vì sao `? super Integer` nhận
@@ -58,15 +58,18 @@ import phase01.support.Compiles;
  */
 public class Ex01_InvarianceAndWildcards {
 
-    // Q1 — mẫu: bỏ comment dòng dưới để tự thấy lỗi đỏ lúc biên dịch (generic invariance)
+    // Q1 — mẫu: List<Object> objects = new ArrayList<String>();
+    // Bỏ comment dòng dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
     // List<Object> objects = new ArrayList<String>();
     static final Compiles Q1_LIST_STRING_TO_LIST_OBJECT_COMPILES = Compiles.NO; // SOLUTION-VALUE
 
-    // Q1 — mẫu: bỏ comment dòng dưới, KHÔNG lỗi biên dịch vì mảng là covariant
+    // Q1 — mẫu: Object[] objects = new String[1];
+    // Bỏ comment dòng dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
     // Object[] objects = new String[1];
     static final Compiles Q1_STRING_ARRAY_TO_OBJECT_ARRAY_COMPILES = Compiles.YES; // SOLUTION-VALUE
 
-    // Q1 — tên ngoại lệ ném ra lúc chạy khi gán sai kiểu phần tử vào mảng covariant
+    // Q1 — kịch bản: Object[] trỏ tới new String[1], gán một phần tử không phải String.
+    // Ghi simple name của exception lúc chạy.
     static final String Q1_ARRAY_STORE_EXCEPTION = "ArrayStoreException"; // SOLUTION-VALUE
 
     /**

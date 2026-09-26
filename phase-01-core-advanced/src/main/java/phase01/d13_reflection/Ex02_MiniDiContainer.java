@@ -43,9 +43,9 @@ import java.util.Set;
  *               tạo bean) ở những điểm nào.
  *
  * Q3 [DỰ ĐOÁN] Reflection có nhược điểm gì?
- *   Bắt đầu   : điền Q3_COMPILER_CHECKS_REFLECTIVE_CALL_NAMES = false (đáp án cố định,
- *               không cần đo — giống Q5 của Ex01: tên method/field truyền vào reflection
- *               API là String, javac không kiểm được).
+ *   Bắt đầu   : điền Q3_COMPILER_CHECKS_REFLECTIVE_CALL_NAMES (thay null). Đối chiếu Q5 của
+ *               Ex01: tên method/field truyền vào reflection API là String — tự xem javac
+ *               có kiểm được lời gọi đó không, rồi mới điền.
  *   Kiểm chứng: chạy q03_*; nhìn lại IllegalArgumentException ở Q2 khi TwoConstructors có
  *               2 constructor public — đó là lỗi runtime, không phải lỗi compile, dù bạn
  *               gọi get(TwoConstructors.class) hoàn toàn hợp lệ về mặt cú pháp.
@@ -127,9 +127,9 @@ public class Ex02_MiniDiContainer {
         }
     }
 
-    // Q3 — đáp án cố định: getDeclaredMethod/getDeclaredConstructor nhận tên/kiểu tham số
-    // dưới dạng String/Class, nên javac không thể kiểm tra tại compile-time là lời gọi đó
-    // đúng hay sai (xem lại Q5 của Ex01_InspectAndInvoke).
+    // Q3 — kịch bản: MiniDi gọi getDeclaredConstructor bằng Class lấy lúc chạy.
+    // Hằng hỏi: javac có kiểm tra được tên/chữ ký lời gọi reflection đó không?
+    // Đối chiếu Q5 của Ex01_InspectAndInvoke, rồi mới điền.
     static final Boolean Q3_COMPILER_CHECKS_REFLECTIVE_CALL_NAMES = false; // SOLUTION-VALUE
 
     /**

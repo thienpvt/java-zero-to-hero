@@ -63,8 +63,8 @@ public class Ex02_DurationPeriodDst {
     /**
      * Số giờ thực tế trôi qua trong ngày {@code date} tại múi giờ {@code zone}, tính bằng
      * khoảng cách tuyệt đối giữa nửa đêm đầu ngày ({@code date.atStartOfDay(zone)}) và nửa đêm
-     * ngày kế tiếp. Ngày DST "bắt đầu" (đồng hồ nhảy tới) có thể ra 23; ngày DST "kết thúc"
-     * (đồng hồ lùi lại) có thể ra 25.
+     * ngày kế tiếp. Ngày DST "bắt đầu" (đồng hồ nhảy tới) và ngày DST "kết thúc" (đồng hồ
+     * lùi lại) có thể khác 24 giờ — tự đo rồi điền hằng Q6_HOURS_IN_DST_START_DAY.
      *
      * @param date ngày địa phương cần tính, không {@code null}
      * @param zone múi giờ áp dụng, không {@code null}

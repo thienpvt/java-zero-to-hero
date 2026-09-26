@@ -25,19 +25,16 @@ import phase01.support.Compiles;
  *
  * Q2 [DỰ ĐOÁN] `final List<String>` có immutable không?
  *   Bắt đầu   : điền 4 hằng Q2_* bên dưới (thay null từng hằng theo đúng kiểu khai báo).
- *               Với Q2_REASSIGN_FINAL_LIST_COMPILES: bỏ comment 2 dòng mẫu ngay trên hằng
- *               đó để tự thấy dòng nào gạch đỏ lúc biên dịch, rồi comment lại (không xoá)
- *               trước khi chạy test.
+ *               Với Q2_REASSIGN_FINAL_LIST_COMPILES: bỏ comment khối {@code static {}} mẫu
+ *               ngay trên hằng đó, xem IDE báo gì, rồi comment lại (không xoá) — sau khi
+ *               đã điền dự đoán — trước khi chạy test.
  *   Kiểm chứng: chạy q02_prediction. Với Q2_LIST_OF_ADD_EXCEPTION và
  *               Q2_UNMODIFIABLE_VIEW_SEES_BACKING_CHANGE, đặt con trỏ lên `List.of` hoặc
  *               `Collections.unmodifiableList` trong file test rồi Ctrl+B (hoặc Ctrl+Click)
  *               để nhảy tới source JDK, đọc Javadoc bằng Ctrl+Q ngay tại đó.
- *   Hoàn thành khi: q02_prediction xanh; giải thích được `final` trên biến chỉ khoá *tham
- *               chiếu* (không được gán lại biến đó sang object khác), hoàn toàn không khoá
- *               *nội dung* mà object đó trỏ tới — khác với `List.of(...)` (immutable thật,
- *               ném UnsupportedOperationException khi sửa) và với view bọc qua
- *               `Collections.unmodifiableList` (chỉ cấm sửa qua view, backing list gốc vẫn
- *               sửa được và view thấy ngay thay đổi đó).
+ *   Hoàn thành khi: q02_prediction xanh; giải thích được `final` trên biến khoá cái gì,
+ *               `List.of(...)` khác thế nào khi sửa nội dung, và view bọc qua
+ *               `Collections.unmodifiableList` có thấy thay đổi của list gốc không.
  */
 public class Ex01_FinalIsNotImmutable {
 
@@ -61,8 +58,8 @@ public class Ex01_FinalIsNotImmutable {
     // add() có chạy được không (không ném ngoại lệ)?
     static final Boolean Q2_CAN_ADD_TO_FINAL_LIST = true; // SOLUTION-VALUE
 
-    // Q2 — mẫu: bỏ comment cả khối static {} dưới đây để tự thấy lỗi đỏ lúc biên dịch
-    // (gán lại giá trị cho biến final), rồi comment lại trước khi chạy test.
+    // Q2 — mẫu: bỏ comment cả khối static {} dưới đây, xem IDE báo gì, rồi comment lại
+    // — sau khi đã điền dự đoán — trước khi chạy test.
     // static {
     //     final List<String> immutableRef = new ArrayList<>();
     //     immutableRef = new ArrayList<>();

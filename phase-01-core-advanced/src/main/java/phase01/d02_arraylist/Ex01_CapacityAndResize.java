@@ -15,7 +15,8 @@ import java.util.Arrays;
  * Q2 [CODE + TỰ TRẢ LỜI] Tại sao `add()` thường được gọi là amortized O(1)?
  *   Bắt đầu   : cài đặt add(E element), add(int index, E element) và remove(int index).
  *   Kiểm chứng: đặt breakpoint trong add(E) của bạn, Ctrl+N → ArrayList → Ctrl+F12 → add,
- *               so với cách JDK thật làm; chạy q02_* để thấy phần lớn lần add không resize.
+ *               so với cách JDK thật làm; chạy q02_*, sau khi đã cài đặt, tự xem những lần
+ *               add nào gọi grow().
  *   Code      : add(E) nối vào cuối, chỉ gọi grow() khi mảng đầy; add(int, E) dùng
  *               System.arraycopy để dời phần tử từ index về phải trước khi chèn;
  *               remove(int) dời phần tử phía sau về trái rồi trả phần tử bị xóa.
@@ -26,7 +27,8 @@ import java.util.Arrays;
  *   Bắt đầu   : làm Q2 trước (test q01_* gọi add()). Ctrl+N mở MiniArrayList bên dưới,
  *               cài đặt get(int index) bằng cách ép kiểu trực tiếp (E) elementData[index].
  *   Kiểm chứng: đặt breakpoint ngay trong get(), Debug q01_get_traVePhanTuDungViTri
- *               (Ctrl+Shift+F10), F8 để thấy chỉ có một phép truy cập mảng, không vòng lặp.
+ *               (Ctrl+Shift+F10), F8 qua từng bước, sau khi đã cài đặt, tự đếm số phép
+ *               truy cập mảng và số vòng lặp.
  *   Code      : E get(int index) — kiểm tra biên [0, size) trước, ngoài phạm vi ném
  *               IndexOutOfBoundsException.
  *   Hoàn thành khi: các test q01_* xanh; giải thích được vì sao truy cập mảng theo chỉ số
@@ -175,7 +177,7 @@ public class Ex01_CapacityAndResize {
     }
 
     // Q3 — kịch bản: MiniArrayList() (capacity 10 mặc định), add 100 phần tử liên tiếp.
-    // Chuỗi capacity kỳ vọng: 10 -> 15 -> 22 -> 33 -> 49 -> 73 -> 109 (6 lần resize).
+    // Đếm số lần grow() (resizeCount), không chép công thức capacity vào hằng số.
     static final Integer Q3_RESIZES_FOR_100_ADDS = 6; // SOLUTION-VALUE
 
     // Q4 — kịch bản: MiniArrayList() (capacity 10 mặc định), add 11 phần tử liên tiếp.

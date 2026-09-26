@@ -46,15 +46,16 @@ public class Ex01_Records {
     record Point(int x, int y) {
     }
 
-    // Q1 — mẫu: bỏ comment để build và xem lỗi đỏ (record ngầm định extends Record,
-    // không thể extends thêm class nào khác)
+    // Q1 — mẫu: record extends một class thường. Bỏ comment, xem IDE báo gì, rồi comment
+    // lại — sau khi đã điền dự đoán.
     // static class Shape {
     // }
     // record BadPoint(int x, int y) extends Shape {
     // }
     static final Compiles Q1_RECORD_EXTENDS_CLASS_COMPILES = Compiles.NO; // SOLUTION-VALUE
 
-    // Q1 — mẫu: bỏ comment để build; record vẫn implements interface được bình thường
+    // Q1 — mẫu: record implements một interface và cài method của interface đó.
+    // Bỏ comment, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
     // interface HasArea {
     //     double area();
     // }
