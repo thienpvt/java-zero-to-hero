@@ -16,8 +16,9 @@ import java.util.List;
  *               false); var b = new TrackedResource("B", log, false)) {}` trong Alt+F8 (Evaluate Expression)
  *               khi debug, rồi điền hằng số Q1_CLOSE_ORDER (thay null).
  *   Kiểm chứng: chạy q01_closeOrderPrediction; đặt breakpoint trong TrackedResource.close() (Ctrl+N →
- *               gõ "Ex01_TryWithResources" → mở, Ctrl+F12 để thấy method close()), Debug test, dùng
- *               Resume (F9) hai lần để thấy close() của B được gọi trước close() của A.
+ *               gõ "Ex01_TryWithResources" → mở, Ctrl+F12 để thấy method close()), Debug test: lần
+ *               dừng đầu tiên là close() của B, bấm Resume (F9) một lần để thấy lần dừng kế tiếp là
+ *               close() của A.
  *   Code      : cài đặt closeAll(List<? extends AutoCloseable>) — đóng các resource theo thứ tự
  *               ngược lại so với danh sách truyền vào, đóng hết mọi resource dù có lỗi xảy ra; lỗi
  *               đầu tiên gặp phải được ném ra, các lỗi đóng sau đó được gắn vào bằng addSuppressed().
