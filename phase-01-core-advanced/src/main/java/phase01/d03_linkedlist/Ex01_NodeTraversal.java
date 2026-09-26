@@ -6,25 +6,13 @@ import java.util.List;
 /**
  * LinkedList — Bài 1: Node và duyệt (traversal)
  *
- * Nguồn: 01-java-core-advanced.md, mục 3 (LinkedList), câu 1–2.
- * Cần làm trước: không.
- * Cách làm: làm lần lượt từng câu; chạy test tương ứng trong Ex01_NodeTraversalTest
- * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
+ * Nguồn: 01-java-core-advanced.md, mục 3 (LinkedList), câu 2, 1.
+ * Cần làm trước: không (trong file này làm Q2 trước Q1).
+ * Cách làm: làm lần lượt theo thứ tự Javadoc — Q2 trước Q1, vì test q01_* dựng danh sách
+ * bằng addLast(); chạy test tương ứng trong Ex01_NodeTraversalTest bằng nút ▶ cạnh tên
+ * test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q1 [DỰ ĐOÁN + CODE] `LinkedList.get(5000)` hoạt động thế nào?
- *   Bắt đầu   : cài đặt nodeAt(int) và get(int) bên dưới (thay throw); điền hai hằng số
- *               Q1_STEPS_* (thay null).
- *   Kiểm chứng: chạy các test q01_*; đặt breakpoint trong java.util.LinkedList.node(int)
- *               (Ctrl+N → LinkedList → Ctrl+F12 → node(int)), Debug một test bất kỳ gọi
- *               get(...), dùng F7 Step Into để so sánh chiến lược duyệt với nodeAt của bạn.
- *   Code      : nodeAt(int index) duyệt từ first khi index < size/2 (bước = index), từ last
- *               khi ngược lại (bước = size - 1 - index); ghi số bước vào lastTraversalSteps;
- *               ngoài khoảng [0, size) ném IndexOutOfBoundsException. get(int index) gọi
- *               nodeAt(index).item.
- *   Hoàn thành khi: các test q01_* xanh; giải thích được vì sao get(9990) trên list 10 000
- *               phần tử chỉ tốn 9 bước duyệt thay vì 9990 bước.
- *
  * Q2 [DỰ ĐOÁN + CODE] Insert giữa LinkedList có thực sự O(1) không?
  *   Bắt đầu   : cài đặt addFirst(E)/addLast(E) và insertAfter(Node, E) bên dưới; điền
  *               Q2_INSERT_MIDDLE_O1_INCLUDING_SEARCH (thay null).
@@ -36,6 +24,19 @@ import java.util.List;
  *   Hoàn thành khi: q02_* xanh; giải thích được "insert O(1)" chỉ đúng cho bước chèn khi đã
  *               cầm sẵn Node — còn *tìm* node để chèn (ví dụ qua nodeAt) vẫn có thể mất O(n),
  *               nên khẳng định "insert LinkedList luôn O(1)" là sai nếu tính cả bước tìm.
+ *
+ * Q1 [DỰ ĐOÁN + CODE] `LinkedList.get(5000)` hoạt động thế nào?
+ *   Bắt đầu   : làm Q2 trước (test q01_* gọi addLast()). Cài đặt nodeAt(int) và get(int)
+ *               bên dưới (thay throw); điền hai hằng số Q1_STEPS_* (thay null).
+ *   Kiểm chứng: chạy các test q01_*; đặt breakpoint trong java.util.LinkedList.node(int)
+ *               (Ctrl+N → LinkedList → Ctrl+F12 → node(int)), Debug một test bất kỳ gọi
+ *               get(...), dùng F7 Step Into để so sánh chiến lược duyệt với nodeAt của bạn.
+ *   Code      : nodeAt(int index) duyệt từ first khi index < size/2 (bước = index), từ last
+ *               khi ngược lại (bước = size - 1 - index); ghi số bước vào lastTraversalSteps;
+ *               ngoài khoảng [0, size) ném IndexOutOfBoundsException. get(int index) gọi
+ *               nodeAt(index).item.
+ *   Hoàn thành khi: các test q01_* xanh; giải thích được vì sao get(9990) trên list 10 000
+ *               phần tử chỉ tốn 9 bước duyệt thay vì 9990 bước.
  */
 public class Ex01_NodeTraversal {
 

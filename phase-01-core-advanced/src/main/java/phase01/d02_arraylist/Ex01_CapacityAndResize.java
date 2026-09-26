@@ -5,22 +5,13 @@ import java.util.Arrays;
 /**
  * ArrayList — Bài 1: Capacity, size và cơ chế resize
  *
- * Nguồn: 01-java-core-advanced.md, mục 2 (ArrayList), câu 1, 2, 3, 4, 6.
- * Cần làm trước: không.
- * Cách làm: làm lần lượt từng câu; chạy test tương ứng trong Ex01_CapacityAndResizeTest
- * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
+ * Nguồn: 01-java-core-advanced.md, mục 2 (ArrayList), câu 2, 1, 3, 4, 6.
+ * Cần làm trước: không (trong file này làm Q2 trước Q1).
+ * Cách làm: làm lần lượt theo thứ tự Javadoc — Q2 trước Q1, vì test q01_* dựng danh sách
+ * bằng add(); chạy test tương ứng trong Ex01_CapacityAndResizeTest bằng nút ▶ cạnh tên
+ * test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q1 [CODE + TỰ TRẢ LỜI] Tại sao `ArrayList.get()` là O(1)?
- *   Bắt đầu   : Ctrl+N mở MiniArrayList bên dưới, cài đặt get(int index) bằng cách
- *               ép kiểu trực tiếp (E) elementData[index].
- *   Kiểm chứng: đặt breakpoint ngay trong get(), Debug q01_get_traVePhanTuDungViTri
- *               (Ctrl+Shift+F10), F8 để thấy chỉ có một phép truy cập mảng, không vòng lặp.
- *   Code      : E get(int index) — kiểm tra biên [0, size) trước, ngoài phạm vi ném
- *               IndexOutOfBoundsException.
- *   Hoàn thành khi: các test q01_* xanh; giải thích được vì sao truy cập mảng theo chỉ số
- *               luôn là một phép tính địa chỉ hằng số, không phụ thuộc số phần tử.
- *
  * Q2 [CODE + TỰ TRẢ LỜI] Tại sao `add()` thường được gọi là amortized O(1)?
  *   Bắt đầu   : cài đặt add(E element), add(int index, E element) và remove(int index).
  *   Kiểm chứng: đặt breakpoint trong add(E) của bạn, Ctrl+N → ArrayList → Ctrl+F12 → add,
@@ -30,6 +21,16 @@ import java.util.Arrays;
  *               remove(int) dời phần tử phía sau về trái rồi trả phần tử bị xóa.
  *   Hoàn thành khi: các test q02_* xanh; giải thích được vì sao chi phí trung bình trên
  *               nhiều lần add vẫn là O(1) dù có vài lần grow() tốn O(n).
+ *
+ * Q1 [CODE + TỰ TRẢ LỜI] Tại sao `ArrayList.get()` là O(1)?
+ *   Bắt đầu   : làm Q2 trước (test q01_* gọi add()). Ctrl+N mở MiniArrayList bên dưới,
+ *               cài đặt get(int index) bằng cách ép kiểu trực tiếp (E) elementData[index].
+ *   Kiểm chứng: đặt breakpoint ngay trong get(), Debug q01_get_traVePhanTuDungViTri
+ *               (Ctrl+Shift+F10), F8 để thấy chỉ có một phép truy cập mảng, không vòng lặp.
+ *   Code      : E get(int index) — kiểm tra biên [0, size) trước, ngoài phạm vi ném
+ *               IndexOutOfBoundsException.
+ *   Hoàn thành khi: các test q01_* xanh; giải thích được vì sao truy cập mảng theo chỉ số
+ *               luôn là một phép tính địa chỉ hằng số, không phụ thuộc số phần tử.
  *
  * Q3 [DỰ ĐOÁN + CODE + TỰ TRẢ LỜI] Điều gì xảy ra khi backing array hết capacity?
  *   Bắt đầu   : điền hằng số Q3_RESIZES_FOR_100_ADDS (đọc thêm Q6 bên dưới), rồi cài
