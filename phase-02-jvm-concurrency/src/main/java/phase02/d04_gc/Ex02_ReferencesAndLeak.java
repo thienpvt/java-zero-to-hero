@@ -34,7 +34,7 @@ import java.util.WeakHashMap;
 public class Ex02_ReferencesAndLeak {
 
     // Q5 — hằng hỏi liệu weak reference có ngăn GC hay không.
-    static final Boolean Q5_WEAK_DOES_NOT_PREVENT_GC = true; // SOLUTION-VALUE
+    static final Boolean Q5_WEAK_DOES_NOT_PREVENT_GC = null;
 
     /**
      * Cho sẵn: bọc {@code data} trong một {@code WeakReference}. Không gọi {@code System.gc()}.
@@ -50,41 +50,25 @@ public class Ex02_ReferencesAndLeak {
      * @return referent nếu còn, {@code null} nếu reference đã bị clear
      */
     static String surviveOrClear(WeakReference<String> ref) {
-        // SOLUTION-BEGIN throw Q5
-        return ref.get();
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q5");
     }
 
     /**
      * Cache theo key: entry không được giữ key sống chỉ vì key nằm trong cache.
      */
     static <K, V> Map<K, V> cache() {
-        // SOLUTION-BEGIN throw Q6
-        return new WeakHashMap<>();
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 }
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Strong reference giữ object sống: còn strong ref thì GC không thu object đó.
- * WeakReference không ngăn GC. Khi không còn strong ref, collector có thể thu referent và clear weak ref.
- * surviveOrClear chỉ đọc get(). Không gọi System.gc() và không tự clear reference.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * WeakHashMap hợp với cache mà key còn được nơi khác giữ bằng strong reference.
- * Khi key không còn strong ref bên ngoài, entry có thể bị bỏ nên cache không giữ object sống mãi.
- * Đừng dùng khi entry phải còn đến lúc chủ động xóa.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q9:
- * SOLUTION-BEGIN
- * Cache không giới hạn giữ strong reference tới mọi entry đã put và không bao giờ bỏ bớt.
- * Những entry đó vẫn reachable từ cache, nên GC không thu được, heap tăng theo dữ liệu từng được cache.
- * Phòng: trần kích thước, hết hạn, hoặc key weak khi entry chỉ cần sống cùng key bên ngoài.
- * SOLUTION-END
+ *
  */

@@ -70,9 +70,5 @@ public class RaceDemo {
 }
 
 /* OBSERVATION B1:
- * SOLUTION-BEGIN
- * Hai thread có thể cùng đọc một số dư đủ tiền, cùng qua compareTo, rồi cùng ghi balance.subtract.
- * Lần ghi sau đè lần ghi trước nên một lần rút biến mất và số dư cao hơn số lần đã trừ.
- * Báo cáo in balance sau khi pool dừng. Con số đó đổi theo lịch thread, nên bài không assert số dư.
- * SOLUTION-END
+ *
  */

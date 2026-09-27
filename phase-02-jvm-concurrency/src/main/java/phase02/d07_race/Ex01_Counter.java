@@ -57,25 +57,21 @@ public class Ex01_Counter {
     }
 
     // Q1 — hằng hỏi Counter ở ví dụ mục 7 có thread-safe không.
-    static final Boolean Q1_UNSAFE_COUNTER_IS_THREAD_SAFE = false; // SOLUTION-VALUE
+    static final Boolean Q1_UNSAFE_COUNTER_IS_THREAD_SAFE = null;
 
     // Q4 — hằng hỏi race condition có luôn reproduce được không.
-    static final Boolean Q4_RACE_ALWAYS_REPRODUCES = false; // SOLUTION-VALUE
+    static final Boolean Q4_RACE_ALWAYS_REPRODUCES = null;
 
     /** Q6 — điền thân {@code increment} và {@code count}. */
     static final class SafeCounter {
         private int count;
 
         synchronized void increment() {
-            // SOLUTION-BEGIN throw Q6
-            count++;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
 
         synchronized int count() {
-            // SOLUTION-BEGIN throw Q6
-            return count;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
     }
 
@@ -123,57 +119,29 @@ public class Ex01_Counter {
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Không. Counter không thread-safe.
- * increment chỉ là count++ trên field thường, không khóa và không volatile.
- * Hai thread xen kẽ đọc-sửa-ghi thì một lần ghi đè làm mất một lần tăng.
- * SOLUTION-END
+ *
  */
 
 /* OBSERVATION Q1:
- * SOLUTION-BEGIN
- * runExperiment in count sau 4 thread. Có lần count nhỏ hơn 4 * perThread, có lần bằng đúng tổng.
- * count++ không được khóa, nên hai thread có thể đọc cùng một giá trị rồi ghi đè nhau.
- * Một lần chạy ra đúng tổng không chứng minh Counter thread-safe.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * count++ không phải một thao tác nguyên tử.
- * Bytecode là đọc field (getfield), cộng một (iadd), rồi ghi lại (putfield).
- * Thread khác có thể chạy giữa bước đọc và bước ghi, nên cả hai cùng ghi một kết quả.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Race condition là lỗi khi kết quả phụ thuộc thứ tự lịch của các thread trên dữ liệu dùng chung.
- * Có ít nhất một lần ghi, và thiếu đồng bộ nên một số lịch ra kết quả sai, một số lịch tình cờ đúng.
- * Đoạn code đơn luồng vẫn có thể đúng; lỗi chỉ xuất hiện khi các thao tác xen kẽ.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Không. Race không phải lúc nào cũng reproduce.
- * Lịch thread đổi theo số lõi, tải máy, JIT và cả debugger, nên cùng một binary lúc mất cập nhật lúc không.
- * Một lần chạy đúng tổng không chứng minh hết race, nên bài này không assert Counter mất cập nhật.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Bug concurrency không tất định: cùng input, lần này đúng, lần khác sai.
- * Debugger hoặc log làm đổi lịch, và stack trace không chỉ ra thread kia đã xen vào giữa đọc và ghi.
- * Lỗi thường chỉ lộ khi có tải và nhiều lõi, nên khó tái hiện trên máy dev.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * SafeCounter khóa increment và count bằng synchronized trên this: loại xen kẽ và tạo happens-before.
- * Cách khác: AtomicInteger.incrementAndGet, ReentrantLock, hoặc LongAdder khi nhiều thread chỉ cộng.
- * volatile không đủ, vì nó không biến count++ thành nguyên tử.
- * SOLUTION-END
+ *
  */

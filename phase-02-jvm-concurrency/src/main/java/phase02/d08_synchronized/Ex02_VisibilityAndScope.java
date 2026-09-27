@@ -26,7 +26,7 @@ package phase02.d08_synchronized;
 public class Ex02_VisibilityAndScope {
 
     // Q6 — synchronized có lập happens-before (visibility) hay chỉ loại trừ lẫn nhau.
-    static final Boolean Q6_ALSO_VISIBILITY = true; // SOLUTION-VALUE
+    static final Boolean Q6_ALSO_VISIBILITY = null;
 
     /**
      * Tài khoản. Khối synchronized chỉ bọc phần đụng số dư.
@@ -45,27 +45,15 @@ public class Ex02_VisibilityAndScope {
         }
 
         void withdraw(int amount) {
-            // SOLUTION-BEGIN throw Q7
-            lastAttempt = "rut " + amount;
-            synchronized (this) {
-                if (amount > 0 && balance >= amount) {
-                    balance -= amount;
-                    successes++;
-                }
-            }
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q7");
         }
 
         synchronized int balance() {
-            // SOLUTION-BEGIN throw Q7
-            return balance;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q7");
         }
 
         synchronized int successfulWithdrawals() {
-            // SOLUTION-BEGIN throw Q7
-            return successes;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q7");
         }
 
         String lastAttempt() {
@@ -75,18 +63,9 @@ public class Ex02_VisibilityAndScope {
 }
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * synchronized không chỉ làm critical section atomic. Nhả monitor happens-before lần lấy cùng monitor sau đó.
- * Thread sau nhìn thấy mọi ghi mà thread trước đã thực hiện trước khi nhả khóa.
- * Đó là visibility. Biến thường không có quan hệ này nên không dùng hai thread để "chứng minh" mất giá trị.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q7:
- * SOLUTION-BEGIN
- * Synchronized method khóa cả phần không đụng trạng thái chung, critical section dài hơn mức cần.
- * withdraw ghi mô tả lần rút bên ngoài, rồi chỉ synchronize khối kiểm tra và trừ balance.
- * Cùng monitor this: lần nhả khóa happens-before balance() của thread khác, nên số dư đọc được không âm
- * và số lần rút thành công cộng số dư còn lại bằng số dư mở.
- * SOLUTION-END
+ *
  */

@@ -43,10 +43,10 @@ public class Ex01_CompileAndClassFile {
     }
 
     // Q1 — chọn một hằng của Pipeline cho chương trình Java thông thường.
-    static final Pipeline Q1_JAVA_PIPELINE = Pipeline.SOURCE_TO_BYTECODE_THEN_JVM; // SOLUTION-VALUE
+    static final Pipeline Q1_JAVA_PIPELINE = null;
 
     // Q2 — chuỗi hex hoa, không dấu cách, của đúng bốn byte đầu.
-    static final String Q2_CLASS_MAGIC = "CAFEBABE"; // SOLUTION-VALUE
+    static final String Q2_CLASS_MAGIC = null;
 
     /**
      * Đọc đúng bốn byte đầu của {@code classFile}.
@@ -55,44 +55,21 @@ public class Ex01_CompileAndClassFile {
      * @throws UncheckedIOException nếu không đọc được file
      */
     static byte[] classMagic(Path classFile) {
-        // SOLUTION-BEGIN throw Q2
-        try (InputStream in = Files.newInputStream(classFile)) {
-            byte[] magic = in.readNBytes(4);
-            if (magic.length != 4) {
-                throw new IllegalArgumentException("File class không đủ 4 byte đầu: " + classFile);
-            }
-            return magic;
-        } catch (IOException e) {
-            throw new UncheckedIOException("Không đọc được file class: " + classFile, e);
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q2");
     }
 
     // Q6 — JVM có thực thi trực tiếp file nguồn .java không?
-    static final Boolean Q6_JVM_RUNS_SOURCE = false; // SOLUTION-VALUE
+    static final Boolean Q6_JVM_RUNS_SOURCE = null;
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Java được biên dịch bằng javac thành bytecode, rồi JVM thực thi bytecode đó.
- * Pipeline đúng là source sang bytecode rồi tới JVM: có interpreter lúc đầu và JIT khi đoạn code nóng.
- * Source không chạy thẳng trên CPU, và chương trình cũng không chỉ có interpreter suốt đời.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * File .class chứa bytecode của các method cùng metadata: phiên bản, constant pool, field, method, attribute.
- * Bốn byte đầu là magic number CA FE BA BE.
- * HexFormat chữ hoa trên đúng bốn byte đó cho chuỗi CAFEBABE.
- * JVM đọc bytecode này, không đọc source Java từ file class.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * JVM không chạy file .java. Nó nạp bytecode đã nằm trong file .class.
- * Muốn chạy source phải qua javac hoặc một trình biên dịch tương đương trước.
- * Kể cả jshell cũng biên dịch đoạn nhập thành bytecode rồi mới thực thi.
- * SOLUTION-END
+ *
  */

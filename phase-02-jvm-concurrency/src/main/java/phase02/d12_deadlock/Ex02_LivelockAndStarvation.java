@@ -23,19 +23,9 @@ public class Ex02_LivelockAndStarvation {
 }
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Deadlock: các thread bị chặn, không chạy tiếp, vì mỗi bên đang chờ lock mà bên kia giữ.
- * Livelock: các thread vẫn chạy và đổi trạng thái, nhưng không hoàn thành việc.
- * Ví dụ: hai bên cùng nhường lock rồi cùng lấy lại, lặp mãi, không tiến.
- * Bài này không mô phỏng livelock bằng vòng lặp không thoát.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Starvation là một thread sẵn sàng làm việc nhưng hầu như không bao giờ nhận được tài nguyên.
- * Các thread khác cứ lấy lock hoặc CPU trước, nên thread đó không tiến dù hệ thống vẫn chạy.
- * Khác deadlock: không có vòng chờ, các thread khác vẫn hoàn thành việc.
- * Khác livelock: không phải mọi bên đều bận đổi trạng thái; có bên bị bỏ đói.
- * SOLUTION-END
+ *
  */

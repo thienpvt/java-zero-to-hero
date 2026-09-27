@@ -44,52 +44,37 @@ public class Ex01_StackHeap {
     }
 
     // Q1 — object tạo bằng new. Chọn một giá trị của Store.
-    static final Store Q1_OBJECT = Store.HEAP; // SOLUTION-VALUE
+    static final Store Q1_OBJECT = null;
 
     // Q2 — biến primitive khai báo trong method. Chọn một giá trị của Store.
-    static final Store Q2_LOCAL_PRIMITIVE = Store.STACK; // SOLUTION-VALUE
+    static final Store Q2_LOCAL_PRIMITIVE = null;
 
     // Q3 — true nếu reference và object bắt buộc nằm cùng một vùng nhớ.
-    static final Boolean Q3_SAME_PLACE = false; // SOLUTION-VALUE
+    static final Boolean Q3_SAME_PLACE = null;
 
     // Q4 — true nếu các thread dùng chung một stack.
-    static final Boolean Q4_STACK_SHARED = false; // SOLUTION-VALUE
+    static final Boolean Q4_STACK_SHARED = null;
 
     // Q5 — true nếu các thread dùng chung heap.
-    static final Boolean Q5_HEAP_SHARED = true; // SOLUTION-VALUE
+    static final Boolean Q5_HEAP_SHARED = null;
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Object tạo bằng new thường nằm trên heap.
- * Frame stack chỉ giữ biến local, tham số và reference trỏ tới object đó.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Local primitive (int, long, boolean, ...) nằm trong frame stack của method.
- * Nó không được cấp phát thành một object trên heap.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Không. Reference có thể nằm trong frame stack (biến local) hoặc trong field của object khác trên heap.
- * Object mà reference trỏ tới vẫn thường nằm trên heap, nên hai thứ không bắt buộc cùng một nơi.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Không. Mỗi thread có stack riêng cho các frame của nó.
- * Thread khác không đọc biến local trên stack này.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Có. Heap là vùng dùng chung: nhiều thread có thể giữ reference tới cùng một object.
- * Vì vậy phải đồng bộ khi các thread cùng sửa trạng thái của object đó. GC cũng chạy trên heap.
- * SOLUTION-END
+ *
  */

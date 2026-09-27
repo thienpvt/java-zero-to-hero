@@ -56,70 +56,41 @@ public class Ex01_VolatileIsNotAtomic {
     }
 
     // Q2 — hằng hỏi volatile có biến thao tác nhiều bước thành nguyên tử không.
-    static final Boolean Q2_VOLATILE_MAKES_INCREMENT_ATOMIC = false; // SOLUTION-VALUE
+    static final Boolean Q2_VOLATILE_MAKES_INCREMENT_ATOMIC = null;
 
     // Q3 — hằng hỏi volatile int rồi count++ có an toàn khi nhiều thread cùng tăng không.
-    static final Boolean Q3_VOLATILE_COUNT_PLUS_PLUS_SAFE = false; // SOLUTION-VALUE
+    static final Boolean Q3_VOLATILE_COUNT_PLUS_PLUS_SAFE = null;
 
     /** Q3 — điền thân {@code increment} và {@code count}. */
     static final class AtomicCount {
         private final AtomicInteger count = new AtomicInteger();
 
         void increment() {
-            // SOLUTION-BEGIN throw Q3
-            count.incrementAndGet();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q3");
         }
 
         int count() {
-            // SOLUTION-BEGIN throw Q3
-            return count.get();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q3");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * volatile giải quyết visibility: ghi field này happens-before lần đọc sau trên thread khác.
- * Thread đọc thấy giá trị vừa được ghi, cùng các ghi khác nằm trước lần ghi volatile đó.
- * Nó cũng ràng buộc ordering quanh biến đó.
- * Nó không biến một thao tác nhiều bước thành atomic.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Không. volatile không đảm bảo atomicity.
- * Nó chỉ bảo đảm visibility và ordering của từng lần đọc hoặc ghi field đó.
- * Phép gồm nhiều bước vẫn có thể bị thread khác xen vào giữa chừng.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Không. volatile int rồi count++ không thread-safe.
- * count++ vẫn là đọc field, cộng một, rồi ghi lại. volatile không gom ba bước đó thành một.
- * Hai thread có thể đọc cùng một giá trị rồi ghi đè, nên một lần tăng biến mất.
- * AtomicCount dùng AtomicInteger.incrementAndGet để cả bước tăng là một thao tác CAS.
- * synchronized quanh count++ cũng được, vì monitor vừa loại trừ vừa tạo happens-before.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * volatile phù hợp khi một thread ghi và các thread khác chỉ đọc một biến đơn.
- * Cờ boolean running do một writer gán, các worker chỉ đọc, là trường hợp điển hình.
- * Mỗi lần gán hoặc đọc là một thao tác, nên không cần mutual exclusion.
- * Nhiều thread cùng đọc-sửa-ghi, như count++, thì volatile không đủ.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q7:
- * SOLUTION-BEGIN
- * volatile không có mutual exclusion: nhiều thread vẫn thực hiện thao tác cùng lúc.
- * synchronized lấy monitor nên cùng một lúc chỉ một thread ở trong critical section.
- * Nhả monitor happens-before lần lấy monitor sau, nên synchronized cũng có visibility.
- * volatile rẻ hơn khi chỉ cần công bố một ghi; nó không bảo vệ một chuỗi nhiều bước.
- * SOLUTION-END
+ *
  */

@@ -21,7 +21,7 @@ package phase02.d10_atomic;
 public class Ex02_MultiVariable {
 
     // Q5 — một AtomicInteger có bao được hai field trong cùng một giao dịch hay không.
-    static final Boolean Q5_ONE_ATOMIC_COVERS_TWO_FIELDS = false; // SOLUTION-VALUE
+    static final Boolean Q5_ONE_ATOMIC_COVERS_TWO_FIELDS = null;
 
     /** Hai {@code int} đổi trong cùng monitor. Tổng {@code a + b} không đổi. */
     static final class Pair {
@@ -34,10 +34,7 @@ public class Ex02_MultiVariable {
         }
 
         synchronized void transfer() {
-            // SOLUTION-BEGIN throw Q5
-            a++;
-            b--;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
 
         synchronized int a() {
@@ -55,9 +52,5 @@ public class Ex02_MultiVariable {
 }
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Một AtomicInteger chỉ nguyên tử hóa một biến, không gom hai field thành một giao dịch.
- * Hai lần CAS liên tiếp vẫn để thread khác chen giữa lần cập nhật thứ nhất và lần thứ hai.
- * Muốn đổi cả hai mà giữ tổng thì khóa một monitor bao cả hai, hoặc CAS một tham chiếu tới cả cặp.
- * SOLUTION-END
+ *
  */

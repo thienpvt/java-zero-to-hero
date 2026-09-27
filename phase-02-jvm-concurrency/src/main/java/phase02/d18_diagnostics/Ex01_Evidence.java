@@ -76,54 +76,29 @@ public class Ex01_Evidence {
             + "Đường used lên rồi xuống theo nhịp collector, không giữ mức cao sau khi GC thu xong.";
 
     // Q1 — kết quả contains("deadlock") trên DEADLOCK_DUMP và trên IO_DUMP. Đọc chuỗi đã dán, đừng gọi jcmd.
-    static final Boolean Q1_DEADLOCK_DUMP_HAS_DEADLOCK = true; // SOLUTION-VALUE
-    static final Boolean Q1_IO_DUMP_HAS_DEADLOCK = false; // SOLUTION-VALUE
+    static final Boolean Q1_DEADLOCK_DUMP_HAS_DEADLOCK = null;
+    static final Boolean Q1_IO_DUMP_HAS_DEADLOCK = null;
 
     // Q2 — heap used tăng có chứng minh memory leak hay không. Hằng cố định, không gọi GC.
-    static final Boolean Q2_RISING_HEAP_PROVES_LEAK = false; // SOLUTION-VALUE
+    static final Boolean Q2_RISING_HEAP_PROVES_LEAK = null;
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Dump deadlock có dòng Found one Java-level deadlock: các thread waiting to lock chéo nhau.
- * Dump chờ I/O không có vòng đó. IO_DUMP có thread trạng thái WAITING và thread nằm trong socketRead.
- * Chờ socket không phải chờ lock của nhau.
- * contains trên chuỗi đã dán: DEADLOCK_DUMP có chữ deadlock, IO_DUMP thì không.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Heap used tăng khi ứng dụng đang cấp phát object mới, trước khi GC chạy.
- * Nếu sau GC used giảm, những object đó không còn reachable, nên không phải memory leak.
- * Memory leak là retained heap: reference còn sống nên used không trở lại sau GC.
- * HEAP_NOTE mô tả tăng rồi giảm sau GC, nên một nhịp tăng chưa chứng minh có leak.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * JFR ghi sự kiện theo thời gian mà không cần một dump đơn lẻ.
- * Khi allocation tăng, sự kiện allocation cho thấy method và kiểu object nào đang cấp phát nhiều.
- * Khi có contention, sự kiện lock contention cho thấy monitor nào bị tranh và thread chờ bao lâu.
- * Hai loại sự kiện này tách cấp phát nóng khỏi chờ lock, thay vì chỉ nhìn một số CPU.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Queue tăng trong khi CPU thấp thường là worker đang chờ, không phải thiếu CPU.
- * Kiểm tra trước pool đã đầy hay chưa, lock đang bị giữ lâu, và I/O như socket hoặc database chậm.
- * Thread dump sẽ thấy nhiều thread chờ lock hoặc nằm trong socketRead, trong lúc backlog của queue tăng.
- * Đừng thêm thread vô hạn: thêm thread không làm lock hay I/O nhanh hơn.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Giữ cùng một workload cho cả hai cấu hình, gồm dữ liệu và cách gọi.
- * Warm-up trước khi ghi số, rồi chạy nhiều lần, không kết luận từ một mẫu.
- * Ghi phiên bản JDK và flag JVM, gồm collector, kích thước heap và pool size, cùng thời điểm đo.
- * Khác workload hoặc khác JDK thì không tách được tác động của thay đổi GC hay pool size.
- * SOLUTION-END
+ *
  */

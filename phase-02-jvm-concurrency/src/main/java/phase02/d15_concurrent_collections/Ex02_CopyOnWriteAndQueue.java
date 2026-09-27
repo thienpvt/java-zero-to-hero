@@ -41,10 +41,10 @@ import java.util.concurrent.CountDownLatch;
 public class Ex02_CopyOnWriteAndQueue {
 
     // Q5 — write của CopyOnWriteArrayList có sao chép mảng phần tử hay không.
-    static final Boolean Q5_WRITE_COPIES_ARRAY = true; // SOLUTION-VALUE
+    static final Boolean Q5_WRITE_COPIES_ARRAY = null;
 
     // Q7 — offer trên ArrayBlockingQueue đã đầy có bị từ chối hay không.
-    static final Boolean Q7_OFFER_FALSE_WHEN_FULL = true; // SOLUTION-VALUE
+    static final Boolean Q7_OFFER_FALSE_WHEN_FULL = null;
 
     /**
      * Thread khác {@code put} các số từ 0 đến {@code n - 1} vào {@code queue}.
@@ -57,77 +57,22 @@ public class Ex02_CopyOnWriteAndQueue {
      * @throws InterruptedException nếu bị ngắt trong lúc {@code take} hoặc {@code join}
      */
     static int takeSum(BlockingQueue<Integer> queue, int n) throws InterruptedException {
-        // SOLUTION-BEGIN throw Q6
-        if (queue == null) {
-            throw new IllegalArgumentException("Queue không được null.");
-        }
-        if (n < 0) {
-            throw new IllegalArgumentException("Số phần tử không được âm: " + n);
-        }
-        CountDownLatch start = new CountDownLatch(1);
-        Thread producer = new Thread(() -> {
-            try {
-                start.await();
-                for (int i = 0; i < n; i++) {
-                    queue.put(i);
-                }
-            } catch (InterruptedException ex) {
-                Thread.currentThread().interrupt();
-            }
-        }, "take-sum-producer");
-        producer.setDaemon(true);
-        producer.start();
-        start.countDown();
-        int sum = 0;
-        try {
-            for (int i = 0; i < n; i++) {
-                sum += queue.take();
-            }
-        } finally {
-            producer.join(10_000);
-        }
-        if (producer.isAlive()) {
-            producer.interrupt();
-            throw new IllegalStateException(
-                    "Thread còn sống sau khi join tối đa 10 giây: " + producer.getName());
-        }
-        return sum;
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 }
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * CopyOnWriteArrayList hợp khi đọc rất nhiều và ghi rất ít.
- * Lần đọc không cần khóa: iterator đi trên mảng ổn định lúc nó được tạo.
- * Danh sách listener hoặc cấu hình ít đổi là workload điển hình.
- * Ghi dày thì chi phí sao chép át lợi ích của việc đọc không khóa.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Mỗi lần ghi, lớp này sao chép cả mảng phần tử rồi thay tham chiếu bằng mảng mới.
- * Chi phí tỉ lệ với số phần tử, và iterator cũ vẫn giữ mảng trước đó.
- * Ghi thường xuyên sẽ cấp phát và sao chép liên tục.
- * Vì vậy write đắt, cấu trúc này không dành cho workload ghi nhiều.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * BlockingQueue cho producer đưa phần tử và chờ khi đầy, consumer lấy phần tử và chờ khi rỗng.
- * Hai bên không cần vòng lặp bận để dò queue rỗng hoặc đầy.
- * takeSum để một thread put các số, còn lời gọi take đúng số phần tử đó rồi cộng lại.
- * Tổng là tổng các phần tử producer đã đưa vào.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q7:
- * SOLUTION-BEGIN
- * offer cố thêm một phần tử và trả ngay: được nhận hoặc bị từ chối khi không còn chỗ.
- * put thêm phần tử và chờ cho đến khi có chỗ, không trả về chỉ vì queue đang đầy.
- * ArrayBlockingQueue dung lượng 1 đã chứa một phần tử thì lần offer tiếp theo bị từ chối.
- * Không gọi put trên queue đầy trong test, vì lời gọi đó có thể chờ mãi nếu không có thread take.
- * SOLUTION-END
+ *
  */

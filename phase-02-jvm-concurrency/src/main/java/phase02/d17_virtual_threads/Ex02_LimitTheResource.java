@@ -44,62 +44,7 @@ public class Ex02_LimitTheResource {
      * @throws IllegalStateException nếu còn thread sống sau 10 giây
      */
     static int maxInFlight(int tasks, int permits) {
-        // SOLUTION-BEGIN throw Q2
-        if (tasks < 0 || permits < 0) {
-            throw new IllegalArgumentException("tasks và permits không được âm.");
-        }
-        if (tasks == 0 || permits == 0) {
-            return 0;
-        }
-        Semaphore semaphore = new Semaphore(permits);
-        AtomicInteger inFlight = new AtomicInteger();
-        AtomicInteger max = new AtomicInteger();
-        CountDownLatch holding = new CountDownLatch(Math.min(tasks, permits));
-        CountDownLatch release = new CountDownLatch(1);
-        CountDownLatch finished = new CountDownLatch(tasks);
-        Thread[] workers = new Thread[tasks];
-        ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
-        try {
-            for (int i = 0; i < tasks; i++) {
-                int id = i;
-                executor.submit(() -> {
-                    workers[id] = Thread.currentThread();
-                    boolean held = false;
-                    try {
-                        semaphore.acquire();
-                        held = true;
-                        int now = inFlight.incrementAndGet();
-                        max.accumulateAndGet(now, Math::max);
-                        holding.countDown();
-                        release.await();
-                    } catch (InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                    } finally {
-                        if (held) {
-                            inFlight.decrementAndGet();
-                            semaphore.release();
-                        }
-                        finished.countDown();
-                    }
-                });
-            }
-            if (!holding.await(10, TimeUnit.SECONDS)) {
-                throw new IllegalStateException("Thread còn sống sau khi join tối đa 10 giây.");
-            }
-            release.countDown();
-            if (!finished.await(10, TimeUnit.SECONDS)) {
-                throw new IllegalStateException("Thread còn sống sau khi join tối đa 10 giây.");
-            }
-            return max.get();
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Bị ngắt khi chờ virtual thread.", ex);
-        } finally {
-            release.countDown();
-            executor.shutdownNow();
-            joinAll(workers);
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q2");
     }
 
     /**
@@ -111,45 +56,7 @@ public class Ex02_LimitTheResource {
      * @throws IllegalStateException nếu còn thread sống sau 10 giây
      */
     static int acquiredWithTry(int tasks, int permits) {
-        // SOLUTION-BEGIN throw Q2
-        if (tasks < 0 || permits < 0) {
-            throw new IllegalArgumentException("tasks và permits không được âm.");
-        }
-        Semaphore semaphore = new Semaphore(permits);
-        AtomicInteger acquired = new AtomicInteger();
-        CountDownLatch done = new CountDownLatch(tasks);
-        Thread[] workers = new Thread[tasks];
-        ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
-        try {
-            for (int i = 0; i < tasks; i++) {
-                int id = i;
-                executor.submit(() -> {
-                    workers[id] = Thread.currentThread();
-                    try {
-                        if (semaphore.tryAcquire()) {
-                            acquired.incrementAndGet();
-                        }
-                    } finally {
-                        done.countDown();
-                    }
-                });
-            }
-            if (!done.await(10, TimeUnit.SECONDS)) {
-                throw new IllegalStateException("Thread còn sống sau khi join tối đa 10 giây.");
-            }
-            int won = acquired.get();
-            if (won > 0) {
-                semaphore.release(won);
-            }
-            return won;
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Bị ngắt khi chờ virtual thread.", ex);
-        } finally {
-            executor.shutdownNow();
-            joinAll(workers);
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q2");
     }
 
     private static void joinAll(Thread[] workers) {
@@ -172,20 +79,9 @@ public class Ex02_LimitTheResource {
 }
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * 100.000 virtual thread vẫn xin kết nối từ một pool có trần nhỏ hơn nhiều.
- * Virtual thread không nhân số kết nối DB. Hết permit thì request chờ hoặc bị từ chối.
- * maxInFlight giữ Semaphore(permits) và ghi số đang giữ bằng AtomicInteger. Mức cao nhất không vượt permits.
- * acquiredWithTry gọi tryAcquire, không chờ, và chỉ nhả sau khi mọi task đã gọi. 30 task và 20 permit chiếm được 20.
- * Giới hạn tài nguyên khan, không giới hạn bằng cách pool virtual thread.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Hạn của request phải thành hạn của tác vụ con, rồi hủy phần còn chạy.
- * Future.cancel(true) ngắt thread của task. Lời gọi đang chặn ném InterruptedException.
- * Tác vụ con thấy interrupt thì dừng và nhả tài nguyên, không nuốt cờ ngắt.
- * Không cần gọi mạng: interrupt đi theo future của task con.
- * SOLUTION-END
+ *
  */

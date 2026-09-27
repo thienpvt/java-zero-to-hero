@@ -46,19 +46,19 @@ package phase02.d08_synchronized;
 public class Ex01_WhichLock {
 
     // Q1 — synchronized có dùng một khóa toàn cục cho mọi object không?
-    static final Boolean Q1_LOCKS_ONE_GLOBAL = false; // SOLUTION-VALUE
+    static final Boolean Q1_LOCKS_ONE_GLOBAL = null;
 
     // Q2 — monitor mà synchronized instance method lấy.
-    static final String Q2_INSTANCE_LOCK = "this"; // SOLUTION-VALUE
+    static final String Q2_INSTANCE_LOCK = null;
 
     // Q3 — monitor mà synchronized static method lấy.
-    static final String Q3_STATIC_LOCK = "Class"; // SOLUTION-VALUE
+    static final String Q3_STATIC_LOCK = null;
 
     // Q5 — hai instance khác nhau có chặn lẫn nhau không?
-    static final Boolean Q5_DIFFERENT_INSTANCES_BLOCK = false; // SOLUTION-VALUE
+    static final Boolean Q5_DIFFERENT_INSTANCES_BLOCK = null;
 
     // Q8 — cùng thread gọi depth() có lấy lại được monitor hay bị kẹt.
-    static final Boolean Q8_REENTRANT = true; // SOLUTION-VALUE
+    static final Boolean Q8_REENTRANT = null;
 
     /** Hai method synchronized cùng instance. Bộ đếm chỉ đúng khi chúng không chạy song song. */
     static final class Gate {
@@ -67,17 +67,11 @@ public class Ex01_WhichLock {
         private int left;
 
         synchronized void enter() {
-            // SOLUTION-BEGIN throw Q4
-            inside++;
-            entered++;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
 
         synchronized void leave() {
-            // SOLUTION-BEGIN throw Q4
-            inside--;
-            left++;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
 
         synchronized int inside() {
@@ -99,63 +93,35 @@ public class Ex01_WhichLock {
      */
     static final class Reentry {
         synchronized int depth() {
-            // SOLUTION-BEGIN throw Q8
-            return 1 + nested();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q8");
         }
 
         private synchronized int nested() {
-            // SOLUTION-BEGIN throw Q8
-            return 1;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q8");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * synchronized khóa monitor của một object, không phải một khóa toàn cục của JVM.
- * Hai thread chỉ loại trừ nhau khi cùng tranh một monitor.
- * Hai object khác nhau là hai monitor, dù cùng một lớp.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * synchronized instance method khóa monitor của this.
- * this là instance nhận lời gọi, không phải một object khóa riêng.
- * Thread khác gọi method synchronized trên cùng instance phải chờ monitor được nhả.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * synchronized static method không có this.
- * Nó khóa monitor của đối tượng Class đại diện cho lớp khai báo method.
- * Monitor đó khác monitor của từng instance, nên không chặn method instance synchronized.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Hai method synchronized của cùng object dùng chung monitor this nên không chạy song song.
- * Thread khác muốn vào enter hoặc leave phải chờ thread đang giữ monitor nhả khóa.
- * Vì vậy entered, left và inside không mất cập nhật: mỗi lần vào có một lần ra thì inside về 0.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Mỗi object một monitor. Synchronize trên object này không giữ monitor của object kia.
- * Thread đang ở trong method synchronized của instance A không chặn thread vào instance B.
- * Muốn loại trừ chung thì cả hai phía phải synchronize trên cùng một object.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q8:
- * SOLUTION-BEGIN
- * Intrinsic lock reentrant: cùng một thread lấy lại monitor nó đang giữ, không tự chờ.
- * depth() đã giữ this rồi gọi nested() cũng synchronized trên this, nên lời gọi lồng nhau chạy tiếp.
- * Độ sâu là lần vào ngoài cộng lần vào trong. Thread khác vẫn bị chặn khi monitor đang bị giữ.
- * SOLUTION-END
+ *
  */

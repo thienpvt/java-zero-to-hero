@@ -36,10 +36,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class Ex01_IoNotCpu {
 
     // Q3 — hằng hỏi virtual thread có làm tác vụ CPU-bound nhanh hơn hay không.
-    static final Boolean Q3_VIRTUAL_SPEEDS_CPU_BOUND = false; // SOLUTION-VALUE
+    static final Boolean Q3_VIRTUAL_SPEEDS_CPU_BOUND = null;
 
     // Q5 — hằng hỏi có nên pool virtual thread chỉ để giới hạn concurrency hay không.
-    static final Boolean Q5_POOL_VIRTUAL_THREADS_TO_LIMIT = false; // SOLUTION-VALUE
+    static final Boolean Q5_POOL_VIRTUAL_THREADS_TO_LIMIT = null;
 
     /**
      * Cho sẵn, không cần sửa. Tạo {@code n} virtual thread bằng
@@ -109,28 +109,13 @@ public class Ex01_IoNotCpu {
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Virtual thread được mount lên một pool carrier nhỏ, là platform thread.
- * Khi request chờ I/O, virtual thread nhả carrier để carrier chạy request khác.
- * Nhiều request đang chờ vẫn được phục vụ, không cần một platform thread cho mỗi request.
- * runExperiment dùng newVirtualThreadPerTaskExecutor và thấy isVirtual.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Không giúp khi tác vụ chiếm CPU suốt và không chờ I/O.
- * Lúc đang tính, virtual thread giữ một carrier. Số carrier gần với số lõi.
- * Thêm virtual thread không làm một phép tính nhanh hơn, nên throughput CPU-bound không tăng.
- * Q3_VIRTUAL_SPEEDS_CPU_BOUND là false.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Virtual thread rẻ: mỗi task một thread mới, qua newVirtualThreadPerTaskExecutor.
- * Pool chúng chỉ để giới hạn số lượng thì thêm queue và tái sử dụng không đúng mô hình.
- * Trần phải nằm ở tài nguyên khan: semaphore, pool kết nối, rate limit và timeout.
- * Q5_POOL_VIRTUAL_THREADS_TO_LIMIT là false. Không pool virtual thread chỉ để chặn concurrency.
- * SOLUTION-END
+ *
  */

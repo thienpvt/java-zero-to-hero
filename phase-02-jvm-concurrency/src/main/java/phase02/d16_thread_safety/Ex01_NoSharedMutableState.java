@@ -38,10 +38,10 @@ import java.util.List;
 public class Ex01_NoSharedMutableState {
 
     // Q1 — hằng hỏi stateless service thường có thread-safe không.
-    static final Boolean Q1_STATELESS_SAFE = true; // SOLUTION-VALUE
+    static final Boolean Q1_STATELESS_SAFE = null;
 
     // Q3 — hằng hỏi biến cục bộ có cần synchronize không.
-    static final Boolean Q3_LOCAL_NEEDS_SYNC = false; // SOLUTION-VALUE
+    static final Boolean Q3_LOCAL_NEEDS_SYNC = null;
 
     /**
      * Ví dụ đã làm xong: bình phương {@code n} bằng biến cục bộ, không field.
@@ -55,56 +55,26 @@ public class Ex01_NoSharedMutableState {
      * Cộng mọi phần tử của {@code xs}. Chỉ dùng biến cục bộ, không ghi field.
      */
     static int addAll(List<Integer> xs) {
-        // SOLUTION-BEGIN throw Q1
-        int sum = 0;
-        for (Integer value : xs) {
-            sum += value;
-        }
-        return sum;
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q1");
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Stateless service không giữ field thay đổi mà nhiều thread cùng dùng.
- * Mỗi lời gọi chỉ đọc tham số và biến cục bộ trên stack của thread đó.
- * Không có ghi dùng chung nên các thread không ghi đè kết quả của nhau.
- * Vì vậy service dạng này thường thread-safe mà không cần khóa.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Object bất biến không đổi sau khi tạo, nên nhiều thread có thể đọc cùng lúc.
- * Không có ghi thì không có race và không cần synchronized chỉ để đọc.
- * Muốn trạng thái mới thì tạo object mới. Ai đang giữ bản cũ vẫn thấy dữ liệu nhất quán.
- * Cách này bỏ shared mutable state thay vì khóa quanh field bị sửa.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Không. Biến cục bộ nằm trên stack của từng lời gọi, thread khác không thấy.
- * Mỗi thread có bản riêng, nên không có shared mutable state để bảo vệ.
- * synchronize chỉ cần khi nhiều thread dùng chung một field hoặc object bị ghi.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Singleton của Spring là một instance cho mọi request, nhiều thread gọi cùng lúc.
- * Bug xuất hiện khi service giữ field mutable, ví dụ bộ đếm, cache, hoặc dữ liệu của request.
- * Request sau ghi đè field mà request trước đang đọc, hoặc hai request cộng dồn sai.
- * Dữ liệu theo request phải là biến cục bộ, tham số, hoặc object bất biến. Field mutable cần đồng bộ.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Shared mutable state là dữ liệu nhiều thread cùng truy cập và ít nhất một thread ghi.
- * Field của singleton, biến static không cố định, hoặc phần tử collection dùng chung đều có thể là vậy.
- * Thiếu đồng bộ thì các lần ghi xen kẽ, hoặc thread khác không nhìn thấy giá trị mới.
- * Đây là nguồn race và lỗi visibility. Ưu tiên bỏ chia sẻ trước khi nghĩ tới khóa.
- * SOLUTION-END
+ *
  */

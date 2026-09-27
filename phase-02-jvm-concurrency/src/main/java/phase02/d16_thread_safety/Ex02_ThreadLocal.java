@@ -31,44 +31,28 @@ public class Ex02_ThreadLocal {
      * Gắn {@code name} với thread đang gọi.
      */
     static void setUser(String name) {
-        // SOLUTION-BEGIN throw Q6
-        USER.set(name);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 
     /**
      * Tên mà thread đang gọi đã gắn, hoặc null khi chưa gắn hoặc đã gỡ.
      */
     static String user() {
-        // SOLUTION-BEGIN throw Q6
-        return USER.get();
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 
     /**
      * Gỡ tên của thread đang gọi.
      */
     static void clear() {
-        // SOLUTION-BEGIN throw Q7
-        USER.remove();
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q7");
     }
 }
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * ThreadLocal giữ một bản giá trị riêng cho mỗi thread, thay cho field dùng chung.
- * Hai thread cùng set hai tên thì mỗi bên chỉ get được tên của chính nó.
- * Đó là thread confinement: dữ liệu không chia sẻ nên không cần khóa cho chính giá trị đó.
- * Nó không làm một field static bình thường trở nên an toàn. Chỉ map gắn với thread hiện tại là riêng.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q7:
- * SOLUTION-BEGIN
- * Thread pool tái sử dụng thread, nên ThreadLocal của task trước còn trên thread đó.
- * Task sau gọi get và đọc user hoặc tài nguyên của task trước.
- * Thread còn sống giữ reference, object không được thu: rò rỉ bộ nhớ hoặc connection.
- * clear phải remove trong finally khi task kết thúc. Không remove thì pool giữ mãi.
- * SOLUTION-END
+ *
  */

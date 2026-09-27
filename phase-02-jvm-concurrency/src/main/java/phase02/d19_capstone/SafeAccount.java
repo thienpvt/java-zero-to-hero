@@ -49,13 +49,7 @@ public class SafeAccount {
      * @return {@code true} khi đã trừ {@code amount}
      */
     public synchronized boolean withdraw(BigDecimal amount) {
-        // SOLUTION-BEGIN throw B2
-        if (balance.compareTo(amount) >= 0) {
-            balance = balance.subtract(amount);
-            return true;
-        }
-        return false;
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO B2");
     }
 
     /**
@@ -66,26 +60,10 @@ public class SafeAccount {
      * @return {@code true} khi đã trừ 1
      */
     public boolean withdrawLocked(ReentrantLock lock) {
-        // SOLUTION-BEGIN throw B3
-        lock.lock();
-        try {
-            if (balance.compareTo(BigDecimal.ONE) >= 0) {
-                balance = balance.subtract(BigDecimal.ONE);
-                return true;
-            }
-            return false;
-        } finally {
-            lock.unlock();
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO B3");
     }
 }
 
 /* ANSWER B4:
- * SOLUTION-BEGIN
- * synchronized và ReentrantLock chỉ có hiệu lực giữa các thread của cùng một process JVM.
- * Khóa JVM không bao phủ số dư đang nằm trong database của một process khác.
- * Hai process có thể cùng đọc một dòng rồi cùng ghi, dù mỗi bên đã khóa trong JVM của mình.
- * Trạng thái dùng chung cần transaction hoặc khóa tại database, nơi số dư thực sự được lưu.
- * SOLUTION-END
+ *
  */

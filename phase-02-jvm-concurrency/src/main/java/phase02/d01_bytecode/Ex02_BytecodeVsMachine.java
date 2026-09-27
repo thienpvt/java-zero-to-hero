@@ -29,7 +29,7 @@ package phase02.d01_bytecode;
 public class Ex02_BytecodeVsMachine {
 
     // Q5 — JIT có biên dịch bytecode của đoạn code nóng thành machine code không?
-    static final Boolean Q5_JIT_COMPILES_HOT_BYTECODE = true; // SOLUTION-VALUE
+    static final Boolean Q5_JIT_COMPILES_HOT_BYTECODE = null;
 
     /**
      * Chạy một vòng nhỏ rồi một vòng cộng dồn {@code n} bước. Chuỗi trả về có
@@ -61,27 +61,13 @@ public class Ex02_BytecodeVsMachine {
 }
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Cùng một file .class chạy được trên mọi hệ điều hành có JVM tương ứng.
- * javac không phát machine code của một CPU; sản phẩm phân phối là bytecode của JVM.
- * Phần gắn với nền tảng nằm ở bản JVM, không nằm ở file class.
- * Vì vậy Java được gọi là platform-independent ở mức bytecode.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Bytecode là tập lệnh của JVM, hướng stack, được verifier kiểm tra, giống nhau trên mọi CPU.
- * Machine code là lệnh của một CPU cụ thể, ví dụ x86-64 hoặc ARM, và không mang sang kiến trúc khác.
- * javac dừng ở bytecode. Interpreter đọc bytecode; JIT có thể phát machine code cho đoạn nóng.
- * SOLUTION-END
+ *
  */
 
 /* OBSERVATION Q5:
- * SOLUTION-BEGIN
- * JIT giải quyết bytecode bị interpreter chạy chậm trên đoạn nóng: JVM dịch những đoạn đó
- * thành machine code lúc chạy, còn file class vẫn là bytecode di động.
- * Thí nghiệm chạy một vòng nhỏ rồi một vòng cộng dồn theo n và in interpreter-or-jit.
- * Không đo thời gian, vì một vòng nanoTime không chứng minh JIT đã biên dịch.
- * SOLUTION-END
+ *
  */

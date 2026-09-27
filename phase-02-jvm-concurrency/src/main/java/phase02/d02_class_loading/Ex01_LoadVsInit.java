@@ -39,9 +39,9 @@ public class Ex01_LoadVsInit {
 
     static final AtomicInteger UNINIT_HITS = new AtomicInteger();
 
-    static final Integer Q3_HITS_AFTER_LOAD_WITHOUT_INIT = 0; // SOLUTION-VALUE
+    static final Integer Q3_HITS_AFTER_LOAD_WITHOUT_INIT = null;
 
-    static final Integer Q3_HITS_AFTER_INIT = 1; // SOLUTION-VALUE
+    static final Integer Q3_HITS_AFTER_INIT = null;
 
     static final class Probe {
         @SuppressWarnings("unused")
@@ -64,36 +64,18 @@ public class Ex01_LoadVsInit {
     }
 
     static int hitsAfterLoadWithoutInit() throws ClassNotFoundException {
-        // SOLUTION-BEGIN throw Q3
-        ClassLoader loader = ProbeUninit.class.getClassLoader();
-        Class.forName(ProbeUninit.class.getName(), false, loader);
-        return UNINIT_HITS.get();
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q3");
     }
 
     static int hitsAfterInit() throws ClassNotFoundException {
-        // SOLUTION-BEGIN throw Q3
-        ClassLoader loader = Probe.class.getClassLoader();
-        Class.forName(Probe.class.getName(), true, loader);
-        return HITS.get();
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q3");
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * JVM load class khi cần bytecode của nó lần đầu: sử dụng chủ động (new, gọi method static,
- * đọc hoặc gán field static không phải hằng biên dịch), Class.forName, hoặc khi class khác
- * đang linking phải phân giải tham chiếu tới nó.
- * Load tạo đối tượng Class. Việc đó có thể xảy ra trước initialization.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Loading tìm bytecode và tạo Class. Linking (verification, preparation, resolution) gắn class
- * vào JVM; preparation chỉ gán giá trị mặc định cho field static, chưa chạy touch().
- * Initialization chạy static initializer đúng một lần. forName với initialize = false vẫn load
- * ProbeUninit nhưng UNINIT_HITS giữ nguyên; forName với initialize = true làm Probe chạy touch().
- * SOLUTION-END
+ *
  */

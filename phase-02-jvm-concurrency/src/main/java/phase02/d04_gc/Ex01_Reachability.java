@@ -35,51 +35,31 @@ package phase02.d04_gc;
 public class Ex01_Reachability {
 
     // Q2 — hằng hỏi liệu GC có chạy ngay khi reference cuối cùng biến mất.
-    static final Boolean Q2_GC_RUNS_IMMEDIATELY = false; // SOLUTION-VALUE
+    static final Boolean Q2_GC_RUNS_IMMEDIATELY = null;
 
     // Q4 — hằng hỏi liệu chu trình tham chiếu có leak như reference counting thuần.
-    static final Boolean Q4_CYCLE_LEAKS_LIKE_REFCOUNT = false; // SOLUTION-VALUE
+    static final Boolean Q4_CYCLE_LEAKS_LIKE_REFCOUNT = null;
 
     // Q10 — hằng hỏi liệu System.gc() có bảo đảm một collection xảy ra.
-    static final Boolean Q10_SYSTEM_GC_GUARANTEES_COLLECTION = false; // SOLUTION-VALUE
+    static final Boolean Q10_SYSTEM_GC_GUARANTEES_COLLECTION = null;
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Object đủ điều kiện để GC khi không còn reachable từ GC root qua strong reference.
- * Biến local trên stack, field static và tham chiếu JNI là những gốc thường gặp.
- * "Đủ điều kiện" chỉ có nghĩa là collector được phép thu; không có nghĩa là nó thu ngay.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Không. Mất reference cuối chỉ làm object đủ điều kiện bị thu.
- * JVM tự chọn thời điểm chạy GC theo heap, collector và tải của process.
- * Ứng dụng không có lời gọi nào khiến collector chạy đồng bộ ngay tại lúc đó.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * GC root là điểm xuất phát của phép dò reachability, không phải một object trên heap.
- * Ví dụ: biến local của thread đang chạy, field static của class đã nạp, và tham chiếu JNI.
- * Object còn một đường strong reference từ một root thì chưa đủ điều kiện để GC.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Không. HotSpot dò từ GC root, không dùng reference counting thuần.
- * Hai object trỏ lẫn nhau nhưng cả nhóm không còn nối với root vẫn bị thu.
- * Reference counting thuần mới kẹt chu trình vì bộ đếm của mỗi object vẫn lớn hơn 0.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q10:
- * SOLUTION-BEGIN
- * System.gc() chỉ là đề nghị. JVM có quyền bỏ qua.
- * Lời gọi không bảo đảm một collection sẽ chạy, cũng không bảo đảm một object cụ thể bị thu.
- * Đừng dùng nó để sửa leak hay để làm mốc trong test.
- * SOLUTION-END
+ *
  */

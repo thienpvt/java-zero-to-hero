@@ -25,31 +25,17 @@ package phase02.d09_jmm;
 public class Ex02_HappensBefore {
 
     // Q8 — hằng hỏi reference trong double-checked locking có cần volatile không.
-    static final Boolean Q8_DCL_NEEDS_VOLATILE = true; // SOLUTION-VALUE
+    static final Boolean Q8_DCL_NEEDS_VOLATILE = null;
 }
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Visibility là một thread có nhìn thấy kết quả ghi của thread khác hay không.
- * Không có quan hệ happens-before, thread đọc có thể vẫn thấy giá trị cũ.
- * volatile, monitor và các điểm đồng bộ khác làm ghi trở nên nhìn thấy được.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Happens-before là quan hệ thứ tự một phần của Java Memory Model.
- * Nếu hành động A happens-before hành động B thì kết quả của A phải nhìn thấy được tại B.
- * Ghi một field volatile happens-before lần đọc field đó sau này.
- * Nhả monitor happens-before lần lấy cùng monitor của thread khác.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q8:
- * SOLUTION-BEGIN
- * Có. Double-checked locking cần volatile trên reference được công bố.
- * Không volatile thì thread khác có thể thấy reference trước khi constructor xong.
- * Thread đó dùng object khi các field ghi trong constructor chưa được nhìn thấy.
- * volatile buộc mọi ghi của constructor happens-before lần đọc reference khác null.
- * SOLUTION-END
+ *
  */

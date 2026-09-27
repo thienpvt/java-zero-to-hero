@@ -17,9 +17,5 @@ public class Ex02_ReadWrite {
 }
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * ReadWriteLock hợp khi nhiều thread đọc, ít thread ghi, và đọc không đổi dữ liệu dùng chung.
- * Nhiều thread giữ read lock cùng lúc. write lock loại trừ mọi read và write khác.
- * Nếu ghi chiếm đa số, chi phí hai loại khóa thường không lợi hơn một ReentrantLock.
- * SOLUTION-END
+ *
  */

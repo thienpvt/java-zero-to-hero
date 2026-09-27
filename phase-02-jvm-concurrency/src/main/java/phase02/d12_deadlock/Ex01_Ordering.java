@@ -67,10 +67,10 @@ public class Ex01_Ordering {
             + "\t- locked <0x00000000ab10e0a0> (a java.lang.Object)\n";
 
     // Q2 — số lock tối thiểu của ví dụ deadlock điển hình với hai thread.
-    static final Integer Q2_MIN_LOCKS = 2; // SOLUTION-VALUE
+    static final Integer Q2_MIN_LOCKS = null;
 
     // Q6 — kết quả DUMP.contains("deadlock"). Đọc chuỗi DUMP, đừng gọi jcmd.
-    static final Boolean Q6_DUMP_SHOWS_DEADLOCK = true; // SOLUTION-VALUE
+    static final Boolean Q6_DUMP_SHOWS_DEADLOCK = null;
 
     /**
      * Hai số dư. {@code credit} và {@code debit} không tự lấy khóa.
@@ -104,72 +104,26 @@ public class Ex01_Ordering {
      * rồi chạy {@code move}. Nếu hai mã hash bằng nhau thì lấy {@code TIE} trước.
      */
     static void transfer(Object a, Object b, Runnable move) {
-        // SOLUTION-BEGIN throw Q3
-        int hashA = System.identityHashCode(a);
-        int hashB = System.identityHashCode(b);
-        if (hashA < hashB) {
-            synchronized (a) {
-                synchronized (b) {
-                    move.run();
-                }
-            }
-        } else if (hashA > hashB) {
-            synchronized (b) {
-                synchronized (a) {
-                    move.run();
-                }
-            }
-        } else {
-            synchronized (TIE) {
-                synchronized (a) {
-                    synchronized (b) {
-                        move.run();
-                    }
-                }
-            }
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q3");
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Deadlock là các thread cùng chờ mãi, không thread nào nhả tài nguyên mà thread kia cần.
- * Ví dụ điển hình: thread A giữ khóa X và chờ Y, thread B giữ Y và chờ X.
- * Bốn điều kiện: mutual exclusion, hold and wait, no preemption, circular wait.
- * Thiếu một điều kiện thì vòng chờ không khép, các thread không kẹt mãi như vậy.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Ví dụ điển hình cần hai thread và ít nhất hai lock.
- * Một lock thì không tạo được vòng chờ: thread giữ lock không cần thêm lock thứ hai.
- * Với hai lock và thứ tự lấy ngược nhau, mỗi bên giữ một lock và chờ lock còn lại.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Mọi thread lấy các lock theo cùng một thứ tự toàn cục thì không tạo được circular wait.
- * transfer sắp hai object theo System.identityHashCode tăng dần rồi mới synchronized lồng nhau.
- * Khi hai mã hash trùng, không so được thứ tự, nên lấy TIE trước để chỉ một thread vào cặp khóa đó.
- * move chạy trong lúc đang giữ các khóa, nên chuyển tiền xong mới nhả.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Cách chẩn đoán trên JVM là lấy thread dump, không cần đoán lịch của các thread.
- * Lệnh thường gặp là jcmd Thread.print hoặc jstack. HotSpot in Found one Java-level deadlock khi thấy vòng monitor.
- * Bài này không gọi jcmd: hằng DUMP là đoạn dump đã dán, và contains("deadlock") đọc chính chuỗi đó.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q7:
- * SOLUTION-BEGIN
- * Thread dump cho thấy mỗi thread đang chờ monitor nào và monitor đó do thread nào giữ.
- * Nó cũng in Java stack tại lúc chờ, nên thấy method đang nằm trong synchronized.
- * Trong DUMP, hai thread waiting to lock chéo nhau, mỗi bên đã locked monitor của bên kia.
- * SOLUTION-END
+ *
  */

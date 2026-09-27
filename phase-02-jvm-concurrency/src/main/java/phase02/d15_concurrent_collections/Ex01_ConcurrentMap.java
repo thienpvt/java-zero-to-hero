@@ -32,40 +32,24 @@ import java.util.concurrent.ConcurrentHashMap;
 public class Ex01_ConcurrentMap {
 
     // Q3 — ConcurrentHashMap có nhận null key hay không.
-    static final Boolean Q3_ALLOWS_NULL_KEY = false; // SOLUTION-VALUE
+    static final Boolean Q3_ALLOWS_NULL_KEY = null;
 
     /**
      * Trả một {@code Map&lt;String, Integer&gt;} mới để nhiều thread cùng {@code merge}.
      */
     static Map<String, Integer> counts() {
-        // SOLUTION-BEGIN throw Q2
-        return new ConcurrentHashMap<>();
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q2");
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Synchronize cả HashMap thì mọi thao tác, kể cả các key khác nhau, xếp hàng một monitor.
- * Nhiều thread đọc hoặc ghi bị tuần tự hóa dù dữ liệu không đụng nhau, nên thêm lõi không tăng throughput.
- * ConcurrentHashMap cho các key khác nhau đi song song và giữ cập nhật trên một key là nguyên tử.
- * Wrapper synchronized cũng không biến một chuỗi get rồi put ở ngoài thành một hành động nguyên tử.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Ở mức khái niệm, ConcurrentHashMap không khóa cả bảng cho từng lần đọc hoặc ghi.
- * Các key khác nhau được cập nhật song song; cùng một key thì merge là một bước nguyên tử.
- * Cài đặt dùng CAS và khóa theo bin, không dùng một monitor cho mọi thao tác.
- * Nhiều thread cùng merge vì vậy không mất cập nhật trên các key đó.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * ConcurrentHashMap không nhận null key và không nhận null value.
- * put với key null ném NullPointerException. put với value null cũng ném NullPointerException.
- * HashMap cho một null key. Cấm null để get không nhầm không có key với value là null khi nhiều thread đọc.
- * SOLUTION-END
+ *
  */

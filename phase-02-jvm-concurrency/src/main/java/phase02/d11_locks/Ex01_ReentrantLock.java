@@ -47,14 +47,7 @@ public class Ex01_ReentrantLock {
      * Giữ {@code lock}, chạy {@code body}, rồi {@code unlock} trong {@code finally}.
      */
     static void withLock(ReentrantLock lock, Runnable body) {
-        // SOLUTION-BEGIN throw Q2
-        lock.lock();
-        try {
-            body.run();
-        } finally {
-            lock.unlock();
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q2");
     }
 
     /**
@@ -64,20 +57,7 @@ public class Ex01_ReentrantLock {
      * @return {@code true} khi đã giảm số dư
      */
     static boolean tryWithdraw(ReentrantLock lock, AtomicInteger balance) {
-        // SOLUTION-BEGIN throw Q3
-        if (!lock.tryLock()) {
-            return false;
-        }
-        try {
-            if (balance.get() <= 0) {
-                return false;
-            }
-            balance.decrementAndGet();
-            return true;
-        } finally {
-            lock.unlock();
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q3");
     }
 
     /**
@@ -86,58 +66,26 @@ public class Ex01_ReentrantLock {
      * @return hold count lúc đang giữ cả hai lần
      */
     static int lockTwice(ReentrantLock lock) {
-        // SOLUTION-BEGIN throw Q4
-        lock.lock();
-        try {
-            lock.lock();
-            try {
-                return lock.getHoldCount();
-            } finally {
-                lock.unlock();
-            }
-        } finally {
-            lock.unlock();
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q4");
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * ReentrantLock cho tryLock, tryLock có hạn giờ, và lockInterruptibly.
- * Constructor chọn fairness. Một lock có nhiều Condition, mỗi Condition một hàng chờ.
- * synchronized chỉ có một wait set trên monitor và không có tryLock hay fairness.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Nếu body ném và unlock nằm sau khối try, dòng unlock không chạy, thread vẫn giữ khóa.
- * Thread khác gọi lock sẽ chờ mãi vì không ai nhả.
- * finally chạy dù body ném hay return, nên unlock luôn được gọi khi đã lock.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * tryLock trả về ngay, không chờ khi thread khác đang giữ khóa.
- * Hữu ích khi thread còn việc khác nếu không lấy được khóa, hoặc muốn tránh chờ vô hạn.
- * tryWithdraw chỉ giảm số dư khi tryLock thành công và số dư còn dương, rồi unlock nếu đã lock.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Reentrant nghĩa là cùng một thread lấy lại được lock nó đang giữ, không tự chờ.
- * lock hai lần làm hold count thành 2. Phải unlock đúng hai lần thì hold count về 0.
- * Thread khác vẫn bị chặn khi hold count còn lớn hơn 0.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * synchronized đơn giản hơn khi chỉ cần loại trừ lẫn nhau và khối tự nhả monitor khi ra khỏi khối.
- * Không phải nhớ unlock, và JVM tối ưu intrinsic lock tốt cho trường hợp này.
- * Chọn ReentrantLock khi cần tryLock, fairness, lockInterruptibly hoặc nhiều Condition.
- * SOLUTION-END
+ *
  */

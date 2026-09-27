@@ -45,24 +45,20 @@ import java.util.concurrent.TimeoutException;
 public class Ex01_SubmitAndShutdown {
 
     // Q2 — submit có trả Future cho caller hay không.
-    static final Boolean Q2_SUBMIT_RETURNS_FUTURE = true; // SOLUTION-VALUE
+    static final Boolean Q2_SUBMIT_RETURNS_FUTURE = null;
 
     /**
      * Gửi một {@code Callable} trả chuỗi {@code ok} bằng {@code submit}.
      */
     static Future<?> submitJob(ExecutorService es) {
-        // SOLUTION-BEGIN throw Q2
-        return es.submit(() -> "ok");
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q2");
     }
 
     /**
      * Đưa một {@code Runnable} kết thúc ngay vào {@code execute}.
      */
     static void executeJob(ExecutorService es) {
-        // SOLUTION-BEGIN throw Q2
-        es.execute(() -> { });
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q2");
     }
 
     /**
@@ -71,19 +67,7 @@ public class Ex01_SubmitAndShutdown {
      * @throws IllegalStateException nếu bị ngắt, quá hạn, hoặc {@code Callable} ném lỗi
      */
     static <T> T resultOf(ExecutorService es, Callable<T> task) {
-        // SOLUTION-BEGIN throw Q3
-        Future<T> future = es.submit(task);
-        try {
-            return future.get(10, TimeUnit.SECONDS);
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Bị ngắt khi chờ Future.", ex);
-        } catch (TimeoutException ex) {
-            throw new IllegalStateException("Future chưa xong sau 10 giây.", ex);
-        } catch (ExecutionException ex) {
-            throw new IllegalStateException("Callable ném lỗi.", ex);
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q3");
     }
 
     /**
@@ -93,54 +77,22 @@ public class Ex01_SubmitAndShutdown {
      * @throws IllegalStateException nếu bị ngắt khi chờ pool tắt
      */
     static void stop(ExecutorService es, boolean now) {
-        // SOLUTION-BEGIN throw Q4
-        if (now) {
-            es.shutdownNow();
-            return;
-        }
-        es.shutdown();
-        try {
-            es.awaitTermination(2, TimeUnit.SECONDS);
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Bị ngắt khi chờ executor tắt.", ex);
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q4");
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Tạo Thread mới mỗi việc tốn stack, bộ nhớ native và một thread của hệ điều hành.
- * Pool giữ sẵn một số worker, xếp việc vào queue, rồi tái sử dụng worker rảnh.
- * Số thread có trần nên tải tăng không làm cạn thread của máy.
- * Tạo Thread liên tục không có hàng đợi và không có giới hạn đó.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * execute nhận Runnable và trả void. Caller không có chỗ lấy kết quả hay exception của task.
- * submit nhận Runnable hoặc Callable và trả Future.
- * Future.get chờ task xong rồi trả giá trị, hoặc bọc lỗi trong ExecutionException.
- * submitJob dùng submit để lấy chuỗi ok. executeJob chỉ gọi execute.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Future là tay cầm kết quả của task chạy bất đồng bộ, chưa có giá trị ngay lúc submit.
- * get chờ xong rồi trả giá trị Callable, hoặc ném ExecutionException nếu task lỗi.
- * Có thể hỏi isDone hoặc hủy bằng cancel. resultOf submit rồi get trong 10 giây.
- * Không có Future thì caller không nhận được giá trị Callable trả về.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * shutdown ngừng nhận task mới, nhưng task đã submit, kể cả task đang nằm trong queue, vẫn được chạy.
- * shutdownNow cũng ngừng nhận task mới, cố interrupt worker đang chạy, và trả về các task chưa bắt đầu.
- * Những task còn trong queue sau shutdownNow không được chạy. stop(es, true) gọi shutdownNow.
- * stop(es, false) gọi shutdown rồi awaitTermination 2 giây để chờ task đã nhận kết thúc.
- * SOLUTION-END
+ *
  */

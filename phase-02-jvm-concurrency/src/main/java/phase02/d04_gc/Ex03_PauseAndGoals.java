@@ -25,21 +25,13 @@ public class Ex03_PauseAndGoals {
     }
 
     // Q8 — chọn mục tiêu mà câu hỏi đang hỏi. Ba lựa chọn nằm ở enum Goal.
-    static final Goal Q8_GOAL = Goal.BOTH_TRADEOFF; // SOLUTION-VALUE
+    static final Goal Q8_GOAL = null;
 }
 
 /* ANSWER Q7:
- * SOLUTION-BEGIN
- * Stop-the-world là khoảng GC tạm dừng các thread ứng dụng để nhìn heap nhất quán.
- * Trong khoảng đó mutator không chạy, nên ứng dụng thấy một pause.
- * Một số collector rút ngắn pause nhưng vẫn có pha dừng thế giới; không phải mọi GC dừng từ đầu đến cuối.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q8:
- * SOLUTION-BEGIN
- * Không có một câu trả lời chỉ latency hoặc chỉ throughput.
- * Throughput là lượng việc ứng dụng hoàn thành; latency là độ trễ từng lần, gồm cả pause.
- * Collector chọn một đánh đổi: pause ngắn thường tốn throughput, throughput cao thường chấp nhận pause dài hơn.
- * SOLUTION-END
+ *
  */

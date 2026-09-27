@@ -34,10 +34,10 @@ import java.util.concurrent.Callable;
 public class Ex02_InterruptAndDaemon {
 
     // Q5 — hằng hỏi liệu interrupt có buộc thread dừng ngay hay không.
-    static final Boolean Q5_INTERRUPT_STOPS_IMMEDIATELY = false; // SOLUTION-VALUE
+    static final Boolean Q5_INTERRUPT_STOPS_IMMEDIATELY = null;
 
     // Q7 — hằng hỏi liệu daemon thread có giữ JVM sống hay không.
-    static final Boolean Q7_DAEMON_KEEPS_JVM = false; // SOLUTION-VALUE
+    static final Boolean Q7_DAEMON_KEEPS_JVM = null;
 
     /**
      * Gọi {@code body}. Nếu {@code body} ném {@code InterruptedException}, khôi phục cờ interrupt
@@ -48,16 +48,7 @@ public class Ex02_InterruptAndDaemon {
      * @throws IllegalStateException khi {@code body} ném {@code InterruptedException} hoặc exception khác
      */
     static void rethrowOrRestore(Callable<Void> body) {
-        // SOLUTION-BEGIN throw Q6
-        try {
-            body.call();
-        } catch (InterruptedException ex) {
-            Thread.currentThread().interrupt();
-            throw new IllegalStateException("Tác vụ bị ngắt.", ex);
-        } catch (Exception ex) {
-            throw new IllegalStateException("Callable ném lỗi.", ex);
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 
     /**
@@ -65,44 +56,22 @@ public class Ex02_InterruptAndDaemon {
      * Không gọi {@code start()}.
      */
     static Thread daemon() {
-        // SOLUTION-BEGIN throw Q7
-        Thread worker = new Thread(() -> { }, "worker-q7");
-        worker.setDaemon(true);
-        return worker;
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q7");
     }
 }
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Không. interrupt chỉ đặt cờ ngắt. Nếu thread đang nằm trong một số lời gọi chặn, lời gọi đó ném InterruptedException.
- * Thread không bị giết. Nó phải tự đọc cờ hoặc bắt InterruptedException rồi tự dừng.
- * Vòng lặp không kiểm tra cờ thì thread tiếp tục chạy.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * InterruptedException nghĩa là lời gọi chặn bị ngắt, và cờ interrupt thường đã bị xóa.
- * Nếu method chưa xử lý xong việc hủy, phải gọi Thread.currentThread().interrupt() để khôi phục cờ.
- * Không nuốt exception bằng catch rỗng. rethrowOrRestore bọc nó trong IllegalStateException và giữ cause.
- * Caller gọi Thread.interrupted() sẽ thấy true đúng một lần, rồi cờ trở lại false.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q7:
- * SOLUTION-BEGIN
- * Daemon thread phục vụ nền. JVM thoát khi mọi thread không phải daemon đã kết thúc, kể cả khi daemon còn chạy.
- * setDaemon(true) phải gọi trước start(). Daemon không giữ JVM sống.
- * Đừng giao cho daemon việc phải hoàn tất, ví dụ ghi dữ liệu ra đĩa.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q8:
- * SOLUTION-BEGIN
- * Mỗi request một thread mới tốn stack riêng và chi phí tạo, hủy thread của hệ điều hành.
- * Số thread tăng theo số request, không có trần, nên tải cao gây context switch dày và có thể cạn bộ nhớ.
- * Request đến nhanh hơn tốc độ xử lý thì không có hàng đợi chặn bớt số thread.
- * Nên dùng pool có trần, hoặc virtual thread khi tác vụ chủ yếu chờ I/O.
- * SOLUTION-END
+ *
  */

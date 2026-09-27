@@ -53,54 +53,32 @@ public class Ex02_ErrorsAndMetaspace {
      * Đệ quy không có điểm dừng. Mỗi frame nhận thêm một {@code int}.
      */
     static void recurse() {
-        // SOLUTION-BEGIN throw Q6
-        recurse(0);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 
     private static void recurse(int depth) {
-        // SOLUTION-BEGIN throw Q6
-        recurse(depth + 1);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 
     // Q8 — chọn một giá trị của MetaspaceHolds.
-    static final MetaspaceHolds Q8_METASPACE_HOLDS = MetaspaceHolds.CLASS_METADATA; // SOLUTION-VALUE
+    static final MetaspaceHolds Q8_METASPACE_HOLDS = null;
 
     // Q9 — true nếu GC vẫn để lọt memory leak.
-    static final Boolean Q9_LEAK_POSSIBLE_WITH_GC = true; // SOLUTION-VALUE
+    static final Boolean Q9_LEAK_POSSIBLE_WITH_GC = null;
 }
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * StackOverflowError xảy ra khi thread không cấp phát thêm được frame trên stack của nó.
- * Nguyên nhân thường gặp là đệ quy không đáy hoặc chuỗi gọi sâu bất thường.
- * Java không bỏ frame của tail-call, nên recurse(depth + 1) vẫn đẩy thêm một frame mỗi lần.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q7:
- * SOLUTION-BEGIN
- * OutOfMemoryError không chỉ là heap đầy. Các nguyên nhân thường gặp:
- * Java heap space — quá nhiều object hoặc một object quá lớn.
- * Metaspace — metadata của class đầy (nhiều class loader, sinh class động).
- * Unable to create native thread — cạn bộ nhớ native hoặc chạm giới hạn số thread.
- * Direct buffer memory — ByteBuffer.allocateDirect vượt hạn mức direct memory.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q8:
- * SOLUTION-BEGIN
- * Metaspace chứa class metadata: cấu trúc class, method, constant pool, annotation.
- * Instance của class nằm trên heap, không nằm trong Metaspace. Hằng đúng là CLASS_METADATA
- * (cụm "class metadata").
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q9:
- * SOLUTION-BEGIN
- * Có. GC chỉ thu object không còn reachable từ GC root.
- * Cache không giới hạn, listener không gỡ, hoặc collection static vẫn giữ reference
- * thì object không được thu — đó là memory leak dù collector vẫn chạy.
- * SOLUTION-END
+ *
  */

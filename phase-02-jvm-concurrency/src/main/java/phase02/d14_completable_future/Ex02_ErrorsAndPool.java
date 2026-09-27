@@ -40,15 +40,13 @@ import java.util.concurrent.atomic.AtomicReference;
 public class Ex02_ErrorsAndPool {
 
     // Q6 — pool mặc định của supplyAsync() khi không truyền Executor. Không đo tên thread.
-    static final String Q6_DEFAULT_POOL = "ForkJoinPool.commonPool"; // SOLUTION-VALUE
+    static final String Q6_DEFAULT_POOL = null;
 
     /**
      * Khi {@code in} lỗi, stage trả về 0. Khi {@code in} thành công, giữ nguyên giá trị.
      */
     static CompletableFuture<Integer> zeroOnFailure(CompletableFuture<Integer> in) {
-        // SOLUTION-BEGIN throw Q4
-        return in.exceptionally(error -> 0);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q4");
     }
 
     /**
@@ -56,46 +54,22 @@ public class Ex02_ErrorsAndPool {
      * Supplier ghi {@code Thread.currentThread().getName()} vào {@code threadName}.
      */
     static CompletableFuture<Integer> supplyOn(Executor executor, AtomicReference<String> threadName) {
-        // SOLUTION-BEGIN throw Q8
-        return CompletableFuture.supplyAsync(() -> {
-            threadName.set(Thread.currentThread().getName());
-            return 1;
-        }, executor);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q8");
     }
 }
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Khi một stage hoàn thành với lỗi, stage phụ thuộc cũng hoàn thành exceptionally nếu không xử lý.
- * exceptionally bắt lỗi và hoàn thành bình thường với giá trị thay thế.
- * join bọc lỗi gốc trong CompletionException. get bọc lỗi gốc trong ExecutionException.
- * zeroOnFailure trả 0 khi stage lỗi, và giữ nguyên giá trị khi stage thành công.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * supplyAsync(supplier) không truyền Executor thì dùng ForkJoinPool.commonPool().
- * Không kết luận bằng tên thread: nếu caller đã ở trong common pool, task có thể chạy inline trên caller.
- * Hằng Q6_DEFAULT_POOL ghi tên pool trong Javadoc, không phải kết quả đo một thread.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q7:
- * SOLUTION-BEGIN
- * Common pool dùng chung, số worker gần bằng số CPU, kể cả parallel stream.
- * Task chặn (I/O, join) chiếm một worker. Task khác, kể cả task sẽ gỡ block, có thể không còn worker.
- * Pool bị đói hoặc deadlock. Việc chặn nên chạy trên executor riêng, có giới hạn và timeout.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q8:
- * SOLUTION-BEGIN
- * Truyền Executor khi không muốn chiếm common pool, khi task chặn hoặc I/O,
- * khi cần giới hạn số thread, hoặc khi cần tên thread để chẩn đoán.
- * supplyAsync(supplier, executor) chạy supplier trên executor đó.
- * Supplier ghi tên thread vào AtomicReference. thenApply chỉ đọc giá trị đã ghi.
- * Executor do người gọi tạo thì người gọi phải shutdown.
- * SOLUTION-END
+ *
  */
