@@ -15,6 +15,7 @@ import java.util.Objects;
  * Cách làm: cài {@code summarize}, chạy Ex02_CodeFrequencyTest.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q4 [TỰ TRẢ LỜI + CODE] Khi cần đếm số lần xuất hiện của một từ, bạn chọn cấu trúc nào?
  *   Bắt đầu   : cài {@code summarize}, rồi viết ANSWER Q4.
  *   Kiểm chứng: Debug q04_countsDuplicatesInFirstSeenOrder với list {@code A, B, A, C, B}.

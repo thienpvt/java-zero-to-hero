@@ -13,7 +13,8 @@ import java.util.function.Supplier;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q1 [DỰ ĐOÁN] `Optional.of()` và `ofNullable()` khác nhau thế nào?
+ * <p>
+ * Q1 [DỰ ĐOÁN] {@code Optional.of()} và {@code ofNullable()} khác nhau thế nào?
  *   Bắt đầu   : đọc Javadoc của hai method (Ctrl+N → gõ Optional → Enter → Ctrl+F12 →
  *               chọn of/ofNullable → Ctrl+Q), rồi điền 2 hằng số Q1_* bên dưới (thay null).
  *   Kiểm chứng: chạy q01_prediction; nếu sai, đặt breakpoint ngay dòng gọi
@@ -22,8 +23,8 @@ import java.util.function.Supplier;
  *   Code      : không.
  *   Hoàn thành khi: q01_prediction xanh; giải thích được khi nào nên dùng of() (chắc chắn
  *               không null) thay vì ofNullable() (giá trị có thể null).
- *
- * Q2 [DỰ ĐOÁN] `orElse()` và `orElseGet()` khác gì?
+ * <p>
+ * Q2 [DỰ ĐOÁN] {@code orElse()} và {@code orElseGet()} khác gì?
  *   Bắt đầu   : đọc expensiveDefault() và DEFAULT_CALLS bên dưới, điền 2 hằng số Q2_*.
  *   Kiểm chứng: chạy q02_prediction; nếu sai, đặt breakpoint trong expensiveDefault()
  *               (Ctrl+N → Ex01_CreateAndUnwrap → Ctrl+F12 → expensiveDefault), Debug
@@ -32,7 +33,7 @@ import java.util.function.Supplier;
  *   Code      : không.
  *   Hoàn thành khi: q02_prediction xanh; giải thích được orElse và orElseGet khác nhau ở
  *               thời điểm tham số được tính.
- *
+ * <p>
  * Q3 [DỰ ĐOÁN + CODE] Tại sao khác biệt trên có thể ảnh hưởng performance?
  *   Bắt đầu   : dựa vào kết quả quan sát ở Q2, cài đặt displayName(nickname, fullNameLookup)
  *               bên dưới sao cho fullNameLookup chỉ được gọi khi thật sự cần dùng đến.

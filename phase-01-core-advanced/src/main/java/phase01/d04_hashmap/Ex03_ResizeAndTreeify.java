@@ -13,20 +13,21 @@ import phase01.support.Complexity;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q7 [DỰ ĐOÁN + CODE] Load factor dùng để làm gì?
  *   Bắt đầu   : Ctrl+N mở HashMap, Ctrl+F12 tìm DEFAULT_INITIAL_CAPACITY và
  *               DEFAULT_LOAD_FACTOR trong source; điền hằng số Q7_DEFAULT_THRESHOLD.
  *   Kiểm chứng: chạy q07_defaultThreshold_prediction, sau đó cài đặt tableSizeFor,
  *               capacityFor, resizesNeeded và chạy các test q07_* còn lại.
  *   Code      : tableSizeFor(capacity) trả lũy thừa 2 nhỏ nhất ≥ capacity (biên: ≤1 → 1,
- *               > 1&lt;&lt;30 → 1&lt;&lt;30); capacityFor(expectedSize) = tableSizeFor(ceil(expectedSize / 0.75))
+ *               &gt; 1&lt;&lt;30 → 1&lt;&lt;30); capacityFor(expectedSize) = tableSizeFor(ceil(expectedSize / 0.75))
  *               (expectedSize &lt; 0 → IllegalArgumentException); resizesNeeded(inserts, initialTableSize)
  *               mô phỏng: threshold = (int)(tableSize * 0.75), mỗi lần size vượt threshold sau khi
  *               thêm một phần tử thì gấp đôi tableSize, trả về số lần gấp đôi
  *               (initialTableSize phải là lũy thừa 2 dương, ngược lại IllegalArgumentException).
  *   Hoàn thành khi: mọi test q07_* xanh + giải thích được vì sao load factor càng nhỏ thì
  *               resize càng sớm (đổi tốc độ lookup lấy bộ nhớ).
- *
+ * <p>
  * Q8 [THÍ NGHIỆM] Resize ảnh hưởng performance thế nào?
  *   Bắt đầu   : đọc runExperiment(int) cho sẵn bên dưới (so thời gian put n entry vào
  *               new HashMap&lt;&gt;() so với HashMap.newHashMap(n)); chạy q08_experimentRuns.
@@ -34,13 +35,13 @@ import phase01.support.Complexity;
  *               console; so hai con số thời gian.
  *   Hoàn thành khi: q08_experimentRuns xanh + viết xong khối OBSERVATION Q8 nêu vì sao báo
  *               trước capacity giúp tránh resize giữa chừng.
- *
+ * <p>
  * Q11 [DỰ ĐOÁN] Worst-case lookup của HashMap là gì?
  *   Bắt đầu   : Ctrl+Q trên javadoc đầu class java.util.HashMap, đọc đoạn nói về việc bucket
  *               chuyển thành cây khi vượt ngưỡng; điền hai hằng số Q11_WORST_CASE_*.
  *   Kiểm chứng: chạy q11_*_prediction; đối chiếu với ANSWER Q1/Q3 của Ex01 (bucket dạng chuỗi).
  *   Hoàn thành khi: q11_* xanh.
- *
+ * <p>
  * Q12 [DỰ ĐOÁN + THÍ NGHIỆM] Java hiện đại xử lý bucket có quá nhiều collision như thế nào?
  *   Bắt đầu   : Ctrl+N → HashMap → Ctrl+F12 → tìm hằng số TREEIFY_THRESHOLD và
  *               MIN_TREEIFY_CAPACITY trong source; điền hai hằng số Q12_*.

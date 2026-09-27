@@ -22,6 +22,7 @@ import java.util.Map;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q6 [CODE + TỰ TRẢ LỜI] Khi nào nên tạo custom annotation?
  *   Bắt đầu   : đọc class SignupForm bên dưới: username có @NotBlank @MaxLength(10),
  *               email có @NotBlank, nickname không gắn annotation nào.
@@ -35,12 +36,12 @@ import java.util.Map;
  *   Hoàn thành khi: q06_* xanh; viết xong khối ANSWER Q6 nêu được lợi ích (khai báo ràng buộc
  *               ngắn gọn, tái dùng cho nhiều field/class) và chi phí (cần một processor riêng
  *               đọc annotation, lỗi cấu hình chỉ lộ ra lúc chạy chứ không phải lúc gõ code).
- *
- * Q5 [CODE + TỰ TRẢ LỜI] Spring xử lý những annotation như `@Service` bằng cơ chế nào?
+ * <p>
+ * Q5 [CODE + TỰ TRẢ LỜI] Spring xử lý những annotation như {@code @Service} bằng cơ chế nào?
  *   Bắt đầu   : đọc ba class mẫu Mailer, Clock2 (có @Component) và NotAComponent (không có).
  *   Kiểm chứng: chạy q05_*; Alt+F8 (Evaluate Expression) trong lúc debug và gọi
  *               Mailer.class.isAnnotationPresent(Component.class) để tự thấy true/false.
- *   Code      : cài đặt instantiateComponents(List<Class<?>>): lọc bằng
+ *   Code      : cài đặt instantiateComponents(List&lt;Class&lt;?&gt;&gt;): lọc bằng
  *               Class.isAnnotationPresent(Component.class), tạo instance bằng
  *               Class.getDeclaredConstructor().newInstance(), giữ nguyên thứ tự candidates
  *               bằng LinkedHashMap.
@@ -108,7 +109,7 @@ public class Ex02_CustomAnnotationProcessing {
      * {@code @MaxLength} vi phạm khi độ dài chuỗi lớn hơn giá trị cho phép.
      *
      * @param bean object cần kiểm tra, các field validation phải là {@link String}
-     * @return danh sách {@code "<tên field>: <thông báo lỗi>"}, sắp theo thứ tự tên field tăng
+     * @return danh sách {@code "&lt;tên field&gt;: &lt;thông báo lỗi&gt;"}, sắp theo thứ tự tên field tăng
      *     dần; rỗng nếu {@code bean} hợp lệ
      */
     static List<String> validate(Object bean) {

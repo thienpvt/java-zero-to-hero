@@ -9,13 +9,14 @@ package phase00.d03_flow;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q2 [DỰ ĐOÁN] {@code break} và {@code continue} ảnh hưởng vòng lặp ra sao?
  *   Bắt đầu   : đọc {@code sumWithBreak} và {@code sumWithContinue}, điền hai hằng Q2_*
  *               bằng tổng bạn tính tay, trước khi chạy test.
  *   Kiểm chứng: Debug q02_prediction, breakpoint trong vòng for, F8 từng vòng, Alt+F8 xem {@code s}.
  *   Hoàn thành khi: q02_prediction xanh; nói được break thoát hẳn vòng, continue bỏ phần còn lại
  *               của vòng hiện tại.
- *
+ * <p>
  * Q3 [DỰ ĐOÁN] Một phương thức gán lại tham số object có thay tham chiếu ở phía caller không?
  *     Thay đổi state của object đó thì sao?
  *   Bắt đầu   : đọc {@code reassign} và {@code mutate}, điền Q3_REASSIGN_VISIBLE và Q3_MUTATE_VISIBLE.

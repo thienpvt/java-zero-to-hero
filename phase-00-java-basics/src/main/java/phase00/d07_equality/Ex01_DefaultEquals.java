@@ -11,12 +11,13 @@ import java.util.Objects;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [DỰ ĐOÁN] Hai object {@code new Customer("A")} khác nhau có mặc định {@code equals()} là true không?
  *   Bắt đầu   : đọc class Customer — không override equals. Điền Q1_DEFAULT_EQUALS.
  *   Kiểm chứng: Debug q01_prediction, Alt+F8 gọi {@code left.equals(right)}. Ctrl+N mở class {@code Object},
  *               Ctrl+F12 tìm {@code equals}, Ctrl+Q đọc Javadoc.
  *   Hoàn thành khi: q01_prediction xanh; nói được equals mặc định so cùng object, không so field.
- *
+ * <p>
  * Q3 [DỰ ĐOÁN + TỰ TRẢ LỜI] {@code toString()} nên chứa thông tin gì và tránh lộ thông tin gì?
  *   Bắt đầu   : điền Q3_DEFAULT_TOSTRING_CONTAINS_NAME, rồi viết ANSWER Q3.
  *   Kiểm chứng: Alt+F8 in {@code new Customer("A").toString()}. Ctrl+Q trên {@code Object.toString}.

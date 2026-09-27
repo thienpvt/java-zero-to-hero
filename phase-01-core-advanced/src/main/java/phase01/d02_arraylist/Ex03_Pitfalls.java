@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  * nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q9 [DỰ ĐOÁN + CODE] Khi iterate rồi remove sai cách có thể xảy ra chuyện gì?
  *   Bắt đầu   : đọc q09_duDoan_forEachRemovePhanTuDau và q09_duDoan_forEachRemovePhanTuKeCuoi
  *               trong test (chạy for-each rồi gọi list.remove(Object) thay vì
@@ -32,16 +33,16 @@ import java.util.concurrent.TimeUnit;
  *               không ném ConcurrentModificationException).
  *   Hoàn thành khi: các test q09_* xanh; giải thích được vì sao removeBlank() an toàn còn
  *               vòng for-each gọi list.remove() trực tiếp thì phụ thuộc vị trí phần tử bị xóa.
- *
- * Q8 [DỰ ĐOÁN] `ArrayList` có thể chứa `null` không?
+ * <p>
+ * Q8 [DỰ ĐOÁN] {@code ArrayList} có thể chứa {@code null} không?
  *   Bắt đầu   : viết thử code add(null) hai lần vào một ArrayList rồi điền 2 hằng số
  *               Q8_*.
  *   Kiểm chứng: chạy q08_*; nếu còn nghi ngờ, Ctrl+N → ArrayList → Ctrl+F12 → add, đọc
  *               Javadoc (Ctrl+Q) xem add() nói gì về null — sau khi đã điền dự đoán.
  *   Hoàn thành khi: test q08_* xanh; giải thích được ArrayList xử lý null thế nào so với
  *               một số cấu trúc khác (ví dụ TreeSet theo natural order).
- *
- * Q7 [DỰ ĐOÁN + CODE + THÍ NGHIỆM] `ArrayList` có thread-safe không?
+ * <p>
+ * Q7 [DỰ ĐOÁN + CODE + THÍ NGHIỆM] {@code ArrayList} có thread-safe không?
  *   Bắt đầu   : điền Q7_ARRAYLIST_IS_THREAD_SAFE (thay null) sau khi đã đọc source add()
  *               hoặc chạy thí nghiệm; cài đặt threadSafeList().
  *   Kiểm chứng: chạy main() với perThread lớn (100_000) nhiều lần, sau khi đã điền dự

@@ -11,6 +11,7 @@ import java.util.Comparator;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q4 [DỰ ĐOÁN + CODE] Nếu Comparator không consistent với equals thì điều gì có thể
  *     xảy ra với TreeSet?
  *   Bắt đầu   : đọc record Person bên dưới; đặt con trỏ lên "TreeSet" trong test, Ctrl+Q

@@ -9,18 +9,19 @@ package phase00.d04_text;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [DỰ ĐOÁN] {@code new int[3]} có các index hợp lệ nào?
  *   Bắt đầu   : điền Q1_FIRST_INDEX, Q1_LAST_INDEX_OF_LENGTH_3 và Q1_INDEX_3_EXCEPTION
  *               (tên lớp đơn giản).
  *   Kiểm chứng: Debug q01_prediction, Alt+F8 gõ {@code values.length} và {@code values[3]}.
  *   Hoàn thành khi: q01_prediction xanh; nói được index chạy từ 0 đến length - 1.
- *
+ * <p>
  * Q2 [DỰ ĐOÁN] Vì sao không dùng {@code ==} để kiểm tra hai chuỗi có cùng nội dung?
  *   Bắt đầu   : điền Q2_DOUBLE_EQUALS_SAME_CONTENT và Q2_EQUALS_SAME_CONTENT.
  *   Kiểm chứng: Alt+F8 với {@code new String("hi") == new String("hi")} và {@code .equals}.
  *               Ctrl+Q trên {@code String.equals}.
  *   Hoàn thành khi: q02_prediction xanh; phân biệt được cùng object với cùng nội dung.
- *
+ * <p>
  * Q3 [DỰ ĐOÁN] {@code String} bất biến nghĩa là gì với lời gọi {@code text.toUpperCase()}?
  *   Bắt đầu   : điền Q3_TO_UPPER_MUTATES_RECEIVER — lời gọi có sửa chính biến {@code text} không?
  *   Kiểm chứng: Debug q03_prediction, Alt+F8 xem {@code text} và giá trị {@code toUpperCase} trả về.

@@ -9,19 +9,20 @@ package phase00.d12_testing;
  * Chạy Ex01_AssertionsTest bằng nút ▶ (Ctrl+Shift+F10).
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [TỰ TRẢ LỜI] Unit test khác việc chạy {@code main} và nhìn output ở đâu?
  *   Bắt đầu   : viết ANSWER Q1.
  *   Tra cứu   : mở một test bất kỳ ở giai đoạn này, thấy {@code assertEquals} / {@code assertThrows}.
  *               So với một {@code main} chỉ {@code System.out.println}.
  *   Hoàn thành khi: ANSWER Q1 nói test kiểm tra được bằng máy và chạy lại trong cùng một lệnh.
- *
+ * <p>
  * Q2 [DỰ ĐOÁN + CODE] Vì sao test cần kiểm tra kết quả cụ thể thay vì chỉ gọi method không ném lỗi?
  *   Bắt đầu   : điền Q2_CALL_WITHOUT_ASSERT_PROVES_RESULT, rồi cài {@code checkedDivide}.
  *   Kiểm chứng: tưởng tượng {@code checkedDivide} luôn {@code return 0}. Test nào chỉ gọi hàm sẽ vẫn xanh.
  *               Chạy q02_normalBoundaryAndError — ba ca: thường, biên, lỗi.
  *   Code      : divisor {@code 0} → {@code IllegalArgumentException}. Còn lại trả {@code dividend / divisor}.
  *   Hoàn thành khi: q02_* xanh; nói được một lần chạy không ném lỗi không chứng minh kết quả đúng.
- *
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Khi test fail, bạn kiểm tra expected/actual và stack trace theo thứ tự nào?
  *   Bắt đầu   : cố ý đổi {@code 5} trong đầu bạn thành một số khác, hình dung message fail, rồi viết ANSWER Q3.
  *               Không commit bản làm test đỏ.

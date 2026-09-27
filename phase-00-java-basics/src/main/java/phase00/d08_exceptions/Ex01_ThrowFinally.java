@@ -13,6 +13,7 @@ import phase00.support.Compiles;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q2 [DỰ ĐOÁN] {@code throws} và {@code throw} khác nhau ra sao?
  *   Bắt đầu   : điền Q2_THROW_SENDS_EXCEPTION và Q2_CHECKED_WITHOUT_DECLARE_COMPILES.
  *               Mẫu checked exception nằm trong comment của {@code checkedSample}.
@@ -20,13 +21,13 @@ import phase00.support.Compiles;
  *               xem lỗi đỏ, comment lại. Ctrl+Q trên {@code throws} trong một method JDK có {@code throws IOException}
  *               (Ctrl+N → {@code Reader}, Ctrl+F12 → {@code read}).
  *   Hoàn thành khi: q02_prediction xanh; nói được throw bắn exception, throws khai báo trên chữ ký.
- *
+ * <p>
  * Q3 [DỰ ĐOÁN] {@code finally} và {@code try-with-resources} giải quyết những vấn đề gì?
  *   Bắt đầu   : đọc {@code finallyRunsAfterThrow} và {@code useDoor}. Điền hai hằng Q3_*.
  *   Kiểm chứng: Debug q03_prediction. Breakpoint trong khối {@code finally} và trong {@code Door.close}.
  *               Ctrl+Q trên {@code AutoCloseable}.
  *   Hoàn thành khi: q03_prediction xanh; nói được finally vẫn chạy khi thân ném lỗi, try-with-resources gọi close.
- *
+ * <p>
  * Q4 [TỰ TRẢ LỜI] Vì sao {@code catch (Exception e) { return null; }} thường làm khó tìm lỗi?
  *   Bắt đầu   : viết ANSWER Q4 sau khi đã thấy Q2 và Q3.
  *   Tra cứu   : Ctrl+Q trên {@code Throwable.printStackTrace} và trên {@code getCause}.

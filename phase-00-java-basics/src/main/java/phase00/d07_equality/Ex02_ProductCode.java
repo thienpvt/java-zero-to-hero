@@ -10,6 +10,7 @@ import java.util.Objects;
  * Cách làm: điền hai hằng Q2_* rồi cài equals/hashCode của ProductCode. Chạy Ex02_ProductCodeTest.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q2 [DỰ ĐOÁN + CODE] Vì sao override {@code equals()} mà quên {@code hashCode()} có thể làm
  *     {@code HashSet} hoạt động sai kỳ vọng?
  *   Bắt đầu   : đọc {@code NameOnly} (có equals, không hashCode). Điền Q2_SET_SIZE và

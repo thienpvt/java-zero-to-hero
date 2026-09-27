@@ -11,7 +11,8 @@ import java.util.Objects;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q6 [DỰ ĐOÁN + CODE] Vì sao phải override `hashCode()` khi override `equals()`?
+ * <p>
+ * Q6 [DỰ ĐOÁN + CODE] Vì sao phải override {@code hashCode()} khi override {@code equals()}?
  *   Bắt đầu   : đọc class EqualsOnlyPoint bên dưới (equals() theo x, y nhưng hashCode()
  *               cộng thêm salt tăng dần — mô phỏng tất định hashCode() mặc định của Object,
  *               vốn khác nhau giữa các instance dù equals() coi là bằng nhau); điền hằng số

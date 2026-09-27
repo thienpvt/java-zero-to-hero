@@ -15,13 +15,14 @@ import java.util.stream.Collectors;
  * Bài tích hợp — CustomerReportService (tổng hợp đơn hàng thành báo cáo theo khách hàng)
  *
  * Nguồn: 01-java-core-advanced.md, mục "Bài thực hành tích hợp", bước 3 và 4.
- * Cần làm trước: CsvOrderParser (B2, B3) — cần {@code List<Order>} hợp lệ để tổng hợp.
+ * Cần làm trước: CsvOrderParser (B2, B3) — cần {@code List&lt;Order&gt;} hợp lệ để tổng hợp.
  * Cách làm: cài lần lượt {@code summarizeWithLoop} rồi {@code summarizeWithStream}; cả hai
  * phải cho cùng kết quả trên cùng input (CustomerReportServiceTest chạy chung một bộ test
  * cho cả hai bằng {@code @ParameterizedTest}).
  *
  * ─────────────────────────────────────────────────────────────────────
- * B3 [CODE] Chọn `Map`/`Set` phù hợp để tổng hợp và giữ thứ tự báo cáo; giải thích `equals`/`hashCode`
+ * <p>
+ * B3 [CODE] Chọn {@code Map}/{@code Set} phù hợp để tổng hợp và giữ thứ tự báo cáo; giải thích {@code equals}/{@code hashCode}
  *     của key.
  *   Bắt đầu   : đọc constructor và record {@code CustomerSummary} cho sẵn bên dưới trước khi
  *               cài B4.
@@ -33,7 +34,7 @@ import java.util.stream.Collectors;
  *               {@code CsvOrderParser.java} (dùng chung cho {@code Set} ở B2 và {@code Map} ở đây).
  *   Hoàn thành khi: giải thích được vì sao kiểu {@code Map} bạn chọn giữ được thứ tự khách
  *               hàng xuất hiện lần đầu, trước khi sắp lại theo customerId.
- *
+ * <p>
  * B4 [CODE] Viết hai phiên bản tổng hợp bằng vòng lặp và Stream; tránh state mutable dùng
  *     chung trong Stream.
  *   Bắt đầu   : mở {@code CustomerReportServiceTest#b04_summarizeWithHoChiMinhZoneReturnsExpectedRows},
@@ -68,7 +69,7 @@ public final class CustomerReportService {
     /**
      * Tổng hợp {@code orders} thành báo cáo theo khách hàng, cài bằng vòng lặp {@code for}.
      *
-     * <p>Bỏ order {@code CANCELLED}; khách chỉ toàn order {@code CANCELLED} không xuất hiện
+     * &lt;&lt;&lt;TAG0&gt;&gt;&gt;Bỏ order {@code CANCELLED}; khách chỉ toàn order {@code CANCELLED} không xuất hiện
      * trong kết quả; kết quả sắp theo {@code customerId} tăng dần và không thể sửa được.
      */
     public List<CustomerSummary> summarizeWithLoop(List<Order> orders) {

@@ -11,7 +11,8 @@ import java.util.Objects;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q1 [CODE + TỰ TRẢ LỜI] `HashMap.get(key)` hoạt động như thế nào?
+ * <p>
+ * Q1 [CODE + TỰ TRẢ LỜI] {@code HashMap.get(key)} hoạt động như thế nào?
  *   Bắt đầu   : đọc class Entry và mảng table (16 bucket cố định, không resize) bên dưới;
  *               cài đặt put(K, V) và get(Object) của MiniHashMap.
  *   Kiểm chứng: chạy các test q01_*; đặt breakpoint tại HashMap.getNode
@@ -22,14 +23,14 @@ import java.util.Objects;
  *               get duyệt chuỗi bucket, đếm số entry đã duyệt vào lastProbeCount.
  *   Hoàn thành khi: mọi test q01_* xanh + viết xong khối ANSWER Q1 mô tả luồng
  *               key → hashCode() → hash → bucket → so hash → equals() → value.
- *
- * Q2 [DỰ ĐOÁN] Vì sao `hashCode()` thôi chưa đủ?
+ * <p>
+ * Q2 [DỰ ĐOÁN] Vì sao {@code hashCode()} thôi chưa đủ?
  *   Bắt đầu   : đọc class HashCodeOnlyKey bên dưới (có hashCode() nhưng KHÔNG override
  *               equals()); điền hằng số Q2_HASHCODE_ONLY_KEY_FOUND_BY_EQUAL_INSTANCE (thay null).
  *   Kiểm chứng: chạy q02_hashCodeOnlyKey_prediction; nếu sai, đặt con trỏ lên equals() của
  *               Object rồi Ctrl+Q để xem hợp đồng mặc định (so sánh theo địa chỉ tham chiếu).
  *   Hoàn thành khi: test q02_* xanh.
- *
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Collision là gì?
  *   Bắt đầu   : làm Q1 trước; chạy q01_get_hundredConstantHashKeys_singleBucketWithProbeCount,
  *               dùng Evaluate Expression (Alt+F8) xem giá trị lastProbeCount().
@@ -37,16 +38,16 @@ import java.util.Objects;
  *               với khi 100 key rải đều 16 bucket (GoodKey, xem bucketSizes()).
  *   Hoàn thành khi: viết xong khối ANSWER Q3 định nghĩa collision và nêu ảnh hưởng của nó
  *               lên lastProbeCount/hiệu năng lookup.
- *
- * Q4 [DỰ ĐOÁN] Hai object có cùng `hashCode()` nhưng `equals()` false thì chuyện gì xảy ra?
+ * <p>
+ * Q4 [DỰ ĐOÁN] Hai object có cùng {@code hashCode()} nhưng {@code equals()} false thì chuyện gì xảy ra?
  *   Bắt đầu   : đọc class ConstantHashKey bên dưới (hashCode() luôn trả 42, equals() theo
  *               id); điền hằng số Q4_SIZE_WITH_TWO_COLLIDING_UNEQUAL_KEYS.
  *   Kiểm chứng: chạy q04_constantHashKey_twoUnequalKeys_prediction; đặt breakpoint tại
  *               HashMap.putVal, Step Into (F7) để thấy cả hai entry cùng nằm trong một
  *               bucket dạng chuỗi (linked) vì hash bằng nhau nhưng equals() false.
  *   Hoàn thành khi: test q04_* xanh.
- *
- * Q5 [DỰ ĐOÁN] Nếu `equals()` true nhưng hashCode khác nhau thì có vấn đề gì?
+ * <p>
+ * Q5 [DỰ ĐOÁN] Nếu {@code equals()} true nhưng hashCode khác nhau thì có vấn đề gì?
  *   Bắt đầu   : đọc class EqualsOnlyKey bên dưới (equals() theo id, hashCode() cộng thêm
  *               salt tăng dần mỗi lần tạo — mô phỏng tất định việc quên override hashCode);
  *               điền hằng số Q5_EQUALS_ONLY_KEY_FOUND_BY_EQUAL_INSTANCE.

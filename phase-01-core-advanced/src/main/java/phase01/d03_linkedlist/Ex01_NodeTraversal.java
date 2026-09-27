@@ -13,6 +13,7 @@ import java.util.List;
  * (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q2 [DỰ ĐOÁN + CODE] Insert giữa LinkedList có thực sự O(1) không?
  *   Bắt đầu   : cùng Q1, cài đặt addFirst/addLast, insertAfter, nodeAt và get (TODO của
  *               cả Q1 lẫn Q2); điền Q2_INSERT_MIDDLE_O1_INCLUDING_SEARCH (thay null);
@@ -20,12 +21,12 @@ import java.util.List;
  *   Kiểm chứng: chạy các test q02_*; sau một lời gọi insertAfter, dùng Alt+F8 Evaluate
  *               Expression để đọc node.next.prev và node.prev.next ngay tại breakpoint,
  *               tự xác nhận liên kết hai chiều đã được nối đúng.
- *   Code      : insertAfter(Node<E> node, E e) chỉ nối lại prev/next quanh vị trí chèn (O(1)),
+ *   Code      : insertAfter(Node&lt;E&gt; node, E e) chỉ nối lại prev/next quanh vị trí chèn (O(1)),
  *               cập nhật last khi node đang là phần tử cuối — không được duyệt list.
  *   Hoàn thành khi: đã cài xong TODO Q1 và Q2, q02_* xanh; giải thích được phần nào của
  *               thao tác chèn là O(1) và phần nào có thể tốn O(n) nếu tính cả bước tìm node.
- *
- * Q1 [DỰ ĐOÁN + CODE] `LinkedList.get(5000)` hoạt động thế nào?
+ * <p>
+ * Q1 [DỰ ĐOÁN + CODE] {@code LinkedList.get(5000)} hoạt động thế nào?
  *   Bắt đầu   : cùng Q2 (xem mục Q2), cài đặt nodeAt(int) và get(int) (thay phần TODO);
  *               điền hai hằng số Q1_STEPS_* (thay null); chỉ chạy q01_* sau khi cả get và
  *               addLast đã xong.
@@ -123,7 +124,7 @@ public class Ex01_NodeTraversal {
          * Trả node tại {@code index} (0-based). Duyệt từ đầu gần hơn (first hoặc last) để
          * giảm số bước, và ghi số bước thực tế đã đi vào {@link #lastTraversalSteps}.
          *
-         * @throws IndexOutOfBoundsException nếu {@code index < 0 || index >= size()}
+         * @throws IndexOutOfBoundsException nếu {@code index &lt; 0 || index &gt;= size()}
          */
         Node<E> nodeAt(int index) {
             // SOLUTION-BEGIN throw Q1

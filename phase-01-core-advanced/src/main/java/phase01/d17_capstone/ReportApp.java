@@ -20,27 +20,28 @@ import phase01.d17_capstone.CustomerReportService.CustomerSummary;
  * khi test xanh, chạy thử từ Terminal (Alt+F12) bằng lệnh dòng lệnh ở cuối Javadoc này.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * B5 [CODE] Cài {@code render} để các test (file rỗng, dòng sai, ID trùng, múi giờ khác và
  *     kết quả không cho sửa ngoài ý muốn) xanh; "Đạt khi: chạy được từ dòng lệnh, test xanh".
  *   Bắt đầu   : mở ReportAppTest, đọc kỳ vọng của {@code render(...)} với 1 dòng dữ liệu và
  *               1 lỗi trước khi cài code.
  *   Kiểm chứng: đặt breakpoint đầu {@code render(...)}, Debug test, dùng Evaluate Expression
  *               (Alt+F8) để xem chuỗi báo cáo bạn đang ghép tăng dần qua từng dòng.
- *   Code      : cài {@code render(List<CustomerSummary> rows, List<LineError> errors)}: dòng
+ *   Code      : cài {@code render(List&lt;CustomerSummary&gt; rows, List&lt;LineError&gt; errors)}: dòng
  *               tiêu đề {@code "customerId | orders | totalPaid | firstOrderDate"}; mỗi dòng
  *               dữ liệu {@code customerId | orderCount | totalPaid.toPlainString() |
  *               firstOrderDate}; các dòng phân tách bằng {@code "\n"}; nếu có lỗi, thêm một
- *               dòng trống rồi mỗi lỗi một dòng {@code "Dòng <n>: <message>"}.
+ *               dòng trống rồi mỗi lỗi một dòng {@code "Dòng &lt;n&gt;: &lt;message&gt;"}.
  *   Hoàn thành khi: mọi test trong ReportAppTest xanh và chạy được lệnh dòng lệnh dưới đây
  *               trên file mẫu, ra báo cáo hợp lý (đối chiếu với test đọc file mẫu).
  *
- * <p>Chạy từ dòng lệnh (sau khi test xanh). Console Windows mặc định không phải UTF-8,
+ * &lt;&lt;&lt;TAG0&gt;&gt;&gt;Chạy từ dòng lệnh (sau khi test xanh). Console Windows mặc định không phải UTF-8,
  * nên tiếng Việt bị lỗi font nếu thiếu {@code chcp 65001} và hai cờ encoding:
- * <pre>{@code
+ * &lt;pre&gt;{@code
  * chcp 65001
  * .\mvnw.cmd -q -pl phase-01-core-advanced compile
  * java -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8 -cp phase-01-core-advanced/target/classes phase01.d17_capstone.ReportApp phase-01-core-advanced/src/test/resources/phase01/d17_capstone/orders-sample.csv Asia/Ho_Chi_Minh
- * }</pre>
+ * }&lt;/pre&gt;
  */
 public final class ReportApp {
 

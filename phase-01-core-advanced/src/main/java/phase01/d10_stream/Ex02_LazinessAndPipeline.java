@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q2 [DỰ ĐOÁN] Vì sao Stream intermediate operation là lazy?
  *   Bắt đầu   : trong q02_prediction, tạo một List&lt;String&gt; log rồi xây pipeline
  *               filter(...).map(...) có ghi log mỗi lần lambda chạy, nhưng KHÔNG gọi bất
@@ -22,8 +23,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  *   Hoàn thành khi: test q02_* xanh; giải thích được vì sao chỉ gọi filter()/map() không
  *               làm gì cả — mọi intermediate operation chỉ mô tả "công thức", chờ terminal
  *               operation gọi Iterator/Spliterator của Stream để thực sự chạy.
- *
- * Q4 [DỰ ĐOÁN] `filter()` chạy lúc nào?
+ * <p>
+ * Q4 [DỰ ĐOÁN] {@code filter()} chạy lúc nào?
  *   Bắt đầu   : trong q04_prediction, ghép
  *               Stream.of("a", "bb", "ccc").filter(...).map(...).findFirst(), mỗi bước ghi
  *               "filter " + s / "map " + s vào log; điền hằng số Q4_LOG_WITH_FIND_FIRST
@@ -35,7 +36,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *               một (filter rồi map rồi kiểm tra điều kiện dừng của findFirst) cho tới khi
  *               tìm được kết quả, không phải chạy filter cho tất cả phần tử trước rồi mới
  *               map.
- *
+ * <p>
  * Q3 [DỰ ĐOÁN] Stream có reusable không?
  *   Bắt đầu   : trong q03_prediction, tạo một biến Stream&lt;Integer&gt;, gọi count() lần
  *               đầu, rồi gọi count() lần hai trên CHÍNH biến đó; bắt exception ném ra, điền
@@ -45,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *   Hoàn thành khi: test q03_* xanh; giải thích được một Stream chỉ được "tiêu thụ"
  *               (traverse) đúng một lần bởi một terminal operation; muốn dùng lại logic
  *               phải tạo Stream mới từ source (ví dụ gọi lại list.stream()).
- *
+ * <p>
  * Q11 [DỰ ĐOÁN + CODE] Thứ tự operation có thể ảnh hưởng performance thế nào?
  *   Bắt đầu   : đọc mapCallsWhenFilterFirst/mapCallsWhenMapFirst bên dưới; cài đặt thân 2
  *               method bằng cách đặt filter(n % 5 == 0) trước hoặc sau map (map ở đây chỉ
@@ -59,7 +60,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *   Hoàn thành khi: test q11_* xanh; giải thích được vì sao đặt filter (giảm số phần tử
  *               cần xử lý) trước một bước tính toán tốn kém thường tiết kiệm hơn so với
  *               tính toán trên mọi phần tử rồi mới lọc.
- *
+ * <p>
  * Ví dụ [CODE] users.stream().filter(User::isActive).map(User::getEmail).distinct().toList()
  *   Bắt đầu   : đọc record User bên dưới, cài đặt activeUniqueEmails() đúng 4 bước pipeline
  *               nêu trong tài liệu: filter theo isActive(), map sang getEmail(), distinct(),

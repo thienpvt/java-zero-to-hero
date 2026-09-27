@@ -12,6 +12,7 @@ import java.util.Objects;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q6 [DỰ ĐOÁN + CODE] Với record, equals/hashCode được xử lý thế nào?
  *   Bắt đầu   : đọc record Point và Blob bên dưới; Ctrl+F12 trên Point để thấy compiler
  *               không sinh method equals/hashCode "thấy được" trong source nhưng chúng vẫn
@@ -28,7 +29,7 @@ import java.util.Objects;
  *               thường (Point) nhưng riêng component kiểu mảng (Blob.data) phải tự viết
  *               equals/hashCode bằng Arrays.equals/Arrays.hashCode mới so được theo nội dung,
  *               và vì sao SafeBlob cần defensive copy ở cả constructor và accessor.
- *
+ * <p>
  * Q7 [DỰ ĐOÁN + CODE] Vì sao mutable entity có thể gây vấn đề khi nằm trong HashSet?
  *   Bắt đầu   : đọc class Customer bên dưới — equals()/hashCode() dựa trên cả id và email
  *               (email có thể đổi sau khi tạo); điền 3 hằng số Q7_CONTAINS_AFTER_MUTATION,

@@ -28,7 +28,7 @@ $env:Path = "$env:JAVA_HOME\bin;$env:Path"
 
 ## Quy trình học
 
-1. Dùng bản khung bài tập (nhánh skeleton khi đã sinh), tạo nhánh riêng: `git switch -c my-work`.
+1. Chuyển sang nhánh bài tập chung mọi giai đoạn: `git switch exercises`, rồi tạo nhánh riêng: `git switch -c my-work`.
 2. Mở file bài của mục, đọc Javadoc từng câu.
 3. Làm theo dòng **Bắt đầu**.
 4. Chạy test của câu bằng nút ▶ hoặc `Ctrl+Shift+F10`.
@@ -41,7 +41,7 @@ $env:Path = "$env:JAVA_HOME\bin;$env:Path"
 .\mvnw.cmd -q -pl phase-00-java-basics test
 ```
 
-Trên bản khung, test đỏ vì `TODO Qn` hoặc vì hằng dự đoán còn `null`. Bản lời giải phải xanh toàn bộ.
+Trên nhánh **`exercises`** (bản khung, gồm mọi giai đoạn), test đỏ vì `TODO Qn` hoặc vì hằng dự đoán còn `null`. Nhánh **`solutions`** phải xanh toàn bộ.
 
 ## Chạy OrderApp
 

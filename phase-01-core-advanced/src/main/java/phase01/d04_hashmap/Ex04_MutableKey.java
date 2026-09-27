@@ -12,7 +12,8 @@ import java.util.Objects;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q10 [DỰ ĐOÁN + CODE] Điều gì xảy ra nếu field tham gia `hashCode()` bị thay đổi
+ * <p>
+ * Q10 [DỰ ĐOÁN + CODE] Điều gì xảy ra nếu field tham gia {@code hashCode()} bị thay đổi
  *     sau khi object đã được put?
  *   Bắt đầu   : đọc class MutableKey bên dưới, điền 4 hằng số Q10_* (thay null).
  *   Kiểm chứng: chạy q10_prediction. Nếu sai, đặt breakpoint trong HashMap.getNode
@@ -22,7 +23,7 @@ import java.util.Objects;
  *   Code      : cài đặt changeIdSafely() để đổi id mà map vẫn tìm được value.
  *   Hoàn thành khi: các test q10_* xanh; giải thích được size() và get() sau khi đổi field
  *               tham gia hashCode() của key đang nằm trong map.
- *
+ * <p>
  * Q9 [TỰ TRẢ LỜI] Mutable object có nên được dùng làm HashMap key không?
  *   Bắt đầu   : làm Q10 trước, dùng chính kết quả quan sát được để trả lời.
  *   Tra cứu   : Javadoc java.util.Map, đoạn "Great care must be exercised if mutable

@@ -11,6 +11,7 @@ import java.util.Comparator;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q5 [CODE] Làm thế nào sort theo nhiều field?
  *   Bắt đầu   : đọc record Employee bên dưới; Ctrl+F12 trên Comparator để xem
  *               thenComparing(Function) và thenComparing(Function, Comparator), và
@@ -21,7 +22,7 @@ import java.util.Comparator;
  *               (cùng department) age giảm dần, rồi (cùng age) name tăng dần.
  *   Hoàn thành khi: q05_* xanh; giải thích được các thenComparing được áp dụng từ trái
  *               sang phải, chỉ dùng field sau khi mọi field trước đã so bằng nhau (== 0).
- *
+ * <p>
  * Q6 [DỰ ĐOÁN + CODE] Làm thế nào xử lý null khi sort?
  *   Bắt đầu   : đọc hằng số Q6_SORT_NULL_AGE_EXCEPTION bên dưới; bỏ comment dòng ví dụ
  *               cạnh nó, Alt+F8 (Evaluate Expression) thử

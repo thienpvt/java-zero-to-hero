@@ -15,37 +15,38 @@ import java.time.ZonedDateTime;
  * nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q4 [DỰ ĐOÁN] `Duration` và `Period` khác nhau thế nào?
+ * <p>
+ * Q4 [DỰ ĐOÁN] {@code Duration} và {@code Period} khác nhau thế nào?
  *   Bắt đầu   : điền Q4_PLUS_PERIOD_1_DAY_LOCAL_HOUR, Q4_PLUS_DURATION_24H_LOCAL_HOUR; tạo
- *               `ZonedDateTime.of(2026, 3, 7, 12, 0, 0, 0, ZoneId.of("America/New_York"))`,
- *               cộng `Period.ofDays(1)` rồi cộng `Duration.ofHours(24)`, đọc `getHour()` của
+ *               {@code ZonedDateTime.of(2026, 3, 7, 12, 0, 0, 0, ZoneId.of("America/New_York"))},
+ *               cộng {@code Period.ofDays(1)} rồi cộng {@code Duration.ofHours(24)}, đọc {@code getHour()} của
  *               mỗi kết quả.
- *   Kiểm chứng: F7 Step Into vào `ZonedDateTime.plus(Period)` (Ctrl+N → ZonedDateTime →
+ *   Kiểm chứng: F7 Step Into vào {@code ZonedDateTime.plus(Period)} (Ctrl+N → ZonedDateTime →
  *               Ctrl+F12 → plus) để thấy nó cộng theo lịch (ngày/tháng/năm) rồi tính lại offset,
- *               còn `plus(Duration)` cộng thẳng theo giây tuyệt đối rồi mới quy đổi lại giờ hiển thị.
+ *               còn {@code plus(Duration)} cộng thẳng theo giây tuyệt đối rồi mới quy đổi lại giờ hiển thị.
  *   Hoàn thành khi: q04_prediction xanh; giải thích được vì sao cộng đúng 24 giờ (Duration) lại
  *               ra giờ hiển thị khác cộng đúng 1 ngày (Period) khi băng qua mốc DST 2026-03-08.
- *
+ * <p>
  * Q6 [DỰ ĐOÁN + CODE] DST có thể gây những bug nào?
  *   Bắt đầu   : điền Q6_GAP_TIME_RESOLVED_HOUR, Q6_OVERLAP_CHOSEN_OFFSET,
- *               Q6_HOURS_IN_DST_START_DAY; tạo `LocalDateTime.of(2026, 3, 8, 2, 30)` và
- *               `LocalDateTime.of(2026, 11, 1, 1, 30)`, gắn
- *               `atZone(ZoneId.of("America/New_York"))`, đọc `getHour()` và
- *               `getOffset().getId()` của từng kết quả.
- *   Kiểm chứng: đặt breakpoint trong `ZonedDateTime.ofLocal` (Ctrl+N → ZonedDateTime →
+ *               Q6_HOURS_IN_DST_START_DAY; tạo {@code LocalDateTime.of(2026, 3, 8, 2, 30)} và
+ *               {@code LocalDateTime.of(2026, 11, 1, 1, 30)}, gắn
+ *               {@code atZone(ZoneId.of("America/New_York"))}, đọc {@code getHour()} và
+ *               {@code getOffset().getId()} của từng kết quả.
+ *   Kiểm chứng: đặt breakpoint trong {@code ZonedDateTime.ofLocal} (Ctrl+N → ZonedDateTime →
  *               Ctrl+F12 → ofLocal), Debug q06_prediction, dùng F7 để thấy cách JDK chọn offset
  *               khi giờ địa phương rơi vào "khoảng trống" (gap, đồng hồ nhảy tới) và "chồng lấp"
  *               (overlap, đồng hồ lùi lại và có hai offset hợp lệ).
- *   Code      : cài đặt `hoursInLocalDay(LocalDate, ZoneId)` bằng `atStartOfDay` của ngày đó và
- *               ngày kế tiếp rồi lấy `Duration.between`; `hoursBetween(ZonedDateTime,
- *               ZonedDateTime)` cũng bằng `Duration.between`.
+ *   Code      : cài đặt {@code hoursInLocalDay(LocalDate, ZoneId)} bằng {@code atStartOfDay} của ngày đó và
+ *               ngày kế tiếp rồi lấy {@code Duration.between}; `hoursBetween(ZonedDateTime,
+ *               ZonedDateTime){@code  cũng bằng }Duration.between`.
  *   Hoàn thành khi: các test q06_* xanh; giải thích được vì sao một "ngày" ở múi giờ có DST có
  *               thể không phải đúng 24 giờ.
- *
+ * <p>
  * Q5 [TỰ TRẢ LỜI] Vì sao xử lý timezone bằng cộng/trừ offset thủ công dễ lỗi?
  *   Bắt đầu   : làm Q6 trước, dùng chính kết quả gap/overlap/hoursInLocalDay quan sát được để
  *               lập luận.
- *   Tra cứu   : Ctrl+N → `ZoneId` → Ctrl+Q, đọc đoạn Javadoc mô tả mỗi zone có "rules" quyết
+ *   Tra cứu   : Ctrl+N → {@code ZoneId} → Ctrl+Q, đọc đoạn Javadoc mô tả mỗi zone có "rules" quyết
  *               định offset thay đổi theo thời gian (bao gồm cả khi luật DST của một nước đổi).
  *   Hoàn thành khi: viết xong khối ANSWER Q5, có liên hệ tới Q6 (gap/overlap) như ví dụ cụ thể.
  */

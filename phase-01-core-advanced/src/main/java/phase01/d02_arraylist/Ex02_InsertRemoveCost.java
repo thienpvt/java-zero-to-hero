@@ -16,7 +16,8 @@ import java.util.List;
  * tự đo bảng số liệu thật, rồi viết OBSERVATION bằng lời của bạn ở cuối file.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q5 [THÍ NGHIỆM] Tại sao insert ở đầu `ArrayList` là O(n)?
+ * <p>
+ * Q5 [THÍ NGHIỆM] Tại sao insert ở đầu {@code ArrayList} là O(n)?
  *   Bắt đầu   : đọc runExperiment() bên dưới, chạy q05_experimentRuns trước để chắc nó
  *               không lỗi.
  *   Kiểm chứng: chạy main() với n = 50_000, so cột "ArrayList - đầu" với
@@ -25,7 +26,7 @@ import java.util.List;
  *               mỗi lần chèn ở đầu.
  *   Hoàn thành khi: viết xong OBSERVATION Q5 với số liệu đo được và giải thích vì sao
  *               phải dời toàn bộ mảng phía sau mỗi lần chèn ở đầu.
- *
+ * <p>
  * Q10 [THÍ NGHIỆM] Khi nào ArrayList tốt hơn LinkedList dù phải insert/remove?
  *   Bắt đầu   : dùng lại runExperiment(), so cột "ArrayList - giữa" với
  *               "LinkedList - giữa".

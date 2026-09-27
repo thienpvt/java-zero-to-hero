@@ -22,6 +22,7 @@ import java.util.Set;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q2 [CODE + TỰ TRẢ LỜI] Spring có thể sử dụng reflection ở đâu?
  *   Bắt đầu   : đọc các class mẫu Repo/Service/Controller/CycleA/CycleB/TwoConstructors
  *               bên dưới; cài đặt MiniContainer.get(Class&lt;T&gt;).
@@ -41,7 +42,7 @@ import java.util.Set;
  *   Hoàn thành khi: các test q02_* xanh; giải thích được bằng lời (khối ANSWER Q2) Spring
  *               dùng đúng cơ chế reflection tương tự (đọc constructor/field để autowire,
  *               tạo bean) ở những điểm nào.
- *
+ * <p>
  * Q3 [DỰ ĐOÁN] Reflection có nhược điểm gì?
  *   Bắt đầu   : điền Q3_COMPILER_CHECKS_REFLECTIVE_CALL_NAMES (thay null). Đối chiếu Q5 của
  *               Ex01: tên method/field truyền vào reflection API là String — tự xem javac
@@ -52,7 +53,7 @@ import java.util.Set;
  *   Hoàn thành khi: test q03_* xanh; giải thích được (cùng Q6) các nhược điểm: mất type
  *               safety lúc compile, chậm hơn gọi trực tiếp, code khó đọc/khó debug, dễ vi
  *               phạm encapsulation.
- *
+ * <p>
  * Q6 [THÍ NGHIỆM + TỰ TRẢ LỜI] Vì sao business code thông thường không nên lạm dụng
  *     reflection?
  *   Bắt đầu   : chạy main() với n lớn (10_000_000), đọc báo cáo runExperiment so 3 cách

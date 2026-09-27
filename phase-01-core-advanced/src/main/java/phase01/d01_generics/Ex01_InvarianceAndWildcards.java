@@ -15,41 +15,42 @@ import phase01.support.Compiles;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q1 [DỰ ĐOÁN] `List<String>` có phải subtype của `List<Object>` không? Tại sao?
+ * <p>
+ * Q1 [DỰ ĐOÁN] {@code List&lt;String&gt;} có phải subtype của {@code List&lt;Object&gt;} không? Tại sao?
  *   Bắt đầu   : điền 3 hằng số Q1_* bên dưới (thay null); bỏ comment từng dòng mẫu
- *               ngay cạnh mỗi hằng `Compiles`, xem IDE báo gì, rồi comment lại — sau khi
+ *               ngay cạnh mỗi hằng {@code Compiles}, xem IDE báo gì, rồi comment lại — sau khi
  *               đã điền dự đoán — trước khi chạy test.
  *   Kiểm chứng: chạy q01_prediction; hằng Q1_ARRAY_STORE_EXCEPTION được test tính bằng
- *               cách chạy thật `Object[] arr = new String[1]; arr[0] = 1;` và bắt lỗi.
+ *               cách chạy thật {@code Object[] arr = new String[1]; arr[0] = 1;} và bắt lỗi.
  *   Hoàn thành khi: q01_prediction xanh; giải thích được quy tắc gán của mảng khác quy tắc
  *               gán của generic ở chỗ nào, và lỗi (nếu có) xảy ra lúc biên dịch hay lúc chạy.
- *
+ * <p>
  * Q9 [TỰ TRẢ LỜI] Generic invariance là gì?
  *   Bắt đầu   : làm Q1 trước, dùng chính kết quả quan sát được ở Q1 để trả lời.
  *   Kiểm chứng: Tra cứu — không có test riêng, đọc lại 3 hằng Q1_* vừa điền.
  *   Hoàn thành khi: viết xong khối ANSWER Q9 ở cuối file, có nêu định nghĩa invariance.
- *
- * Q2 [CODE] Khi nào dùng `? extends T`?
- *   Bắt đầu   : cài đặt sum(Collection<? extends Number> numbers) bên dưới.
- *   Kiểm chứng: chạy q02_sum_*; đặt breakpoint ở dòng `total += n.doubleValue();`,
+ * <p>
+ * Q2 [CODE] Khi nào dùng {@code ? extends T}?
+ *   Bắt đầu   : cài đặt sum(Collection&lt;? extends Number&gt; numbers) bên dưới.
+ *   Kiểm chứng: chạy q02_sum_*; đặt breakpoint ở dòng {@code total += n.doubleValue();},
  *               Debug test, dùng F7 để xem từng phần tử được cộng vào total.
  *   Code      : sum trả tổng doubleValue() của mọi phần tử; collection rỗng trả 0.0.
- *   Hoàn thành khi: các test q02_* xanh; giải thích được vì sao `? extends Number`
- *               cho phép truyền cả `List<Integer>` và `List<Double>` mà `Number` không cho.
- *
- * Q3 [CODE] Khi nào dùng `? super T`?
- *   Bắt đầu   : cài đặt addNumbers(List<? super Integer> target, int count) bên dưới.
- *   Kiểm chứng: chạy q03_*; thử tạm đổi tham số thành `List<Integer>` rồi gọi với
- *               `List<Number>`, xem IDE báo gì, rồi đổi lại `? super Integer` trước khi nộp.
+ *   Hoàn thành khi: các test q02_* xanh; giải thích được vì sao {@code ? extends Number}
+ *               cho phép truyền cả {@code List&lt;Integer&gt;} và {@code List&lt;Double&gt;} mà {@code Number} không cho.
+ * <p>
+ * Q3 [CODE] Khi nào dùng {@code ? super T}?
+ *   Bắt đầu   : cài đặt addNumbers(List&lt;? super Integer&gt; target, int count) bên dưới.
+ *   Kiểm chứng: chạy q03_*; thử tạm đổi tham số thành {@code List&lt;Integer&gt;} rồi gọi với
+ *               {@code List&lt;Number&gt;}, xem IDE báo gì, rồi đổi lại {@code ? super Integer} trước khi nộp.
  *   Code      : thêm các số 0..count-1 vào target theo thứ tự tăng dần;
- *               count < 0 ném IllegalArgumentException, không đổi target.
- *   Hoàn thành khi: các test q03_* xanh; giải thích được vì sao `? super Integer` nhận
- *               được `List<Number>`/`List<Object>` nhưng không cho đọc phần tử ra kiểu Integer.
- *
+ *               count &lt; 0 ném IllegalArgumentException, không đổi target.
+ *   Hoàn thành khi: các test q03_* xanh; giải thích được vì sao {@code ? super Integer} nhận
+ *               được {@code List&lt;Number&gt;}/{@code List&lt;Object&gt;} nhưng không cho đọc phần tử ra kiểu Integer.
+ * <p>
  * Q4 [CODE] Giải thích PECS bằng ví dụ thực tế.
- *   Bắt đầu   : PECS = Producer Extends, Consumer Super. `Ctrl+N` → gõ `Collections` →
- *               `Ctrl+F12` → tìm method `copy`, đọc chữ ký
- *               `copy(List<? super T> dest, List<? extends T> src)` của JDK để so sánh.
+ *   Bắt đầu   : PECS = Producer Extends, Consumer Super. {@code Ctrl+N} → gõ {@code Collections} →
+ *               {@code Ctrl+F12} → tìm method {@code copy}, đọc chữ ký
+ *               {@code copy(List&lt;? super T&gt; dest, List&lt;? extends T&gt; src)} của JDK để so sánh.
  *   Kiểm chứng: chạy q04_*; đặt breakpoint đầu copy() và max(), Debug test, F7 qua từng bước.
  *   Code      : copy() nối toàn bộ src vào cuối dst, giữ thứ tự; max() trả phần tử lớn nhất
  *               theo comparator, collection rỗng ném NoSuchElementException.
@@ -90,7 +91,7 @@ public class Ex01_InvarianceAndWildcards {
     /**
      * Thêm các số nguyên {@code 0..count-1} (theo thứ tự tăng dần) vào {@code target}.
      *
-     * @throws IllegalArgumentException nếu {@code count < 0}; khi đó {@code target} giữ nguyên
+     * @throws IllegalArgumentException nếu {@code count &lt; 0}; khi đó {@code target} giữ nguyên
      */
     static void addNumbers(List<? super Integer> target, int count) {
         // SOLUTION-BEGIN throw Q3

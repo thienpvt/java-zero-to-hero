@@ -13,7 +13,8 @@ import java.util.Arrays;
  * mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q2 [CODE + TỰ TRẢ LỜI] Tại sao `add()` thường được gọi là amortized O(1)?
+ * <p>
+ * Q2 [CODE + TỰ TRẢ LỜI] Tại sao {@code add()} thường được gọi là amortized O(1)?
  *   Bắt đầu   : cùng Q1, cài đặt add(E), add(int, E), remove(int) và get(int) (TODO của
  *               cả Q1 lẫn Q2) trước khi chạy test q01_* hoặc q02_*.
  *   Kiểm chứng: đặt breakpoint trong add(E) của bạn, Ctrl+N → ArrayList → Ctrl+F12 → add,
@@ -24,8 +25,8 @@ import java.util.Arrays;
  *               remove(int) dời phần tử phía sau về trái rồi trả phần tử bị xóa.
  *   Hoàn thành khi: đã cài xong TODO Q1 và Q2, các test q02_* xanh; giải thích được vì sao
  *               chi phí trung bình trên nhiều lần add vẫn là O(1) dù có vài lần grow() tốn O(n).
- *
- * Q1 [CODE + TỰ TRẢ LỜI] Tại sao `ArrayList.get()` là O(1)?
+ * <p>
+ * Q1 [CODE + TỰ TRẢ LỜI] Tại sao {@code ArrayList.get()} là O(1)?
  *   Bắt đầu   : cùng Q2 (xem mục Q2), cài đặt get(int index) bằng cách ép kiểu trực tiếp
  *               (E) elementData[index]; chỉ chạy q01_* sau khi cả get và add đã xong.
  *   Kiểm chứng: đặt breakpoint ngay trong get(), Debug q01_get_traVePhanTuDungViTri
@@ -35,27 +36,27 @@ import java.util.Arrays;
  *               IndexOutOfBoundsException.
  *   Hoàn thành khi: các test q01_* xanh; giải thích được vì sao truy cập mảng theo chỉ số
  *               luôn là một phép tính địa chỉ hằng số, không phụ thuộc số phần tử.
- *
+ * <p>
  * Q3 [DỰ ĐOÁN + CODE + TỰ TRẢ LỜI] Điều gì xảy ra khi backing array hết capacity?
  *   Bắt đầu   : điền hằng số Q3_RESIZES_FOR_100_ADDS (đọc thêm Q6 bên dưới), rồi cài
  *               đặt grow().
  *   Kiểm chứng: Ctrl+N → ArrayList → Ctrl+F12 → grow, đặt breakpoint ở dòng tính
  *               capacity mới, Debug q03_grow_chuoiCapacityDungCongThuc, F8 qua từng lần
- *               grow để so công thức oldCapacity + (oldCapacity >> 1).
+ *               grow để so công thức oldCapacity + (oldCapacity &gt;&gt; 1).
  *   Code      : grow() cấp mảng mới bằng Arrays.copyOf với capacity mới =
- *               max(old + (old >> 1), old + 1); tăng resizeCount mỗi lần gọi.
+ *               max(old + (old &gt;&gt; 1), old + 1); tăng resizeCount mỗi lần gọi.
  *   Hoàn thành khi: các test q03_* xanh; giải thích được vì sao tăng capacity theo tỉ lệ
  *               (không phải +1 mỗi lần) giữ chi phí add() là amortized O(1).
- *
- * Q4 [DỰ ĐOÁN] `size` và `capacity` khác nhau thế nào?
+ * <p>
+ * Q4 [DỰ ĐOÁN] {@code size} và {@code capacity} khác nhau thế nào?
  *   Bắt đầu   : thêm 11 phần tử vào một MiniArrayList() mới, điền Q4_SIZE_AFTER_11_ADDS
  *               và Q4_CAPACITY_AFTER_11_ADDS.
  *   Kiểm chứng: chạy q04_duDoan_sizeVaCapacitySau11LanAdd; nếu sai, Alt+F8 Evaluate
  *               Expression list.size() và list.capacity() ngay sau lần add thứ 11.
  *   Hoàn thành khi: test q04_* xanh; giải thích được size là số phần tử thực có,
  *               capacity là độ dài mảng nền, hai giá trị không nhất thiết bằng nhau.
- *
- * Q6 [DỰ ĐOÁN + TỰ TRẢ LỜI] Khi nào nên truyền `initialCapacity`?
+ * <p>
+ * Q6 [DỰ ĐOÁN + TỰ TRẢ LỜI] Khi nào nên truyền {@code initialCapacity}?
  *   Bắt đầu   : đọc lại Q3, điền Q6_RESIZES_WITH_INITIAL_CAPACITY_100.
  *   Kiểm chứng: chạy q06_duDoan_soLanResizeVoiInitialCapacity100, so với
  *               q03_duDoan_soLanResizeSau100LanAdd để thấy khác biệt khi biết trước
@@ -124,7 +125,7 @@ public class Ex01_CapacityAndResize {
 
         /**
          * Tăng capacity của {@code elementData}: capacity mới =
-         * {@code max(old + (old >> 1), old + 1)}. Tăng {@code resizeCount} mỗi lần gọi.
+         * {@code max(old + (old &gt;&gt; 1), old + 1)}. Tăng {@code resizeCount} mỗi lần gọi.
          */
         private void grow() {
             // SOLUTION-BEGIN throw Q3

@@ -13,6 +13,7 @@ import java.util.Objects;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [DỰ ĐOÁN + CODE] {@code 5 / 2} và {@code 5 / 2.0} cho kết quả khác nhau thế nào?
  *   Bắt đầu   : điền Q1_FIVE_DIV_TWO và Q1_FIVE_DIV_TWO_DOUBLE trước khi chạy test.
  *               Sau đó cài {@code total}.
@@ -23,7 +24,7 @@ import java.util.Objects;
  *               {@code IllegalArgumentException}. Số 0 hợp lệ. List/item/giá null thì
  *               {@code NullPointerException}.
  *   Hoàn thành khi: q01_* xanh; nói được vì sao không cộng tiền bằng {@code double}.
- *
+ * <p>
  * Q2 [DỰ ĐOÁN] Điều gì xảy ra nếu {@code Integer x = null; int y = x;}?
  *   Bắt đầu   : điền Q2_UNBOX_NULL_EXCEPTION bằng tên lớp đơn giản, không kèm package.
  *   Kiểm chứng: Debug q02_prediction, breakpoint ở dòng gán {@code int y = x}, F8 bước

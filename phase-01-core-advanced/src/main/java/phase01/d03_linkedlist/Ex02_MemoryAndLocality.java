@@ -14,6 +14,7 @@ import java.util.List;
  * cáo đầy đủ với n lớn; sau đó điền các khối OBSERVATION/ANSWER ở cuối file.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q3 [THÍ NGHIỆM + TỰ TRẢ LỜI] LinkedList sử dụng nhiều memory hơn ArrayList vì sao?
  *   Bắt đầu   : chạy q03_experimentRuns; sau đó chạy main() với n vài triệu để đọc dòng
  *               "byte/phần tử" trong báo cáo.
@@ -22,19 +23,19 @@ import java.util.List;
  *   Hoàn thành khi: viết xong khối OBSERVATION Q3 (số đo bạn quan sát được) và ANSWER Q3
  *               (giải thích vì sao); giải thích được số "byte/phần tử" ở đây chỉ là số đo thô
  *               tương đối (qua Runtime.totalMemory()-freeMemory()), không phải kích thước tuyệt đối.
- *
+ * <p>
  * Q5 [THÍ NGHIỆM] Vì sao trên workload thực tế ArrayList thường nhanh hơn LinkedList?
  *   Bắt đầu   : dùng lại báo cáo của q03_experimentRuns/main(), đọc phần đo thời gian duyệt
  *               (int[] so với ArrayList so với LinkedList).
  *   Kiểm chứng: chạy lại main() vài lần, so sánh xu hướng số ns giữa ba cấu trúc (số tuyệt đối
  *               dao động do JIT/GC nhưng thứ tự nhanh–chậm thường ổn định qua nhiều lần chạy).
  *   Hoàn thành khi: viết xong khối OBSERVATION Q5 nêu cấu trúc nào nhanh hơn và liên hệ với Q6.
- *
+ * <p>
  * Q6 [TỰ TRẢ LỜI] CPU cache locality ảnh hưởng thế nào?
  *   Bắt đầu   : làm Q3 và Q5 trước, dùng chính quan sát đó để trả lời.
  *   Tra cứu   : tìm khái niệm "CPU cache line" (thường 64 byte) và "spatial locality"; liên hệ
  *               việc ArrayList lưu liên tiếp trong một mảng, còn Node của LinkedList được cấp
- *               phát rải rác trên heap (mỗi lần "new Node<>()" có thể nằm ở vùng nhớ khác nhau).
+ *               phát rải rác trên heap (mỗi lần "new Node&lt;&gt;()" có thể nằm ở vùng nhớ khác nhau).
  *   Hoàn thành khi: viết xong khối ANSWER Q6, nêu được vì sao duyệt mảng liên tiếp tận dụng
  *               cache tốt hơn "pointer chasing" qua các Node rải rác.
  */
@@ -45,8 +46,8 @@ public class Ex02_MemoryAndLocality {
      * (a) ước lượng thô byte/phần tử qua chênh lệch {@code Runtime.totalMemory() -
      * freeMemory()} trước/sau khi thêm {@code n} phần tử, có {@code System.gc()} trước mỗi
      * lần đo — đây là số đo thô, chỉ dùng để so sánh tương đối, không phải kích thước chính xác;
-     * (b) thời gian duyệt tổng bằng for-each trên {@code int[]}, {@code ArrayList<Integer>} và
-     * {@code LinkedList<Integer>}, đo thô bằng {@code System.nanoTime()} sau một vòng warm-up.
+     * (b) thời gian duyệt tổng bằng for-each trên {@code int[]}, {@code ArrayList&lt;Integer&gt;} và
+     * {@code LinkedList&lt;Integer&gt;}, đo thô bằng {@code System.nanoTime()} sau một vòng warm-up.
      *
      * @param n số phần tử dùng cho cả hai phép đo (nên dùng số nhỏ trong test, số lớn khi chạy main)
      * @return báo cáo dạng văn bản, không rỗng

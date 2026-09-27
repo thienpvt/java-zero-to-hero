@@ -7,11 +7,12 @@ import java.util.Objects;
  * Immutability — Bài 2: Defensive copy và record có sao chép dữ liệu lồng bên trong không
  *
  * Nguồn: 01-java-core-advanced.md, mục 8 (Immutability), câu 3, 5.
- * Cần làm trước: Ex01_FinalIsNotImmutable (biết `final` chỉ khoá biến, không khoá nội dung).
+ * Cần làm trước: Ex01_FinalIsNotImmutable (biết {@code final} chỉ khoá biến, không khoá nội dung).
  * Cách làm: làm lần lượt từng câu; chạy test tương ứng trong Ex02_DefensiveCopyTest bằng
  * nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q3 [CODE] Defensive copy là gì?
  *   Bắt đầu   : đọc class LeakyTeam bên dưới — constructor gán thẳng tham số vào field,
  *               members() trả thẳng field. Đây là lỗi rò rỉ tham chiếu (reference leak).
@@ -26,14 +27,14 @@ import java.util.Objects;
  *               tạo SafeTeam không ảnh hưởng team.members(), nhưng với LeakyTeam thì có
  *               (thử debug so sánh: đặt breakpoint tại dòng members.add trong test, F7
  *               Step Into để thấy field members của LeakyTeam trỏ thẳng vào list nguồn).
- *
+ * <p>
  * Q5 [DỰ ĐOÁN + CODE] Record có tự động đảm bảo deep immutability không?
  *   Bắt đầu   : đọc record Bag bên dưới (không sao chép {@code items}); điền hằng
  *               Q5_RECORD_IS_DEEPLY_IMMUTABLE (thay null).
  *   Kiểm chứng: chạy q05_prediction — test sửa list nguồn sau khi tạo Bag rồi so sánh
  *               bag.items(). Muốn thấy tận mắt: đặt breakpoint ngay trong constructor
  *               ngầm định của record Bag (Ctrl+F12 trên Bag để thấy constructor được
- *               sinh), Debug test, F7 Step Into vào Bag(List<String>).
+ *               sinh), Debug test, F7 Step Into vào Bag(List&lt;String&gt;).
  *   Code      : compact constructor của record Playlist: gán
  *               {@code name = Objects.requireNonNull(name, ...)}; gán
  *               {@code songs = List.copyOf(songs)} — giống hai bước ở Q3, nhưng viết

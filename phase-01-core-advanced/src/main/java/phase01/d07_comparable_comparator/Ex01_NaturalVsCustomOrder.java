@@ -13,8 +13,9 @@ import java.util.Objects;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [CODE] Comparable và Comparator khác nhau thế nào?
- *   Bắt đầu   : đọc class Version bên dưới; Ctrl+B trên "Comparable<Version>" để mở
+ *   Bắt đầu   : đọc class Version bên dưới; Ctrl+B trên "Comparable&lt;Version&gt;" để mở
  *               interface Comparable trong JDK, chú ý chỉ có một method compareTo(T).
  *   Kiểm chứng: viết xong compareTo, Ctrl+Shift+F10 chạy q01_*; nếu đỏ, đặt breakpoint
  *               ở dòng đầu compareTo, Debug test, F8 từng bước xem so major/minor/patch
@@ -24,7 +25,7 @@ import java.util.Objects;
  *   Hoàn thành khi: q01_* xanh; giải thích được vì sao Comparable là "tự nhiên" (Version tự
  *               biết cách so với Version khác, chỉ một cách so duy nhất), khác với Comparator
  *               ở Q2 (áp từ bên ngoài, có thể có nhiều cách so cho cùng một class).
- *
+ * <p>
  * Q3 [DỰ ĐOÁN + CODE] Natural ordering nghĩa là gì?
  *   Bắt đầu   : đọc hằng số Q3_STRING_ORDER_PUTS_1_10_BEFORE_1_2 bên dưới; bỏ comment
  *               dòng ví dụ ngay cạnh, Alt+F8 (Evaluate Expression) gõ
@@ -35,7 +36,7 @@ import java.util.Objects;
  *   Code      : không cần viết thêm — chỉ điền hằng số dự đoán ở trên.
  *   Hoàn thành khi: q03_* xanh; giải thích được vì sao thứ tự natural của String khác
  *               Version.compareTo ở Q1.
- *
+ * <p>
  * Q2 [CODE] Khi nào nên dùng Comparator thay vì Comparable?
  *   Bắt đầu   : đọc record Product bên dưới — Product không implements Comparable vì
  *               không có một cách sắp xếp "tự nhiên" duy nhất (có thể theo giá, theo tên...).

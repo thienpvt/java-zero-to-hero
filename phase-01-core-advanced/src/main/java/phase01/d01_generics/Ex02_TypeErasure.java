@@ -14,48 +14,49 @@ import phase01.support.Compiles;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q5 [DỰ ĐOÁN + CODE] Tại sao không thể viết: `T value = new T();`
+ * <p>
+ * Q5 [DỰ ĐOÁN + CODE] Tại sao không thể viết: {@code T value = new T();}
  *   Bắt đầu   : điền hằng Q5_NEW_T_COMPILES; bỏ comment thân method mẫu ngay dưới hằng,
  *               xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
  *   Kiểm chứng: chạy q05_*; đặt breakpoint trong newInstance(), Debug test, F7 vào
- *               `Class.getDeclaredConstructor()` (Ctrl+B trên tên method) để thấy cơ chế
- *               thay thế cho `new T()`.
- *   Code      : createN gọi factory.get() đúng n lần (n < 0 ném IllegalArgumentException);
+ *               {@code Class.getDeclaredConstructor()} (Ctrl+B trên tên method) để thấy cơ chế
+ *               thay thế cho {@code new T()}.
+ *   Code      : createN gọi factory.get() đúng n lần (n &lt; 0 ném IllegalArgumentException);
  *               newInstance gọi constructor không tham số qua reflection, bọc
  *               ReflectiveOperationException thành IllegalArgumentException (giữ cause).
  *   Hoàn thành khi: các test q05_* xanh; giải thích được vì sao JVM không biết T là gì
- *               lúc chạy nên compiler không cho gọi `new T()` trực tiếp.
- *
+ *               lúc chạy nên compiler không cho gọi {@code new T()} trực tiếp.
+ * <p>
  * Q6 [DỰ ĐOÁN] Type Erasure là gì?
  *   Bắt đầu   : điền hằng Q6_SAME_RUNTIME_CLASS.
- *   Kiểm chứng: chạy q06_prediction; sau đó `Alt+F12` mở Terminal trong IntelliJ, build
- *               (`mvnw.cmd -q -pl phase-01-core-advanced test-compile`) rồi chạy
- *               `javap -c -p target/test-classes/phase01/d01_generics/Ex02_TypeErasureTest.class`,
- *               trong method `q10_prediction()` tìm lệnh `checkcast` lớp `java/lang/String`
- *               ngay sau `invokeinterface java/util/List.get` (ứng với dòng `strings.get(1)`
+ *   Kiểm chứng: chạy q06_prediction; sau đó {@code Alt+F12} mở Terminal trong IntelliJ, build
+ *               ({@code mvnw.cmd -q -pl phase-01-core-advanced test-compile}) rồi chạy
+ *               {@code javap -c -p target/test-classes/phase01/d01_generics/Ex02_TypeErasureTest.class},
+ *               trong method {@code q10_prediction()} tìm lệnh {@code checkcast} lớp {@code java/lang/String}
+ *               ngay sau {@code invokeinterface java/util/List.get} (ứng với dòng {@code strings.get(1)}
  *               trong test) — đó chính là checkcast ẩn do compiler chèn vì type erasure.
  *   Hoàn thành khi: q06_prediction xanh; giải thích được vì sao hai ArrayList với type
  *               argument khác nhau lại có cùng một đối tượng Class lúc runtime.
- *
+ * <p>
  * Q10 [DỰ ĐOÁN + TỰ TRẢ LỜI] Tại sao generic giúp type safety nhưng không hoàn toàn tồn
  *     tại ở runtime?
  *   Bắt đầu   : điền hằng Q10_HEAP_POLLUTION_FAILS_AT (kiểu FailurePoint khai báo bên dưới).
- *   Kiểm chứng: chạy q10_prediction; đặt breakpoint tại `raw.add(42)` và tại
- *               `strings.get(1)`, Debug test, F7 — sau khi đã điền dự đoán, tự xem bước
+ *   Kiểm chứng: chạy q10_prediction; đặt breakpoint tại {@code raw.add(42)} và tại
+ *               {@code strings.get(1)}, Debug test, F7 — sau khi đã điền dự đoán, tự xem bước
  *               nào ném ClassCastException.
  *   Hoàn thành khi: q10_prediction xanh và viết xong khối ANSWER Q10 ở cuối file.
- *
- * Q7 [DỰ ĐOÁN + CODE] Tại sao Java không cho phép: `if (obj instanceof List<String>)`
+ * <p>
+ * Q7 [DỰ ĐOÁN + CODE] Tại sao Java không cho phép: {@code if (obj instanceof List&lt;String&gt;)}
  *   Bắt đầu   : điền hằng Q7_INSTANCEOF_LIST_STRING_COMPILES; bỏ comment 2 dòng mẫu
  *               ngay dưới hằng, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
  *   Kiểm chứng: chạy q07_*; đặt breakpoint trong isListOfStrings, F7 qua từng phần tử.
- *   Code      : isListOfStrings trả true nếu obj là List<?> và mọi phần tử là String
+ *   Code      : isListOfStrings trả true nếu obj là List&lt;?&gt; và mọi phần tử là String
  *               (list rỗng → true; có phần tử null → false; không phải List → false).
- *   Hoàn thành khi: các test q07_* xanh; giải thích được vì `List<String>` không tồn tại
- *               như một kiểu runtime riêng (chỉ còn `List`) nên JVM không kiểm tra được.
- *
- * Q11 [TỰ TRẢ LỜI] Vì sao `List<String>` và `List<Integer>` không phân biệt được bằng
- *     `instanceof` tại runtime?
+ *   Hoàn thành khi: các test q07_* xanh; giải thích được vì {@code List&lt;String&gt;} không tồn tại
+ *               như một kiểu runtime riêng (chỉ còn {@code List}) nên JVM không kiểm tra được.
+ * <p>
+ * Q11 [TỰ TRẢ LỜI] Vì sao {@code List&lt;String&gt;} và {@code List&lt;Integer&gt;} không phân biệt được bằng
+ *     {@code instanceof} tại runtime?
  *   Bắt đầu   : làm Q6 và Q7 trước, liên hệ kết quả javap ở Q6 để trả lời.
  *   Kiểm chứng: Tra cứu — không có test riêng.
  *   Hoàn thành khi: viết xong khối ANSWER Q11 ở cuối file.
@@ -78,7 +79,7 @@ public class Ex02_TypeErasure {
     /**
      * Gọi {@code factory.get()} đúng {@code n} lần và trả về danh sách các kết quả.
      *
-     * @throws IllegalArgumentException nếu {@code n < 0}
+     * @throws IllegalArgumentException nếu {@code n &lt; 0}
      */
     static <T> List<T> createN(Supplier<? extends T> factory, int n) {
         // SOLUTION-BEGIN throw Q5
@@ -124,7 +125,7 @@ public class Ex02_TypeErasure {
     static final Compiles Q7_INSTANCEOF_LIST_STRING_COMPILES = Compiles.NO; // SOLUTION-VALUE
 
     /**
-     * {@code true} nếu {@code obj} là một {@code List<?>} và mọi phần tử của nó là {@code String}.
+     * {@code true} nếu {@code obj} là một {@code List&lt;?&gt;} và mọi phần tử của nó là {@code String}.
      * List rỗng trả về {@code true}; nếu có phần tử {@code null} thì trả về {@code false}.
      */
     static boolean isListOfStrings(Object obj) {

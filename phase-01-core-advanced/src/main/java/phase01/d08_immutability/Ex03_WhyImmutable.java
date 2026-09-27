@@ -11,6 +11,7 @@ package phase01.d08_immutability;
  * Console. Viết câu trả lời vào khối ANSWER/OBSERVATION ở cuối file.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q4 [TỰ TRẢ LỜI] Vì sao immutable object dễ thread-safe?
  *   Bắt đầu   : đọc lại SafeTeam và Playlist ở Ex02_DefensiveCopy — chú ý là sau khi
  *               constructor chạy xong, không có method nào cho phép đổi state nữa.
@@ -18,7 +19,7 @@ package phase01.d08_immutability;
  *               SafeTeam thì có cần đồng bộ hoá (synchronized/lock) không? Vì sao?".
  *   Hoàn thành khi: viết xong khối ANSWER Q4 ở cuối file, có nêu rõ lý do liên quan đến
  *               việc không tồn tại "state thay đổi" để hai thread nhìn thấy sai lệch nhau.
- *
+ * <p>
  * Q6 [THÍ NGHIỆM + TỰ TRẢ LỜI] Khi nào immutable object có nhược điểm?
  *   Bắt đầu   : đọc runExperiment(int n) bên dưới — so sánh nối chuỗi bằng {@code +=}
  *               (mỗi lần tạo String mới, immutable) với {@code StringBuilder} (mutable,
