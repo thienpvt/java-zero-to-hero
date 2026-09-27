@@ -14,13 +14,14 @@ import java.util.function.Predicate;
  * cạnh tên test (Ctrl+Shift+F10); sau đó viết khối ANSWER Q4 ở cuối file.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q4 [CODE + TỰ TRẢ LỜI] Khi nào LinkedList thực sự có lợi?
  *   Bắt đầu   : cài đặt insertAfterEach(List, Predicate, String) bằng java.util.ListIterator
  *               — một lượt duyệt, gọi ListIterator.add ngay sau khi next() vừa trả phần tử khớp.
  *   Kiểm chứng: Ctrl+B/Ctrl+Click vào ListIterator.add để đọc Javadoc (Ctrl+Q) về vị trí phần
  *               tử mới so với con trỏ next()/previous(); Debug một test q04_* với breakpoint
  *               trong vòng while, dùng F8 Step Over để xem list thay đổi qua từng bước.
- *   Code      : insertAfterEach(List<String> list, Predicate<String> match, String toInsert) —
+ *   Code      : insertAfterEach(List&lt;String&gt; list, Predicate&lt;String&gt; match, String toInsert) —
  *               dùng list.listIterator(); với mỗi phần tử khớp match, gọi it.add(toInsert) ngay
  *               sau lời gọi it.next() vừa trả phần tử đó; không được xét lại phần tử mới chèn
  *               (kể cả khi toInsert cũng khớp match).

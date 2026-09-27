@@ -21,7 +21,8 @@ import java.util.Set;
  * làm từng test một, đọc thông báo lỗi để biết còn thiếu trường hợp nào.
  *
  * ─────────────────────────────────────────────────────────────────────
- * B2 [CODE] Parse bằng `Files.newBufferedReader()` và `try-with-resources`; ghi nhận dòng lỗi
+ * <p>
+ * B2 [CODE] Parse bằng {@code Files.newBufferedReader()} và {@code try-with-resources}; ghi nhận dòng lỗi
  *     có số dòng mà không nuốt exception I/O.
  *   Bắt đầu   : mở CsvOrderParserTest, đọc test đọc file mẫu
  *               (orders-sample.csv) trước để biết hình dạng input/output mong đợi.
@@ -41,8 +42,8 @@ import java.util.Set;
  *               trong try-with-resources.
  *   Hoàn thành khi: mọi test trong CsvOrderParserTest xanh; giải thích được vì sao dùng
  *               try-with-resources (đóng {@code BufferedReader} kể cả khi có exception).
- *
- * B3 [CODE] Chọn `Map`/`Set` phù hợp để phát hiện ID trùng; giải thích `equals`/`hashCode` của key.
+ * <p>
+ * B3 [CODE] Chọn {@code Map}/{@code Set} phù hợp để phát hiện ID trùng; giải thích {@code equals}/{@code hashCode} của key.
  *   Bắt đầu   : trong {@code parse(...)}, bạn sẽ khai báo một tập hợp để nhớ các id đã chấp nhận
  *               trước khi quyết định một dòng sau có trùng id hay không.
  *   Kiểm chứng: chạy test có id trùng (o1 xuất hiện lại), đặt breakpoint ngay lệnh thêm id vào
@@ -74,7 +75,7 @@ public final class CsvOrderParser {
     /**
      * Đọc file CSV UTF-8 {@code file} và trả về các order hợp lệ cùng danh sách lỗi.
      *
-     * <p>Quy tắc: dòng 1 phải đúng {@link #HEADER} (sai → 1 lỗi ở dòng 1, dừng luôn, không
+     * &lt;&lt;&lt;TAG0&gt;&gt;&gt;Quy tắc: dòng 1 phải đúng {@link #HEADER} (sai → 1 lỗi ở dòng 1, dừng luôn, không
      * order nào); dòng trống bị bỏ qua; mỗi dòng dữ liệu phải tách ra đúng 5 trường và parse
      * thành công {@code Instant}, {@code BigDecimal}, {@code Order.Status} (sai bất kỳ phần
      * nào → 1 {@link LineError} ở đúng số dòng đó, rồi đọc tiếp); id trùng với một order đã

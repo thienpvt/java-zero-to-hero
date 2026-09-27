@@ -18,6 +18,7 @@ import java.util.Objects;
  * Cách làm: cài {@code summarize}, chạy Ex02_StockReportTest.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [CODE + TỰ TRẢ LỜI] Vì sao nên chỉ rõ charset khi đọc/ghi file văn bản?
  *   Bắt đầu   : cài {@code summarize} với {@code StandardCharsets.UTF_8}, rồi viết ANSWER Q1.
  *   Kiểm chứng: chạy q01_sumsVietnameseCodes. Mở file báo cáo trong test bằng
@@ -25,11 +26,11 @@ import java.util.Objects;
  *               {@code Files.newBufferedReader}.
  *   Code      : đọc {@code productCode,quantity}, bỏ dòng trống, cộng số lượng (mã trùng thì cộng dồn).
  *               File không tồn tại → {@code NoSuchFileException}. Dòng không đúng hai field, mã trống,
- *               số lượng không phải int hoặc âm → {@code IllegalArgumentException} có chữ {@code dòng <n>}
+ *               số lượng không phải int hoặc âm → {@code IllegalArgumentException} có chữ {@code dòng &lt;n&gt;}
  *               (số dòng vật lý, kể cả dòng trống đã bỏ qua). Ghi báo cáo chỉ khi đọc hết:
- *               mỗi mã một dòng {@code code=qty} theo lần gặp, rồi {@code total=<n>}, ngăn bởi {@code \n}.
+ *               mỗi mã một dòng {@code code=qty} theo lần gặp, rồi {@code total=&lt;n&gt;}, ngăn bởi {@code \n}.
  *   Hoàn thành khi: q01_* xanh; ANSWER Q1 nói charset mặc định của máy có thể khác UTF-8.
- *
+ * <p>
  * Q2 [TỰ TRẢ LỜI] File rất lớn có nên luôn dùng {@code Files.readAllLines()} không?
  *   Bắt đầu   : viết ANSWER Q2. Phần code của Q1 đọc từng dòng, không gọi {@code readAllLines}.
  *   Tra cứu   : Ctrl+Q trên {@code Files.readAllLines} và trên {@code Files.newBufferedReader}.

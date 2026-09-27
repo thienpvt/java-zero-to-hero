@@ -14,34 +14,35 @@ import java.time.ZoneId;
  * cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q1 [DỰ ĐOÁN] `LocalDateTime` có timezone không?
+ * <p>
+ * Q1 [DỰ ĐOÁN] {@code LocalDateTime} có timezone không?
  *   Bắt đầu   : điền hằng số Q1_SAME_LOCAL_DATETIME_SAME_INSTANT_IN_TWO_ZONES (thay null); tạo
- *               `LocalDateTime.of(2026, 1, 1, 9, 0)`, gắn `atZone(ZoneId.of("Asia/Ho_Chi_Minh"))`
- *               và `atZone(ZoneId.of("Europe/London"))`, so `toInstant()` của hai kết quả.
- *   Kiểm chứng: Alt+F8 (Evaluate Expression) trên hai `toInstant()` khi debug test q01_prediction,
- *               hoặc Ctrl+N → `LocalDateTime` → Ctrl+Q để đọc Javadoc mô tả nó "does not store
+ *               {@code LocalDateTime.of(2026, 1, 1, 9, 0)}, gắn {@code atZone(ZoneId.of("Asia/Ho_Chi_Minh"))}
+ *               và {@code atZone(ZoneId.of("Europe/London"))}, so {@code toInstant()} của hai kết quả.
+ *   Kiểm chứng: Alt+F8 (Evaluate Expression) trên hai {@code toInstant()} khi debug test q01_prediction,
+ *               hoặc Ctrl+N → {@code LocalDateTime} → Ctrl+Q để đọc Javadoc mô tả nó "does not store
  *               or represent a time-zone".
- *   Code      : cài đặt `toInstant(LocalDateTime, ZoneId)` và `localDateOf(Instant, ZoneId)`
- *               bằng `atZone`/`toInstant`/`toLocalDate`.
- *   Hoàn thành khi: các test q01_* xanh; giải thích được vì sao cùng một `LocalDateTime` lại ra
- *               hai `Instant` khác nhau tuỳ múi giờ gắn vào.
- *
- * Q3 [DỰ ĐOÁN] `Instant` và `ZonedDateTime` khác nhau thế nào?
+ *   Code      : cài đặt {@code toInstant(LocalDateTime, ZoneId)} và {@code localDateOf(Instant, ZoneId)}
+ *               bằng {@code atZone}/{@code toInstant}/{@code toLocalDate}.
+ *   Hoàn thành khi: các test q01_* xanh; giải thích được vì sao cùng một {@code LocalDateTime} lại ra
+ *               hai {@code Instant} khác nhau tuỳ múi giờ gắn vào.
+ * <p>
+ * Q3 [DỰ ĐOÁN] {@code Instant} và {@code ZonedDateTime} khác nhau thế nào?
  *   Bắt đầu   : điền Q3_ZONED_EQUALS, Q3_ZONED_IS_EQUAL; tạo
- *               `Instant.parse("2026-01-01T02:00:00Z")`, gắn `atZone(ZoneId.of("Asia/Ho_Chi_Minh"))`
- *               và `atZone(ZoneId.of("UTC"))`, so `equals()` rồi `isEqual()` giữa hai kết quả.
- *   Kiểm chứng: F7 Step Into vào `ZonedDateTime.equals` (Ctrl+N → ZonedDateTime → Ctrl+F12 →
- *               equals) để thấy nó so cả zone lẫn instant, còn `isEqual` chỉ so mốc thời gian.
- *   Hoàn thành khi: q03_prediction xanh; giải thích được vì sao hai `ZonedDateTime` cùng một
- *               thời điểm tuyệt đối nhưng khác múi giờ hiển thị lại có `equals` == false.
- *
- * Q2 [TỰ TRẢ LỜI] Khi lưu timestamp vào database nên cân nhắc `Instant` vì sao?
- *   Bắt đầu   : làm Q1 và Q3 trước, quan sát lại vì sao `LocalDateTime` không xác định duy nhất
+ *               {@code Instant.parse("2026-01-01T02:00:00Z")}, gắn {@code atZone(ZoneId.of("Asia/Ho_Chi_Minh"))}
+ *               và {@code atZone(ZoneId.of("UTC"))}, so {@code equals()} rồi {@code isEqual()} giữa hai kết quả.
+ *   Kiểm chứng: F7 Step Into vào {@code ZonedDateTime.equals} (Ctrl+N → ZonedDateTime → Ctrl+F12 →
+ *               equals) để thấy nó so cả zone lẫn instant, còn {@code isEqual} chỉ so mốc thời gian.
+ *   Hoàn thành khi: q03_prediction xanh; giải thích được vì sao hai {@code ZonedDateTime} cùng một
+ *               thời điểm tuyệt đối nhưng khác múi giờ hiển thị lại có {@code equals} == false.
+ * <p>
+ * Q2 [TỰ TRẢ LỜI] Khi lưu timestamp vào database nên cân nhắc {@code Instant} vì sao?
+ *   Bắt đầu   : làm Q1 và Q3 trước, quan sát lại vì sao {@code LocalDateTime} không xác định duy nhất
  *               một thời điểm tuyệt đối trên trục thời gian.
- *   Tra cứu   : Ctrl+N → `Instant` → Ctrl+Q, đọc đoạn Javadoc mô tả nó là "instantaneous point
+ *   Tra cứu   : Ctrl+N → {@code Instant} → Ctrl+Q, đọc đoạn Javadoc mô tả nó là "instantaneous point
  *               on the time-line", dùng làm mốc tuyệt đối, không phụ thuộc múi giờ đọc dữ liệu.
- *   Hoàn thành khi: viết xong khối ANSWER Q2, có nêu ít nhất một rủi ro khi lưu `LocalDateTime`
- *               (không kèm zone) thay vì `Instant`.
+ *   Hoàn thành khi: viết xong khối ANSWER Q2, có nêu ít nhất một rủi ro khi lưu {@code LocalDateTime}
+ *               (không kèm zone) thay vì {@code Instant}.
  */
 public class Ex01_TimeTypes {
 

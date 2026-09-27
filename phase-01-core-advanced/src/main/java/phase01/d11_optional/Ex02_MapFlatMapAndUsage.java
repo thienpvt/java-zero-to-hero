@@ -13,18 +13,19 @@ import phase01.support.Compiles;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q6 [DỰ ĐOÁN + CODE] `map()` và `flatMap()` trên Optional khác nhau thế nào?
+ * <p>
+ * Q6 [DỰ ĐOÁN + CODE] {@code map()} và {@code flatMap()} trên Optional khác nhau thế nào?
  *   Bắt đầu   : đọc addressOpt() và legacyCityUpper() bên dưới, điền hằng số Q6_* (thay null).
  *   Kiểm chứng: chạy q06_prediction; nếu sai, Ctrl+N → gõ Optional → Enter → Ctrl+F12 →
- *               so sánh chữ ký {@code <U> Optional<U> map(Function<? super T,? extends U>)}
- *               với {@code <U> Optional<U> flatMap(Function<? super T,? extends Optional<? extends U>>)}.
+ *               so sánh chữ ký {@code &lt;U&gt; Optional&lt;U&gt; map(Function&lt;? super T,? extends U&gt;)}
+ *               với {@code &lt;U&gt; Optional&lt;U&gt; flatMap(Function&lt;? super T,? extends Optional&lt;? extends U&gt;&gt;)}.
  *   Code      : cityUpper(Customer), zipOf(Optional&lt;Customer&gt;).
  *   Hoàn thành khi: mọi test q06_* xanh; giải thích được vì sao map(addressOpt) tạo ra
  *               Optional&lt;Optional&lt;Address&gt;&gt; (phải gọi thêm get()/flatMap để bóc lớp
  *               ngoài) còn flatMap(addressOpt) làm phẳng ngay thành Optional&lt;Address&gt;.
- *
+ * <p>
  * Q5 [DỰ ĐOÁN] Optional có thực sự loại bỏ NullPointerException không?
- *   Bắt đầu   : bỏ comment dòng {@code Optional<String> o = null;} ngay trên hằng số Q5_*
+ *   Bắt đầu   : bỏ comment dòng {@code Optional&lt;String&gt; o = null;} ngay trên hằng số Q5_*
  *               bên dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán;
  *               điền 2 hằng số Q5_*.
  *   Kiểm chứng: chạy q05_prediction; sau khi đã điền dự đoán, Debug q05_prediction (F7
@@ -34,7 +35,7 @@ import phase01.support.Compiles;
  *   Hoàn thành khi: q05_prediction xanh; giải thích được Optional chỉ tránh NPE khi API
  *               *trả về* Optional được unwrap đúng cách (map/flatMap/orElseGet...) — biến
  *               kiểu Optional bản thân nó vẫn có thể là null (Optional không phải "NPE-proof").
- *
+ * <p>
  * Q4 [TỰ TRẢ LỜI] Optional có nên dùng làm method argument không?
  *   Bắt đầu   : làm Q5 và Q6 trước rồi mới trả lời câu này.
  *   Tra cứu   : Ctrl+N → gõ Optional → Enter → Ctrl+Q xem đoạn "API Note" đầu Javadoc class

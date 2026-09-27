@@ -16,8 +16,9 @@ import java.util.stream.Stream;
  * test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q3 [DỰ ĐOÁN + CODE] Vì sao `Files.readString()` không phù hợp với file nhiều GB?
- *   Bắt đầu   : gõ `Files.readString(` ở đâu đó, đặt con trỏ lên tên method rồi Ctrl+Q để xem Javadoc,
+ * <p>
+ * Q3 [DỰ ĐOÁN + CODE] Vì sao {@code Files.readString()} không phù hợp với file nhiều GB?
+ *   Bắt đầu   : gõ {@code Files.readString(} ở đâu đó, đặt con trỏ lên tên method rồi Ctrl+Q để xem Javadoc,
  *               tự kết luận method này đọc file thế nào; điền Q3_READSTRING_LOADS_WHOLE_FILE (thay null)
  *               sau khi đã đọc.
  *   Kiểm chứng: chạy q03_readStringLoadsWholeFilePrediction (đây là hằng số cố định lấy từ Javadoc
@@ -27,8 +28,8 @@ import java.util.stream.Stream;
  *               một String, đếm số dòng còn nội dung sau khi trim.
  *   Hoàn thành khi: mọi test q03_* xanh; giải thích được sự khác nhau về bộ nhớ giữa readString (tải
  *               toàn bộ file thành 1 String) và Files.lines (chỉ giữ một vùng đệm nhỏ, xử lý từng dòng).
- *
- * Q4 [CODE] Khi nào nên chuyển một `IOException` thành lỗi ở tầng ứng dụng?
+ * <p>
+ * Q4 [CODE] Khi nào nên chuyển một {@code IOException} thành lỗi ở tầng ứng dụng?
  *   Bắt đầu   : đọc class ConfigException và method swallowingLoad (bản xấu, không sửa) bên dưới;
  *               cài đặt readConfigValue(Path, String) dùng Files.readAllLines(Path, Charset).
  *   Kiểm chứng: đặt breakpoint ở đầu method, Debug q04_readConfigValueMissingFileThrowsWithCause,
@@ -39,8 +40,8 @@ import java.util.stream.Stream;
  *               file, cause); nếu không thấy key → ném ConfigException("Thiếu khóa: " + key) (không cause).
  *   Hoàn thành khi: mọi test q04_* xanh; giải thích được vì sao phải giữ nguyên cause khi bọc exception
  *               (Ctrl+Click vào constructor RuntimeException(String, Throwable) để xem hợp đồng).
- *
- * Q5 [TỰ TRẢ LỜI] Vì sao `catch (Exception e) {}` khiến việc vận hành khó khăn?
+ * <p>
+ * Q5 [TỰ TRẢ LỜI] Vì sao {@code catch (Exception e) {}} khiến việc vận hành khó khăn?
  *   Bắt đầu   : đọc swallowingLoad(Path) bên dưới — bản "xấu" nuốt mọi Exception rồi trả null.
  *   Tra cứu   : so sánh với readConfigValue ở Q4 (giữ cause, phân loại rõ từng loại lỗi); nghĩ xem khi
  *               swallowingLoad trả null, người vận hành hệ thống biết được gì về nguyên nhân thật không.

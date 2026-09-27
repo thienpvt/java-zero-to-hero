@@ -13,11 +13,12 @@ import java.util.Objects;
  * mục tiêu là hiểu lựa chọn kiểu dữ liệu trước khi sang {@code CsvOrderParser} (B2).
  *
  * ─────────────────────────────────────────────────────────────────────
- * B1 [TỰ TRẢ LỜI] Dùng `record` cho dữ liệu đầu vào; phân biệt timestamp tuyệt đối và ngày theo
+ * <p>
+ * B1 [TỰ TRẢ LỜI] Dùng {@code record} cho dữ liệu đầu vào; phân biệt timestamp tuyệt đối và ngày theo
  *     múi giờ của báo cáo.
  *   Bắt đầu   : mở record {@code Order} và enum {@code Status} bên dưới (Ctrl+N → Order);
  *               toàn bộ đã cho sẵn, không cần sửa gì ở bước này.
- *   Kiểm chứng: đặt breakpoint ngay dòng {@code amount.signum() < 0} trong compact
+ *   Kiểm chứng: đặt breakpoint ngay dòng {@code amount.signum() &lt; 0} trong compact
  *               constructor, chạy {@code CsvOrderParserTest} bằng Debug (Shift+F9) để
  *               xem giá trị các field khi một dòng CSV được parse thành {@code Order};
  *               dùng F7 (Step Into) vào {@code Instant.parse(...)} ở CsvOrderParser để

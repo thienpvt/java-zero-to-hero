@@ -8,6 +8,7 @@ package phase00.d08_exceptions;
  * Cách làm: cài {@code parseQuantity}, chạy Ex02_ParseQuantityTest.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [TỰ TRẢ LỜI + CODE] {@code NumberFormatException} có thể xảy ra khi nào? Nên bắt ở đâu trong bài nhập liệu?
  *   Bắt đầu   : cài {@code parseQuantity}, rồi viết ANSWER Q1.
  *   Kiểm chứng: Debug q01_parsesTrimmedNumber với {@code " 4 "} và q01_rejectsBlankAndInvalid với {@code "12a"}.

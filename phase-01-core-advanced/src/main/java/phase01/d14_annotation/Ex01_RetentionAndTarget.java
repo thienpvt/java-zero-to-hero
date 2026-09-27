@@ -22,6 +22,7 @@ import phase01.support.Compiles;
  * cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [DỰ ĐOÁN] Annotation bản thân nó có tự thực thi logic không?
  *   Bắt đầu   : đọc method greet(String) trong Annotated bên dưới; nó chỉ trả "Hi " + name,
  *               không có dòng nào đọc annotation @LogCalls.
@@ -32,26 +33,26 @@ import phase01.support.Compiles;
  *   Hoàn thành khi: q01_prediction xanh; giải thích được annotation chỉ là metadata — cần một
  *               "processor" (reflection, annotation processor, bytecode weaving) đọc và diễn giải
  *               nó thì mới sinh hành vi, tự thân annotation không chạy gì cả.
- *
- * Q2 [DỰ ĐOÁN] `RetentionPolicy.RUNTIME` có ý nghĩa gì?
+ * <p>
+ * Q2 [DỰ ĐOÁN] {@code RetentionPolicy.RUNTIME} có ý nghĩa gì?
  *   Bắt đầu   : điền Q2_RUNTIME_NOTE_VISIBLE (thay null) trước khi chạy test.
  *   Kiểm chứng: chạy q02_prediction; trong lúc debug, Alt+F8 (Evaluate Expression) và gõ
  *               Annotated.class.isAnnotationPresent(RuntimeNote.class), sau khi đã điền dự
  *               đoán, tự đọc giá trị boolean.
  *   Code      : không.
  *   Hoàn thành khi: q02_prediction xanh; giải thích được RUNTIME giữ annotation tới giai đoạn nào.
- *
+ * <p>
  * Q3 [DỰ ĐOÁN] SOURCE và RUNTIME khác nhau thế nào?
  *   Bắt đầu   : điền Q3_SOURCE_NOTE_VISIBLE và Q3_CLASS_NOTE_VISIBLE.
  *   Kiểm chứng: chạy q03_prediction; sau đó mở Terminal (Alt+F12), build package
- *               (`.\mvnw.cmd -q -pl phase-01-core-advanced compile`) rồi chạy
- *               `javap -v -p phase-01-core-advanced\target\classes\phase01\d14_annotation\Ex01_RetentionAndTarget$Annotated.class`
- *               và tìm hai khối `RuntimeVisibleAnnotations` / `RuntimeInvisibleAnnotations`.
+ *               ({@code .\mvnw.cmd -q -pl phase-01-core-advanced compile}) rồi chạy
+ *               {@code javap -v -p phase-01-core-advanced\target\classes\phase01\d14_annotation\Ex01_RetentionAndTarget$Annotated.class}
+ *               và tìm hai khối {@code RuntimeVisibleAnnotations} / {@code RuntimeInvisibleAnnotations}.
  *   Code      : không.
  *   Hoàn thành khi: q03_prediction xanh; đọc được output javap và giải thích được SOURCE,
  *               CLASS và RUNTIME mỗi cái còn lại ở đâu (.class và/hoặc runtime).
- *
- * Q4 [DỰ ĐOÁN + CODE] `@Target` dùng để làm gì?
+ * <p>
+ * Q4 [DỰ ĐOÁN + CODE] {@code @Target} dùng để làm gì?
  *   Bắt đầu   : điền Q4_FIELD_ONLY_ON_METHOD_COMPILES; bỏ comment đoạn mẫu ngay cạnh hằng số,
  *               xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán — để file biên dịch được.
  *   Kiểm chứng: chạy q04_prediction và q04_targetsOf; Ctrl+B (hoặc Ctrl+Click) trên Target trong

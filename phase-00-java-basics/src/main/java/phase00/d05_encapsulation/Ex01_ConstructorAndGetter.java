@@ -14,19 +14,20 @@ import phase00.support.Compiles;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [DỰ ĐOÁN] Constructor có kiểu trả về không? Nếu không khai báo constructor thì điều gì được tạo?
  *   Bắt đầu   : đọc {@code NoCtor} và {@code OnlyArg}. Điền ba hằng Q1_*. Với
  *               Q1_DEFAULT_CTOR_AFTER_CUSTOM, bỏ comment {@code new OnlyArg()} trong test, xem lỗi đỏ, comment lại.
  *   Kiểm chứng: Ctrl+F12 trên {@code OnlyArg} — danh sách constructor không có kiểu trả về.
  *               Chạy q01_prediction.
  *   Hoàn thành khi: q01_prediction xanh; nói được constructor mặc định chỉ xuất hiện khi mình không khai báo constructor nào.
- *
+ * <p>
  * Q2 [DỰ ĐOÁN] {@code static} method có truy cập trực tiếp instance field không? Vì sao?
  *   Bắt đầu   : đọc comment trong {@code Box}. Điền Q2_STATIC_READS_INSTANCE_FIELD.
  *               Bỏ comment method {@code read} để xem lỗi đỏ, rồi comment lại.
  *   Kiểm chứng: đọc thông báo IDE trên dòng {@code return value}. Static không gắn với một instance.
  *   Hoàn thành khi: q02_prediction xanh.
- *
+ * <p>
  * Q4 [DỰ ĐOÁN + CODE] Một getter trả về trực tiếp {@code List} nội bộ có thể gây lỗi gì?
  *   Bắt đầu   : đọc {@code LeakyBag} (cho sẵn), điền Q4_LEAKY_GETTER_SEES_CALLER_ADD, rồi cài {@code Bag.tags}.
  *   Kiểm chứng: Debug q04_leakyGetter, xem {@code size} trước và sau {@code view.add}. Ctrl+Q trên {@code List.copyOf}.

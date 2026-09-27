@@ -28,7 +28,7 @@ Có thể gặp nhãn ghép, ví dụ `[DỰ ĐOÁN + CODE]`.
 
 ## Quy trình học (5 bước)
 
-1. Chuyển sang nhánh bài tập (khung TODO): `git switch phase01-exercises`, rồi tạo nhánh riêng: `git switch -c my-work`.
+1. Chuyển sang nhánh bài tập (khung TODO, chung cho mọi giai đoạn): `git switch exercises`, rồi tạo nhánh riêng: `git switch -c my-work`.
 2. Mở file bài tập của domain (ví dụ `Ex01_…java` trong package tương ứng), đọc Javadoc từng câu/bước.
 3. Làm theo dòng **Bắt đầu**, triển khai phần **Code** (nếu có).
 4. Chạy test của câu đó bằng nút ▶ cạnh tên test hoặc `Ctrl+Shift+F10`; câu trước xanh mới sang câu sau.
@@ -56,7 +56,7 @@ Có thể gặp nhãn ghép, ví dụ `[DỰ ĐOÁN + CODE]`.
   .\mvnw.cmd -q test
   ```
 
-Trên nhánh **`phase01-exercises`** (bản khung), hầu hết test **đỏ** là trạng thái mong đợi (`UnsupportedOperationException("TODO Qn")`, hằng dự đoán `null`, v.v.). Chỉ test thí nghiệm (tên chứa `experimentRuns`) được phép xanh ngay trên khung. Nhánh **`solutions`** (và nhánh làm việc của biên soạn như `phase01-work`) phải xanh toàn bộ.
+Trên nhánh **`exercises`** (bản khung, gồm mọi giai đoạn), hầu hết test **đỏ** là trạng thái mong đợi (`UnsupportedOperationException("TODO Qn")`, hằng dự đoán `null`, v.v.). Chỉ test thí nghiệm (tên chứa `experimentRuns`) được phép xanh ngay trên khung. Nhánh **`solutions`** (và nhánh làm việc của biên soạn như `phase01-work`) phải xanh toàn bộ.
 
 ## Chạy ReportApp từ dòng lệnh
 
@@ -135,7 +135,8 @@ Kiểm tra skeleton (biên dịch, không còn marker, test đỏ đúng lý do,
 **Nhánh git:**
 
 - `phase01-work`: nhánh người biên soạn. Mã đã giải **có** marker `SOLUTION-*`, kèm `docs/` (nguồn sự thật).
-- `phase01-exercises`: sinh từ `phase01-work` bằng **một** commit chạy `StripSolutions` rồi xóa `docs/superpowers` (plan/spec chứa đáp án).
+- `exercises`: nhánh người học, chung cho mọi giai đoạn (hiện có phase 0 và phase 1). Không xóa nhánh này để sinh lại một giai đoạn.
+- `phase01-exercises`: tên cũ, đã gộp vào `exercises`.
 - `solutions`: `phase01-exercises` cộng **một** commit khôi phục `phase-01-core-advanced/src/main/java` từ `phase01-work`.
 
 Sửa một bài: sửa trên `phase01-work` (giữ marker), chạy test và `verify-skeleton`, rồi tạo lại hai nhánh kia bằng đúng hai bước dưới. Không merge `solutions` vào `phase01-exercises`.

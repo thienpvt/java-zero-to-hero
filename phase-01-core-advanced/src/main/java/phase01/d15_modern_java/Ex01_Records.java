@@ -14,7 +14,8 @@ import phase01.support.Compiles;
  * cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q1 [DỰ ĐOÁN + CODE] `record` khác POJO thông thường ở điểm nào và khi nào vẫn cần class thường?
+ * <p>
+ * Q1 [DỰ ĐOÁN + CODE] {@code record} khác POJO thông thường ở điểm nào và khi nào vẫn cần class thường?
  *   Bắt đầu   : đọc record Point bên dưới; bỏ comment lần lượt hai đoạn mẫu ngay trên
  *               Q1_RECORD_EXTENDS_CLASS_COMPILES và Q1_RECORD_IMPLEMENTS_INTERFACE_COMPILES,
  *               build (Ctrl+F9) để thấy dòng nào đỏ, rồi comment lại và điền hằng số.
@@ -28,8 +29,8 @@ import phase01.support.Compiles;
  *   Hoàn thành khi: các test q01_* xanh; giải thích được record tự sinh những gì
  *               (constructor, accessor, equals/hashCode/toString) từ danh sách component,
  *               và vì sao class thường vẫn cần khi cần kế thừa class khác hoặc field mutable.
- *
- * Q2 [DỰ ĐOÁN + CODE] Một component `List` trong record có tự trở nên immutable không? Bạn sẽ bảo vệ nó thế nào?
+ * <p>
+ * Q2 [DỰ ĐOÁN + CODE] Một component {@code List} trong record có tự trở nên immutable không? Bạn sẽ bảo vệ nó thế nào?
  *   Bắt đầu   : đọc record RawOrder bên dưới, chạy q02_rawOrderLeaksMutationWithoutCopy để
  *               thấy sửa list nguồn sau khi tạo record vẫn lộ ra ngoài, rồi điền
  *               Q2_LIST_COMPONENT_CHANGES_WITHOUT_COPY.

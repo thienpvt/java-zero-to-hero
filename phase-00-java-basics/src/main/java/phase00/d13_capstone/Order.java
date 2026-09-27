@@ -12,6 +12,7 @@ import java.util.Objects;
  * Cách làm: cài constructor và {@code changeStatus}, chạy OrderTest (Ctrl+Shift+F10).
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * B1 [CODE + TỰ TRẢ LỜI] {@code Order} có id, mã khách, ngày tạo, tổng tiền và {@code Status}.
  *     Không cho phép tổng tiền âm.
  *   Bắt đầu   : cài hai khối TODO B1. Getter đã cho sẵn. Không thêm setter.

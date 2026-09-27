@@ -11,6 +11,7 @@ import phase00.support.Compiles;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q2 [DỰ ĐOÁN + TỰ TRẢ LỜI] Khi nào cần {@code import}? Class cùng package có cần import không?
  *   Bắt đầu   : đọc class Adder ngay trong file này (cùng package, không có dòng import
  *               nào trỏ tới nó) và các chỗ dùng {@code String}. Điền hai hằng Q2_*.
@@ -19,7 +20,7 @@ import phase00.support.Compiles;
  *               Ctrl+Click vào tên class cùng package không nhảy qua một câu import.
  *   Hoàn thành khi: q02_prediction xanh; ANSWER Q2 phân biệt được cùng package,
  *               {@code java.lang}, và package khác.
- *
+ * <p>
  * Q3 [DỰ ĐOÁN + CODE] Lỗi compile khác exception lúc chạy như thế nào?
  *   Bắt đầu   : với Q3_WRONG_ARGUMENT_COMPILES, bỏ comment dòng mẫu trong {@code Adder}
  *               để xem lỗi đỏ, rồi comment lại. Điền nốt hai hằng Q3_*. Sau đó cài {@code sum}.

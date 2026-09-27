@@ -11,6 +11,7 @@ import java.util.Map;
  * Cách làm: cài {@code count}, chạy Ex02_StatusCountTest (Ctrl+Shift+F10).
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q4 [TỰ TRẢ LỜI + CODE] Khi nào {@code enum} tốt hơn những chuỗi trạng thái rải rác trong code?
  *   Bắt đầu   : đọc enum {@code Status}, cài {@code count}, rồi viết ANSWER Q4.
  *   Kiểm chứng: Debug q04_countsKnownStatuses, F7 vào {@code Status.valueOf}. Thử truyền {@code "HOLD"}

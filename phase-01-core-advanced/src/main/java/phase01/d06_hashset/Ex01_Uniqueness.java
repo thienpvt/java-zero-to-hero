@@ -18,6 +18,7 @@ import java.util.Set;
  * cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [DỰ ĐOÁN] HashSet phát hiện duplicate như thế nào?
  *   Bắt đầu   : điền 2 hằng số Q1_* bên dưới (thay null) bằng dự đoán của bạn.
  *   Kiểm chứng: chạy q01_prediction; nếu Q1_BACKING_MAP_CLASS sai, Ctrl+N mở HashSet,
@@ -26,17 +27,17 @@ import java.util.Set;
  *   Code      : không.
  *   Hoàn thành khi: q01_prediction xanh và bạn giải thích được vì sao add() trả về
  *               boolean thay vì ném exception khi phần tử đã tồn tại.
- *
+ * <p>
  * Q2 [CODE + THÍ NGHIỆM] HashSet khác ArrayList ở lookup thế nào?
  *   Bắt đầu   : cài đặt duplicates(List) và hasDuplicates(Collection) bên dưới.
  *   Kiểm chứng: chạy các test q02_duplicates... và q02_hasDuplicates...; sau đó chạy
  *               q02_experimentRuns hoặc main() (nút ▶ cạnh main) để tự thấy thời gian
  *               contains() thật trên ArrayList so với HashSet.
- *   Code      : duplicates(List<T>), hasDuplicates(Collection<T>).
+ *   Code      : duplicates(List&lt;T&gt;), hasDuplicates(Collection&lt;T&gt;).
  *   Hoàn thành khi: các test q02_* xanh và bạn đọc xong OBSERVATION Q2, giải thích được
  *               vì sao ArrayList.contains là O(n) (duyệt tuần tự so equals) còn
  *               HashSet.contains gần O(1) (tính hashCode() rồi nhảy thẳng tới bucket).
- *
+ * <p>
  * Q4 [DỰ ĐOÁN + TỰ TRẢ LỜI] Vì sao mutable object trong HashSet nguy hiểm?
  *   Bắt đầu   : đọc class Tag bên dưới (equals/hashCode theo name), điền hằng số
  *               Q4_REMOVE_AFTER_MUTATION_WORKS.
@@ -55,7 +56,7 @@ public class Ex01_Uniqueness {
 
     /**
      * Trả về các phần tử bị trùng trong {@code items}, mỗi phần tử trùng xuất hiện đúng
-     * một lần trong kết quả, theo thứ tự của lần xuất hiện <b>thứ hai</b> trong {@code items}.
+     * một lần trong kết quả, theo thứ tự của lần xuất hiện &lt;b&gt;thứ hai&lt;/b&gt; trong {@code items}.
      *
      * @throws NullPointerException nếu {@code items} là {@code null}
      */

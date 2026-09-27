@@ -9,12 +9,13 @@ package phase00.d02_types;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q3 [DỰ ĐOÁN] Khi cộng vượt quá giới hạn của {@code int}, Java có tự chuyển sang {@code long} không?
  *   Bắt đầu   : điền Q3_OVERFLOW_PROMOTES_TO_LONG và Q3_MAX_INT_PLUS_ONE.
  *   Kiểm chứng: Alt+F8 gõ {@code Integer.MAX_VALUE + 1} và {@code Integer.MAX_VALUE + 1L}.
  *               Ctrl+Q trên {@code Integer.MAX_VALUE} và {@code Integer.MIN_VALUE}.
  *   Hoàn thành khi: q03_prediction xanh; nói được biểu thức {@code int + int} vẫn là {@code int}.
- *
+ * <p>
  * Q4 [DỰ ĐOÁN] {@code final} trên biến tham chiếu có làm object được trỏ tới bất biến không?
  *   Bắt đầu   : đọc class Bucket bên dưới, điền Q4_FINAL_REFERENCE_FREEZES_TARGET.
  *   Kiểm chứng: Debug q04_prediction, breakpoint ở {@code bucket.n = 7}, Alt+F8 xem {@code bucket.n}

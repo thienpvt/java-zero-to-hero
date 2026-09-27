@@ -17,6 +17,7 @@ import phase01.support.Compiles;
  * ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q4 [DỰ ĐOÁN + CODE] Vì sao local variable được lambda capture phải effectively final?
  *   Bắt đầu   : điền 3 hằng số Q4_* bên dưới (thay null) dựa trên 3 đoạn code mẫu comment ngay
  *               cạnh mỗi hằng.
@@ -28,20 +29,20 @@ import phase01.support.Compiles;
  *   Hoàn thành khi: q04_* xanh; giải thích được compiler chỉ chặn *gán lại* biến local được capture
  *               (x = x + 1), không chặn việc đổi state bên trong field tĩnh hoặc phần tử của array
  *               mà biến local đó tham chiếu tới (biến tham chiếu không đổi, chỉ nội dung đổi).
- *
+ * <p>
  * Q5 [CODE + TỰ TRẢ LỜI] Method reference có khác lambda về bản chất không?
  *   Bắt đầu   : cài đặt length(), equalsIgnoreCase(), listFactory() bằng method reference.
  *   Kiểm chứng: build project (Ctrl+F9), mở Terminal (Alt+F12), chạy
  *               javap -c -p target/classes/phase01/d09_lambda/Ex02_CaptureAndMethodRef.class,
  *               so sánh bytecode của length(), equalsIgnoreCase() và listFactory() với một lambda
- *               viết tay như {@code s -> s.length()}: tìm lệnh invokedynamic và method dạng
+ *               viết tay như {@code s -&gt; s.length()}: tìm lệnh invokedynamic và method dạng
  *               lambda$, tự ghi nhận method nào sinh thêm method ẩn — sau khi đã cài đặt.
  *               Đây là kiểm tra tĩnh trên bytecode, không đặt breakpoint.
  *   Code      : length() (String::length), equalsIgnoreCase() (String::equalsIgnoreCase),
  *               listFactory() (ArrayList::new) — mỗi cái một phần TODO Q5.
  *   Hoàn thành khi: q05_* xanh và khối ANSWER Q5 đã viết, nêu được javap cho thấy method reference
  *               và lambda khác nhau thế nào ở bytecode.
- *
+ * <p>
  * Q6 [TỰ TRẢ LỜI] Lambda có phù hợp với logic dài và nhiều side effect không?
  *   Bắt đầu   : đọc lại process() ở Ex01_FunctionalInterfaces và counter() ở trên, tưởng tượng viết
  *               thêm 20–30 dòng side effect (log, I/O, đổi state ngoài) ngay trong một lambda.

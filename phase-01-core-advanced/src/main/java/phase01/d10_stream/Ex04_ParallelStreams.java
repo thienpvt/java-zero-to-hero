@@ -18,14 +18,15 @@ import java.util.stream.LongStream;
  * nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q8 [DỰ ĐOÁN + THÍ NGHIỆM] `parallelStream()` có luôn nhanh hơn không?
+ * <p>
+ * Q8 [DỰ ĐOÁN + THÍ NGHIỆM] {@code parallelStream()} có luôn nhanh hơn không?
  *   Bắt đầu   : điền Q8_PARALLEL_ALWAYS_FASTER sau khi đã chạy main() (thay null).
  *   Kiểm chứng: chạy main(), đọc báo cáo của runExperiment, sau khi đã điền dự đoán, tự so
  *               thời gian bản tuần tự và bản song song trên từng kích thước và từng kiểu
  *               (LongStream so với List đã boxed).
  *   Hoàn thành khi: test q08_* xanh; giải thích được ít nhất một trường hợp cụ thể trong
  *               báo cáo mà bản song song KHÔNG nhanh hơn bản tuần tự.
- *
+ * <p>
  * Q9 [DỰ ĐOÁN] Parallel stream sử dụng thread pool nào?
  *   Bắt đầu   : chạy main() (nút ▶ cạnh main) — các dòng in "Thread: ..." cho thấy tên
  *               thật của những thread thực thi forEach() của một parallel stream; điền
@@ -36,7 +37,7 @@ import java.util.stream.LongStream;
  *   Hoàn thành khi: test q09_* xanh; giải thích được vì sao 2 pipeline parallel stream
  *               khác nhau, chạy ở 2 nơi khác nhau trong CÙNG một JVM, vẫn có thể "giẫm chân"
  *               nhau (vì cùng chia sẻ đúng một pool, cùng một số thread cố định).
- *
+ * <p>
  * Q10 [THÍ NGHIỆM + TỰ TRẢ LỜI] Tại sao blocking I/O thường không phải use case tốt cho
  *     parallel stream?
  *   Bắt đầu   : đọc phần (c) trong runExperiment — 32 tác vụ Thread.sleep(20) (giả lập chờ
@@ -107,18 +108,18 @@ public class Ex04_ParallelStreams {
     /**
      * Cho sẵn: đo thô (mỗi lần đo có 1 vòng warm-up, dùng {@code System.nanoTime()}) 3 kịch
      * bản song song vs tuần tự:
-     * <ul>
-     *   <li>(a) tổng {@code LongStream.rangeClosed(1, count)} tuần tự vs song song, với
-     *       {@code count} nhỏ (100 000) và lớn (50 000 000);</li>
-     *   <li>(b) tổng một {@code List<Integer>} đã boxed (kích thước phụ thuộc {@code n}, tối
-     *       đa 1 000 000) bằng {@code parallelStream()};</li>
-     *   <li>(c) 32 tác vụ "I/O giả" bằng {@code parallelStream()} so với một
-     *       {@code ExecutorService} có 32 thread.</li>
-     * </ul>
+     * &lt;ul&gt;
+     *   &lt;li&gt;(a) tổng {@code LongStream.rangeClosed(1, count)} tuần tự vs song song, với
+     *       {@code count} nhỏ (100 000) và lớn (50 000 000);&lt;/li&gt;
+     *   &lt;li&gt;(b) tổng một {@code List&lt;Integer&gt;} đã boxed (kích thước phụ thuộc {@code n}, tối
+     *       đa 1 000 000) bằng {@code parallelStream()};&lt;/li&gt;
+     *   &lt;li&gt;(c) 32 tác vụ "I/O giả" bằng {@code parallelStream()} so với một
+     *       {@code ExecutorService} có 32 thread.&lt;/li&gt;
+     * &lt;/ul&gt;
      * Trả về báo cáo dạng văn bản. Đo thô kiểu này DỄ SAI (nhiễu do GC, JIT chưa warm-up đủ,
      * tải máy hiện tại...) — Giai đoạn 2 học đo đúng cách bằng JMH.
      *
-     * @throws IllegalArgumentException nếu {@code n < 1}
+     * @throws IllegalArgumentException nếu {@code n &lt; 1}
      */
     static String runExperiment(int n) {
         if (n < 1) {

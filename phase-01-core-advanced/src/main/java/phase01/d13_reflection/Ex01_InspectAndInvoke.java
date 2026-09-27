@@ -17,6 +17,7 @@ import phase01.support.Compiles;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [CODE] Reflection giải quyết vấn đề gì?
  *   Bắt đầu   : đọc class SecretBox bên dưới; cài đặt declaredFieldNames(Class&lt;?&gt;).
  *   Kiểm chứng: Ctrl+N → Class → Ctrl+F12 → getDeclaredFields, Ctrl+Q trên Field để đọc
@@ -29,7 +30,7 @@ import phase01.support.Compiles;
  *               (field/method/constructor) của một Class tại runtime dựa trên chính đối
  *               tượng Class, mà code viết tay gọi thẳng field/method không làm được khi
  *               type cụ thể chỉ biết lúc chạy (ví dụ framework nhận Class từ cấu hình).
- *
+ * <p>
  * Q4 [DỰ ĐOÁN + CODE] Có thể gọi private method bằng reflection không?
  *   Bắt đầu   : cài đặt invokePrivate(...); điền
  *               Q4_SETACCESSIBLE_ON_STRING_VALUE_EXCEPTION (chạy thử đoạn code trong
@@ -52,7 +53,7 @@ import phase01.support.Compiles;
  *               của String bị chặn (exception ghi trong Q4_*), còn field/method private
  *               của class tự viết (không nằm trong module nào hạn chế) thì gọi được bình
  *               thường.
- *
+ * <p>
  * Q5 [DỰ ĐOÁN] Reflection ảnh hưởng compile-time checking ra sao?
  *   Bắt đầu   : điền Q5_TYPO_METHOD_NAME_COMPILES và Q5_TYPO_FAILS_AT_RUNTIME_WITH (thay
  *               null); đọc chú thích ngay dưới hai hằng số.

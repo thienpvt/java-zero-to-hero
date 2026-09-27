@@ -19,7 +19,8 @@ import phase01.support.Complexity;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q13 [DỰ ĐOÁN + THÍ NGHIỆM] `HashMap` có thread-safe không?
+ * <p>
+ * Q13 [DỰ ĐOÁN + THÍ NGHIỆM] {@code HashMap} có thread-safe không?
  *   Bắt đầu   : điền hằng số Q13_HASHMAP_IS_THREAD_SAFE; cài đặt concurrentCounter().
  *   Kiểm chứng: chạy q13_concurrentCounter_fourThreadsMergeToExactTotal (tất định — merge()
  *               của ConcurrentHashMap nguyên tử); sau đó chạy q13_experimentRuns/main để
@@ -29,15 +30,15 @@ import phase01.support.Complexity;
  *   Hoàn thành khi: mọi test q13_* xanh + viết xong khối OBSERVATION Q13 nêu vì sao HashMap
  *               thường không an toàn khi nhiều luồng cùng ghi (mất update thầm lặng hoặc ném
  *               ConcurrentModificationException) trong khi ConcurrentHashMap luôn cho tổng đúng.
- *
- * Q14 [DỰ ĐOÁN] `HashMap` cho phép bao nhiêu null key?
+ * <p>
+ * Q14 [DỰ ĐOÁN] {@code HashMap} cho phép bao nhiêu null key?
  *   Bắt đầu   : viết đoạn code tạm trong Evaluate Expression (Alt+F8) hoặc Scratch file:
  *               put(null, "a") rồi put(null, "b") vào một HashMap; điền 2 hằng số Q14_* đầu.
  *   Kiểm chứng: chạy q14_hashMap_twoNullKeyPuts_prediction; sau đó thử put(null, "x") vào
  *               TreeMap (Ctrl+N mở TreeMap, đọc Javadoc bằng Ctrl+Q) để điền hằng số thứ ba.
  *   Hoàn thành khi: mọi test q14_* xanh.
- *
- * Q15 [DỰ ĐOÁN + CODE] So sánh `HashMap`, `LinkedHashMap`, `TreeMap`.
+ * <p>
+ * Q15 [DỰ ĐOÁN + CODE] So sánh {@code HashMap}, {@code LinkedHashMap}, {@code TreeMap}.
  *   Bắt đầu   : điền 2 hằng số Q15_TREEMAP_GET và Q15_HASHMAP_GUARANTEES_ORDER; cài đặt
  *               wordCountsInFirstSeenOrder, wordCountsSorted, lruCache.
  *   Kiểm chứng: chạy các test q15_*; đặt breakpoint trong LinkedHashMap.afterNodeAccess

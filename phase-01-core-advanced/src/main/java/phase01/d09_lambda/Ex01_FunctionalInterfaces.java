@@ -17,6 +17,7 @@ import phase01.support.Compiles;
  * cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [DỰ ĐOÁN + CODE] Functional Interface là gì?
  *   Bắt đầu   : mở interface Validator ngay bên dưới (Ctrl+N gõ Ex01_FunctionalInterfaces), điền
  *               2 hằng số Q1_* (thay null) dựa trên đoạn interface TwoAbstract mẫu.
@@ -28,16 +29,16 @@ import phase01.support.Compiles;
  *               null → false).
  *   Hoàn thành khi: q01_* xanh; giải thích được @FunctionalInterface cho phép bao nhiêu abstract
  *               method, và default method có bị tính vào số đó không.
- *
- * Q2 [DỰ ĐOÁN + CODE] `Predicate` và `Function` khác nhau thế nào?
+ * <p>
+ * Q2 [DỰ ĐOÁN + CODE] {@code Predicate} và {@code Function} khác nhau thế nào?
  *   Bắt đầu   : Ctrl+N mở Predicate (java.util.function.Predicate), Ctrl+F12 xem method test(T).
  *   Kiểm chứng: chạy q02_prediction; Ctrl+Q trên Predicate rồi trên Function để so Javadoc.
  *   Code      : dùng chung method process() cài ở câu Q3 (phần TODO Q3) — Predicate.test() quyết
  *               định phần tử nào được giữ, Function.apply() biến đổi phần tử đó.
  *   Hoàn thành khi: q02_prediction xanh; giải thích được kiểu trả về của Predicate.test so với
  *               Function.apply, và mỗi cái dùng để làm gì.
- *
- * Q3 [DỰ ĐOÁN + CODE] `Consumer` có return value không?
+ * <p>
+ * Q3 [DỰ ĐOÁN + CODE] {@code Consumer} có return value không?
  *   Bắt đầu   : Ctrl+N mở Consumer, Ctrl+F12 xem method accept(T).
  *   Kiểm chứng: chạy q03_prediction.
  *   Code      : cài đặt process(List&lt;String&gt;, Predicate&lt;String&gt;,

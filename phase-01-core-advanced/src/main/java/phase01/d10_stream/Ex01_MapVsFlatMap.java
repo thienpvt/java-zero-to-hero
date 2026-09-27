@@ -11,9 +11,10 @@ import java.util.List;
  * nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q1 [DỰ ĐOÁN + CODE] `map()` và `flatMap()` khác nhau thế nào?
+ * <p>
+ * Q1 [DỰ ĐOÁN + CODE] {@code map()} và {@code flatMap()} khác nhau thế nào?
  *   Bắt đầu   : trong q01_prediction, chạy thử
- *               Stream.of(List.of(1, 2), List.of(3)).map(l -> l).count() và bản
+ *               Stream.of(List.of(1, 2), List.of(3)).map(l -&gt; l).count() và bản
  *               .flatMap(List::stream).count(); điền 2 hằng số Q1_*.
  *   Kiểm chứng: đặt breakpoint trong lambda của itemCounts/allItemsDistinctSorted, Debug
  *               test tương ứng, dùng F8 để thấy map() sinh ra đúng 1 phần tử kết quả cho

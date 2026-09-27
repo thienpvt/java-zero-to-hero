@@ -12,6 +12,7 @@ import java.util.Objects;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q2 [DỰ ĐOÁN] Hai object cùng hashCode có bắt buộc equals không?
  *   Bắt đầu   : Alt+F8 mở Evaluate Expression, thử "Aa".hashCode(), "BB".hashCode() và
  *               "Aa".equals("BB"); điền hằng sau khi đã tự chạy.
@@ -21,7 +22,7 @@ import java.util.Objects;
  *   Code      : không có; câu này chỉ dự đoán dựa trên việc chạy code thật trong test.
  *   Hoàn thành khi: q02_* xanh; giải thích được đây là hash collision bình thường,
  *               không phải lỗi của hashCode().
- *
+ * <p>
  * Q3 [DỰ ĐOÁN] Hai object equals có bắt buộc cùng hashCode không?
  *   Bắt đầu   : Ctrl+N → gõ "Object" → mở class, Ctrl+F12 tìm method hashCode(),
  *               Ctrl+Q đọc Javadoc về quan hệ giữa equals và hashCode, rồi mới điền hằng.
@@ -30,7 +31,7 @@ import java.util.Objects;
  *   Code      : không có; câu này chỉ dự đoán dựa trên việc chạy code thật trong test.
  *   Hoàn thành khi: q03_* xanh; giải thích được vì sao đây là yêu cầu bắt buộc
  *               (nếu không, HashMap/HashSet sẽ tìm hai object "bằng nhau" ở hai bucket khác nhau).
- *
+ * <p>
  * Q4 [DỰ ĐOÁN + CODE] Nếu chỉ override equals mà không override hashCode thì bug xuất hiện ở đâu?
  *   Bắt đầu   : đọc class EqualsOnlyUser bên dưới — có equals() theo email nhưng KHÔNG
  *               override hashCode() (nên dùng hashCode() mặc định của Object, dựa trên

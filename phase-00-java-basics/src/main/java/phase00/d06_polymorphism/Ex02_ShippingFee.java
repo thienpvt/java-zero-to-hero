@@ -12,11 +12,12 @@ import java.util.Objects;
  * Cách làm: cài {@code fee} của hai class và {@code quote}; chạy Ex02_ShippingFeeTest.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q4 [TỰ TRẢ LỜI + CODE] Khi nào interface phù hợp hơn abstract class?
  *   Bắt đầu   : cài ba method đánh dấu TODO Q4. {@code quote} chỉ được gọi {@code policy.fee}.
  *   Kiểm chứng: chạy q04_quotesWithoutInstanceof. Nếu test implementation thứ ba fail, đặt breakpoint
  *               trong {@code quote} và xem có nhánh {@code instanceof} hay không.
- *   Code      : {@code FixedFee.fee} trả đúng số đã truyền khi {@code grams >= 0} và phí không âm;
+ *   Code      : {@code FixedFee.fee} trả đúng số đã truyền khi {@code grams &gt;= 0} và phí không âm;
  *               ngược lại {@code IllegalArgumentException}. {@code WeightFee.fee} tính
  *               {@code perKg * grams / 1000}, chia scale 0, {@code RoundingMode.HALF_UP}, cùng quy tắc âm.
  *               {@code quote} không kiểm tra tên class.

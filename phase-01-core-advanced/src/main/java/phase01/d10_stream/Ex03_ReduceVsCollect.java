@@ -16,7 +16,8 @@ import java.util.stream.IntStream;
  * nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q5 [CODE] `reduce()` dùng để làm gì?
+ * <p>
+ * Q5 [CODE] {@code reduce()} dùng để làm gì?
  *   Bắt đầu   : cài đặt sumWithReduce bằng Stream.reduce(identity, accumulator) và
  *               maxWithReduce bằng Stream.reduce(accumulator) (KHÔNG identity).
  *   Kiểm chứng: chạy q05_*; Ctrl+N → Stream → Ctrl+F12 → tìm 2 overload
@@ -29,8 +30,8 @@ import java.util.stream.IntStream;
  *               một T hợp lệ (kể cả stream rỗng, trả identity) còn bản không identity phải
  *               trả Optional&lt;T&gt; vì không có giá trị "trung lập" hợp lý cho mọi phép
  *               toán (ví dụ max của tập rỗng là gì?).
- *
- * Q6 [DỰ ĐOÁN + CODE] `collect()` và `reduce()` khác nhau thế nào?
+ * <p>
+ * Q6 [DỰ ĐOÁN + CODE] {@code collect()} và {@code reduce()} khác nhau thế nào?
  *   Bắt đầu   : trong q06_prediction, thử add() vào kết quả của Stream.of(1).toList() và
  *               vào kết quả của Stream.of(1).collect(Collectors.toList()); điền 2 hằng số
  *               Q6_*.
@@ -45,7 +46,7 @@ import java.util.stream.IntStream;
  *               cách gộp kết quả từ nhiều phần (combiner) nên hợp cho kết quả có cấu trúc
  *               phức tạp (Map, String nối), còn reduce() hợp cho phép toán kết hợp đơn giản
  *               trả về một giá trị cùng kiểu với phần tử stream.
- *
+ * <p>
  * Q7 [DỰ ĐOÁN + CODE + THÍ NGHIỆM] Side effect trong Stream có vấn đề gì?
  *   Bắt đầu   : đọc squaresBuggy (cho sẵn) bên dưới — nó add() vào một ArrayList thường
  *               (không đồng bộ) từ nhiều thread của parallelStream().forEach(); điền

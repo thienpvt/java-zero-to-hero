@@ -9,6 +9,7 @@ package phase00.d03_flow;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [TỰ TRẢ LỜI + CODE] Khi nào dùng {@code switch} thay cho chuỗi {@code if/else}?
  *   Bắt đầu   : cài {@code gradeIf} và {@code gradeSwitch} cùng một thang điểm, rồi viết ANSWER Q1.
  *   Kiểm chứng: chạy q01_grades. Đặt breakpoint ở nhánh đầu của {@code gradeIf}, Debug với điểm 49 rồi 50.
@@ -16,7 +17,7 @@ package phase00.d03_flow;
  *               {@code IllegalArgumentException}. 0..49 → {@code "Không đạt"}; 50..79 → {@code "Đạt"};
  *               80..100 → {@code "Giỏi"}. Bản switch kiểm tra khoảng trước, rồi {@code switch} trên band.
  *   Hoàn thành khi: q01_grades xanh; ANSWER Q1 nói bản nào dễ đọc hơn với khoảng điểm và khi nào switch thắng.
- *
+ * <p>
  * Q4 [DỰ ĐOÁN] Overload khác override ở điểm nào?
  *   Bắt đầu   : đọc Printer và LoudPrinter. Điền hai hằng theo đúng kịch bản ghi trên hằng, chưa chạy test.
  *   Kiểm chứng: Debug q04_prediction. F7 Step Into từ lời gọi {@code format} để thấy method nào được chọn.

@@ -9,6 +9,7 @@ package phase00.d01_jdk_program;
  * bằng nút ▶ cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
+ * <p>
  * Q1 [DỰ ĐOÁN + TỰ TRẢ LỜI] JDK khác JVM ở đâu? Lệnh {@code javac} và {@code java} làm gì?
  *   Bắt đầu   : điền hai hằng Q1_* (thay null), rồi viết khối ANSWER Q1 ở cuối file.
  *   Kiểm chứng: chạy q01_prediction. Muốn tự thấy compiler: Terminal (Alt+F12) gõ

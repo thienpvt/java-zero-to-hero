@@ -11,20 +11,21 @@ import java.util.List;
  * cạnh tên test (Ctrl+Shift+F10). Câu trước xanh mới sang câu sau.
  *
  * ─────────────────────────────────────────────────────────────────────
- * Q1 [DỰ ĐOÁN + CODE] `try-with-resources` đóng tài nguyên theo thứ tự nào khi khai báo nhiều tài nguyên?
+ * <p>
+ * Q1 [DỰ ĐOÁN + CODE] {@code try-with-resources} đóng tài nguyên theo thứ tự nào khi khai báo nhiều tài nguyên?
  *   Bắt đầu   : đọc class TrackedResource bên dưới; thử viết `try (var a = new TrackedResource("A", log,
  *               false); var b = new TrackedResource("B", log, false)) {}` trong Alt+F8 (Evaluate Expression)
  *               khi debug, rồi điền hằng số Q1_CLOSE_ORDER (thay null).
  *   Kiểm chứng: chạy q01_closeOrderPrediction; đặt breakpoint trong TrackedResource.close() (Ctrl+N →
  *               gõ "Ex01_TryWithResources" → mở, Ctrl+F12 để thấy method close()), Debug test, sau khi
  *               đã điền dự đoán, ghi lại tên resource mỗi lần breakpoint dừng (F9 để sang lần kế).
- *   Code      : cài đặt closeAll(List<? extends AutoCloseable>) — đóng các resource theo thứ tự
+ *   Code      : cài đặt closeAll(List&lt;? extends AutoCloseable&gt;) — đóng các resource theo thứ tự
  *               ngược lại so với danh sách truyền vào, đóng hết mọi resource dù có lỗi xảy ra; lỗi
  *               đầu tiên gặp phải được ném ra, các lỗi đóng sau đó được gắn vào bằng addSuppressed().
  *   Hoàn thành khi: mọi test q01_* xanh; giải thích được vì sao try-with-resources đóng resource khai
  *               báo sau cùng trước tiên (giống cách pop phần tử ra khỏi một ngăn xếp/stack).
- *
- * Q2 [DỰ ĐOÁN] Nếu thao tác chính và `close()` cùng ném exception thì kiểm tra thông tin lỗi ở đâu?
+ * <p>
+ * Q2 [DỰ ĐOÁN] Nếu thao tác chính và {@code close()} cùng ném exception thì kiểm tra thông tin lỗi ở đâu?
  *   Bắt đầu   : đọc q02_primaryAndSuppressed để thấy thân try ném exception gì và resource nào
  *               có failOnClose; điền Q2_PRIMARY_MESSAGE và Q2_SUPPRESSED_COUNT (thay null) dựa trên
  *               exception bắt được ở catch — sau khi đã tự debug, đừng chép message trước.
