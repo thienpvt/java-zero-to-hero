@@ -14,6 +14,7 @@
     <module>tools</module>
     <module>phase-00-java-basics</module>
     <module>phase-01-core-advanced</module>
+    <module>phase-02-jvm-concurrency</module>
   </modules>
 
   <properties>
