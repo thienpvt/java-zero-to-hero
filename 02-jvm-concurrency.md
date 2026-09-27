@@ -31,6 +31,8 @@ Machine Code
 
 ## 1. Compilation & Bytecode
 
+> Thực hành: [d01_bytecode](phase-02-jvm-concurrency/src/main/java/phase02/d01_bytecode/)
+
 ### Kiến thức cần nắm
 
 Nắm pipeline:
@@ -64,6 +66,8 @@ Hiểu:
 
 ## 2. Class Loading
 
+> Thực hành: [d02_class_loading](phase-02-jvm-concurrency/src/main/java/phase02/d02_class_loading/)
+
 ### Kiến thức cần nắm
 
 Các bước:
@@ -95,6 +99,8 @@ Hiểu parent delegation ở mức khái niệm.
 ---
 
 ## 3. JVM Memory
+
+> Thực hành: [d03_jvm_memory](phase-02-jvm-concurrency/src/main/java/phase02/d03_jvm_memory/)
 
 ### Kiến thức cần nắm
 
@@ -137,6 +143,8 @@ Nắm thêm:
 
 ## 4. Object Lifecycle & Garbage Collection
 
+> Thực hành: [d04_gc](phase-02-jvm-concurrency/src/main/java/phase02/d04_gc/)
+
 ### Kiến thức cần nắm
 
 Hiểu:
@@ -178,6 +186,8 @@ Không cần học thuộc implementation mọi collector trước khi hiểu fu
 
 ## 5. JIT Compiler
 
+> Thực hành: [d05_jit](phase-02-jvm-concurrency/src/main/java/phase02/d05_jit/)
+
 ### Kiến thức cần nắm
 
 Hiểu:
@@ -201,6 +211,8 @@ Không cần đi sâu compiler internals ở giai đoạn này.
 ---
 
 ## 6. Thread Fundamentals
+
+> Thực hành: [d06_threads](phase-02-jvm-concurrency/src/main/java/phase02/d06_threads/)
 
 ### Kiến thức cần nắm
 
@@ -231,6 +243,8 @@ Nắm:
 ---
 
 ## 7. Race Condition
+
+> Thực hành: [d07_race](phase-02-jvm-concurrency/src/main/java/phase02/d07_race/)
 
 ### Kiến thức cần nắm
 
@@ -277,6 +291,8 @@ write
 
 ## 8. synchronized
 
+> Thực hành: [d08_synchronized](phase-02-jvm-concurrency/src/main/java/phase02/d08_synchronized/)
+
 ### Kiến thức cần nắm
 
 Hiểu:
@@ -310,6 +326,8 @@ Biết giảm scope của critical section khi phù hợp.
 ---
 
 ## 9. volatile & Java Memory Model
+
+> Thực hành: [d09_jmm](phase-02-jvm-concurrency/src/main/java/phase02/d09_jmm/)
 
 ### Kiến thức cần nắm
 
@@ -351,6 +369,8 @@ thành atomic.
 
 ## 10. Atomic Classes
 
+> Thực hành: [d10_atomic](phase-02-jvm-concurrency/src/main/java/phase02/d10_atomic/)
+
 ### Kiến thức cần nắm
 
 Nắm:
@@ -383,6 +403,8 @@ Hiểu atomic classes không thay thế mọi loại locking.
 ---
 
 ## 11. Lock API
+
+> Thực hành: [d11_locks](phase-02-jvm-concurrency/src/main/java/phase02/d11_locks/)
 
 ### Kiến thức cần nắm
 
@@ -420,6 +442,8 @@ try {
 ---
 
 ## 12. Deadlock
+
+> Thực hành: [d12_deadlock](phase-02-jvm-concurrency/src/main/java/phase02/d12_deadlock/)
 
 ### Kiến thức cần nắm
 
@@ -463,6 +487,8 @@ Biết chiến lược:
 
 ## 13. ExecutorService
 
+> Thực hành: [d13_executor](phase-02-jvm-concurrency/src/main/java/phase02/d13_executor/)
+
 ### Kiến thức cần nắm
 
 Không quản lý thread thủ công nếu thread pool phù hợp.
@@ -502,6 +528,8 @@ Hiểu thread pool:
 
 ## 14. CompletableFuture
 
+> Thực hành: [d14_completable_future](phase-02-jvm-concurrency/src/main/java/phase02/d14_completable_future/)
+
 ### Kiến thức cần nắm
 
 Nắm:
@@ -540,6 +568,8 @@ Hiểu executor mặc định và custom executor; exception và cancellation tr
 
 ## 15. Concurrent Collections
 
+> Thực hành: [d15_concurrent_collections](phase-02-jvm-concurrency/src/main/java/phase02/d15_concurrent_collections/)
+
 ### Kiến thức cần nắm
 
 Nắm:
@@ -575,6 +605,8 @@ Quan trọng trong producer-consumer.
 
 ## 16. Thread Safety Design
 
+> Thực hành: [d16_thread_safety](phase-02-jvm-concurrency/src/main/java/phase02/d16_thread_safety/)
+
 ### Kiến thức cần nắm
 
 Các chiến lược:
@@ -603,6 +635,8 @@ Quan trọng nhất: tránh shared mutable state khi có thể.
 
 ## 17. Virtual threads (Java 21+)
 
+> Thực hành: [d17_virtual_threads](phase-02-jvm-concurrency/src/main/java/phase02/d17_virtual_threads/)
+
 ### Kiến thức cần nắm
 
 - Virtual thread là `Thread` nhẹ do JDK quản lý, phù hợp nhiều tác vụ chủ yếu chờ I/O; không làm một phép tính CPU nhanh hơn.
@@ -624,6 +658,8 @@ Quan trọng nhất: tránh shared mutable state khi có thể.
 
 ## 18. Chẩn đoán JVM bằng bằng chứng
 
+> Thực hành: [d18_diagnostics](phase-02-jvm-concurrency/src/main/java/phase02/d18_diagnostics/)
+
 ### Kiến thức cần nắm
 
 - Lấy thread dump để thấy thread đang chạy, chờ lock hoặc deadlock; đối chiếu nhiều lần chụp khi cần.
@@ -642,6 +678,8 @@ Quan trọng nhất: tránh shared mutable state khi có thể.
 ---
 
 ## Practical Exercise
+
+> Thực hành: [d19_capstone](phase-02-jvm-concurrency/src/main/java/phase02/d19_capstone/)
 
 Cho class:
 
