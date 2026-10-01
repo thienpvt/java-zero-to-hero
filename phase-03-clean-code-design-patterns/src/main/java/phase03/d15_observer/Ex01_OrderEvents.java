@@ -69,14 +69,14 @@ public class Ex01_OrderEvents {
     }
 
     // Q1 — Observer giải quyết vấn đề gì.
-    static final Problem Q1_OBSERVER_PROBLEM = Problem.PUBLISHER_DOES_NOT_KNOW_CONCRETE_SUBSCRIBERS; // SOLUTION-VALUE
+    static final Problem Q1_OBSERVER_PROBLEM = null;
     // Q2 — Observer khác Kafka ở đâu.
-    static final Difference Q2_OBSERVER_VS_KAFKA = Difference.IN_PROCESS_AND_LOST_IF_PROCESS_DIES; // SOLUTION-VALUE
+    static final Difference Q2_OBSERVER_VS_KAFKA = null;
     // Q3 — một listener lỗi thì các listener khác vẫn chạy.
-    static final Boolean Q3_ONE_LISTENER_FAILS = true; // SOLUTION-VALUE
+    static final Boolean Q3_ONE_LISTENER_FAILS = null;
 
     // Q5 — thứ tự sự kiện có quan trọng.
-    static final Verdict Q5_ORDERING = Verdict.MATTERS_FOR_LISTENERS; // SOLUTION-VALUE
+    static final Verdict Q5_ORDERING = null;
 
     /** Gọi listener theo thứ tự đăng ký; lỗi được gom lại và ném sau. */
     public static final class OrderPublisher {
@@ -88,9 +88,7 @@ public class Ex01_OrderEvents {
         }
 
         public void unsubscribe(OrderListener listener) {
-            // SOLUTION-BEGIN throw Q6
-            listeners.remove(listener);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
 
         public int listenerCount() {
@@ -98,71 +96,31 @@ public class Ex01_OrderEvents {
         }
 
         public void publish(String orderId) {
-            // SOLUTION-BEGIN throw Q3
-            RuntimeException firstFailure = null;
-            for (OrderListener listener : List.copyOf(listeners)) {
-                try {
-                    listener.onOrder(orderId);
-                } catch (RuntimeException failure) {
-                    if (firstFailure == null) {
-                        firstFailure = failure;
-                    } else {
-                        firstFailure.addSuppressed(failure);
-                    }
-                }
-            }
-            if (firstFailure != null) {
-                throw firstFailure;
-            }
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q3");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Observer cho publisher thông báo nhiều subscriber mà không biết lớp cụ thể của họ.
- * Thêm subscriber là đăng ký thêm, không sửa publisher.
- * Nhờ vậy luồng chính không phụ thuộc số lượng hay loại người nghe.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Observer chạy trong cùng process và cùng bộ nhớ, lời gọi là gọi method.
- * Broker như Kafka nằm ngoài process, giữ message bền và cho nhiều consumer group.
- * Sự kiện observer mất khi process chết trước khi listener chạy xong.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Một listener lỗi không nên làm các listener khác bỏ lượt.
- * Mỗi lời gọi được bọc riêng, lỗi được gom lại và ném sau khi đã gọi hết.
- * Nếu để lỗi lan ngay, thứ tự đăng ký quyết định ai được nhận, rất khó đoán.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Observer synchronous làm caller chờ toàn bộ listener chạy xong.
- * Một listener chậm hoặc chờ I/O kéo latency của luồng chính.
- * Cách giảm là chỉ ghi sự kiện vào queue rồi xử lý ở luồng khác, đổi lại mất tính tức thời.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Có. Listener thấy sự kiện cùng thứ tự với lúc publish vì cùng một luồng.
- * Nếu xử lý bất đồng bộ, thứ tự đó không còn bảo đảm trừ khi có cơ chế riêng.
- * Nhiều nghiệp vụ, ví dụ created trước paid, phụ thuộc thứ tự này.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Listener không được unregister vẫn được publisher giữ tham chiếu.
- * Nếu listener đã hết dùng ở nơi khác, object không được thu hồi, đó là rò rỉ.
- * Publisher còn gọi vào listener đã chết logic, sinh lỗi hoặc việc thừa.
- * SOLUTION-END
+ *
  */

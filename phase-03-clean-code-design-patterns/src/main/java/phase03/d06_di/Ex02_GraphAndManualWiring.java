@@ -69,7 +69,7 @@ public class Ex02_GraphAndManualWiring {
     }
 
     // Q5 — constructor 12 dependencies là dấu hiệu gì.
-    static final Signal Q5_TWELVE_DEPS_SIGNAL = Signal.MANY_RESPONSIBILITIES; // SOLUTION-VALUE
+    static final Signal Q5_TWELVE_DEPS_SIGNAL = null;
 
     /** Nối graph bằng tay, không container. */
     public static final class OrderGraph {
@@ -79,20 +79,11 @@ public class Ex02_GraphAndManualWiring {
 
         public static OrderApplicationService build(PricingPolicy pricingPolicy,
                 OrderRepository orderRepository, Notifier notifier) {
-            // SOLUTION-BEGIN throw Q5
-            if (pricingPolicy == null || orderRepository == null || notifier == null) {
-                throw new IllegalArgumentException("Mọi dependency phải khác null.");
-            }
-            return new OrderApplicationService(pricingPolicy, orderRepository, notifier);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
     }
 }
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Mười hai dependency là dấu hiệu class gộp nhiều nhóm trách nhiệm.
- * Mỗi nhóm kéo theo vài dependency riêng, và thay đổi ở nhóm này buộc sửa constructor.
- * Cách xử lý là tách theo trách nhiệm, không phải thêm một container để giấu signature.
- * SOLUTION-END
+ *
  */

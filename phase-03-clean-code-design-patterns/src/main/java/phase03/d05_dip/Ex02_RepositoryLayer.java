@@ -42,7 +42,7 @@ public class Ex02_RepositoryLayer {
     }
 
     // Q4 — repository interface nên ở layer nào.
-    static final Layer Q4_REPOSITORY_INTERFACE_LAYER = Layer.DOMAIN_OR_APPLICATION; // SOLUTION-VALUE
+    static final Layer Q4_REPOSITORY_INTERFACE_LAYER = null;
 
     /** Adapter in-memory cho test, thay database. */
     public static final class InMemoryOrders implements OrderRepository {
@@ -51,32 +51,20 @@ public class Ex02_RepositoryLayer {
 
         @Override
         public void save(OrderRecord order) {
-            // SOLUTION-BEGIN throw Q6
-            rows.put(order.id(), order);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
 
         @Override
         public Optional<OrderRecord> find(String id) {
-            // SOLUTION-BEGIN throw Q6
-            return Optional.ofNullable(rows.get(id));
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
     }
 }
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Interface repository thuộc domain hoặc application vì nó mô tả nhu cầu lưu trữ của nghiệp vụ.
- * Adapter triển khai interface đó nằm ở infrastructure, cùng chỗ với database thật.
- * Hướng phụ thuộc chạy từ infrastructure vào domain, không phải ngược lại.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Nghiệp vụ nhận repository từ ngoài nên test thay bằng bản in-memory.
- * Không cần database, không cần dữ liệu mẫu, không cần dọn bảng.
- * Lỗi lưu cũng dựng được bằng một repository luôn ném exception.
- * SOLUTION-END
+ *
  */

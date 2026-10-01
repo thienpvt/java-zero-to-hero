@@ -34,48 +34,28 @@ public class Ex02_PolicyPlacement {
     }
 
     // Q2 — validation nghiệp vụ nên ở đâu.
-    static final Location Q2_VALIDATION_LOCATION = Location.DOMAIN; // SOLUTION-VALUE
+    static final Location Q2_VALIDATION_LOCATION = null;
 
     // Q4 — entity có phụ thuộc HTTP request.
-    static final Boolean Q4_ENTITY_DEPENDS_ON_REQUEST = false; // SOLUTION-VALUE
+    static final Boolean Q4_ENTITY_DEPENDS_ON_REQUEST = null;
 
     /** Chính sách nghiệp vụ thuần, không biết HTTP. */
     public static final class OrderValidator {
 
         public ValidationResult validate(int itemCount, long totalCents) {
-            // SOLUTION-BEGIN throw Q2
-            if (itemCount <= 0) {
-                return new ValidationResult(false, "Đơn phải có ít nhất một mặt hàng.");
-            }
-            if (totalCents <= 0) {
-                return new ValidationResult(false, "Tổng tiền phải dương.");
-            }
-            return new ValidationResult(true, "ok");
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q2");
         }
     }
 }
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Quy tắc nghiệp vụ thuộc domain vì nó không phụ thuộc giao thức hay lưu trữ.
- * Controller chỉ chuyển lỗi đó thành mã trạng thái phù hợp.
- * Nếu để trong controller, quy tắc không dùng lại được cho job khác và mỗi giao thức phải lặp lại.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Không. Entity phụ thuộc HTTP request nghĩa là entity chỉ dựng được trong một ngữ cảnh web.
- * Mọi job nền hoặc test phải giả lập request, và đổi framework sẽ đụng vào domain.
- * Chuyển đổi từ request sang kiểu domain là việc của lớp biên.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Có. Layer quá mức là tầng chỉ chuyển tiếp lời gọi mà không thêm trách nhiệm nào.
- * Mỗi tầng thêm một lần đọc và một chỗ có thể đặt sai logic.
- * Tầng đáng tồn tại khi nó dịch một mô hình hoặc cô lập một hệ ngoài.
- * SOLUTION-END
+ *
  */

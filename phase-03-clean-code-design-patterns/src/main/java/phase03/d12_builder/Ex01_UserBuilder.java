@@ -55,15 +55,15 @@ public class Ex01_UserBuilder {
     }
 
     // Q1 — builder giải quyết telescoping constructor thế nào.
-    static final Fix Q1_TELESCOPING_SOLVED = Fix.NAMED_STEPS_FOR_OPTIONAL_PARAMETERS; // SOLUTION-VALUE
+    static final Fix Q1_TELESCOPING_SOLVED = null;
 
     // Q2 — Builder khác Factory ở đâu.
-    static final Difference Q2_BUILDER_VS_FACTORY = Difference.BUILDER_ASSEMBLES_FIELDS_FACTORY_CHOOSES_CLASS; // SOLUTION-VALUE
+    static final Difference Q2_BUILDER_VS_FACTORY = null;
     // Q3 — builder có giúp object immutable.
-    static final Boolean Q3_IMMUTABLE = true; // SOLUTION-VALUE
+    static final Boolean Q3_IMMUTABLE = null;
 
     // Q5 — validation nên ở builder hay constructor.
-    static final Location Q5_VALIDATION_LOCATION = Location.OBJECT_CONSTRUCTOR; // SOLUTION-VALUE
+    static final Location Q5_VALIDATION_LOCATION = null;
 
     /** Immutable: mọi field final, constructor private. */
     public static final class User {
@@ -111,71 +111,40 @@ public class Ex01_UserBuilder {
             private int age;
 
             public Builder name(String name) {
-                // SOLUTION-BEGIN throw Q3
-                this.name = name;
-                return this;
-                // SOLUTION-END
+                throw new UnsupportedOperationException("TODO Q3");
             }
 
             public Builder email(String email) {
-                // SOLUTION-BEGIN throw Q3
-                this.email = email;
-                return this;
-                // SOLUTION-END
+                throw new UnsupportedOperationException("TODO Q3");
             }
 
             public Builder age(int age) {
-                // SOLUTION-BEGIN throw Q3
-                this.age = age;
-                return this;
-                // SOLUTION-END
+                throw new UnsupportedOperationException("TODO Q3");
             }
 
             public User build() {
-                // SOLUTION-BEGIN throw Q3
-                return new User(name, email, age);
-                // SOLUTION-END
+                throw new UnsupportedOperationException("TODO Q3");
             }
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Telescoping constructor là nhiều constructor với tham số tuỳ chọn, chỗ gọi phải nhớ thứ tự.
- * Builder cho mỗi tham số một method có tên, nên chỗ gọi đọc lên là hiểu.
- * Tham số tuỳ chọn bỏ qua được, không cần constructor riêng cho mỗi tổ hợp.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Builder ráp nhiều field cho một lớp đã biết, quyết định là điền gì theo thứ tự nào.
- * Factory chọn một trong nhiều lớp cùng interface, không quan tâm ráp field.
- * Có thể kết hợp: factory chọn lớp rồi trả về builder của lớp đó.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Builder giúp immutable bằng cách tách quá trình ráp khỏi object đã ráp.
- * Trong lúc ráp, field còn đổi được; build tạo object với mọi field final.
- * Object đã tạo không có setter, nên không ai sửa được sau đó.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Với hai field và không có tham số tuỳ chọn, builder thêm một lớp phải đọc và một lời gọi dài hơn.
- * Constructor hai tham số đọc lên đã rõ, không có thứ tự dễ nhầm.
- * Builder đáng dùng khi nhiều tham số tuỳ chọn hoặc validation cần nhiều bước.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Constructor của object là chốt cuối, mọi object đều đi qua đó dù tạo bằng builder hay cách khác.
- * Builder nên kiểm để báo lỗi sớm ngay tại bước đặt sai.
- * Nếu chỉ kiểm ở builder, một đường tạo khác có thể bỏ qua và tạo ra object sai.
- * SOLUTION-END
+ *
  */

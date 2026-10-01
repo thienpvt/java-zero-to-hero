@@ -18,23 +18,15 @@ import java.util.List;
 public class Ex02_ChainOrder {
 
     // Q3 — có ghép được nhiều decorator.
-    static final Boolean Q3_CHAINABLE = true; // SOLUTION-VALUE
+    static final Boolean Q3_CHAINABLE = null;
 
     /** Ghép metrics bên trong, logging bên ngoài. */
     public static Ex01_LoggingAndMetrics.PaymentService wrap(
             Ex01_LoggingAndMetrics.PaymentService inner, List<String> logSink, List<Long> metricSink) {
-        // SOLUTION-BEGIN throw Q3
-        Ex01_LoggingAndMetrics.PaymentService withMetrics =
-                new Ex01_LoggingAndMetrics.MetricsPaymentService(inner, metricSink);
-        return new Ex01_LoggingAndMetrics.LoggingPaymentService(withMetrics, logSink);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q3");
     }
 }
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Ghép được nhiều decorator vì mọi lớp cùng interface.
- * Thứ tự ghép quyết định thứ tự chạy: lớp ngoài cùng chạy trước khi gọi vào trong.
- * Vì vậy đổi thứ tự ghép là đổi hành vi quan sát được, dù cùng bộ decorator.
- * SOLUTION-END
+ *
  */

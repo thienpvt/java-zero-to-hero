@@ -102,38 +102,10 @@ public final class OrderApplicationService {
     }
 
     public CheckoutResult checkout(OrderRequest request) {
-        // SOLUTION-BEGIN throw B2
-        long total = pricing.totalCents(request);
-        String id = "o-" + nextOrderNumber++;
-        if (total > 100_000) {
-            return new CheckoutResult(OrderStatus.PAYMENT_DECLINED, "", total);
-        }
-        PaymentResult charged = payment.charge(total);
-        if (!charged.approved()) {
-            return new CheckoutResult(OrderStatus.PAYMENT_DECLINED, charged.reference(), total);
-        }
-        Order order = new Order(id, request.customer(), total);
-        try {
-            orders.save(order);
-        } catch (RuntimeException failure) {
-            return new CheckoutResult(OrderStatus.SAVE_OUTCOME_UNKNOWN, charged.reference(), total);
-        }
-        try {
-            events.publish(order);
-        } catch (RuntimeException failure) {
-            return new CheckoutResult(OrderStatus.PUBLISH_OUTCOME_UNKNOWN, charged.reference(), total);
-        }
-        return new CheckoutResult(OrderStatus.SAVED, charged.reference(), total);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO B2");
     }
 }
 
 /* ANSWER B6:
- * SOLUTION-BEGIN
- * Điểm commit cục bộ là lần lưu đơn thành công ở OrderRepository. Khi save ném lỗi, caller chưa biết
- * commit đã xảy ra chưa; khi publish ném lỗi, event có thể đã được gửi. Không retry mù cả checkout.
- * Charge chạy ở hệ ngoài và transaction cục bộ không hoàn tác tiền đã thu. Retry charge cần cùng
- * idempotency key; outbox ghi event và đơn trong một transaction, worker gửi lại có xử lý trùng.
- * Port chỉ xuất hiện tại ranh giới payment, persistence, publish; không tạo interface cho mỗi phép tính.
- * SOLUTION-END
+ *
  */

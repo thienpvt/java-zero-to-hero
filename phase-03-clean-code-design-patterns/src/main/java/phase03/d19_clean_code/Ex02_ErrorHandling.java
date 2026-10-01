@@ -27,10 +27,10 @@ import java.nio.file.Path;
 public class Ex02_ErrorHandling {
 
     // Q7 — nơi dịch lỗi.
-    static final String Q7_TRANSLATE_BOUNDARY = "boundary"; // SOLUTION-VALUE
+    static final String Q7_TRANSLATE_BOUNDARY = null;
 
     // Q8 — catch Exception rồi tiếp tục có rủi ro gì.
-    static final Boolean Q8_CATCH_AND_CONTINUE = true; // SOLUTION-VALUE
+    static final Boolean Q8_CATCH_AND_CONTINUE = null;
 
     /** Provider ngoài báo không lấy được tỉ giá. */
     public static class RateUnavailableException extends RuntimeException {
@@ -56,39 +56,19 @@ public class Ex02_ErrorHandling {
 
     /** Dịch lỗi provider thành lỗi của ứng dụng, giữ nguyên nguyên nhân. */
     public static long quote(RateProvider provider, String currency) {
-        // SOLUTION-BEGIN throw Q7
-        try {
-            return provider.rate(currency);
-        } catch (RateUnavailableException failure) {
-            throw new QuoteFailedException("Không lấy được tỉ giá cho " + currency, failure);
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q7");
     }
 
     /** Đọc dòng đầu của file; lỗi I/O thành lỗi unchecked có nguyên nhân. */
     public static String readFirstLine(Path path) {
-        // SOLUTION-BEGIN throw Q8
-        try {
-            return Files.readAllLines(path).getFirst();
-        } catch (IOException failure) {
-            throw new UncheckedIOException("Không đọc được " + path, failure);
-        }
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q8");
     }
 }
 
 /* ANSWER Q7:
- * SOLUTION-BEGIN
- * Dịch lỗi ở lớp biên, nơi lỗi của hệ ngoài đi vào ứng dụng.
- * Sau đó toàn bộ code nghiệp vụ chỉ thấy kiểu lỗi của ứng dụng.
- * Dịch đúng một lần tránh mỗi tầng lại bọc thêm một lớp exception.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q8:
- * SOLUTION-BEGIN
- * Catch Exception rồi log và tiếp tục làm lỗi biến mất khỏi luồng điều khiển.
- * Code phía sau chạy với dữ liệu thiếu hoặc sai, và trạng thái sai lan sang bước khác.
- * Log không thay được việc dừng hoặc trả lỗi có kiểu cho người gọi.
- * SOLUTION-END
+ *
  */

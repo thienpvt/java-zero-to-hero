@@ -36,7 +36,7 @@ public class Ex02_FatContract {
     }
 
     // Q4 — composition tốt hơn inheritance khi quan hệ chỉ là has-a.
-    static final Boolean Q4_COMPOSITION_OVER_INHERITANCE = true; // SOLUTION-VALUE
+    static final Boolean Q4_COMPOSITION_OVER_INHERITANCE = null;
 
     /** Dùng composition: giữ một {@code Printer}, không extends. */
     public static final class DocumentPrinter {
@@ -48,17 +48,11 @@ public class Ex02_FatContract {
         }
 
         public String print(String text) {
-            // SOLUTION-BEGIN throw Q4
-            return printer.print(text);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
     }
 }
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Composition tốt hơn khi quan hệ là has-a: DocumentPrinter có một Printer, không phải là một Printer.
- * extends sẽ kéo theo mọi method và field của cha, kể cả phần không liên quan.
- * Giữ một field cho phép đổi implementation lúc runtime và thay bằng fake trong test.
- * SOLUTION-END
+ *
  */

@@ -73,16 +73,16 @@ public class Ex01_InjectionStyles {
     }
 
     // Q1 — DI giải quyết vấn đề nào.
-    static final Problem Q1_DI_PROBLEM = Problem.OBJECT_BUILDS_ITS_OWN_DEPENDENCIES; // SOLUTION-VALUE
+    static final Problem Q1_DI_PROBLEM = null;
 
     // Q3 — vì sao ưu tiên constructor injection.
-    static final Why Q3_CTOR_PREFERRED = Why.FAILS_FAST_AND_ALWAYS_COMPLETE; // SOLUTION-VALUE
+    static final Why Q3_CTOR_PREFERRED = null;
 
     // Q4 — field injection gây khó gì cho test.
-    static final Boolean Q4_FIELD_INJECTION_TEST_PAIN = true; // SOLUTION-VALUE
+    static final Boolean Q4_FIELD_INJECTION_TEST_PAIN = null;
 
     // Q6 — DI container có bắt buộc.
-    static final Boolean Q6_CONTAINER_REQUIRED = false; // SOLUTION-VALUE
+    static final Boolean Q6_CONTAINER_REQUIRED = null;
 
     /** Dependency bắt buộc, nhận qua constructor. */
     public static final class ReportService {
@@ -97,56 +97,32 @@ public class Ex01_InjectionStyles {
         }
 
         public String render(String title) {
-            // SOLUTION-BEGIN throw Q7
-            return title + "@" + clock.now();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q7");
         }
 
         /** Đổi clock cho lần dùng sau mà không sửa object hiện có. */
         public ReportService withClock(Clock other) {
-            // SOLUTION-BEGIN throw Q7
-            return new ReportService(other);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q7");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * DI giải quyết việc object tự dựng dependency của mình bằng new.
- * Khi dependency đến từ ngoài, có thể thay bằng fake trong test và đổi cấu hình mà không sửa class.
- * Kèm theo là dependency của object trở nên thấy được ngay ở constructor.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * IoC là chiều đảo quyền điều khiển: framework gọi code của mình thay vì mình gọi framework.
- * DI là một cách thực hiện IoC ở mức dependency: ai đó đưa dependency vào thay vì object tự lấy.
- * DI không cần framework; IoC rộng hơn DI.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Constructor injection bắt buộc dependency phải có ngay khi tạo object.
- * Object không tồn tại ở trạng thái nửa vời, nên không có NullPointerException lúc gọi method.
- * Danh sách dependency hiện rõ ở signature, dài quá thì thấy ngay là class đang làm quá nhiều.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Field injection để field private không có đường đặt từ ngoài khi tạo object.
- * Test phải dùng reflection hoặc dựng cả container mới nhét được dependency.
- * Constructor injection cho test gọi new trực tiếp với fake, không cần hạ tầng nào.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Không. Container chỉ tự động hoá việc dựng và nối dependency.
- * DI bằng tay, một factory gọi new theo thứ tự, là DI đầy đủ và không cần thư viện.
- * Container đáng dùng khi graph lớn và cấu hình theo môi trường.
- * SOLUTION-END
+ *
  */

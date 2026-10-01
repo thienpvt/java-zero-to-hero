@@ -56,10 +56,10 @@ public class Ex01_OrderServiceSplit {
     }
 
     // Q1 — SRP có đồng nghĩa "một class một method" hay không.
-    static final Boolean Q1_SRP_MEANS_ONE_METHOD = false; // SOLUTION-VALUE
+    static final Boolean Q1_SRP_MEANS_ONE_METHOD = null;
 
     // Q3 — class lớn thể hiện dấu hiệu nào.
-    static final Signal Q3_LARGE_CLASS_SIGNAL = Signal.LOW_COHESION; // SOLUTION-VALUE
+    static final Signal Q3_LARGE_CLASS_SIGNAL = null;
 
     /**
      * Cho sẵn, không sửa. Bản trộn validate, price, persist, charge, notify, invoice trong một method.
@@ -85,34 +85,17 @@ public class Ex01_OrderServiceSplit {
      * @throws IllegalArgumentException nếu danh sách null hoặc rỗng
      */
     static long totalCents(List<LineItem> items) {
-        // SOLUTION-BEGIN throw Q5
-        if (items == null || items.isEmpty()) {
-            throw new IllegalArgumentException("Đơn không có mặt hàng.");
-        }
-        long total = 0;
-        for (LineItem item : items) {
-            total += item.unitCents() * item.qty();
-        }
-        return total;
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q5");
     }
 
     /** Trạng thái đơn theo hạng khách. */
     static String statusFor(OrderRequest request) {
-        // SOLUTION-BEGIN throw Q5
-        return request.vip() ? "VIP" : "STANDARD";
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q5");
     }
 
     /** Một thông báo cho mỗi mặt hàng, theo thứ tự trong đơn. */
     static List<String> notificationsFor(OrderRequest request) {
-        // SOLUTION-BEGIN throw Q5
-        List<String> messages = new ArrayList<>();
-        for (LineItem item : request.items()) {
-            messages.add("Đã đặt " + item.sku());
-        }
-        return messages;
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q5");
     }
 
     /**
@@ -120,47 +103,26 @@ public class Ex01_OrderServiceSplit {
      * Trả trạng thái và tổng tiền kèm các thông báo mặt hàng theo thứ tự.
      */
     static String placeOrder(OrderRequest request) {
-        // SOLUTION-BEGIN throw Q5
-        long total = totalCents(request.items());
-        return statusFor(request) + ":" + total + "|" + String.join(",", notificationsFor(request));
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q5");
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Không. SRP nói về lý do để thay đổi, không đếm method.
- * Một class có nhiều method vẫn đúng SRP nếu mọi method phục vụ cùng một nhóm trách nhiệm.
- * Ngược lại, hai method phục vụ hai actor khác nhau đã là hai lý do thay đổi.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * "Reason to change" là một nguồn yêu cầu thay đổi, thường là một actor hoặc một hệ thống ngoài.
- * Nếu quy tắc thuế đổi mà phải sửa class này, đó là một lý do.
- * Nếu định dạng hoá đơn đổi mà cũng phải sửa chính class đó, đó là lý do thứ hai.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Dấu hiệu là cohesion thấp: các field và method phục vụ nhiều nhóm trách nhiệm rời nhau.
- * Nhiều dòng hoặc nhiều field chỉ là triệu chứng dễ thấy của cohesion thấp, không phải nguyên nhân.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Tách quá nhỏ tạo nhiều class chỉ gọi nhau một lần, thêm chi phí điều hướng khi đọc code.
- * Abstraction giả còn che mất luồng nghiệp vụ và làm thay đổi nhỏ phải sửa nhiều file.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Việc tách có ích khi tồn tại một thay đổi cụ thể đã xảy ra hoặc đang chờ, ví dụ đổi cách tính giá.
- * Khi đó chỉ một class đổi và test của nó đổi theo, không phải sửa luồng đặt hàng.
- * Nếu lý do chỉ là "tương lai có thể cần", chưa đủ để tách.
- * SOLUTION-END
+ *
  */

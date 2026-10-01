@@ -37,10 +37,10 @@ public class Ex02_StaticAndMockSymptom {
     }
 
     // Q3 — gọi trực tiếp external API làm test khó vì sao.
-    static final Why Q3_DIRECT_EXTERNAL_CALL = Why.TEST_NEEDS_REAL_NETWORK_OR_WAITING; // SOLUTION-VALUE
+    static final Why Q3_DIRECT_EXTERNAL_CALL = null;
 
     // Q4 — mock quá nhiều dependency báo hiệu gì.
-    static final Signal Q4_TOO_MANY_MOCKS = Signal.CLASS_HAS_TOO_MANY_RESPONSIBILITIES; // SOLUTION-VALUE
+    static final Signal Q4_TOO_MANY_MOCKS = null;
 
     /** Cổng gọi hệ ngoài, thay được trong test. */
     public interface ApiGateway {
@@ -72,15 +72,7 @@ public class Ex02_StaticAndMockSymptom {
 
     /** Đếm dependency, tức field không static. */
     public static int dependencyCount(Class<?> type) {
-        // SOLUTION-BEGIN throw Q4
-        int count = 0;
-        for (Field field : type.getDeclaredFields()) {
-            if (!field.isSynthetic() && !java.lang.reflect.Modifier.isStatic(field.getModifiers())) {
-                count++;
-            }
-        }
-        return count;
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q4");
     }
 
     /** Cho sẵn, không sửa: static gọi hệ ngoài. */
@@ -96,17 +88,9 @@ public class Ex02_StaticAndMockSymptom {
 }
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Gọi trực tiếp external API nghĩa là test phải có mạng, tài khoản, và dữ liệu thật.
- * Kết quả phụ thuộc hệ ngoài nên test lúc xanh lúc đỏ mà không do code đổi.
- * Đường lỗi như timeout gần như không dựng lại được một cách tất định.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Mock quá nhiều dependency thường nghĩa là class gộp nhiều nhóm trách nhiệm.
- * Mỗi nhóm kéo theo vài collaborator phải mock riêng khi test.
- * Cách xử lý là tách class theo trách nhiệm, không phải viết thêm mock.
- * SOLUTION-END
+ *
  */

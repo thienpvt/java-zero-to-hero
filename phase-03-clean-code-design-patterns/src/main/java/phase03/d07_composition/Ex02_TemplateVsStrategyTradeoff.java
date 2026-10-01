@@ -23,7 +23,7 @@ public class Ex02_TemplateVsStrategyTradeoff {
     }
 
     // Q5 — trade-off giữa Template Method và Strategy.
-    static final Tradeoff Q5_HYBRID_TRADEOFF = Tradeoff.FIXED_SKELETON_VS_SWAPPABLE_STEPS; // SOLUTION-VALUE
+    static final Tradeoff Q5_HYBRID_TRADEOFF = null;
 
     /** Ba bước, tách khỏi lịch chạy. */
     public interface ImportSteps {
@@ -40,23 +40,17 @@ public class Ex02_TemplateVsStrategyTradeoff {
 
         @Override
         protected String read() {
-            // SOLUTION-BEGIN throw Q5
-            return "csv-row";
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
 
         @Override
         protected String validate(String raw) {
-            // SOLUTION-BEGIN throw Q5
-            return "valid:" + raw;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
 
         @Override
         protected String persist(String valid) {
-            // SOLUTION-BEGIN throw Q5
-            return "saved:" + valid;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
     }
 
@@ -70,19 +64,11 @@ public class Ex02_TemplateVsStrategyTradeoff {
         }
 
         public String importData() {
-            // SOLUTION-BEGIN throw Q5
-            String read = steps.read();
-            String validated = steps.validate(read);
-            return steps.persist(validated);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
     }
 }
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Template Method cố định lịch chạy ở class cha và chỉ cho override từng bước.
- * Strategy để lịch chạy ở caller, đổi được toàn bộ bộ bước lúc runtime.
- * Cả hai cho cùng kết quả; khác nhau ở chỗ đổi lịch có cần sửa class cha hay không.
- * SOLUTION-END
+ *
  */

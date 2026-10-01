@@ -20,7 +20,7 @@ package phase03.d02_ocp;
 public class Ex02_ExtensionPoint {
 
     // Q5 — có nên dựng abstraction trước khi có biến thể thứ hai.
-    static final Boolean Q5_ABSTRACT_BEFORE_SECOND_VARIANT = false; // SOLUTION-VALUE
+    static final Boolean Q5_ABSTRACT_BEFORE_SECOND_VARIANT = null;
 
     public static final Ex01_PaymentSwitch.PaymentPolicy FIXED =
             new Ex01_PaymentSwitch.PaymentPolicy() {
@@ -37,24 +37,14 @@ public class Ex02_ExtensionPoint {
 
     /** Phí do policy quyết định. Không switch ở đây. */
     static long feeWith(Ex01_PaymentSwitch.PaymentPolicy policy, long amountCents) {
-        // SOLUTION-BEGIN throw Q2
-        return policy.feeCents(amountCents);
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q2");
     }
 }
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Caller chỉ gọi feeWith và không biết lớp nào đang chạy.
- * Thêm policy mới là thêm một class, không sửa feeWith và không sửa test của feeWith.
- * Đó là điểm mở rộng: biến thể mới, code cũ nguyên.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Chưa có biến thể thứ hai thì abstraction tạo trước chỉ có một implementation.
- * Interface đó không chứng minh được là cần thiết, lại thêm một lớp phải đọc và bảo trì.
- * Khi biến thể thứ hai xuất hiện thật, tách lúc đó rẻ hơn là đoán trước.
- * SOLUTION-END
+ *
  */

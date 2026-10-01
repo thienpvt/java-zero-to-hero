@@ -72,11 +72,11 @@ public class Ex01_LoggingAndMetrics {
     }
 
     // Q1 — decorator khác inheritance.
-    static final Difference Q1_DECORATOR_VS_INHERITANCE = Difference.COMPOSE_AT_RUNTIME_VS_SUBCLASS_EXPLOSION; // SOLUTION-VALUE
+    static final Difference Q1_DECORATOR_VS_INHERITANCE = null;
     // Q2 — decorator khác proxy.
-    static final Difference2 Q2_DECORATOR_VS_PROXY = Difference2.ADDS_BEHAVIOR_VS_CONTROLS_ACCESS; // SOLUTION-VALUE
+    static final Difference2 Q2_DECORATOR_VS_PROXY = null;
     // Q4 — ý tưởng decorator trong Java I/O.
-    static final IoIdea Q4_JAVA_IO = IoIdea.WRAP_A_STREAM_WITH_ANOTHER_OF_THE_SAME_INTERFACE; // SOLUTION-VALUE
+    static final IoIdea Q4_JAVA_IO = null;
     /** Ghi log trước khi chuyển tiếp. */
     public static final class LoggingPaymentService implements PaymentService {
 
@@ -90,10 +90,7 @@ public class Ex01_LoggingAndMetrics {
 
         @Override
         public String pay(long amountCents) {
-            // SOLUTION-BEGIN throw Q3
-            sink.add("log:" + amountCents);
-            return inner.pay(amountCents);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q3");
         }
     }
 
@@ -110,43 +107,23 @@ public class Ex01_LoggingAndMetrics {
 
         @Override
         public String pay(long amountCents) {
-            // SOLUTION-BEGIN throw Q3
-            String result = inner.pay(amountCents);
-            sink.add(amountCents);
-            return result;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q3");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Inheritance phải tạo một subclass cho mỗi tổ hợp: log, metric, log+metric.
- * Decorator ghép lúc runtime bằng cách bọc service này trong service khác cùng interface.
- * Thêm một hành vi là thêm một lớp, không thêm tổ hợp cho các hành vi đã có.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Decorator thêm hành vi cho lời gọi và luôn chuyển tiếp tới đối tượng bị bọc.
- * Proxy kiểm soát truy cập: có thể chặn, hoãn, hoặc tạo đối tượng đích khi cần.
- * Trong thực tế hai cái nhìn giống nhau về code, khác nhau ở ý định.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Java I/O bọc một stream bằng một stream khác cùng interface, ví dụ BufferedInputStream bọc InputStream.
- * Mỗi lớp thêm một hành vi như đệm hoặc nén mà vẫn là InputStream.
- * Muốn tổ hợp thì lồng nhiều lớp, không tạo subclass cho từng tổ hợp.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Call stack có nhiều tầng cùng tên method, nên đọc stack khó biết tầng nào vừa chạy.
- * Thứ tự chạy phụ thuộc thứ tự ghép trong cấu hình, không nằm trong một file dễ thấy.
- * Debug phải nhớ cấu hình ghép, và một decorator quên chuyển tiếp sẽ im lặng cắt chuỗi.
- * SOLUTION-END
+ *
  */

@@ -31,27 +31,15 @@ public class Ex02_OverridableSteps {
     }
 
     // Q4 — quá nhiều hook gây vấn đề gì.
-    static final Boolean Q4_TOO_MANY_HOOKS = true; // SOLUTION-VALUE
+    static final Boolean Q4_TOO_MANY_HOOKS = null;
 
     // Q5 — Strategy linh hoạt hơn khi nào.
-    static final When Q5_STRATEGY_MORE_FLEXIBLE = When.WHEN_ORDER_OR_STEP_SET_CHANGES_AT_RUNTIME; // SOLUTION-VALUE
+    static final When Q5_STRATEGY_MORE_FLEXIBLE = null;
     /** Có thêm một hook tuỳ chọn sau bước persist. */
     public abstract static class HookImporter {
 
         public final List<String> importData(String raw) {
-            // SOLUTION-BEGIN throw Q4
-            List<String> rows = read(raw);
-            List<String> valid = new ArrayList<>();
-            for (String row : rows) {
-                valid.add(validate(row));
-            }
-            List<String> persisted = new ArrayList<>();
-            for (String row : valid) {
-                persisted.add(persist(row));
-            }
-            afterPersist(persisted);
-            return persisted;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
 
         /** Hook mặc định không làm gì; subclass có thể override. */
@@ -67,17 +55,9 @@ public class Ex02_OverridableSteps {
 }
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Mỗi hook thêm một điểm mà subclass có thể thay đổi, và một trạng thái subclass phải hiểu.
- * Class cha mất khả năng bảo đảm bất biến vì không biết hook nào chạy.
- * Hook nên ít và có mục đích rõ; nhiều hook là dấu hiệu nên chuyển sang composition.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Strategy linh hoạt hơn khi thứ tự chạy hoặc tập bước đổi theo cấu hình lúc runtime.
- * Nó cho một class dùng nhiều bộ bước khác nhau mà không tạo thêm subclass.
- * Template Method chỉ đổi được nội dung từng bước, không đổi được bộ khung.
- * SOLUTION-END
+ *
  */

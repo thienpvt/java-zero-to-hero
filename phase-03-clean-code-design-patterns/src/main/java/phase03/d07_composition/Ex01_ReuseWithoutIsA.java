@@ -63,13 +63,13 @@ public class Ex01_ReuseWithoutIsA {
     }
 
     // Q1 — inheritance phù hợp khi nào.
-    static final Fit Q1_INHERITANCE_FIT = Fit.TRUELY_IS_A; // SOLUTION-VALUE
+    static final Fit Q1_INHERITANCE_FIT = null;
 
     // Q2 — composition tốt hơn khi nào.
-    static final Fit Q2_COMPOSITION_FIT = Fit.REUSE_CODE; // SOLUTION-VALUE
+    static final Fit Q2_COMPOSITION_FIT = null;
 
     // Q4 — hierarchy sâu khó bảo trì vì sao.
-    static final Pain Q4_DEEP_HIERARCHY_PAIN = Pain.BEHAVIOR_SPREAD_ACROSS_LEVELS; // SOLUTION-VALUE
+    static final Pain Q4_DEEP_HIERARCHY_PAIN = null;
 
     /** Dùng composition: giữ một {@code Logger}, không extends. */
     public static final class OrderService {
@@ -81,9 +81,7 @@ public class Ex01_ReuseWithoutIsA {
         }
 
         public String place(String order) {
-            // SOLUTION-BEGIN throw Q5
-            return logger.log("đặt " + order);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
     }
 
@@ -105,41 +103,21 @@ public class Ex01_ReuseWithoutIsA {
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Inheritance phù hợp khi quan hệ is-a đúng và subtype thật sự thay thế được base type.
- * Cần cùng ngữ nghĩa, ví dụ mọi loại importer đều là importer.
- * Nếu chỉ muốn dùng lại vài dòng code, inheritance kéo theo cả hợp đồng không cần.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Composition tốt hơn khi quan hệ là has-a: OrderService có một Logger.
- * Đổi hành vi là đổi field, không sửa chuỗi thừa kế, và test thay bằng fake dễ.
- * Không lộ ra ngoài những method của lớp được tái sử dụng.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * is-a nói subtype được dùng ở mọi chỗ cần base type và giữ nguyên kỳ vọng của caller.
- * has-a nói object giữ một thứ khác bên trong và chuyển tiếp lời gọi.
- * Chỉ has-a mới cho phép thay phần bên trong lúc runtime.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Hành vi của một method có thể nằm rải ở nhiều tầng, nên đọc một tầng không đủ hiểu.
- * Sửa một method ở tầng giữa vô tình phá subclass ở tầng dưới.
- * gọi super lẫn nhau còn làm luồng chạy phụ thuộc trạng thái runtime.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Template Method gọi ngược lên subclass: base class biết lịch, subclass biết bước.
- * Strategy gọi xuống qua field: policy chỉ biết bước, caller chọn lúc runtime.
- * Inheritance cố định lịch và khó đổi nửa đường; composition đổi được nhưng thêm một lớp nối.
- * SOLUTION-END
+ *
  */

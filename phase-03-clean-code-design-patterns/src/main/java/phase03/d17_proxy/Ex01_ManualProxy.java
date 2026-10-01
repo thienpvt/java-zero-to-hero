@@ -81,12 +81,12 @@ public class Ex01_ManualProxy {
     }
 
     // Q1 — proxy khác decorator.
-    static final Difference Q1_PROXY_VS_DECORATOR = Difference.CONTROLS_ACCESS_VS_ADDS_BEHAVIOR; // SOLUTION-VALUE
+    static final Difference Q1_PROXY_VS_DECORATOR = null;
     // Q2 — @Transactional liên quan proxy thế nào.
-    static final Mechanism Q2_TRANSACTIONAL_PROXY = Mechanism.PROXY_AROUND_THE_BEAN; // SOLUTION-VALUE
+    static final Mechanism Q2_TRANSACTIONAL_PROXY = null;
 
     // Q5 — proxy hay thêm cross-cutting concern nào.
-    static final Concern Q5_CROSS_CUTTING = Concern.SECURITY_TRANSACTION_LAZY_LOADING; // SOLUTION-VALUE
+    static final Concern Q5_CROSS_CUTTING = null;
 
     /** Kiểm tra vai trò trước khi cho lời gọi đi qua. */
     public static final class GuardProxy implements Account {
@@ -101,18 +101,12 @@ public class Ex01_ManualProxy {
 
         @Override
         public void deposit(long amountCents) {
-            // SOLUTION-BEGIN throw Q3
-            requireAdmin();
-            target.deposit(amountCents);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q3");
         }
 
         @Override
         public String balance() {
-            // SOLUTION-BEGIN throw Q3
-            requireAdmin();
-            return target.balance();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q3");
         }
 
         private void requireAdmin() {
@@ -124,25 +118,13 @@ public class Ex01_ManualProxy {
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Proxy kiểm soát truy cập: nó quyết định có cho lời gọi tới đích hay không, hoặc tạo đích khi cần.
- * Decorator luôn chuyển tiếp và chỉ thêm hành vi trước hoặc sau.
- * Code hai cái có thể giống nhau; khác nhau ở ý định và ở việc proxy có thể chặn.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Spring bọc bean cần transaction trong một proxy sinh lúc chạy.
- * Lời gọi từ ngoài đi qua proxy, proxy mở transaction rồi mới gọi method thật.
- * Transaction chỉ bắt đầu khi lời gọi đi qua proxy.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Proxy hay thêm security, transaction, lazy loading, logging và remote call.
- * Đó là những concern không thuộc nghiệp vụ nhưng phải áp dụng quanh nhiều method.
- * Chúng đúng kiểu proxy vì cần quyết định trước khi hoặc sau khi lời gọi tới đích.
- * SOLUTION-END
+ *
  */

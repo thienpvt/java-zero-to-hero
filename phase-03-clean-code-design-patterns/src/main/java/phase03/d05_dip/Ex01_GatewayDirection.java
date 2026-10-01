@@ -51,13 +51,13 @@ public class Ex01_GatewayDirection {
     }
 
     // Q1 — DIP và DI khác nhau ở đâu.
-    static final Difference Q1_DIP_VS_DI = Difference.DIRECTION_VS_MECHANISM; // SOLUTION-VALUE
+    static final Difference Q1_DIP_VS_DI = null;
 
     // Q3 — có cần interface cho mọi class.
-    static final Boolean Q3_INTERFACE_FOR_EVERY_CLASS = false; // SOLUTION-VALUE
+    static final Boolean Q3_INTERFACE_FOR_EVERY_CLASS = null;
 
     // Q5 — abstraction chỉ một implementation có luôn cần interface.
-    static final Boolean Q5_ONE_IMPL_NEEDS_INTERFACE = false; // SOLUTION-VALUE
+    static final Boolean Q5_ONE_IMPL_NEEDS_INTERFACE = null;
 
     /** Cho sẵn, không sửa: policy phụ thuộc trực tiếp implementation, đúng bản DIP vi phạm. */
     static final class StripeCheckout {
@@ -77,51 +77,27 @@ public class Ex01_GatewayDirection {
         }
 
         public PaymentResult checkout(long amountCents) {
-            // SOLUTION-BEGIN throw Q2
-            if (amountCents <= 0) {
-                throw new IllegalArgumentException("Số tiền phải dương: " + amountCents);
-            }
-            return gateway.charge(amountCents);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q2");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * DIP nói về hướng phụ thuộc lúc biên dịch: policy không import implementation.
- * DI nói về cơ chế đưa dependency vào lúc runtime: constructor, setter, container.
- * Có thể áp dụng DI mà vẫn để policy phụ thuộc class cụ thể trong chữ ký.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Policy chỉ biết PaymentGateway, không biết Stripe hay class nào khác.
- * Đổi nhà cung cấp là thêm implementation mới, không sửa policy và không build lại policy.
- * Coupling tụt từ "biết class cụ thể" xuống "biết một contract nhỏ".
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Không. Interface chỉ đáng tạo khi có biến thể thật hoặc khi cần cắt một hệ ngoài khỏi test.
- * Với class nội bộ chỉ một cách dùng, interface thêm một lớp phải đọc mà không đổi hướng phụ thuộc.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Chưa cần không có nghĩa là không bao giờ cần.
- * Interface có một implementation vẫn hợp lý khi implementation là hệ ngoài cần thay bằng fake trong test.
- * Nếu chỉ có một implementation nội bộ và không có kế hoạch thay, để class cụ thể rẻ hơn.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Policy nhận gateway từ ngoài, nên test đưa vào một fake trả kết quả định sẵn.
- * Test không cần mạng, không cần tài khoản, không phụ thuộc nhà cung cấp.
- * Đường lỗi như từ chối thanh toán cũng dựng được tất định bằng fake.
- * SOLUTION-END
+ *
  */

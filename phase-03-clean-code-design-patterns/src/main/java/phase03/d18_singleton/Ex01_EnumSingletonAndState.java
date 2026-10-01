@@ -45,16 +45,16 @@ public class Ex01_EnumSingletonAndState {
     }
 
     // Q1 — Singleton giải quyết vấn đề gì.
-    static final Problem Q1_SINGLETON_PROBLEM = Problem.SINGLE_SHARED_INSTANCE; // SOLUTION-VALUE
+    static final Problem Q1_SINGLETON_PROBLEM = null;
 
     // Q2 — vì sao Singleton là global state.
-    static final Boolean Q2_SINGLETON_GLOBAL_STATE = true; // SOLUTION-VALUE
+    static final Boolean Q2_SINGLETON_GLOBAL_STATE = null;
 
     // Q3 — Singleton gây khó testing.
-    static final Boolean Q3_SINGLETON_TESTING_PAIN = true; // SOLUTION-VALUE
+    static final Boolean Q3_SINGLETON_TESTING_PAIN = null;
 
     // Q4 — Singleton có mặc định thread-safe.
-    static final Boolean Q4_SINGLETON_THREAD_SAFE = false; // SOLUTION-VALUE
+    static final Boolean Q4_SINGLETON_THREAD_SAFE = null;
 
     /** Enum singleton: JVM bảo đảm chỉ một instance, kể cả khi bị serialize hay reflect. */
     public enum ConfigHolder {
@@ -64,15 +64,11 @@ public class Ex01_EnumSingletonAndState {
         private final Map<String, String> overrides = new HashMap<>();
 
         public void put(String key, String value) {
-            // SOLUTION-BEGIN throw Q7
-            overrides.put(key, value);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q7");
         }
 
         public String get(String key) {
-            // SOLUTION-BEGIN throw Q7
-            return overrides.get(key);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q7");
         }
 
         public void clear() {
@@ -82,41 +78,21 @@ public class Ex01_EnumSingletonAndState {
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Singleton bảo đảm chỉ một instance cho cả chương trình.
- * Nó dùng khi tài nguyên thật sự chỉ có một, ví dụ một cấu hình đọc một lần.
- * Nếu chỉ cần chia sẻ object, truyền nó qua constructor rõ ràng hơn.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Vì instance đó là biến ẩn mà mọi chỗ đều đọc và ghi được.
- * Không thấy nó trong signature nên không biết method nào phụ thuộc vào nó.
- * Trạng thái cũ từ lời gọi trước còn nguyên ở lời gọi sau.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Test không thay được Singleton bằng fake vì không có điểm chèn.
- * Mọi test dùng chung một instance nên trạng thái rò từ test này sang test khác.
- * Thứ tự chạy test trở thành điều kiện đúng, và test hay đỏ một cách khó hiểu.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Không. Bản lazy-init không đồng bộ có thể để hai thread cùng tạo instance.
- * Muốn đúng phải thêm synchronized hoặc dùng holder class, và cả hai tốn thêm một chút.
- * Enum singleton tránh vấn đề này vì việc khởi tạo do JVM thực hiện an toàn.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q7:
- * SOLUTION-BEGIN
- * Enum singleton chỉ có một hằng, nên JVM bảo đảm đúng một instance.
- * Serialization trả về cùng hằng thay vì tạo object mới.
- * Reflection cũng không gọi được constructor của enum, nên không phá được tính duy nhất.
- * SOLUTION-END
+ *
  */

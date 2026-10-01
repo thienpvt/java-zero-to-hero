@@ -41,9 +41,7 @@ public class Ex01_ProviderSelection {
 
         @Override
         public String charge(long amountCents) {
-            // SOLUTION-BEGIN throw Q4
-            return "stripe:" + amountCents;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
     }
 
@@ -51,20 +49,18 @@ public class Ex01_ProviderSelection {
 
         @Override
         public String charge(long amountCents) {
-            // SOLUTION-BEGIN throw Q4
-            return "momo:" + amountCents;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
     }
 
     // Q1 — Factory giải quyết vấn đề gì.
-    static final Problem Q1_FACTORY_PROBLEM = Problem.CENTRALIZE_WHICH_CONCRETE_CLASS_TO_CREATE; // SOLUTION-VALUE
+    static final Problem Q1_FACTORY_PROBLEM = null;
 
     // Q4 — factory chọn implementation theo dữ liệu runtime.
-    static final Boolean Q4_RUNTIME_DATA_SELECTION = true; // SOLUTION-VALUE
+    static final Boolean Q4_RUNTIME_DATA_SELECTION = null;
 
     // Q5 — switch khổng lồ trong factory còn extensible.
-    static final Boolean Q5_GIANT_SWITCH_EXTENSIBLE = false; // SOLUTION-VALUE
+    static final Boolean Q5_GIANT_SWITCH_EXTENSIBLE = null;
 
     /** Chọn provider theo tham số cấu hình. */
     public static final class ProviderFactory {
@@ -73,37 +69,19 @@ public class Ex01_ProviderSelection {
         }
 
         public static PaymentProvider create(String providerName) {
-            // SOLUTION-BEGIN throw Q4
-            return switch (providerName) {
-                case "stripe" -> new StripeProvider();
-                case "momo" -> new MomoProvider();
-                default -> throw new IllegalArgumentException("Nhà cung cấp không hỗ trợ: " + providerName);
-            };
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Factory gom chỗ quyết định lớp cụ thể vào một nơi.
- * Phần còn lại của hệ chỉ thấy interface, không rải new khắp code.
- * Đổi cách chọn hoặc thêm điều kiện chọn chỉ sửa một chỗ.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Factory nhận dữ liệu lúc chạy, ví dụ tên nhà cung cấp từ cấu hình hoặc từ đơn hàng.
- * Từ dữ liệu đó nó trả về một implementation của cùng interface.
- * Caller không biết lớp nào, nên đổi quy tắc chọn không lan ra ngoài factory.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Switch khổng lồ trong factory nghĩa là mỗi provider mới vẫn phải sửa chính factory.
- * Nó gom việc tạo object nhưng không mở rộng được, chỉ giấu vấn đề đi một chỗ.
- * Cách mở rộng là đăng ký nhà cung cấp vào một map, thêm provider là thêm một dòng đăng ký riêng.
- * SOLUTION-END
+ *
  */

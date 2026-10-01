@@ -53,31 +53,20 @@ public class Ex01_Importer {
     }
 
     // Q1 — Template Method giải quyết vấn đề gì.
-    static final Problem Q1_TEMPLATE_PROBLEM = Problem.FIXED_ALGORITHM_WITH_VARIABLE_STEPS; // SOLUTION-VALUE
+    static final Problem Q1_TEMPLATE_PROBLEM = null;
 
     // Q2 — Template Method khác Strategy ở đâu.
-    static final Difference Q2_TEMPLATE_VS_STRATEGY = Difference.INHERITANCE_VS_COMPOSITION; // SOLUTION-VALUE
+    static final Difference Q2_TEMPLATE_VS_STRATEGY = null;
 
     // Q3 — Template Method dựa trên inheritance.
-    static final Boolean Q3_USES_INHERITANCE = true; // SOLUTION-VALUE
+    static final Boolean Q3_USES_INHERITANCE = null;
 
     /** Class cha giữ lịch chạy; subclass chỉ cài ba bước. */
     public abstract static class Importer {
 
         /** Lịch cố định; subclass không override. */
         public final List<String> importData(String raw) {
-            // SOLUTION-BEGIN throw Q4
-            List<String> rows = read(raw);
-            List<String> valid = new ArrayList<>();
-            for (String row : rows) {
-                valid.add(validate(row));
-            }
-            List<String> persisted = new ArrayList<>();
-            for (String row : valid) {
-                persisted.add(persist(row));
-            }
-            return persisted;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
 
         protected abstract List<String> read(String raw);
@@ -91,23 +80,17 @@ public class Ex01_Importer {
 
         @Override
         protected List<String> read(String raw) {
-            // SOLUTION-BEGIN throw Q4
-            return List.of(raw.split(","));
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
 
         @Override
         protected String validate(String row) {
-            // SOLUTION-BEGIN throw Q4
-            return row.strip();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
 
         @Override
         protected String persist(String valid) {
-            // SOLUTION-BEGIN throw Q4
-            return "csv:" + valid;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
     }
 
@@ -115,62 +98,37 @@ public class Ex01_Importer {
 
         @Override
         protected List<String> read(String raw) {
-            // SOLUTION-BEGIN throw Q4
-            return List.of(raw.replace("[", "").replace("]", "").split(","));
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
 
         @Override
         protected String validate(String row) {
-            // SOLUTION-BEGIN throw Q4
-            return row.strip();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
 
         @Override
         protected String persist(String valid) {
-            // SOLUTION-BEGIN throw Q4
-            return "json:" + valid;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Template Method cố định lịch chạy trong class cha và cho subclass cài từng bước.
- * Mọi biến thể đi qua cùng một bộ khung, nên thứ tự không bị lệch giữa các subclass.
- * Phần chung nằm một chỗ, không lặp lại ở mỗi implementation.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Template Method dùng inheritance: subclass override các bước, class cha giữ lịch.
- * Strategy dùng composition: caller giữ một object bước và tự gọi theo lịch của mình.
- * Template Method cố định lịch, Strategy cho đổi lịch và đổi bộ bước lúc runtime.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Dựa trên inheritance. Class cha định nghĩa bộ khung, subclass thay từng bước.
- * Đó cũng là lý do pattern này khó đổi lịch chạy mà không sửa class cha.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Nhiều override point làm subclass phải hiểu thứ tự và trạng thái chung giữa các bước.
- * Class cha không còn giữ được bất biến vì bất kỳ bước nào cũng có thể thay đổi.
- * Đọc một subclass không đủ biết hành vi vì phần lớn nằm ở class cha.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Strategy linh hoạt hơn khi cần đổi lịch chạy hoặc chọn bộ bước lúc runtime.
- * Nó cũng cho phép một class dùng nhiều bộ bước khác nhau theo cấu hình.
- * Template Method phù hợp khi lịch chạy thật sự cố định cho mọi biến thể.
- * SOLUTION-END
+ *
  */

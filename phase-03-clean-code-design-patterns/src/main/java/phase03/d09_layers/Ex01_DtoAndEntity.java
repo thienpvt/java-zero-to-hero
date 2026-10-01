@@ -53,10 +53,10 @@ public class Ex01_DtoAndEntity {
     }
 
     // Q1 — expose entity trực tiếp có rủi ro gì.
-    static final Risk Q1_EXPOSE_ENTITY = Risk.SCHEMA_CHANGE_BREAKS_API; // SOLUTION-VALUE
+    static final Risk Q1_EXPOSE_ENTITY = null;
 
     // Q2 — DTO giải quyết vấn đề gì.
-    static final Purpose Q2_DTO_PURPOSE = Purpose.SEPARATE_API_CONTRACT_FROM_STORAGE_MODEL; // SOLUTION-VALUE
+    static final Purpose Q2_DTO_PURPOSE = null;
 
     /** Chuyển entity sang contract API. */
     public static final class OrderMapper {
@@ -65,50 +65,27 @@ public class Ex01_DtoAndEntity {
         }
 
         public static OrderResponse toResponse(OrderEntity entity) {
-            // SOLUTION-BEGIN throw Q6
-            if (entity == null) {
-                throw new IllegalArgumentException("Entity không được null.");
-            }
-            return new OrderResponse(entity.id(), entity.totalCents());
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
 
         public static List<OrderResponse> toResponses(List<OrderEntity> entities) {
-            // SOLUTION-BEGIN throw Q6
-            return entities.stream().map(OrderMapper::toResponse).toList();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Entity phản ánh schema lưu trữ, nên đổi cột hoặc đổi quan hệ là đổi luôn response API.
- * Entity còn chứa field nội bộ không nên đi ra client, hoặc chứa quan hệ lazy gây lỗi tuần tự hoá.
- * Tách DTO giữ hai thứ đổi theo nhịp khác nhau.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * DTO định nghĩa contract của API, độc lập với bảng và cột.
- * Nó cho phép đổi schema mà không đổi response, và chỉ đưa ra field client cần.
- * Kèm theo là chỗ để gộp hoặc đổi tên field cho phù hợp ngôn ngữ của client.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Mapping thủ công cho kiểm soát tường minh: thấy rõ field nào đi đâu, dễ đặt breakpoint.
- * Mapper library ít code lặp nhưng giấu chi tiết và khó đoán khi tên field gần giống nhau.
- * Với vài DTO, viết tay rẻ hơn; nhiều DTO và quy tắc ánh xạ thì library hợp lý hơn.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Mỗi request đi qua nhiều tầng, và mỗi tầng thường chỉ chuyển tiếp dữ liệu.
- * Model phải chuyển đổi qua lại giữa entity, domain và DTO.
- * Chi phí đó đáng khi các tầng cô lập thay đổi thật, không đáng khi chỉ có một cách dùng.
- * SOLUTION-END
+ *
  */

@@ -60,19 +60,19 @@ public class Ex01_NamingAndFunctions {
     }
 
     // Q1 — clean code có đồng nghĩa code ngắn.
-    static final Boolean Q1_CLEAN_CODE_MEANS_SHORT = false; // SOLUTION-VALUE
+    static final Boolean Q1_CLEAN_CODE_MEANS_SHORT = null;
 
     // Q2 — method 100 dòng có luôn sai.
-    static final Verdict Q2_HUNDRED_LINE_METHOD = Verdict.DEPENDS_ON_RESPONSIBILITIES; // SOLUTION-VALUE
+    static final Verdict Q2_HUNDRED_LINE_METHOD = null;
 
     // Q3 — duplicate tốt hơn premature abstraction khi nào.
-    static final Boolean Q3_DUPLICATE_BETTER_THAN_PREMATURE = true; // SOLUTION-VALUE
+    static final Boolean Q3_DUPLICATE_BETTER_THAN_PREMATURE = null;
 
     // Q4 — comment nhiều có phải tốt.
-    static final Verdict Q4_MORE_COMMENTS = Verdict.DEPENDS_ON_RESPONSIBILITIES; // SOLUTION-VALUE
+    static final Verdict Q4_MORE_COMMENTS = null;
 
     // Q5 — boolean parameter báo hiệu gì.
-    static final Signal Q5_BOOLEAN_PARAMETER = Signal.METHOD_DOES_TWO_THINGS; // SOLUTION-VALUE
+    static final Signal Q5_BOOLEAN_PARAMETER = null;
 
     /** Cho sẵn, không sửa. Tên không cho biết method nhận gì và trả gì. */
     static String process(LineItem item, int flag) {
@@ -81,70 +81,35 @@ public class Ex01_NamingAndFunctions {
 
     /** Trả chuỗi "{sku} x{qty} = {lineTotalCents} cents". */
     static String describe(LineItem item) {
-        // SOLUTION-BEGIN throw Q6
-        return item.sku() + " x" + item.qty() + " = " + item.unitCents() * item.qty() + " cents";
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 
     /** Tổng tiền hàng cộng phí vận chuyển, đơn vị cent. */
     static long totalWithShipping(List<LineItem> items, int shippingCents) {
-        // SOLUTION-BEGIN throw Q6
-        if (items == null || items.isEmpty()) {
-            throw new IllegalArgumentException("Danh sách mặt hàng không được rỗng.");
-        }
-        long total = shippingCents;
-        for (LineItem item : items) {
-            total += item.unitCents() * item.qty();
-        }
-        return total;
-        // SOLUTION-END
+        throw new UnsupportedOperationException("TODO Q6");
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Không. Clean code là đọc hiểu nhanh và sửa an toàn, không phải ít dòng.
- * Nén nhiều việc vào một dòng làm khó đọc và khó đặt breakpoint.
- * Một method dài nhưng một trách nhiệm có thể rõ hơn nhiều method vụn gọi nhau.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Không luôn sai. Thước đo là số trách nhiệm và số nhánh, không phải số dòng.
- * Một bảng tra dài hoặc một switch ổn định có thể vẫn rõ ràng.
- * Method dài mà trộn validate, tính toán và lưu trữ thì nên tách theo trách nhiệm.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Khi hai đoạn chỉ tình cờ giống nhau, còn lý do thay đổi khác nhau.
- * Gộp chúng tạo một abstraction phải chiều cả hai, và thay đổi một bên sẽ phá bên kia.
- * Chờ đến lần thay đổi thứ hai thực sự để biết chúng có cùng lý do hay không.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Không. Comment lặp lại điều code đã nói làm nhiễu và dễ lạc hậu khi code đổi.
- * Comment còn giá trị khi giải thích vì sao, ví dụ ràng buộc bên ngoài hoặc quyết định đánh đổi.
- * Nếu cần comment để hiểu code làm gì, tên và cấu trúc nên được sửa trước.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Boolean parameter thường nghĩa là method làm hai việc, thật hoặc giả.
- * Chỗ gọi `send(true)` không nói lên điều gì khi đọc.
- * Tách thành hai method có tên theo việc, hoặc dùng enum có nhãn rõ.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Tên chung chung như process không cho biết đầu vào, đầu ra, hay tác dụng phụ.
- * Người đọc phải mở thân method để biết nó làm gì, kể cả khi chỉ cần đọc lời gọi.
- * Tên nên nói việc và đơn vị, ví dụ totalWithShipping và describe.
- * SOLUTION-END
+ *
  */

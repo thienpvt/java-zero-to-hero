@@ -35,10 +35,10 @@ public class Ex02_SelfInvocation {
     }
 
     // Q3 — self-invocation không đi qua proxy.
-    static final Reason Q3_SELF_INVOCATION = Reason.CALL_GOES_DIRECTLY_ON_THE_TARGET_OBJECT; // SOLUTION-VALUE
+    static final Reason Q3_SELF_INVOCATION = null;
 
     // Q4 — lazy-loading proxy hoạt động thế nào.
-    static final Idea Q4_LAZY_PROXY = Idea.PROXY_HOLDS_MINIMAL_DATA_AND_LOADS_ON_CALL; // SOLUTION-VALUE
+    static final Idea Q4_LAZY_PROXY = null;
 
     /** Cho sẵn: mô phỏng lời gọi nội bộ, không qua proxy nào. */
     public static final class SelfInvoking {
@@ -46,9 +46,7 @@ public class Ex02_SelfInvocation {
         public final java.util.List<String> calls = new java.util.ArrayList<>();
 
         public String outer() {
-            // SOLUTION-BEGIN throw Q3
-            return "outer->" + this.inner();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q3");
         }
 
         public String inner() {
@@ -59,17 +57,9 @@ public class Ex02_SelfInvocation {
 }
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Self-invocation là lời gọi method trên chính object đích, ví dụ this.inner().
- * Nó không đi qua proxy vì proxy chỉ chặn được lời gọi từ ngoài vào.
- * Vì vậy @Transactional trên inner() không có tác dụng khi outer() gọi nó từ bên trong.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Proxy lazy-loading giữ dữ liệu tối thiểu, thường chỉ khoá chính.
- * Khi có lời gọi tới một field chưa nạp, proxy mới truy vấn database và thay vào giá trị thật.
- * Nhờ vậy quan hệ không bị nạp nếu code không dùng tới nó.
- * SOLUTION-END
+ *
  */

@@ -59,12 +59,7 @@ public class Ex01_RectangleSquare {
 
         @Override
         public long rotate() {
-            // SOLUTION-BEGIN throw Q5
-            int swap = width;
-            width = height;
-            height = swap;
-            return areaMm2();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
     }
 
@@ -78,24 +73,20 @@ public class Ex01_RectangleSquare {
 
         @Override
         public long areaMm2() {
-            // SOLUTION-BEGIN throw Q5
-            return (long) side * side;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
 
         @Override
         public long rotate() {
-            // SOLUTION-BEGIN throw Q5
-            return areaMm2();
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
     }
 
     // Q2 — Square có phải subtype đúng LSP của Rectangle trong ví dụ này.
-    static final Boolean Q2_SQUARE_IS_LSP_SUBTYPE = false; // SOLUTION-VALUE
+    static final Boolean Q2_SQUARE_IS_LSP_SUBTYPE = null;
 
     // Q3 — ném UnsupportedOperationException cho method của parent là dấu hiệu xấu.
-    static final Boolean Q3_UNSUPPORTED_IS_SMELL = true; // SOLUTION-VALUE
+    static final Boolean Q3_UNSUPPORTED_IS_SMELL = null;
 
     /** Cho sẵn: caller giả định width và height độc lập. */
     static long growWidth(Shape shape, int delta) {
@@ -108,33 +99,17 @@ public class Ex01_RectangleSquare {
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Inheritance syntax chỉ nói compiler chấp nhận lời gọi.
- * LSP nói về kỳ vọng của caller: mọi điều đúng với base type phải còn đúng với subtype.
- * Một class extends được vẫn có thể phá kỳ vọng đó ở runtime.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Caller giả định đổi width không ảnh hưởng height, đúng với Rectangle.
- * Nếu Square là subtype và đổi width kéo theo height, diện tích trả về khác kỳ vọng.
- * Caller buộc phải kiểm tra kiểu cụ thể, tức là không thay thế được — vi phạm LSP.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Method của parent nằm trong hợp đồng mà mọi subtype phải giữ.
- * Ném UnsupportedOperationException nghĩa là implementation không giữ được hợp đồng đó.
- * Đó là dấu hiệu interface đã gộp hai khả năng không cùng tồn tại, hoặc inheritance bị dùng sai.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Interface quá lớn buộc mọi implementation khai báo cả method không liên quan.
- * Implementation nào không làm được phải ném exception, và caller không biết trước là có.
- * Tách interface theo khả năng để mỗi implementation chỉ hứa điều nó giữ được.
- * SOLUTION-END
+ *
  */

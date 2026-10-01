@@ -30,10 +30,10 @@ import java.util.List;
 public class Ex02_DependencyDirection {
 
     // Q4 — business logic nên ở controller hay service/domain.
-    static final Boolean Q4_BUSINESS_IN_CONTROLLER = false; // SOLUTION-VALUE
+    static final Boolean Q4_BUSINESS_IN_CONTROLLER = null;
 
     // Q5 — mọi project đều cần đủ năm layer.
-    static final Boolean Q5_ALWAYS_FIVE_LAYERS = false; // SOLUTION-VALUE
+    static final Boolean Q5_ALWAYS_FIVE_LAYERS = null;
 
     /** Cho sẵn: policy nghiệp vụ thuần, không import gì ngoài JDK. */
     public static final class OrderPolicy {
@@ -50,9 +50,7 @@ public class Ex02_DependencyDirection {
         }
 
         public static List<String> domainImports() {
-            // SOLUTION-BEGIN throw Q6
-            return List.of("java.lang", "java.util", "java.math", "phase03");
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q6");
         }
 
         public static boolean isAllowed(String importName) {
@@ -66,25 +64,13 @@ public class Ex02_DependencyDirection {
 }
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Logic thuộc service hoặc domain, không thuộc controller.
- * Controller biết HTTP nên không dùng lại được cho job nền, và test phải dựng cả request.
- * Domain thuần test bằng lời gọi trực tiếp, không cần hạ tầng.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Không. Layer đáng tồn tại khi nó cô lập một thay đổi thật, ví dụ đổi giao thức hoặc đổi database.
- * Với ứng dụng nhỏ chỉ một cách dùng, thêm tầng chỉ tăng số file phải đọc.
- * Sơ đồ trong tài liệu là luồng xử lý, không phải yêu cầu đủ mặt mọi lớp.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Domain chỉ được tham chiếu kiểu của chính nó và JDK.
- * Import SDK nhà cung cấp hoặc JPA entity làm domain phụ thuộc hạ tầng, đảo ngược hướng mong muốn.
- * Adapter triển khai interface của domain và nằm ở infrastructure.
- * SOLUTION-END
+ *
  */

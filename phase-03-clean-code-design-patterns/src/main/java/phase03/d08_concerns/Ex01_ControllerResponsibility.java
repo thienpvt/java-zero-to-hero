@@ -39,10 +39,10 @@ public class Ex01_ControllerResponsibility {
     }
 
     // Q1 — controller chịu trách nhiệm gì.
-    static final Duty Q1_CONTROLLER_RESPONSIBILITY = Duty.TRANSLATE_HTTP_TO_BUSINESS_CALL; // SOLUTION-VALUE
+    static final Duty Q1_CONTROLLER_RESPONSIBILITY = null;
 
     // Q3 — repository có nên gửi email.
-    static final Boolean Q3_REPOSITORY_SENDS_EMAIL = false; // SOLUTION-VALUE
+    static final Boolean Q3_REPOSITORY_SENDS_EMAIL = null;
 
     /** Cho sẵn: nghiệp vụ thuần, không biết HTTP. */
     public static final class OrderApplicationService {
@@ -65,37 +65,19 @@ public class Ex01_ControllerResponsibility {
         }
 
         public HttpResponse handle(HttpRequest request) {
-            // SOLUTION-BEGIN throw Q5
-            try {
-                return new HttpResponse(200, "total:" + service.place(request.body()));
-            } catch (RuntimeException failure) {
-                return new HttpResponse(400, failure.getMessage());
-            }
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Controller nhận request, chuyển nó thành một lời gọi nghiệp vụ, và đóng gói kết quả thành response.
- * Nó chịu trách nhiệm về giao thức: mã trạng thái, mã hoá, lỗi đầu vào ở mức HTTP.
- * Quy tắc nghiệp vụ không thuộc controller vì như vậy sẽ khó test và khó tái dùng.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Không. Repository giữ trách nhiệm lưu và đọc dữ liệu.
- * Gửi email là một hệ ngoài khác, đổi nhà cung cấp và đổi nội dung theo nghiệp vụ.
- * Nếu repository gửi email, mọi test lưu dữ liệu đều kéo theo thông báo.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Nghiệp vụ nằm trong service không biết HTTP, nên test gọi trực tiếp với chuỗi đầu vào.
- * Test controller chỉ kiểm tra ánh xạ request sang response, không cần dựng cả hệ.
- * Lỗi nghiệp vụ và lỗi giao thức được kiểm riêng, nên xác định nguyên nhân nhanh hơn.
- * SOLUTION-END
+ *
  */

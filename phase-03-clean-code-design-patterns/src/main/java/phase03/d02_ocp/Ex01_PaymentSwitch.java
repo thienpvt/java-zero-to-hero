@@ -42,10 +42,10 @@ public class Ex01_PaymentSwitch {
     }
 
     // Q1 — OCP giảm rủi ro nào.
-    static final Risk Q1_OCP_REDUCES = Risk.EDITING_WORKING_CODE; // SOLUTION-VALUE
+    static final Risk Q1_OCP_REDUCES = null;
 
     // Q3 — mọi if đều vi phạm OCP hay không.
-    static final Boolean Q3_EVERY_IF_VIOLATES_OCP = false; // SOLUTION-VALUE
+    static final Boolean Q3_EVERY_IF_VIOLATES_OCP = null;
 
     /** Cho sẵn, không sửa. Mỗi loại thanh toán mới là một nhánh switch mới. */
     static long feeCents(String type, long amountCents) {
@@ -68,16 +68,12 @@ public class Ex01_PaymentSwitch {
 
         @Override
         public long feeCents(long amountCents) {
-            // SOLUTION-BEGIN throw Q2
-            return amountCents * 2 / 100;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q2");
         }
 
         @Override
         public String name() {
-            // SOLUTION-BEGIN throw Q2
-            return "CARD";
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q2");
         }
     }
 
@@ -85,32 +81,20 @@ public class Ex01_PaymentSwitch {
 
         @Override
         public long feeCents(long amountCents) {
-            // SOLUTION-BEGIN throw Q2
-            return amountCents * 1 / 100;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q2");
         }
 
         @Override
         public String name() {
-            // SOLUTION-BEGIN throw Q2
-            return "WALLET";
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q2");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * OCP muốn giảm rủi ro phải sửa code đang chạy mỗi khi thêm một biến thể.
- * Code chỉ được thêm mới là code không phải đọc lại và không phải chạy lại hết regression.
- * "Closed" là đối với các điểm mở rộng đã nhận diện, không phải cấm sửa mọi file.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Switch lớn theo payment type là dấu hiệu vì mỗi loại thanh toán mới buộc mở lại đúng method đó.
- * Mọi lần thêm đều phải đọc lại toàn bộ nhánh cũ để không phá nhánh nào.
- * Tách mỗi loại thành một policy giữ code cũ nguyên và chỉ thêm implementation mới.
- * SOLUTION-END
+ *
  */

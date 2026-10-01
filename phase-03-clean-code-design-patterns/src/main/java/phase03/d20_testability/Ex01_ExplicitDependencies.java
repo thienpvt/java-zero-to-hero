@@ -54,12 +54,12 @@ public class Ex01_ExplicitDependencies {
     }
 
     // Q1 — vì sao constructor injection tăng testability.
-    static final Reason Q1_CTOR_INJECTION_TESTABILITY = Reason.DEPENDENCIES_REPLACEABLE_AT_CREATION; // SOLUTION-VALUE
+    static final Reason Q1_CTOR_INJECTION_TESTABILITY = null;
     // Q2 — static utility có luôn xấu.
-    static final Boolean Q2_STATIC_ALWAYS_BAD = false; // SOLUTION-VALUE
+    static final Boolean Q2_STATIC_ALWAYS_BAD = null;
 
     // Q5 — test khó viết phản ánh vấn đề gì.
-    static final Signal Q5_HARD_TO_TEST_SIGNAL = Signal.HIGH_COUPLING_AND_HIDDEN_STATE; // SOLUTION-VALUE
+    static final Signal Q5_HARD_TO_TEST_SIGNAL = null;
 
     /** Dependency tường minh, thay được trong test. */
     public static final class CheckoutService {
@@ -73,42 +73,23 @@ public class Ex01_ExplicitDependencies {
         }
 
         public String checkout(String orderId, long totalCents) {
-            // SOLUTION-BEGIN throw Q1
-            orderRepository.save(orderId, totalCents);
-            return paymentGateway.charge(totalCents);
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q1");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Dependency nhận qua constructor nên test tạo object với fake thay cho hệ thật.
- * Không cần mạng, không cần database, không cần trạng thái toàn cục.
- * Mỗi đường lỗi dựng được tất định bằng cách cho fake trả hoặc ném theo ý muốn.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Không. Static utility thuần, không trạng thái và không phụ thuộc bên ngoài, test trực tiếp rất dễ.
- * Vấn đề chỉ xuất hiện khi static giữ trạng thái hoặc gọi hệ ngoài.
- * Khi đó không có đường thay thế trong test, và thứ tự chạy test trở thành ràng buộc.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Test khó viết là tín hiệu coupling cao, dependency ẩn, hoặc trạng thái toàn cục.
- * Object tự gọi new hoặc đọc static làm không có chỗ đặt fake.
- * Cách xử lý là sửa thiết kế, không phải thêm hạ tầng test.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q6:
- * SOLUTION-BEGIN
- * Khi mọi collaborator đều là mock, test chỉ còn kiểm tra thứ tự và số lần gọi đã giả định sẵn.
- * Nó không chứng minh kết quả nghiệp vụ vì kết quả do chính mock tạo ra.
- * Test như vậy sẽ xanh dù logic tính toán bên trong sai hoàn toàn.
- * SOLUTION-END
+ *
  */

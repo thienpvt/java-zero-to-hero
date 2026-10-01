@@ -27,10 +27,10 @@ public class Ex02_WhenNewIsFine {
     }
 
     // Q2 — new trực tiếp hợp lý khi nào.
-    static final Boolean Q2_NEW_IS_FINE = true; // SOLUTION-VALUE
+    static final Boolean Q2_NEW_IS_FINE = null;
 
     // Q3 — Factory khác Builder thế nào.
-    static final Difference Q3_FACTORY_VS_BUILDER = Difference.FACTORY_CHOOSES_CLASS_BUILDER_ASSEMBLES_FIELDS; // SOLUTION-VALUE
+    static final Difference Q3_FACTORY_VS_BUILDER = null;
     /** Value object nhỏ, không có biến thể, dựng bằng new là đủ. */
     public record Coupon(String code, int percent) {
 
@@ -41,25 +41,15 @@ public class Ex02_WhenNewIsFine {
         }
 
         public long apply(long totalCents) {
-            // SOLUTION-BEGIN throw Q2
-            return totalCents - totalCents * percent / 100;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q2");
         }
     }
 }
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * new trực tiếp hợp lý khi chỉ có một lớp cụ thể và không có quy tắc chọn nào.
- * Value object nhỏ như Coupon không có biến thể, nên factory chỉ thêm một lớp gọi.
- * Quy tắc kiểm tra nằm trong constructor, đủ để không tạo được object sai.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Factory trả về một trong nhiều lớp cùng interface, quyết định là chọn lớp nào.
- * Builder ráp nhiều field cho một lớp đã biết, quyết định là điền gì theo thứ tự nào.
- * Có thể dùng cùng nhau: builder ráp tham số, factory chọn lớp rồi gọi builder.
- * SOLUTION-END
+ *
  */

@@ -59,25 +59,23 @@ public class Ex01_MachineRoles {
     }
 
     // Q1 — ISP nhắm vấn đề nào.
-    static final Purpose Q1_ISP_PURPOSE = Purpose.CLIENT_NOT_DEPEND_ON_UNUSED_METHODS; // SOLUTION-VALUE
+    static final Purpose Q1_ISP_PURPOSE = null;
 
     // Q2 — interface càng nhỏ càng tốt.
-    static final Boolean Q2_SMALLER_ALWAYS_BETTER = false; // SOLUTION-VALUE
+    static final Boolean Q2_SMALLER_ALWAYS_BETTER = null;
 
     // Q3 — nhiều UnsupportedOperationException là dấu hiệu xấu.
-    static final Boolean Q3_UNSUPPORTED_IS_SMELL = true; // SOLUTION-VALUE
+    static final Boolean Q3_UNSUPPORTED_IS_SMELL = null;
 
     // Q4 — ISP là một cách nhìn cohesion.
-    static final Boolean Q4_ISP_IS_COHESION = true; // SOLUTION-VALUE
+    static final Boolean Q4_ISP_IS_COHESION = null;
 
     /** Cho sẵn: máy chỉ in. Không khai báo Scanner hay Fax. */
     public static final class SimplePrinter implements Printer {
 
         @Override
         public String print(String document) {
-            // SOLUTION-BEGIN throw Q5
-            return "print:" + document;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q5");
         }
     }
 
@@ -102,41 +100,21 @@ public class Ex01_MachineRoles {
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * ISP nói client không nên phụ thuộc method mà nó không dùng.
- * Interface gộp nhiều vai trò buộc mọi client phải biết cả những method mình không gọi.
- * Tách theo vai trò làm thay đổi ở một vai trò không lan sang client của vai trò khác.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Không. Nhỏ hơn là tốt cho tới khi nó cắt theo vai trò.
- * Tách mỗi method thành một interface tạo ra nhiều type phải ghép lại ở mọi chỗ dùng.
- * Interface nên vừa đủ một vai trò, không phải nhỏ nhất có thể.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Nhiều UnsupportedOperationException nghĩa là implementation đang bị ép hứa điều nó không làm được.
- * Nguyên nhân thường là interface đã gộp nhiều vai trò không cùng tồn tại.
- * Sửa gốc là tách interface theo vai trò, không phải thêm nhánh ném exception.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * ISP là cohesion nhìn từ phía client: mọi method trong một interface phục vụ cùng một vai trò.
- * Cohesion thấp ở interface làm client phải biết những phần không liên quan tới nó.
- * Tách đúng vai trò làm cả hai phía cohesion hơn.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Fragmentation là khi mỗi method một interface, và mọi chỗ dùng phải nhận nhiều type cùng lúc.
- * Đọc code phải ghép nhiều file để hiểu một thao tác, và đổi một thao tác phải sửa nhiều khai báo.
- * Ranh giới đúng là vai trò, không phải số method.
- * SOLUTION-END
+ *
  */

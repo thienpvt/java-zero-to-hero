@@ -77,14 +77,14 @@ public class Ex01_ProviderAdapters {
     }
 
     // Q1 — Adapter giải quyết vấn đề gì.
-    static final ProblemType Q1_ADAPTER_PROBLEM = ProblemType.EXTERNAL_INTERFACE_DIFFERS_FROM_APP_INTERFACE; // SOLUTION-VALUE
+    static final ProblemType Q1_ADAPTER_PROBLEM = null;
     // Q2 — Adapter khác Decorator ở đâu.
-    static final Difference Q2_ADAPTER_VS_DECORATOR = Difference.ADAPTER_CHANGES_INTERFACE_DECORATOR_KEEPS_IT; // SOLUTION-VALUE
+    static final Difference Q2_ADAPTER_VS_DECORATOR = null;
     // Q3 — bọc SDK có lợi gì.
-    static final Boolean Q3_WRAP_SDK_BENEFIT = true; // SOLUTION-VALUE
+    static final Boolean Q3_WRAP_SDK_BENEFIT = null;
 
     // Q4 — adapter giúp testing.
-    static final Boolean Q4_ADAPTER_HELPS_TESTING = true; // SOLUTION-VALUE
+    static final Boolean Q4_ADAPTER_HELPS_TESTING = null;
 
     /** Chuyển cách gọi của SDK sang contract của application. */
     public static final class StripeAdapter implements ProviderGateway {
@@ -97,53 +97,27 @@ public class Ex01_ProviderAdapters {
 
         @Override
         public String charge(long amountCents) {
-            // SOLUTION-BEGIN throw Q4
-            int raw = sdk.makeCharge((int) amountCents, "vnd");
-            if (raw < 0 || !sdk.isOk()) {
-                throw new IllegalStateException("Stripe từ chối " + amountCents);
-            }
-            return "stripe:" + raw;
-            // SOLUTION-END
+            throw new UnsupportedOperationException("TODO Q4");
         }
     }
 }
 
 /* ANSWER Q1:
- * SOLUTION-BEGIN
- * Adapter chuyển interface của hệ ngoài thành interface mà application mong muốn.
- * Application chỉ biết ProviderGateway, không biết kiểu tham số hay cách báo lỗi của SDK.
- * Nhờ vậy đổi nhà cung cấp không lan vào nghiệp vụ.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q2:
- * SOLUTION-BEGIN
- * Adapter đổi interface: đầu vào và đầu ra khác của cái bị bọc.
- * Decorator giữ nguyên interface và chỉ thêm hành vi trước hoặc sau lời gọi.
- * Vì vậy decorator ghép chuỗi được, còn adapter thường là điểm cuối của chuỗi.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q3:
- * SOLUTION-BEGIN
- * Adapter là chỗ duy nhất biết SDK thật, nên khi SDK đổi API chỉ sửa ở đây.
- * Nghiệp vụ và test không phải đổi theo.
- * Nó cũng là chỗ để dịch kiểu lỗi của SDK sang lỗi có nghĩa của application.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q4:
- * SOLUTION-BEGIN
- * Test thay adapter bằng một implementation của ProviderGateway, không cần SDK.
- * Đường lỗi như bị từ chối dựng được bằng một adapter giả luôn ném.
- * Không cần mạng, không cần khoá API, và test không phụ thuộc nhà cung cấp.
- * SOLUTION-END
+ *
  */
 
 /* ANSWER Q5:
- * SOLUTION-BEGIN
- * Blast radius giới hạn ở StripeAdapter và test của nó.
- * Nếu SDK đổi tên method hoặc đổi kiểu tham số, chỉ thân adapter đổi.
- * Nghiệp vụ gọi ProviderGateway nên không biết gì về thay đổi đó.
- * SOLUTION-END
+ *
  */
