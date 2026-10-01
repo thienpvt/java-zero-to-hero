@@ -32,6 +32,8 @@ Quan trọng hơn là:
 
 ## 1. Single Responsibility Principle
 
+> Thực hành: [d01_srp](phase-03-clean-code-design-patterns/src/main/java/phase03/d01_srp/)
+
 ### Kiến thức cần nắm
 
 Một module/class nên có một nhóm trách nhiệm cohesive và một lý do chính để thay đổi.
@@ -69,6 +71,8 @@ Cần biết tách boundary hợp lý thay vì tạo class cho từng dòng code
 
 ## 2. Open/Closed Principle
 
+> Thực hành: [d02_ocp](phase-03-clean-code-design-patterns/src/main/java/phase03/d02_ocp/)
+
 ### Kiến thức cần nắm
 
 Software entity nên:
@@ -92,6 +96,8 @@ Hiểu cách polymorphism/strategy giúp mở rộng behavior.
 ---
 
 ## 3. Liskov Substitution Principle
+
+> Thực hành: [d03_lsp](phase-03-clean-code-design-patterns/src/main/java/phase03/d03_lsp/)
 
 ### Kiến thức cần nắm
 
@@ -118,6 +124,8 @@ Hiểu:
 ---
 
 ## 4. Interface Segregation Principle
+
+> Thực hành: [d04_isp](phase-03-clean-code-design-patterns/src/main/java/phase03/d04_isp/)
 
 ### Kiến thức cần nắm
 
@@ -150,6 +158,8 @@ Không phải machine nào cũng hỗ trợ mọi operation.
 ---
 
 ## 5. Dependency Inversion Principle
+
+> Thực hành: [d05_dip](phase-03-clean-code-design-patterns/src/main/java/phase03/d05_dip/)
 
 ### Kiến thức cần nắm
 
@@ -192,6 +202,8 @@ StripePaymentGateway
 
 ## 6. Dependency Injection
 
+> Thực hành: [d06_di](phase-03-clean-code-design-patterns/src/main/java/phase03/d06_di/)
+
 ### Kiến thức cần nắm
 
 Hiểu:
@@ -218,6 +230,8 @@ Hiểu:
 ---
 
 ## 7. Composition vs Inheritance
+
+> Thực hành: [d07_composition](phase-03-clean-code-design-patterns/src/main/java/phase03/d07_composition/)
 
 ### Kiến thức cần nắm
 
@@ -251,6 +265,8 @@ class OrderService {
 
 ## 8. Separation of Concerns
 
+> Thực hành: [d08_concerns](phase-03-clean-code-design-patterns/src/main/java/phase03/d08_concerns/)
+
 ### Kiến thức cần nắm
 
 Phân tách:
@@ -279,6 +295,8 @@ Repository không nên chứa business policy.
 ---
 
 ## 9. Layered Architecture
+
+> Thực hành: [d09_layers](phase-03-clean-code-design-patterns/src/main/java/phase03/d09_layers/)
 
 ### Kiến thức cần nắm
 
@@ -322,6 +340,8 @@ Không đồng nhất database entity với API contract trong mọi hệ thốn
 
 ## 10. Strategy Pattern
 
+> Thực hành: [d10_strategy](phase-03-clean-code-design-patterns/src/main/java/phase03/d10_strategy/)
+
 ### Kiến thức cần nắm
 
 Dùng khi nhiều algorithm/behavior có cùng contract và muốn chọn behavior linh hoạt.
@@ -357,6 +377,8 @@ CampaignDiscount
 
 ## 11. Factory Pattern
 
+> Thực hành: [d11_factory](phase-03-clean-code-design-patterns/src/main/java/phase03/d11_factory/)
+
 ### Kiến thức cần nắm
 
 Factory encapsulate object creation.
@@ -381,6 +403,8 @@ Không cần ép mọi `new` vào factory.
 ---
 
 ## 12. Builder Pattern
+
+> Thực hành: [d12_builder](phase-03-clean-code-design-patterns/src/main/java/phase03/d12_builder/)
 
 ### Kiến thức cần nắm
 
@@ -414,6 +438,8 @@ User user = User.builder()
 
 ## 13. Adapter Pattern
 
+> Thực hành: [d13_adapter](phase-03-clean-code-design-patterns/src/main/java/phase03/d13_adapter/)
+
 ### Kiến thức cần nắm
 
 Adapter chuyển interface của hệ thống ngoài thành interface mà application mong muốn.
@@ -443,6 +469,8 @@ Stripe SDK
 ---
 
 ## 14. Decorator Pattern
+
+> Thực hành: [d14_decorator](phase-03-clean-code-design-patterns/src/main/java/phase03/d14_decorator/)
 
 ### Kiến thức cần nắm
 
@@ -474,6 +502,8 @@ Hiểu composition thay vì subclass explosion.
 
 ## 15. Observer Pattern
 
+> Thực hành: [d15_observer](phase-03-clean-code-design-patterns/src/main/java/phase03/d15_observer/)
+
 ### Kiến thức cần nắm
 
 Một publisher thông báo nhiều subscribers khi event xảy ra.
@@ -503,6 +533,8 @@ Hiểu:
 ---
 
 ## 16. Template Method
+
+> Thực hành: [d16_template_method](phase-03-clean-code-design-patterns/src/main/java/phase03/d16_template_method/)
 
 ### Kiến thức cần nắm
 
@@ -543,6 +575,8 @@ abstract class Importer {
 
 ## 17. Proxy Pattern
 
+> Thực hành: [d17_proxy](phase-03-clean-code-design-patterns/src/main/java/phase03/d17_proxy/)
+
 ### Kiến thức cần nắm
 
 Proxy kiểm soát access tới object khác.
@@ -569,6 +603,8 @@ Spring AOP là ví dụ quan trọng để nghiên cứu.
 ---
 
 ## 18. Singleton
+
+> Thực hành: [d18_singleton](phase-03-clean-code-design-patterns/src/main/java/phase03/d18_singleton/)
 
 ### Kiến thức cần nắm
 
@@ -598,6 +634,8 @@ Phân biệt Singleton pattern và singleton scope của DI container.
 ---
 
 ## 19. Clean Code Fundamentals
+
+> Thực hành: [d19_clean_code](phase-03-clean-code-design-patterns/src/main/java/phase03/d19_clean_code/)
 
 ### Kiến thức cần nắm
 
@@ -637,6 +675,8 @@ Loại bỏ duplication có ý nghĩa, nhưng tránh abstraction giả.
 ---
 
 ## 20. Testability as a Design Signal
+
+> Thực hành: [d20_testability](phase-03-clean-code-design-patterns/src/main/java/phase03/d20_testability/)
 
 ### Kiến thức cần nắm
 
@@ -681,6 +721,8 @@ Dependencies explicit và thay thế được trong test.
 ---
 
 ## Architecture Exercise
+
+> Thực hành: [d21_capstone](phase-03-clean-code-design-patterns/src/main/java/phase03/d21_capstone/)
 
 Cho code:
 
@@ -744,6 +786,8 @@ Phải giải thích được:
 ---
 
 ## Pattern Selection Exercise
+
+> Thực hành: [d21_capstone](phase-03-clean-code-design-patterns/src/main/java/phase03/d21_capstone/)
 
 Đưa ra các tình huống sau và yêu cầu ứng viên chọn giải pháp kèm lý do.
 
