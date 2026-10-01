@@ -28,6 +28,7 @@ class Ex01_RectangleSquareTest {
     void q02_growWidthBreaksRectangle() {
         Ex01_RectangleSquare.Rectangle rectangle = new Ex01_RectangleSquare.Rectangle(2, 3);
         assertEquals(6, rectangle.rotate(), "Xoay không đổi diện tích hình chữ nhật.");
+        assertEquals(9, new Ex01_RectangleSquare.Square(3).rotate());
     }
 
     @Test

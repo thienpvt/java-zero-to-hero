@@ -26,14 +26,18 @@ class Ex01_PaymentSwitchTest {
     @Test
     @DisplayName("Q2: switch cho đúng phí CARD và WALLET")
     void q02_switchFees() {
+        assertEquals(200, Ex01_PaymentSwitch.feeCents("CARD", 10_000));
         assertEquals(200, new Ex01_PaymentSwitch.CardPolicy().feeCents(10_000));
+        assertEquals(100, Ex01_PaymentSwitch.feeCents("WALLET", 10_000));
         assertEquals(100, new Ex01_PaymentSwitch.WalletPolicy().feeCents(10_000));
     }
 
     @Test
     @DisplayName("Q2: policy cho cùng phí với switch")
     void q02_policyFees() {
+        assertEquals(200, Ex01_PaymentSwitch.feeCents("CARD", 10_000));
         assertEquals(200, new Ex01_PaymentSwitch.CardPolicy().feeCents(10_000));
+        assertEquals(100, Ex01_PaymentSwitch.feeCents("WALLET", 10_000));
         assertEquals(100, new Ex01_PaymentSwitch.WalletPolicy().feeCents(10_000));
         assertEquals("CARD", new Ex01_PaymentSwitch.CardPolicy().name());
     }
