@@ -7,7 +7,7 @@ package phase03.d03_lsp;
  * Cần làm trước: Ex01_RectangleSquare.
  * Cách làm: chạy test trong Ex02_FatContractTest bằng nút ▶ (Ctrl+Shift+F10).
  * <p>
- * Ví dụ Q4 [DỰ ĐOÁN + CODE] Khi nào composition tốt hơn inheritance?
+ * Q4 [DỰ ĐOÁN + CODE] Khi nào composition tốt hơn inheritance?
  *   Bắt đầu   : điền Q4_COMPOSITION_OVER_INHERITANCE, rồi cài {@code DocumentPrinter.print}
  *               bằng cách gọi {@code printer.print} (composition), không kéo dài class cha.
  *   Kiểm chứng: chạy q04_prediction và q04_printerDelegates.
