@@ -61,7 +61,7 @@ class Ex01_OrderServiceSplitTest {
     @Test
     @DisplayName("Q5: luồng đặt hàng ghép ba trách nhiệm đã tách")
     void q05_placeOrder() {
-        assertEquals("VIP:4000", Ex01_OrderServiceSplit.placeOrder(ORDER));
+        assertEquals("VIP:4000|Đã đặt book,Đã đặt pen", Ex01_OrderServiceSplit.placeOrder(ORDER));
         assertThrows(IllegalArgumentException.class,
                 () -> Ex01_OrderServiceSplit.placeOrder(
                         new Ex01_OrderServiceSplit.OrderRequest("bob", List.of(), false)));

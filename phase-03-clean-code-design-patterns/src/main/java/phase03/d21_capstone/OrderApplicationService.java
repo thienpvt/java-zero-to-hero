@@ -24,15 +24,15 @@ import java.util.List;
  *   Kiểm chứng: chạy b03_declinedPaymentDoesNotPersistOrPublish.
  *   Hoàn thành khi: trạng thái đúng và repository còn rỗng.
  * <p>
- * B4 [CODE] Charge thành công nhưng lưu đơn thất bại không được giả định rollback charge.
- *   Bắt đầu   : trả PAYMENT_CHARGED_ORDER_NOT_SAVED kèm paymentReference.
- *   Kiểm chứng: chạy b04_chargeThenSaveFailureKeepsExternalChargeVisible.
- *   Hoàn thành khi: charge còn trong fake, đơn chưa được lưu.
+ * B4 [CODE] Charge thành công nhưng kết quả lưu đơn không rõ, không được giả định rollback charge.
+ *   Bắt đầu   : trả SAVE_OUTCOME_UNKNOWN kèm paymentReference; kiểm tra repository trước khi retry.
+ *   Kiểm chứng: chạy b04_chargeThenSaveFailureKeepsExternalChargeVisible và b04_saveResponseLostDoesNotClaimOrderAbsent.
+ *   Hoàn thành khi: charge còn trong fake, kể cả khi lưu đã commit rồi response bị mất.
  * <p>
- * B5 [CODE] Publish thất bại sau khi lưu không được làm mất đơn.
- *   Bắt đầu   : trả PUBLISH_FAILED, giữ đơn trong repository.
- *   Kiểm chứng: chạy b05_publishFailureKeepsCommittedOrder.
- *   Hoàn thành khi: đơn đã lưu còn nguyên dù event không phát.
+ * B5 [CODE] Publish báo lỗi sau khi lưu không được làm mất đơn.
+ *   Bắt đầu   : trả PUBLISH_OUTCOME_UNKNOWN vì event có thể đã tới người nhận; giữ đơn trong repository.
+ *   Kiểm chứng: chạy b05_publishFailureKeepsCommittedOrder và b05_publishResponseLostDoesNotClaimEventAbsent.
+ *   Hoàn thành khi: đơn đã lưu còn nguyên và không tuyên bố chắc event chưa phát.
  * <p>
  * B6 [TỰ TRẢ LỜI] Điểm commit, idempotent retry và outbox nằm ở đâu?
  *   Bắt đầu   : viết ANSWER B6 sau khi các test xanh.
@@ -62,7 +62,7 @@ public final class OrderApplicationService {
     }
 
     public enum OrderStatus {
-        SAVED, PAYMENT_DECLINED, PAYMENT_CHARGED_ORDER_NOT_SAVED, PUBLISH_FAILED
+        SAVED, PAYMENT_DECLINED, SAVE_OUTCOME_UNKNOWN, PUBLISH_OUTCOME_UNKNOWN
     }
 
     public record Order(String id, String customer, long totalCents) { }
@@ -105,6 +105,9 @@ public final class OrderApplicationService {
         // SOLUTION-BEGIN throw B2
         long total = pricing.totalCents(request);
         String id = "o-" + nextOrderNumber++;
+        if (total > 100_000) {
+            return new CheckoutResult(OrderStatus.PAYMENT_DECLINED, "", total);
+        }
         PaymentResult charged = payment.charge(total);
         if (!charged.approved()) {
             return new CheckoutResult(OrderStatus.PAYMENT_DECLINED, charged.reference(), total);
@@ -113,12 +116,12 @@ public final class OrderApplicationService {
         try {
             orders.save(order);
         } catch (RuntimeException failure) {
-            return new CheckoutResult(OrderStatus.PAYMENT_CHARGED_ORDER_NOT_SAVED, charged.reference(), total);
+            return new CheckoutResult(OrderStatus.SAVE_OUTCOME_UNKNOWN, charged.reference(), total);
         }
         try {
             events.publish(order);
         } catch (RuntimeException failure) {
-            return new CheckoutResult(OrderStatus.PUBLISH_FAILED, charged.reference(), total);
+            return new CheckoutResult(OrderStatus.PUBLISH_OUTCOME_UNKNOWN, charged.reference(), total);
         }
         return new CheckoutResult(OrderStatus.SAVED, charged.reference(), total);
         // SOLUTION-END
@@ -127,10 +130,10 @@ public final class OrderApplicationService {
 
 /* ANSWER B6:
  * SOLUTION-BEGIN
- * Điểm commit cục bộ là lần lưu đơn thành công ở OrderRepository. Charge trước đó chạy ở hệ ngoài;
- * transaction cục bộ không thể hoàn tác tiền đã thu khi lưu hoặc publish thất bại.
- * Retry charge cần cùng một idempotency key để không thu hai lần. Outbox cần ghi event và đơn trong
- * cùng transaction cục bộ, rồi worker gửi event và retry an toàn ở giai đoạn sau.
+ * Điểm commit cục bộ là lần lưu đơn thành công ở OrderRepository. Khi save ném lỗi, caller chưa biết
+ * commit đã xảy ra chưa; khi publish ném lỗi, event có thể đã được gửi. Không retry mù cả checkout.
+ * Charge chạy ở hệ ngoài và transaction cục bộ không hoàn tác tiền đã thu. Retry charge cần cùng
+ * idempotency key; outbox ghi event và đơn trong một transaction, worker gửi lại có xử lý trùng.
  * Port chỉ xuất hiện tại ranh giới payment, persistence, publish; không tạo interface cho mỗi phép tính.
  * SOLUTION-END
  */

@@ -27,7 +27,9 @@ class CheckoutTest {
         final List<String> events = new ArrayList<>();
         boolean decline;
         boolean failSave;
+        boolean failSaveAfterCommit;
         boolean failPublish;
+        boolean failPublishAfterDelivery;
 
         OrderApplicationService service() {
             return new OrderApplicationService(
@@ -40,10 +42,12 @@ class CheckoutTest {
                     order -> {
                         if (failSave) throw new IllegalStateException("save failed");
                         saved.put(order.id(), order);
+                        if (failSaveAfterCommit) throw new IllegalStateException("save response lost");
                     },
                     order -> {
                         if (failPublish) throw new IllegalStateException("publish failed");
                         events.add(order.id());
+                        if (failPublishAfterDelivery) throw new IllegalStateException("publish response lost");
                     });
         }
     }
@@ -66,6 +70,18 @@ class CheckoutTest {
     }
 
     @Test
+    void b02_largeOrderPreservesAutomaticDecline() {
+        FakeSystems fake = new FakeSystems();
+        CheckoutResult result = fake.service().checkout(new OrderRequest("bob",
+                List.of(new LineItem("tv", 100_000, 2)), false));
+        assertEquals(OrderStatus.PAYMENT_DECLINED, result.status());
+        assertEquals(200_000, result.totalCents());
+        assertTrue(fake.charges.isEmpty());
+        assertTrue(fake.saved.isEmpty());
+        assertTrue(fake.events.isEmpty());
+    }
+
+    @Test
     void b03_declinedPaymentDoesNotPersistOrPublish() {
         FakeSystems fake = new FakeSystems();
         fake.decline = true;
@@ -80,10 +96,21 @@ class CheckoutTest {
         FakeSystems fake = new FakeSystems();
         fake.failSave = true;
         CheckoutResult result = fake.service().checkout(REQUEST);
-        assertEquals(OrderStatus.PAYMENT_CHARGED_ORDER_NOT_SAVED, result.status());
+        assertEquals(OrderStatus.SAVE_OUTCOME_UNKNOWN, result.status());
         assertEquals("ref-4000", result.paymentReference());
         assertEquals(List.of(4_000L), fake.charges);
         assertTrue(fake.saved.isEmpty());
+    }
+
+    @Test
+    void b04_saveResponseLostDoesNotClaimOrderAbsent() {
+        FakeSystems fake = new FakeSystems();
+        fake.failSaveAfterCommit = true;
+        CheckoutResult result = fake.service().checkout(REQUEST);
+        assertEquals(OrderStatus.SAVE_OUTCOME_UNKNOWN, result.status());
+        assertEquals("ref-4000", result.paymentReference());
+        assertEquals(4_000, fake.saved.get("o-1").totalCents());
+        assertEquals(List.of(4_000L), fake.charges);
     }
 
     @Test
@@ -91,9 +118,19 @@ class CheckoutTest {
         FakeSystems fake = new FakeSystems();
         fake.failPublish = true;
         CheckoutResult result = fake.service().checkout(REQUEST);
-        assertEquals(OrderStatus.PUBLISH_FAILED, result.status());
+        assertEquals(OrderStatus.PUBLISH_OUTCOME_UNKNOWN, result.status());
         assertEquals(4_000, fake.saved.get("o-1").totalCents());
         assertTrue(fake.events.isEmpty());
+    }
+
+    @Test
+    void b05_publishResponseLostDoesNotClaimEventAbsent() {
+        FakeSystems fake = new FakeSystems();
+        fake.failPublishAfterDelivery = true;
+        CheckoutResult result = fake.service().checkout(REQUEST);
+        assertEquals(OrderStatus.PUBLISH_OUTCOME_UNKNOWN, result.status());
+        assertEquals(List.of("o-1"), fake.events);
+        assertEquals(4_000, fake.saved.get("o-1").totalCents());
     }
 
     @Test

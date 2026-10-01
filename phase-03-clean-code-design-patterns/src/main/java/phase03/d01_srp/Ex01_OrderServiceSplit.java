@@ -117,12 +117,12 @@ public class Ex01_OrderServiceSplit {
 
     /**
      * Luồng đặt hàng đã tách trách nhiệm: kiểm tra, tính tiền, lấy trạng thái, sinh thông báo.
-     * Trả {@code status + ":" + totalCents}.
+     * Trả trạng thái và tổng tiền kèm các thông báo mặt hàng theo thứ tự.
      */
     static String placeOrder(OrderRequest request) {
         // SOLUTION-BEGIN throw Q5
         long total = totalCents(request.items());
-        return statusFor(request) + ":" + total;
+        return statusFor(request) + ":" + total + "|" + String.join(",", notificationsFor(request));
         // SOLUTION-END
     }
 }

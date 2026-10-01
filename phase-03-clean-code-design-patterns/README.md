@@ -55,7 +55,7 @@ Caller → OrderApplicationService → PricingPolicy (logic thuần)
                                  → EventPublisher (hệ sự kiện ngoài)
 ```
 
-`CoupledOrderServiceTest` ghi lại tổng tiền, charge, lưu đơn và event trước refactor; `CheckoutTest` kiểm cùng hành vi và lỗi sau refactor. Charge thành công nhưng `save` thất bại trả `PAYMENT_CHARGED_ORDER_NOT_SAVED` cùng payment reference; không có rollback cục bộ nào hoàn tiền ở hệ ngoài. Publish lỗi giữ đơn đã lưu và trả `PUBLISH_FAILED`. Retry charge về sau cần idempotency key; publish tin cậy cần outbox ghi event cùng transaction với đơn rồi phát lại. Không bọc network call bằng `@Transactional` và coi đó là giao dịch phân tán.
+`CoupledOrderServiceTest` ghi lại tổng tiền, charge, lưu đơn và event trước refactor; `CheckoutTest` kiểm cùng hành vi và lỗi sau refactor. Charge thành công nhưng `save` báo lỗi trả `SAVE_OUTCOME_UNKNOWN` cùng payment reference: repository có thể đã commit trước khi response mất. Publish báo lỗi giữ đơn đã lưu và trả `PUBLISH_OUTCOME_UNKNOWN`: event có thể đã đến người nhận. Không retry mù toàn bộ checkout. Retry charge về sau cần idempotency key; publish tin cậy cần outbox ghi event cùng transaction với đơn rồi phát lại có xử lý trùng. Không bọc network call bằng `@Transactional` và coi đó là giao dịch phân tán.
 
 Chỉ các hệ ngoài có port để thay bằng fake; tính giá thuần test trực tiếp. Bài mẫu chưa triển khai refund, inventory, invoice PDF, HTTP hay broker thật: thêm boundary tương ứng khi yêu cầu và failure policy cụ thể xuất hiện.
 

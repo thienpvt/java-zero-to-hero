@@ -27,7 +27,9 @@ class Ex01_RectangleSquareTest {
     @DisplayName("Q2: caller Rectangle bị phá nếu Square độc lập cạnh")
     void q02_growWidthBreaksRectangle() {
         Ex01_RectangleSquare.Rectangle rectangle = new Ex01_RectangleSquare.Rectangle(2, 3);
-        assertEquals(6, rectangle.rotate(), "Xoay không đổi diện tích hình chữ nhật.");
+        assertEquals(12, Ex01_RectangleSquare.growWidth(rectangle, 4));
+        assertEquals(12, rectangle.areaMm2());
+        assertEquals(6, new Ex01_RectangleSquare.Rectangle(2, 3).rotate());
         assertEquals(9, new Ex01_RectangleSquare.Square(3).rotate());
     }
 
