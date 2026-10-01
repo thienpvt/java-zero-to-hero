@@ -15,6 +15,7 @@
     <module>phase-00-java-basics</module>
     <module>phase-01-core-advanced</module>
     <module>phase-02-jvm-concurrency</module>
+    <module>phase-03-clean-code-design-patterns</module>
   </modules>
 
   <properties>
