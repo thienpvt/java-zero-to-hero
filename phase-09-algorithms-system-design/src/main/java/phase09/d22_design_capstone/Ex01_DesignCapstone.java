@@ -41,6 +41,85 @@ package phase09.d22_design_capstone;
  * Run only with local app and valid telemetry; missing token/app/CSV must fail explicitly, never report zero wait.
  * Static examples, if any, are illustrative only and cannot be presented as measured evidence.
  */
+/* MODEL B1:
+ * SOLUTION-BEGIN
+ * Reference reasoning — proposed design, not a description of a built Phase05 capstone.
+ *
+ * Assumptions and target: modular order service serves browse, create-order and read-order flows.
+ * Illustrative SLO target is 99.9% monthly availability and p95 read latency below 300 ms;
+ * these are design targets, not measured SLOs. Workload estimate: 100 read RPS and 10 write RPS
+ * average, peak factor 5; confirm from product traffic before sizing. Keep estimates separate from
+ * production evidence. Store orders for the stated business retention period; exact legal/product
+ * retention is an input still requiring confirmation.
+ *
+ * Request/data flow: client calls authenticated API; product reads use GET /api/products?page=0&size=20.
+ * Order creation validates request and authorization, then one application service coordinates a
+ * database transaction owning order, order_items and inventory changes. Database owns durable state
+ * and constraints; API owns request/response contract. Return an order ID/status only after commit.
+ * Order reads authorize access to that specific customer/order record. A future POST order endpoint
+ * should accept an idempotency key scoped to principal and operation, persist key + outcome in the same
+ * transaction, and return the original outcome on replay. This is a proposed extension, not a claim
+ * that current Phase05 APIs implement idempotency.
+ *
+ * Start with a modular monolith: one deployable and one relational transaction boundary make order /
+ * inventory invariants and local operations understandable; modules separate catalog, ordering and
+ * persistence ownership without premature distributed transactions. Non-goals: microservices,
+ * distributed cache/broker, multi-region writes, and production load claims. Add components only after
+ * measured bottleneck or independent scaling/availability requirements justify their operational cost.
+ *
+ * Inventory invariant across concurrent requests and instances: never rely on a Java in-process lock.
+ * In the order transaction, conditionally decrement with `UPDATE products SET stock = stock - :qty`
+ * `WHERE id = :id AND stock >= :qty`; require exactly one affected row per item. Insert order rows and
+ * commit together; any missing/insufficient item rolls back the whole transaction. Database row locks /
+ * atomic conditional update serialize competing writers across instances. Enforce positive quantity,
+ * foreign keys and unique order identity at the database boundary as defense in depth. Retry a detected
+ * serialization/deadlock failure only within a small bounded budget; rerun the whole transaction.
+ *
+ * Failure scenarios and signals:
+ * 1. Database slow/unavailable: set a short request/connection-acquisition timeout within the API
+ *    deadline; fail with stable retryable 503, do not wait indefinitely. Observe p95/p99, error rate,
+ *    pool acquisition duration, active/timeout connections and DB saturation. Shed load rather than
+ *    retrying every request without a budget.
+ * 2. Client times out after order commit, then retries: GET is safe to retry. For the proposed POST,
+ *    the persisted idempotency key returns the same committed order instead of creating a duplicate;
+ *    without that extension, caller must not assume replay safety. Observe duplicate-key/replay counts,
+ *    request correlation ID and order outcome.
+ * 3. Two instances reserve final stock concurrently: the conditional update lets at most one transaction
+ *    affect a row; the loser rolls back and receives an explicit unavailable-stock conflict. Observe
+ *    rejected reservations, transaction conflicts/deadlocks and stock/order invariant checks.
+ * 4. One app instance is lost: load balancer removes unhealthy instance; requests may be retried only
+ *    under the same operation idempotency contract. Observe instance health, 5xx and recovery time.
+ *
+ * Security: validate bearer authentication and required scope at API boundary; authorize each order by
+ *    owner, not merely by possession of an ID. Use least-privilege DB credentials and TLS in deployed
+ *    environments. Never log bearer tokens, payment secrets or unnecessary personal data; log
+ *    correlation ID and outcome only. Use disposable local data for experiments; delete it afterward.
+ * Confirm retention/deletion policy with product/legal owner before production use.
+ *
+ * Trade-off: choose synchronous relational transaction for stock correctness over eventual consistency
+ *    or a broker-first workflow, which could oversell or require compensation. Reject an in-process lock
+ *    because multiple instances do not share it. Reconsider an outbox for reliable post-commit events,
+ *    read replicas for proven read pressure, or service extraction only after evidence: query plans,
+ *    sustained CPU/IO/pool saturation, measured replica lag, independent team/deploy need, and an
+ *    explicit consistency/failure model.
+ *
+ * Reproducible local experiment: Phase05 application and disposable local DB are prerequisites and are
+ *    currently absent. When available, keep dataset, page size 20, concurrency 4, cap 1000 requests and
+ *    duration 5 seconds fixed; perform two warmups; compare baseline pool=4 against one changed setting
+ *    (for example pool=8), changing nothing else. Use existing
+ *    phase09.d18_database_scaling.Ex01_DatabaseScaling only: bounded loopback GET
+ *    `/api/products?page=0&size=20`, `PHASE09_BEARER_TOKEN` from the environment, saved baseline/changed
+ *    summaries and the existing four-snapshot CSV (`run,snapshot,capturedAtUtc,metricName,pool,count,totalTimeSeconds`).
+ *    Export protected `hikaricp.connections.acquire` with metrics.read; compare only matching, fresh
+ *    start/end snapshots bracketing each request window. Record setup, app/DB versions, dataset,
+ *    concurrency, timestamps, chosen setting, throughput, p95, errors, and acquisition delta/mean
+ *    separately. Acquisition is pool wait plus acquisition overhead, not pure queue wait; do not
+ *    compare it as HTTP latency. Missing app/token/telemetry or zero counter delta is a failed run.
+ *    Actual result: PENDING / NOT RUN; no numeric measurements exist. Do not invent before/after values
+ *    or claim this design target was achieved. These static assumptions and scenarios are illustrative
+ *    reference reasoning; reviewer should assess their correctness, not keywords.
+ * SOLUTION-END
+ */
 final class Ex01_DesignCapstone {
     private Ex01_DesignCapstone() {}
 }
