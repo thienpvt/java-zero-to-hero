@@ -1,0 +1,15 @@
+package phase05.d17_capstone;
+
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
+
+/** B2: provided HTTP validation metadata; constructor also guards non-MVC callers. */
+public record LineRequest(@Positive long productId, @Min(1) @Max(1000) int quantity) {
+    public LineRequest {
+        // SOLUTION-BEGIN throw B2
+        if (productId <= 0) throw new IllegalArgumentException("productId must be positive");
+        if (quantity < 1 || quantity > 1000) throw new IllegalArgumentException("quantity must be 1–1000");
+        // SOLUTION-END
+    }
+}
