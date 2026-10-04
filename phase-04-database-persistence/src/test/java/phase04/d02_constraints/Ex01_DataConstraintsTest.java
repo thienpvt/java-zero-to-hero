@@ -1,7 +1,9 @@
 package phase04.d02_constraints;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -28,8 +30,12 @@ class Ex01_DataConstraintsTest {
 
     @Test @DisplayName("Q5 — Thí nghiệm: explicit NULL và default")
     void q05_experimentRuns() throws SQLException {
-        assertSqlState("23502", () -> insertOrder("NULL", "CURRENT_TIMESTAMP"));
-        assertSqlState("23514", () -> update("UPDATE products SET price=-1 WHERE id=1"));
+        try (var c = fixture.dataSource().getConnection(); var s = c.createStatement();
+                var rs = s.executeQuery("INSERT INTO orders(id,customer_id,status) VALUES (2,1,'NEW') RETURNING created_at")) {
+            assertTrue(rs.next());
+            assertNotNull(rs.getTimestamp("created_at"));
+        }
+        assertSqlState("23502", () -> update("INSERT INTO orders(id,customer_id,status,created_at) VALUES (3,1,'NEW',NULL)"));
     }
 
     @Test @DisplayName("B2 — DB từ chối giá, quantity, trạng thái và tồn kho sai")
@@ -44,12 +50,6 @@ class Ex01_DataConstraintsTest {
     private static void insertItem(String columns, String values) throws SQLException {
         try (var c = fixture.dataSource().getConnection(); var s = c.createStatement()) {
             s.executeUpdate("INSERT INTO order_items(order_id,product_id," + columns + ") VALUES (1,1," + values + ")");
-        }
-    }
-
-    private static void insertOrder(String customerId, String createdAt) throws SQLException {
-        try (var c = fixture.dataSource().getConnection(); var s = c.createStatement()) {
-            s.executeUpdate("INSERT INTO orders(customer_id,status,created_at) VALUES (" + customerId + ",'NEW'," + createdAt + ")");
         }
     }
 
