@@ -335,6 +335,20 @@ class Ex01_DatabaseScalingTest {
         } finally { server.stop(0); }
     }
 
+    @Test void b1_cliDefaultsKeepRequestCountExplicit() throws Exception {
+        AtomicInteger calls = new AtomicInteger(); HttpServer server = server();
+        server.createContext("/api/products", exchange -> {
+            calls.incrementAndGet(); exchange.sendResponseHeaders(200, -1); exchange.close();
+        });
+        server.start();
+        try (var out = new java.io.PrintStream(new java.io.ByteArrayOutputStream())) {
+            Path output = temp.resolve("explicit-cap.properties");
+            assertEquals(0, cli(new String[]{"run", "baseline", uri(server).toString(), "3", "pool=4",
+                    "--output", output.toString()}, "local-test-token", out));
+            assertEquals(3, readRun(output).samples()); assertEquals(5, calls.get());
+        } finally { server.stop(0); }
+    }
+
     private static HttpServer server() throws Exception {
         return HttpServer.create(new InetSocketAddress(InetAddress.getByName("127.0.0.1"), 0), 0);
     }

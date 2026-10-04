@@ -80,7 +80,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * 2xx thành công, mọi lỗi khác ghi errors; CLI lỗi trả UNAVAILABLE và exit 1.
  * <p>
  * CLI: run baseline http://127.0.0.1:8080 4 1000 5 pool=4 --output baseline.properties
- * (bỏ cả ba số để dùng mặc định 4/1000/5); lặp changed sau đổi setting.
+ * (dạng ngắn: run baseline http://127.0.0.1:8080 1000 pool=4 --output baseline.properties,
+ * vẫn bắt buộc requests, mặc định concurrency=4/duration=5s); lặp changed sau đổi setting.
  * compare baseline.properties changed.properties telemetry.csv
  * Export actual protected Actuator metric bằng PowerShell, scope metrics.read; không poll/parse JSON.
  * Hoàn thành khi: tests hợp đồng xanh và báo cáo actual HTTP/pool độc lập kèm cấu hình,
@@ -102,14 +103,14 @@ public class Ex01_DatabaseScaling {
                 var report = compare(readRun(Path.of(args[1])), readRun(Path.of(args[2])), Path.of(args[3]));
                 printRun(report.baseline(), report.baselineAcquisition(), out);
                 printRun(report.changed(), report.changedAcquisition(), out);
-            } else if ((args.length == 9 || args.length == 6) && args[0].equals("run")) {
-                boolean defaults = args.length == 6;
-                int label = defaults ? 3 : 6;
+            } else if ((args.length == 9 || args.length == 7) && args[0].equals("run")) {
+                boolean defaults = args.length == 7;
+                int label = defaults ? 4 : 6;
                 if (!args[label + 1].equals("--output")) throw unavailable();
                 Path output = Path.of(args[label + 2]);
                 if (Files.exists(output)) throw unavailable();
                 HttpRun result = measureRun(args[1], URI.create(args[2]), token,
-                        defaults ? 4 : Integer.parseInt(args[3]), defaults ? 1000 : Integer.parseInt(args[4]),
+                        defaults ? 4 : Integer.parseInt(args[3]), Integer.parseInt(args[defaults ? 3 : 4]),
                         Duration.ofSeconds(2), Duration.ofSeconds(defaults ? 5 : Long.parseLong(args[5])), args[label]);
                 if (result.errors() != 0) throw unavailable();
                 writeRun(result, output);
