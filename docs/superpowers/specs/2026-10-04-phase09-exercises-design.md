@@ -1,6 +1,6 @@
 # Đặc tả bài tập Giai đoạn 9 — Algorithms & System Design
 
-Ngày: 2026-10-04  
+Ngày: 2026-10-04
 Trạng thái: chờ rà soát; nội dung Q phải khớp nguyên văn `09-algorithms-system-design.md`
 
 ## Mục tiêu và phạm vi
