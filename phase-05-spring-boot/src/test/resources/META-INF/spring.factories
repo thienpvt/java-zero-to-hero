@@ -1,0 +1,1 @@
+org.springframework.boot.env.EnvironmentPostProcessor=phase05.d17_capstone.CapstoneTestRuntime

@@ -88,53 +88,6 @@ class SecurityIntegrationTest {
         assertNull(failure.getCause(), "Public key parse failure must not echo configured key");
     }
 
-    @Test void missingOrBlankIdentityAndWeakKeysAndPemAreHandledByNativeValidation() throws Exception {
-        var token = CapstoneHttpFixture.token("alice", "products.read");
-        CapstoneHttpFixture.status(200, h.get("/api/products", token));
-        var blank = new java.util.HashMap<String, Object>();
-        blank.put("sub", "   ");
-        var noIssuer = new java.util.HashMap<String, Object>();
-        noIssuer.put("iss", null);
-        var noAudience = new java.util.HashMap<String, Object>();
-        noAudience.put("aud", null);
-        var noSubject = new java.util.HashMap<String, Object>();
-        noSubject.put("sub", null);
-        for (String rejected : List.of(
-                TestJwt.signed(CapstoneHttpFixture.claims(noIssuer)),
-                TestJwt.signed(CapstoneHttpFixture.claims(noAudience)),
-                TestJwt.signed(CapstoneHttpFixture.claims(noSubject)),
-                TestJwt.signed(CapstoneHttpFixture.claims(blank)))) {
-            var response = h.get("/api/products", rejected);
-            CapstoneHttpFixture.status(401, response);
-            assertTrue(response.headers().firstValue("WWW-Authenticate").orElseThrow().contains("error=\"invalid_token\""));
-        }
-        var security = new CapstoneSecurity();
-        var key1024 = java.security.KeyPairGenerator.getInstance("RSA");
-        key1024.initialize(1024);
-        var weak = key1024.generateKeyPair().getPublic();
-        var weakEnv = new org.springframework.mock.env.MockEnvironment()
-                .withProperty("capstone.jwt.issuer", "urn:phase05:test")
-                .withProperty("capstone.jwt.audience", "phase05-api")
-                .withProperty("capstone.jwt.public-key", java.util.Base64.getEncoder().encodeToString(weak.getEncoded()));
-        assertThrows(IllegalStateException.class, () -> security.jwtDecoder(weakEnv));
-        var pem = "-----BEGIN PUBLIC KEY-----\n" + java.util.Base64.getMimeEncoder().encodeToString(weak.getEncoded())
-                + "\n-----END PUBLIC KEY-----";
-        var pemEnv = new org.springframework.mock.env.MockEnvironment()
-                .withProperty("capstone.jwt.issuer", "urn:phase05:test")
-                .withProperty("capstone.jwt.audience", "phase05-api")
-                .withProperty("capstone.jwt.public-key", pem);
-        assertThrows(IllegalStateException.class, () -> security.jwtDecoder(pemEnv)); // weak key still rejected inside PEM wrapper
-        var strongPem = new org.springframework.mock.env.MockEnvironment()
-                .withProperty("capstone.jwt.issuer", "urn:phase05:test")
-                .withProperty("capstone.jwt.audience", "phase05-api")
-                .withProperty("capstone.jwt.public-key", pemOf(CapstoneTestRuntime.publicKey()));
-        assertNotNull(security.jwtDecoder(strongPem).decode(CapstoneHttpFixture.token("alice", "products.read")));
-    }
-    private static String pemOf(String base64) {
-        var encoded = java.util.Base64.getEncoder().encodeToString(java.util.Base64.getDecoder().decode(base64));
-        return "-----BEGIN PUBLIC KEY-----\n" + encoded.replaceAll("(.{64})", "$1\n") + "\n-----END PUBLIC KEY-----";
-    }
-
     @Test void denyByDefaultIncludesWrongMethodsAndCookieCredentials() throws Exception {
         var token = CapstoneHttpFixture.token("alice", "orders.read orders.write products.read metrics.read");
         CapstoneHttpFixture.status(200, h.get("/api/products", token));

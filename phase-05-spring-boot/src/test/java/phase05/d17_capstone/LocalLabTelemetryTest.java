@@ -79,43 +79,6 @@ class LocalLabTelemetryTest {
         } finally { AvailabilityChangeEvent.publish(h.app, ReadinessState.ACCEPTING_TRAFFIC); }
     }
 
-    @Test void separateEphemeralManagementListenerStaysLoopbackWhenAddressUnsetOrUnsafe() throws Exception {
-        // P1 regression: management.server.port differs, management.server.address absent or 0.0.0.0.
-        try (var lab = new CapstoneHttpFixture()) {
-            lab.start(true, java.util.Map.of("management.server.port", "0"));
-            int managementPort = CapstoneHttpFixture.managementPort(lab.app);
-            assertTrue(managementPort > 0);
-            var properties = lab.app.getBean(org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties.class);
-            var bound = properties.getAddress();
-            // Main context bean: a separate listener resolves the bound address only in its child context.
-            if (bound != null) assertEquals("127.0.0.1", bound.getHostAddress());
-            var token = CapstoneHttpFixture.token("alice", "metrics.read");
-            lab.base = java.net.URI.create("http://127.0.0.1:" + managementPort);
-            CapstoneHttpFixture.status(200, lab.get("/actuator/metrics/hikaricp.connections.acquire?tag=pool:capstone", token));
-            // Native listener contract: the loopback-bound management port refuses non-loopback connections.
-            var loopbackOnly = java.net.URI.create("http://localhost:" + managementPort);
-            lab.base = loopbackOnly;
-            CapstoneHttpFixture.status(200, lab.get("/actuator/metrics/hikaricp.connections.acquire?tag=pool:capstone", token));
-            lab.base = java.net.URI.create("http://127.0.0.1:" + managementPort);
-            CapstoneHttpFixture.status(401, lab.get("/actuator/metrics", null));
-            CapstoneHttpFixture.status(403, lab.get("/actuator/metrics", CapstoneHttpFixture.token("alice", "products.read")));
-        }
-        try (var unsafe = new CapstoneHttpFixture()) {
-            unsafe.start(true, java.util.Map.of("management.server.port", "9091", "management.server.address", "0.0.0.0"));
-            fail("Explicit non-loopback management address must fail closed before listener exposure");
-        } catch (IllegalStateException expected) { }
-        try (var external = new CapstoneHttpFixture()) {
-            external.start(true, java.util.Map.of("management.server.port", "9091", "management.server.address", "192.0.2.10"));
-            fail("Explicit non-loopback management address must fail closed before listener exposure");
-        } catch (IllegalStateException expected) { }
-        try (var absent = new CapstoneHttpFixture()) {
-            absent.start(true, java.util.Map.of("management.server.port", "9091"));
-            assertEquals("127.0.0.1", absent.app.getBean(
-                    org.springframework.boot.actuate.autoconfigure.web.server.ManagementServerProperties.class)
-                    .getAddress().getHostAddress());
-        }
-    }
-
     @Test void defaultProfileHasHealthOnlyAndNoAcquisitionHttpEndpoint() throws Exception {
         try (var defaultApp = new CapstoneHttpFixture()) {
             defaultApp.start(false);

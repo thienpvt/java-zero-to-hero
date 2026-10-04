@@ -34,9 +34,7 @@ final class CapstoneHttpFixture implements AutoCloseable {
         CapstoneSecurity.runtimeSettings(new SpringApplication(OrderApiApplication.class));
     }
 
-    void start(boolean localLab) { start(localLab, Map.of()); }
-
-    void start(boolean localLab, Map<String, Object> overrides) {
+    void start(boolean localLab) {
         if (app != null) return;
         db = PostgresFixture.start();
         var settings = new HashMap<String, Object>();
@@ -45,21 +43,11 @@ final class CapstoneHttpFixture implements AutoCloseable {
         settings.put("spring.datasource.password", db.password());
         settings.put("spring.datasource.hikari.connection-timeout", "5000");
         settings.put("spring.datasource.hikari.connection-init-sql", "SET statement_timeout='8s'");
-        settings.putAll(overrides);
         CapstoneTestRuntime.SETTINGS.set(settings);
-        Listeners.PORTS.clear();
         try {
-            var runArgs = new java.util.ArrayList<String>(java.util.List.of("--server.port=0",
+            app = SpringApplication.from(OrderApiApplication::main).run("--server.port=0",
                     "--spring.main.banner-mode=off", "--logging.level.root=WARN", "--spring.flyway.locations=",
-                    "--spring.profiles.active=" + (localLab ? "local-lab" : "default")));
-            for (var override : overrides.entrySet())
-                if (override.getKey().startsWith("management.server.") || override.getKey().startsWith("server.")) {
-                    runArgs.add("--" + override.getKey() + "=" + override.getValue());
-                    settings.remove(override.getKey());
-                }
-            CapstoneTestRuntime.SETTINGS.set(settings);
-            app = SpringApplication.from(OrderApiApplication::main).with(Listeners.class)
-                    .run(runArgs.toArray(String[]::new)).getApplicationContext();
+                    "--spring.profiles.active=" + (localLab ? "local-lab" : "default")).getApplicationContext();
             int port = ((WebServerApplicationContext) app).getWebServer().getPort();
             base = URI.create("http://127.0.0.1:" + port);
             jdbc = new JdbcTemplate(db.dataSource());
@@ -120,21 +108,6 @@ final class CapstoneHttpFixture implements AutoCloseable {
         return id;
     }
     static String orderJson() { return "{\"items\":[{\"productId\":11,\"quantity\":2}]}"; }
-
-    /** Provided listener: records every initialized server port, native event only. */
-    static final class Listeners implements org.springframework.context.ApplicationListener<org.springframework.boot.web.server.context.WebServerInitializedEvent> {
-        static final java.util.List<Integer> PORTS = new java.util.concurrent.CopyOnWriteArrayList<>();
-        @Override public void onApplicationEvent(org.springframework.boot.web.server.context.WebServerInitializedEvent event) {
-            PORTS.add(event.getWebServer().getPort());
-        }
-    }
-    static int managementPort(ConfigurableApplicationContext main) {
-        for (int index = Listeners.PORTS.size() - 1; index >= 0; index--) {
-            int port = Listeners.PORTS.get(index);
-            if (port != ((WebServerApplicationContext) main).getWebServer().getPort()) return port;
-        }
-        return -1;
-    }
     @Override public void close() {
         try { if (app != null) { app.close(); app = null; } }
         finally { try { client.close(); } finally { if (db != null) { db.close(); db = null; } } }

@@ -13,8 +13,7 @@ public class OrderApiApplication {
     public static void main(String[] args) {
         // SOLUTION-BEGIN throw B3
         var app = new SpringApplication(OrderApiApplication.class);
-        app.setDefaultProperties(java.util.Map.of("spring.jpa.open-in-view", false,
-                "spring.jpa.hibernate.ddl-auto", "validate"));
+        CapstoneSecurity.runtimeSettings(app);
         app.run(args);
         // SOLUTION-END
     }
