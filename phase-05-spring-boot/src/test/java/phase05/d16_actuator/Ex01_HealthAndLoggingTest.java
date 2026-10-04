@@ -114,6 +114,36 @@ class Ex01_HealthAndLoggingTest {
         assertFalse(output.getAll().contains(sentinel)); assertFalse(output.getAll().contains(invalid));
     }
 
+    @Test void unsupportedBasicIsMissingBearerNotInvalidToken(CapturedOutput output) throws Exception {
+        Map<String,Object> properties = Ex01_HealthAndLogging.properties(true);
+        String sentinel = "TASK4_UNSUPPORTED_AUTH_SENTINEL";
+        String invalid = TestJwt.signed(Map.of("iss", "urn:wrong:" + sentinel));
+        try (var db = PostgresFixture.start(); var app = start(db, properties, true)) {
+            assertEquals(200, get(app, "/api/products", token("products.read")).statusCode());
+            String port = app.getEnvironment().getRequiredProperty("local.server.port");
+            for (String authorization : List.of("Basic " + Base64.getEncoder().encodeToString(
+                    ("test-user:" + sentinel).getBytes(java.nio.charset.StandardCharsets.UTF_8)), "Other " + sentinel)) {
+                var request = HttpRequest.newBuilder(URI.create("http://127.0.0.1:" + port + "/api/products"))
+                        .header("Authorization", authorization).GET().build();
+                var missing = client.send(request, HttpResponse.BodyHandlers.ofString());
+                assertEquals(401, missing.statusCode());
+                assertEquals("Bearer", missing.headers().firstValue("WWW-Authenticate").orElseThrow());
+                assertEquals(401, json.readTree(missing.body()).get("status").asInt());
+                assertFalse(missing.body().contains(sentinel));
+            }
+            for (String bearer : List.of(invalid, "malformed:" + sentinel)) {
+                var rejected = get(app, "/api/products", bearer);
+                assertEquals(401, rejected.statusCode());
+                String challenge = rejected.headers().firstValue("WWW-Authenticate").orElseThrow();
+                assertTrue(challenge.contains("error=\"invalid_token\""));
+                assertFalse(challenge.contains("error_description"));
+                assertFalse(challenge.contains(sentinel)); assertFalse(challenge.contains(bearer));
+                assertFalse(rejected.body().contains(sentinel));
+            }
+        }
+        assertFalse(output.getAll().contains(sentinel)); assertFalse(output.getAll().contains(invalid));
+    }
+
     @Test void q04_readinessAndPoolTags_experimentRuns() throws Exception {
         Map<String,Object> properties = Ex01_HealthAndLogging.properties(true);
         try (var db = PostgresFixture.start(); var app = start(db, properties, true)) {

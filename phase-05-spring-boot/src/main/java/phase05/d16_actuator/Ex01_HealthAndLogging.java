@@ -6,6 +6,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2Error;
+import org.springframework.security.oauth2.server.resource.BearerTokenError;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationEntryPoint;
 import org.springframework.security.oauth2.server.resource.web.access.BearerTokenAccessDeniedHandler;
 import org.springframework.security.web.SecurityFilterChain;
@@ -80,10 +83,17 @@ public final class Ex01_HealthAndLogging {
         var bearer401 = new BearerTokenAuthenticationEntryPoint();
         var bearer403 = new BearerTokenAccessDeniedHandler();
         org.springframework.security.web.AuthenticationEntryPoint unauthorized = (request, response, failure) -> {
-            bearer401.commence(request, response, failure);
-            // Preserve Bearer semantics without exposing decoder exception descriptions.
-            response.setHeader("WWW-Authenticate", request.getHeader("Authorization") == null
-                    ? "Bearer" : "Bearer error=\"invalid_token\"");
+            var safeFailure = failure;
+            if (failure instanceof OAuth2AuthenticationException oauth) {
+                var error = oauth.getError();
+                OAuth2Error safeError = error instanceof BearerTokenError bearer
+                        ? new BearerTokenError(error.getErrorCode(), bearer.getHttpStatus(), null, error.getUri(), bearer.getScope())
+                        : new OAuth2Error(error.getErrorCode(), null, error.getUri());
+                safeFailure = new OAuth2AuthenticationException(safeError);
+            }
+            bearer401.commence(request, response, safeFailure);
+            // No OAuth2 failure means no Bearer credential, not an invalid token; lab has no metadata endpoint.
+            if (!(failure instanceof OAuth2AuthenticationException)) response.setHeader("WWW-Authenticate", "Bearer");
             response.setContentType("application/problem+json");
             response.getWriter().write("{\"type\":\"urn:phase05:authentication\",\"title\":\"Unauthorized\",\"status\":401,\"detail\":\"Authentication is required.\"}");
             Logger.getLogger(Ex01_HealthAndLogging.class.getName()).warning("security.authentication_failed");
