@@ -11,13 +11,11 @@ import java.util.TimeZone;
 import org.junit.jupiter.api.Test;
 
 class PostgresFixtureTest {
-    static {
-        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
-    }
-
     @Test
     void startsPostgres18AndExposesConnectionSettings() throws SQLException {
+        String defaultTimeZone = TimeZone.getDefault().getID();
         try (var fixture = PostgresFixture.start(); var connection = fixture.dataSource().getConnection(); var statement = connection.createStatement()) {
+            assertEquals(defaultTimeZone, TimeZone.getDefault().getID());
             try (var result = statement.executeQuery("SELECT 1")) {
                 result.next();
                 assertEquals(1, result.getInt(1));

@@ -1,5 +1,6 @@
 package phase05.support;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.Duration;
 import javax.sql.DataSource;
@@ -21,6 +22,7 @@ public final class PostgresFixture implements AutoCloseable {
                 .waitingFor(Wait.forListeningPort().withStartupTimeout(Duration.ofSeconds(120)));
         try {
             pg.start();
+            addSaigonTimezoneAlias(pg);
             PGSimpleDataSource ds = new PGSimpleDataSource();
             ds.setURL(pg.getJdbcUrl());
             ds.setUser(pg.getUsername());
@@ -33,6 +35,20 @@ public final class PostgresFixture implements AutoCloseable {
                 failure.addSuppressed(cleanupFailure);
             }
             throw failure;
+        }
+    }
+
+    private static void addSaigonTimezoneAlias(PostgreSQLContainer pg) {
+        try {
+            var result = pg.execInContainer("sh", "-c", "if [ -e /usr/share/zoneinfo/Asia/Saigon ]; then exit 0; fi; test -f /usr/share/zoneinfo/Asia/Ho_Chi_Minh && ln /usr/share/zoneinfo/Asia/Ho_Chi_Minh /usr/share/zoneinfo/Asia/Saigon");
+            if (result.getExitCode() != 0) {
+                throw new IllegalStateException("Cannot provision PostgreSQL Asia/Saigon timezone alias: " + result.getStderr());
+            }
+        } catch (InterruptedException failure) {
+            Thread.currentThread().interrupt();
+            throw new IllegalStateException("Cannot provision PostgreSQL Asia/Saigon timezone alias", failure);
+        } catch (IOException failure) {
+            throw new IllegalStateException("Cannot provision PostgreSQL Asia/Saigon timezone alias", failure);
         }
     }
 
