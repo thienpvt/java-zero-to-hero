@@ -43,21 +43,36 @@ class Ex01_HorizontalScaling {
 }
 
 /* ANSWER Q1:
- *
+ * SOLUTION-BEGIN
+ * Request kế tiếp có thể đến instance không giữ session nên mất state hoặc người dùng không nhất quán.
+ * Chuyển state sang nơi dùng chung phù hợp; affinity chỉ giữ routing và không chịu được mọi failure.
+ * SOLUTION-END
  */
 
 /* ANSWER Q2:
- *
+ * SOLUTION-BEGIN
+ * Sticky session giảm đổi instance giữa request khi instance còn sống; nó không chia sẻ hay bảo vệ state.
+ * Instance chết/rebalance vẫn mất affinity; state cần nơi bền vững/chia sẻ theo requirement.
+ * SOLUTION-END
  */
 
 /* ANSWER Q3:
- *
+ * SOLUTION-BEGIN
+ * Mỗi instance có pool riêng; tổng connection/concurrency tăng theo instance và có thể vượt DB quota.
+ * Thêm app capacity khi DB đang bão hòa khuếch đại contention, query load và latency.
+ * SOLUTION-END
  */
 
 /* ANSWER Q4:
- *
+ * SOLUTION-BEGIN
+ * DB connections/query rate, cache, payment/downstream quota, thread/queue và bandwidth cần budget tổng.
+ * Giới hạn per-instance phải phù hợp số replica dự kiến và tổng quota; theo dõi saturation thực tế.
+ * SOLUTION-END
  */
 
 /* ANSWER Q5:
- *
+ * SOLUTION-BEGIN
+ * Đo khi chưa rõ app hay dependency là bottleneck, hoặc cần biết giới hạn hiện tại trước scale.
+ * So throughput, latency/error, CPU và DB pool wait/quota trong cùng workload; không coi thêm instance là bằng chứng.
+ * SOLUTION-END
  */

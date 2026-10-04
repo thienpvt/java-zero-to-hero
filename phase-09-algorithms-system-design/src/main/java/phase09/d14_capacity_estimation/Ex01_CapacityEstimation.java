@@ -45,42 +45,63 @@ class Ex01_CapacityEstimation {
     private static final BigDecimal SECONDS_PER_DAY = BigDecimal.valueOf(86_400);
 
     static BigDecimal averageRps(long requestsPerDay) {
+        // SOLUTION-BEGIN throw B1
         if (requestsPerDay <= 0) throw new IllegalArgumentException("requestsPerDay must be positive");
         return BigDecimal.valueOf(requestsPerDay).divide(SECONDS_PER_DAY, 6, RoundingMode.HALF_UP);
+        // SOLUTION-END
     }
 
     static BigDecimal storageBytes(long orders, long bytesPerOrder, int days) {
+        // SOLUTION-BEGIN throw B1
         if (orders <= 0 || bytesPerOrder <= 0 || days <= 0) {
             throw new IllegalArgumentException("orders, bytesPerOrder, and days must be positive");
         }
         return BigDecimal.valueOf(Math.multiplyExact(Math.multiplyExact(orders, bytesPerOrder), days));
+        // SOLUTION-END
     }
 
     static BigDecimal physicalBytes(BigDecimal logical, int overhead, int replicas) {
+        // SOLUTION-BEGIN throw B1
         if (logical == null) throw new NullPointerException("logical");
         if (logical.signum() <= 0 || overhead <= 0 || replicas <= 0) {
             throw new IllegalArgumentException("logical, overhead, and replicas must be positive");
         }
         return logical.multiply(BigDecimal.valueOf(overhead)).multiply(BigDecimal.valueOf(replicas));
+        // SOLUTION-END
     }
 }
 
 /* ANSWER Q1:
- *
+ * SOLUTION-BEGIN
+ * Average RPS che burst: dependency phải chịu lưu lượng trong khoảng thời gian ngắn, không phải trung bình ngày.
+ * Dùng peak factor là giả định để sizing sơ bộ; cần đo peak thực tế trước quyết định capacity.
+ * SOLUTION-END
  */
 
 /* ANSWER Q2:
- *
+ * SOLUTION-BEGIN
+ * Storage = records × bytes/record × retention; ghi rõ byte unit và có tính items trong record hay không.
+ * Logical storage chưa gồm overhead và copies; physical estimate nhân lần lượt các hệ số đó.
+ * SOLUTION-END
  */
 
 /* ANSWER Q3:
- *
+ * SOLUTION-BEGIN
+ * Ước lượng là đầu vào/giả định của mô hình; số đo phải có nguồn telemetry, cửa sổ thời gian,
+ * môi trường và phương pháp thu thập. Ghi sai số/giới hạn để không gọi estimate là production fact.
+ * SOLUTION-END
  */
 
 /* ANSWER Q4:
- *
+ * SOLUTION-BEGIN
+ * Read/write ratio giúp tìm workload cần xác minh: query/index và read capacity khác write cost,
+ * transaction và write amplification. Tỷ lệ tự nó không đủ để kết luận cần cache hay replica.
+ * SOLUTION-END
  */
 
 /* ANSWER Q5:
- *
+ * SOLUTION-BEGIN
+ * Xác minh peak/fan-out/payload hoặc contention có ảnh hưởng capacity lớn nhất bằng load test bounded
+ * cùng production metrics phù hợp. Ghi dataset, concurrency, lỗi và giới hạn phép đo.
+ * SOLUTION-END
  */

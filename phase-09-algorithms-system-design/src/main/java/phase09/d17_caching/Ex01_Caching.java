@@ -43,21 +43,36 @@ class Ex01_Caching {
 }
 
 /* ANSWER Q1:
- *
+ * SOLUTION-BEGIN
+ * TTL dài giảm lượt đọc nguồn nhưng nới stale window nếu dữ liệu đổi mà cache chưa hết hạn.
+ * Rủi ro phụ thuộc invariant: thông tin hiển thị có thể chịu stale, inventory/order có thể không.
+ * SOLUTION-END
  */
 
 /* ANSWER Q2:
- *
+ * SOLUTION-BEGIN
+ * Request có thể đọc DB bản cũ trước update, bị trễ, rồi ghi giá trị cũ vào cache sau khi writer đã invalidate.
+ * Thứ tự DB/cache không nguyên tử; cần freshness/version strategy theo invariant thay vì cho rằng delete luôn đủ.
+ * SOLUTION-END
  */
 
 /* ANSWER Q3:
- *
+ * SOLUTION-BEGIN
+ * Nhiều miss cùng key có thể đồng thời truy vấn backend, gây stampede và khuếch đại tải.
+ * Coalesce request, giới hạn concurrency/rate hoặc stagger refresh; theo dõi hot key và backend saturation.
+ * SOLUTION-END
  */
 
 /* ANSWER Q4:
- *
+ * SOLUTION-BEGIN
+ * Stale data không phù hợp khi vi phạm invariant hoặc quyền/quyết định có hậu quả, chẳng hạn tồn kho khi đặt order.
+ * Chọn freshness theo requirement; không suy ra mọi read đều cần strong consistency.
+ * SOLUTION-END
  */
 
 /* ANSWER Q5:
- *
+ * SOLUTION-BEGIN
+ * Chọn theo độ đúng/an toàn của fallback và capacity của source: fail-open chỉ khi đọc nguồn an toàn và chịu tải được.
+ * Fail-closed khi fallback vi phạm security/invariant; tránh outage cache làm source quá tải không kiểm soát.
+ * SOLUTION-END
  */

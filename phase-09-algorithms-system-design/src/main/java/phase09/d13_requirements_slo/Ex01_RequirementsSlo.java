@@ -43,21 +43,36 @@ class Ex01_RequirementsSlo {
 }
 
 /* ANSWER Q1:
- *
+ * SOLUTION-BEGIN
+ * Functional requirement mô tả hành vi/use case hệ thống; non-functional requirement đặt thuộc tính
+ * chất lượng như latency, availability, privacy hoặc durability, cùng điều kiện đo.
+ * SOLUTION-END
  */
 
 /* ANSWER Q2:
- *
+ * SOLUTION-BEGIN
+ * SLI là phép đo dịch vụ; SLO là mục tiêu cho SLI trong cửa sổ xác định.
+ * SLA là cam kết với khách hàng, thường kèm phạm vi và hậu quả nếu không đạt.
+ * SOLUTION-END
  */
 
 /* ANSWER Q3:
- *
+ * SOLUTION-BEGIN
+ * Scope giới hạn use case, workload và non-goals để công nghệ được chọn giải quyết nhu cầu đã biết.
+ * Chọn trước dễ thêm distributed components, vận hành và failure modes mà chưa có bằng chứng cần thiết.
+ * SOLUTION-END
  */
 
 /* ANSWER Q4:
- *
+ * SOLUTION-BEGIN
+ * Modular monolith phù hợp khi một deployment đơn giản đáp ứng tải, boundary nghiệp vụ rõ trong code,
+ * và chưa cần scale/deploy độc lập. Đánh giá lại khi bottleneck hay ownership thực tế yêu cầu tách.
+ * SOLUTION-END
  */
 
 /* ANSWER Q5:
- *
+ * SOLUTION-BEGIN
+ * Invariant order/inventory và yêu cầu không mất order ảnh hưởng transaction, consistency và durability.
+ * Retention, recovery-point và mức chấp nhận mất dữ liệu cần được xác nhận thay vì giả định.
+ * SOLUTION-END
  */

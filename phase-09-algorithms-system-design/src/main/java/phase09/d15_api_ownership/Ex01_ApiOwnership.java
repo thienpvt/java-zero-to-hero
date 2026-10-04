@@ -43,21 +43,36 @@ class Ex01_ApiOwnership {
 }
 
 /* ANSWER Q1:
- *
+ * SOLUTION-BEGIN
+ * Tạo order/payment hay thao tác có side effect cần xử lý retry do client timeout mà không biết kết quả.
+ * Key phải có phạm vi, thời hạn và kết quả lặp rõ; idempotency không làm mọi dependency thành một transaction.
+ * SOLUTION-END
  */
 
 /* ANSWER Q2:
- *
+ * SOLUTION-BEGIN
+ * Service/domain boundary sở hữu order và inventory phải giữ invariant; UI validation chỉ hỗ trợ trải nghiệm.
+ * Ghi/check cần nằm trong transaction hoặc cơ chế nguyên tử phù hợp để concurrent instance không bán quá tồn.
+ * SOLUTION-END
  */
 
 /* ANSWER Q3:
- *
+ * SOLUTION-BEGIN
+ * DTO nên tách khi public API cần ổn định dù schema đổi, hoặc cần validation/shape riêng cho use case.
+ * Mapping có chi phí; nếu không có boundary/contract khác biệt, không cần tạo lớp chỉ vì quy tắc hình thức.
+ * SOLUTION-END
  */
 
 /* ANSWER Q4:
- *
+ * SOLUTION-BEGIN
+ * Server xác thực principal rồi ràng buộc truy vấn record theo owner/tenant và quyền được phép.
+ * Không tin ID gửi lên, trạng thái UI hay chỉ kiểm tra role chung mà bỏ qua quyền trên record.
+ * SOLUTION-END
  */
 
 /* ANSWER Q5:
- *
+ * SOLUTION-BEGIN
+ * Contract cần status và error code ổn định cho validation, unauthorized/forbidden, conflict và lỗi tạm thời.
+ * Không trả stack trace, secret hay chi tiết nội bộ; client không nên phụ thuộc exception/database message.
+ * SOLUTION-END
  */
