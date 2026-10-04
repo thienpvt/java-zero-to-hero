@@ -1,17 +1,74 @@
 # Phase 09 — Algorithms and System Design
 
-Mô-đun Java 21 cho cấu trúc dữ liệu, thuật toán và system design. Đây là module Java thuần theo parent root, không cần Spring runtime hay database.
+Java 21/JUnit 5 module for 20 curriculum topics: DSA plus system design. Module uses Java standard library; DSA and full tests need no Spring, service, or database.
 
-Chạy test module từ thư mục gốc repository:
+Run from repository root:
 
 ```powershell
+$env:JAVA_HOME='C:\Users\thien\.jdks\jdk-21.0.12.1+1'
 ./mvnw.cmd -pl phase-09-algorithms-system-design test
-```
-
-Kiểm tra skeleton sau khi chạy test:
-
-```powershell
 ./tools/verify-skeleton.ps1 -Module phase-09-algorithms-system-design
 ```
 
-Verifier đối chiếu report với test inventory, yêu cầu bài tập chưa giải còn đỏ đúng lý do; `PARTIAL` không phải gate đầy đủ. Nếu module chưa có test inventory, verifier chỉ báo `COMPILE-ONLY`, không phải test suite xanh. Hiện Phase 09 có các bài DSA từ d01 đến d08; đây là curriculum một phần, các chủ đề còn lại vẫn cần bổ sung. DSA không yêu cầu database; PostgreSQL chỉ là prerequisite riêng nếu sau này chạy phép đo telemetry.
+Run assessment only:
+
+```powershell
+./mvnw.cmd -pl phase-09-algorithms-system-design -Dtest=Ex01_AssessmentTest test
+```
+
+## Topic/Q map
+
+Q numbers reset locally in each topic; B1 assessments/capstones are not extra topics or Qs.
+
+| Topic | Package | Questions |
+|---|---|---|
+| 01. Độ phức tạp và cách kiểm chứng | `d01_complexity` | Q1–Q5 |
+| 02. Array và String | `d02_array_string` | Q1–Q5 |
+| 03. Hashing và Hash Table | `d03_hash_table` | Q1–Q5 |
+| 04. Two Pointers và Sliding Window | `d04_two_pointers` | Q1–Q5 |
+| 05. Binary Search | `d05_binary_search` | Q1–Q5 |
+| 06. Stack, Queue và Deque | `d06_stack_queue_deque` | Q1–Q5 |
+| 07. Linked List | `d07_linked_list` | Q1–Q5 |
+| 08. Tree và Binary Search Tree | `d08_tree_bst` | Q1–Q5 |
+| 09. Heap và Top-K | `d09_heap_topk` | Q1–Q5 |
+| 10. Graph: BFS, DFS và đường đi | `d10_graph_bfs_dfs` | Q1–Q5 |
+| 11. Backtracking | `d11_backtracking` | Q1–Q5 |
+| 12. Dynamic Programming | `d12_dynamic_programming` | Q1–Q5 |
+| 13. Requirements, scope và SLO | `d13_requirements_slo` | Q1–Q5 |
+| 14. Ước lượng tải và dung lượng | `d14_capacity_estimation` | Q1–Q5 |
+| 15. API, data ownership và invariant | `d15_api_ownership` | Q1–Q5 |
+| 16. Horizontal scaling và load balancing | `d16_horizontal_scaling` | Q1–Q5 |
+| 17. Caching | `d17_caching` | Q1–Q5 |
+| 18. Database scaling và lựa chọn consistency | `d18_database_scaling` | Q1–Q5 |
+| 19. Messaging, retry và failure handling | `d19_messaging_retry` | Q1–Q5 |
+| 20. Reliability, observability và security | `d20_reliability_observability_security` | Q1–Q5 |
+
+There are exactly 100 source questions: five per topic. Keep source wording, punctuation, code ticks and local numbering intact. Assessment deliverables `d21_dsa_assessment` and `d22_design_capstone` are B tasks only, not curriculum topics; prose answers and design diagrams receive human review, never keyword/string grading.
+
+## Solutions and skeleton
+
+Source exercises are unsolved by default. Put executable answers only in their declared `SOLUTION-BEGIN` block, with `throw Qn/B1` matching that exercise, and written model answers only in comment `SOLUTION` blocks. Run learner tests and skeleton verifier before recording solutions; skeleton failures are expected TODO/prediction behavior only. Do not use excluded groups or ignored failures to claim a pass. `PARTIAL` and `COMPILE-ONLY` are not full gates.
+
+## Topic 18 bounded local measurement
+
+Reuse `phase09.d18_database_scaling.Ex01_DatabaseScaling`; do not add a second backend. Local-only HTTP GET targets `/api/products?page=0&size=20`; set `PHASE09_BEARER_TOKEN` in the environment (scope `products.read`), never on command line or logs. Run baseline and changed with same disposable dataset/concurrency/duration and one justified setting change; export protected Actuator `hikaricp.connections.acquire` snapshots to UTF-8 CSV (scope `metrics.read`) for `compare`. Actual commands from repository root:
+
+```powershell
+$env:PHASE09_BEARER_TOKEN='local-token'
+./mvnw.cmd -pl phase-09-algorithms-system-design exec:java -Dexec.mainClass=phase09.d18_database_scaling.Ex01_DatabaseScaling -Dexec.args="run baseline http://127.0.0.1:8080 4 1000 5 pool=4 --output baseline.properties"
+# After exporting baseline/start+end and changed/start+end metric snapshots to telemetry.csv,
+# repeat for changed, then compare:
+./mvnw.cmd -pl phase-09-algorithms-system-design exec:java -Dexec.mainClass=phase09.d18_database_scaling.Ex01_DatabaseScaling -Dexec.args="compare baseline.properties changed.properties telemetry.csv"
+```
+
+CSV header must be exactly `run,snapshot,capturedAtUtc,metricName,pool,count,totalTimeSeconds`, four rows total. Missing token/app, malformed/stale/out-of-window telemetry, missing snapshots or zero counter delta must fail explicitly with nonzero exit; they are not skip/pass and must never be fabricated as zero pool wait. Report HTTP latency/throughput separately from mean Hikari acquisition (pool wait plus acquisition overhead, not pure queue wait). Assessment/test runs do not constitute application measurement.
+
+The Phase05 capstone app is not built: production/capstone measurement is **PENDING / NOT RUN**. Static examples are illustrative only, not measured evidence. Local measurement remains pending until local service and valid actual telemetry inputs exist.
+
+`tools/verify-skeleton.ps1` is intended for a temporary skeleton copy when this checkout has solved sources; never strip live sources. Do not publish/claim remote test status from a local branch.
+
+## Manual review
+
+`Ex01_Assessment` tests bounded grid BFS against a deterministic small brute-force oracle, plus empty/malformed/boundary behavior. Its expected complexity rationale is O(rows × columns) time and space. Review written assessment/design reasoning manually; no prose grader.
+
+`d22_design_capstone.Ex01_DesignCapstone` preserves source capstone checklist and links measurement to the existing d18 harness. Submit diagram/notes, local setup, dataset, concurrency, one change, throughput/p95/error-rate/acquisition evidence and limits; separate assumptions from observations.
