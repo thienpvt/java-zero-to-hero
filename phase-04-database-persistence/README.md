@@ -102,7 +102,7 @@ Tạo lại bằng test thí nghiệm của capstone (chạy trên DB dùng mộ
 .\mvnw.cmd -f phase-04-database-persistence/pom.xml "-Dtest=phase04/d17_capstone/Ex01_OrderPersistenceTest#q05_historyPlanEvidence_experimentRuns" test
 ```
 
-Bằng chứng ghi: version PostgreSQL, version JDK, hình dạng dataset (3 khách/3 sản phẩm, khoảng 2001 order/item), SQL truy vấn lịch sử thực thi, bound params, số query cho một trang (một projection query/trang, không tăng theo từng hàng — không N+1), và plan trước/sau một index thử nghiệm trên cột customer và cột sắp xếp. Đây là **quan sát trên cache nóng và dataset nhỏ**, không phải ngưỡng thời gian golden hay cam kết hiệu năng production; kết luận có thể thay đổi theo workload thực tế.
+Bằng chứng ghi: version PostgreSQL, version JDK, hình dạng dataset (3 khách/3 sản phẩm, 2001 orders và 2001 order_items), SQL truy vấn lịch sử thực thi, bound params, số query cho một trang (một projection query/trang, không tăng theo từng hàng — không N+1), và plan trước/sau một index thử nghiệm chỉ trên cột customer. Trong lần chạy mẫu, PostgreSQL vẫn chọn Seq Scan cho orders và order_items cả trước lẫn sau index; đây là quan sát thực tế, không khẳng định index luôn cải thiện plan hay hiệu năng. Dataset nhỏ/cache nóng không phải ngưỡng thời gian golden hay cam kết production; kết luận có thể đổi theo workload thực tế.
 
 ## Migration V1 → V2 (tương thích và sửa dữ liệu)
 
