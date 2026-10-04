@@ -257,24 +257,36 @@ class Ex01_DatabaseScalingTest {
     }
 
     @Test void b1_timeoutCountsErrorAndDeadlineBoundsStartedRequests() throws Exception {
-        AtomicInteger calls = new AtomicInteger(); CountDownLatch release = new CountDownLatch(1);
+        AtomicInteger calls = new AtomicInteger(), responses = new AtomicInteger();
+        CountDownLatch release = new CountDownLatch(1);
         var serverExecutor = Executors.newFixedThreadPool(2);
         HttpServer server = server(); server.setExecutor(serverExecutor);
         server.createContext("/api/products", exchange -> {
             int call = calls.incrementAndGet();
             if (call > 2) {
-                try { release.await(3, TimeUnit.SECONDS); }
-                catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); }
+                try { release.await(); }
+                catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt(); exchange.close(); return;
+                }
+                responses.incrementAndGet();
             }
             try { exchange.sendResponseHeaders(200, -1); }
             finally { exchange.close(); }
         });
         server.start();
         try {
-            var run = measureRun("baseline", uri(server), "local-test-token", 1, 100,
+            // Timeout is a maximum wait, not a lower bound. Request cap makes count bound deterministic.
+            var run = measureRun("baseline", uri(server), "local-test-token", 1, 2,
                     Duration.ofMillis(100), Duration.ofMillis(150), "pool=4");
-            assertTrue(run.samples() >= 1 && run.samples() <= 2);
-            assertEquals(run.samples(), run.errors()); assertEquals(0, run.successes());
+            String diagnostic = "samples=" + run.samples() + " errors=" + run.errors() + " calls=" + calls.get()
+                    + " elapsedNanos=" + run.elapsedNanos() + " p50Nanos=" + run.p50Nanos()
+                    + " p95Nanos=" + run.p95Nanos();
+            System.out.println("timeout diagnostic " + diagnostic);
+            assertTrue(run.samples() >= 1 && run.samples() <= 2, diagnostic);
+            assertTrue(calls.get() >= 3 && calls.get() <= 4, diagnostic);
+            assertEquals(run.samples(), run.errors(), diagnostic); assertEquals(0, run.successes(), diagnostic);
+            assertEquals(1, release.getCount(), diagnostic);
+            assertEquals(0, responses.get(), diagnostic); // Client returned while server still withheld every measured response.
         } finally {
             release.countDown(); server.stop(0); serverExecutor.shutdownNow();
             assertTrue(serverExecutor.awaitTermination(5, TimeUnit.SECONDS));
