@@ -68,6 +68,6 @@ public class Ex01_DataConstraints {
 /* OBSERVATION Q5 / ANSWER Q5:
  * SOLUTION-BEGIN
  * Default áp dụng khi bỏ cột `created_at` khỏi INSERT hoặc ghi từ khóa `DEFAULT`; explicit `NULL` không kích hoạt nó.
- * `orders.created_at` có NOT NULL nhưng không có default, nên INSERT mẫu có `NULL` bị từ chối.
+ * `orders.created_at` có `NOT NULL DEFAULT CURRENT_TIMESTAMP`; explicit `NULL` vẫn bị `NOT NULL` từ chối (23502).
  * SOLUTION-END
  */
