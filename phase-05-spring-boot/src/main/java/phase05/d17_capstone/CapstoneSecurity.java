@@ -28,6 +28,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 public class CapstoneSecurity {
+    private static final String LOOPBACK = "127.0.0.1";
     public static void runtimeSettings(SpringApplication app) {
         // SOLUTION-BEGIN throw B5
         app.setDefaultProperties(Map.of(
@@ -41,8 +42,22 @@ public class CapstoneSecurity {
             var environment = context.getEnvironment();
             if (environment.acceptsProfiles(Profiles.of("local-lab"))) {
                 // Defaults only: native CLI/property/environment precedence remains intact.
-                environment.getPropertySources().addBefore("defaultProperties", new MapPropertySource("capstone-local-lab-defaults",
-                        Map.of("management.endpoints.web.exposure.include", "health,metrics", "server.address", "127.0.0.1")));
+                var defaults = new java.util.HashMap<String, Object>();
+                defaults.put("management.endpoints.web.exposure.include", "health,metrics");
+                defaults.put("server.address", "127.0.0.1");
+                String managementPort = environment.getProperty("management.server.port");
+                String mainPort = environment.getProperty("server.port");
+                // Native Boot treats port 0 as a separate management listener even when both are 0.
+                boolean separatePort = managementPort != null
+                        && (managementPort.equals("0") || !managementPort.equals(mainPort));
+                // Only a truly separate management listener gets a management address: same-port
+                // contexts keep native Boot's "no management-specific address" contract.
+                if (separatePort) defaults.put("management.server.address", LOOPBACK);
+                environment.getPropertySources().addBefore("defaultProperties",
+                        new MapPropertySource("capstone-local-lab-defaults", defaults));
+                String managementAddress = environment.getProperty("management.server.address");
+                if (separatePort && !LOOPBACK.equals(managementAddress))
+                    throw new IllegalStateException("local-lab requires loopback management.server.address");
             }
         });
         // SOLUTION-END
@@ -88,8 +103,15 @@ public class CapstoneSecurity {
     SecurityFilterChain security(HttpSecurity http, JwtDecoder decoder, Environment environment) throws Exception {
         // SOLUTION-BEGIN throw B5
         boolean localLab = environment.acceptsProfiles(Profiles.of("local-lab"));
-        if (localLab && !"127.0.0.1".equals(environment.getProperty("server.address")))
-            throw new IllegalStateException("local-lab requires server.address=127.0.0.1");
+        if (localLab) {
+            if (!LOOPBACK.equals(environment.getProperty("server.address")))
+                throw new IllegalStateException("local-lab requires server.address=127.0.0.1");
+            String managementPort = environment.getProperty("management.server.port");
+            String mainPort = environment.getProperty("server.port");
+            if (managementPort != null && (managementPort.equals("0") || !managementPort.equals(mainPort))
+                    && !LOOPBACK.equals(environment.getProperty("management.server.address")))
+                throw new IllegalStateException("local-lab requires loopback management.server.address");
+        }
         var bearer403 = new BearerTokenAccessDeniedHandler();
         org.springframework.security.web.AuthenticationEntryPoint unauthorized = CapstoneSecurity::unauthorized;
         org.springframework.security.web.access.AccessDeniedHandler forbidden = (request, response, failure) -> {
