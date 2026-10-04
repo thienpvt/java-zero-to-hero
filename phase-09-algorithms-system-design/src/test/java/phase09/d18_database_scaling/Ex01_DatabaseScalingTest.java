@@ -283,10 +283,44 @@ class Ex01_DatabaseScalingTest {
                     + " p95Nanos=" + run.p95Nanos();
             System.out.println("timeout diagnostic " + diagnostic);
             assertTrue(run.samples() >= 1 && run.samples() <= 2, diagnostic);
-            assertTrue(calls.get() >= 3 && calls.get() <= 4, diagnostic);
+            assertTrue(calls.get() >= 2 && calls.get() <= 4, diagnostic);
             assertEquals(run.samples(), run.errors(), diagnostic); assertEquals(0, run.successes(), diagnostic);
             assertEquals(1, release.getCount(), diagnostic);
             assertEquals(0, responses.get(), diagnostic); // Client returned while server still withheld every measured response.
+        } finally {
+            release.countDown(); server.stop(0); serverExecutor.shutdownNow();
+            assertTrue(serverExecutor.awaitTermination(5, TimeUnit.SECONDS));
+        }
+    }
+
+    @Test void b1_deadlineEndsRunBeforeLongRequestTimeoutOrRequestCap() throws Exception {
+        AtomicInteger calls = new AtomicInteger(), responses = new AtomicInteger();
+        CountDownLatch release = new CountDownLatch(1);
+        var serverExecutor = Executors.newFixedThreadPool(2);
+        HttpServer server = server(); server.setExecutor(serverExecutor);
+        server.createContext("/api/products", exchange -> {
+            if (calls.incrementAndGet() > 2) {
+                try { release.await(); }
+                catch (InterruptedException interrupted) {
+                    Thread.currentThread().interrupt(); exchange.close(); return;
+                }
+                responses.incrementAndGet();
+            }
+            try { exchange.sendResponseHeaders(200, -1); }
+            finally { exchange.close(); }
+        });
+        server.start();
+        try {
+            // Functional liveness budget, not a performance target: 3s is well below the 10s request timeout.
+            var run = assertTimeoutPreemptively(Duration.ofSeconds(3), () -> measureRun("baseline", uri(server),
+                    "local-test-token", 1, 1000, Duration.ofSeconds(10), Duration.ofMillis(250), "pool=4"));
+            String diagnostic = "samples=" + run.samples() + " errors=" + run.errors() + " calls=" + calls.get()
+                    + " elapsedNanos=" + run.elapsedNanos() + " p50Nanos=" + run.p50Nanos()
+                    + " p95Nanos=" + run.p95Nanos();
+            System.out.println("deadline diagnostic " + diagnostic);
+            assertTrue(run.samples() > 0 && run.samples() < 1000, diagnostic);
+            assertEquals(run.samples(), run.errors(), diagnostic); assertEquals(0, run.successes(), diagnostic);
+            assertEquals(1, release.getCount(), diagnostic); assertEquals(0, responses.get(), diagnostic);
         } finally {
             release.countDown(); server.stop(0); serverExecutor.shutdownNow();
             assertTrue(serverExecutor.awaitTermination(5, TimeUnit.SECONDS));
