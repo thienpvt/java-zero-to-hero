@@ -58,7 +58,8 @@ public class Ex01_OrderMapping {
             if (item == null || item.product == null || item.product.getId() == null
                     || item.product.getId() <= 0 || item.quantity < 1 || item.quantity > 1000)
                 throw new IllegalArgumentException("Cần product đã lưu và quantity 1..1000");
-            if (item.order != null && item.order != this) throw new IllegalArgumentException("Item đã thuộc order khác");
+            if (item.order != null && org.hibernate.Hibernate.unproxy(item.order) != this)
+                throw new IllegalArgumentException("Item đã thuộc order khác");
             if (items.contains(item)) return;
             if (items.stream().anyMatch(existing -> existing.product.getId().equals(item.product.getId())))
                 throw new IllegalArgumentException("Product trùng trong order");
@@ -69,7 +70,7 @@ public class Ex01_OrderMapping {
         }
         public void removeItem(OrderItem item) {
             // SOLUTION-BEGIN throw B12
-            if (item == null || item.order != this || !items.remove(item))
+            if (item == null || org.hibernate.Hibernate.unproxy(item.order) != this || !items.remove(item))
                 throw new IllegalArgumentException("Item không thuộc order");
             item.order = null;
             // SOLUTION-END

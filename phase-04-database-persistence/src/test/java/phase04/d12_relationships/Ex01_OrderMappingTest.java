@@ -109,6 +109,57 @@ class Ex01_OrderMappingTest {
         assertEquals(2, count("products"));
     }
 
+    @Test @DisplayName("B12 — Parent proxy thêm lại child có sẵn không đổi FK; vẫn từ chối parent khác")
+    void b12_parentProxyAddIsIdempotentAndRejectsReparenting() throws SQLException {
+        long orderId = createOrder();
+        long otherId = createOrder();
+        try (var em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            var order = em.getReference(Ex01_OrderMapping.Order.class, orderId);
+            var item = order.items().getFirst();
+            assertSame(order, item.order); // association holds proxy, helper runs on target
+            order.addItem(item); // positive control: same owner must not be rejected
+            assertEquals(1, order.items().size());
+            var other = em.getReference(Ex01_OrderMapping.Order.class, otherId);
+            assertThrows(IllegalArgumentException.class, () -> other.addItem(item));
+            assertThrows(IllegalArgumentException.class, () -> other.removeItem(item));
+            assertThrows(IllegalArgumentException.class, () -> order.addItem(
+                    new Ex01_OrderMapping.OrderItem(em.getReference(Ex01_OrderMapping.Product.class, 1L), 2)));
+            assertSame(order, item.order);
+            em.flush();
+            em.getTransaction().commit();
+        }
+        try (var c = fixture.dataSource().getConnection();
+             var s = c.prepareStatement("SELECT count(*) FROM order_items WHERE order_id=? AND product_id=1")) {
+            s.setLong(1, orderId);
+            try (var rows = s.executeQuery()) { rows.next(); assertEquals(1, rows.getLong(1)); }
+        }
+        assertEquals(2, count("orders"));
+        assertEquals(2, count("order_items"));
+        assertEquals(2, count("products"));
+        assertEquals(1, count("customers"));
+    }
+
+    @Test @DisplayName("B12 — Parent proxy xóa child owned thật, orphan DELETE giữ parent/product")
+    void b12_parentProxyRemoveDeletesOwnedChild() throws SQLException {
+        long orderId = createOrder();
+        try (var em = emf.createEntityManager()) {
+            em.getTransaction().begin();
+            var order = em.getReference(Ex01_OrderMapping.Order.class, orderId);
+            var item = order.items().getFirst();
+            assertSame(order, item.order);
+            order.removeItem(item);
+            assertNull(item.order);
+            assertTrue(order.items().isEmpty());
+            em.flush();
+            em.getTransaction().commit();
+        }
+        assertEquals(0, count("order_items"));
+        assertEquals(1, count("orders"));
+        assertEquals(2, count("products"));
+        assertEquals(1, count("customers"));
+    }
+
     @Test @DisplayName("B12 — Xóa parent qua ORM xóa child owned, không cascade REMOVE sang product/customer")
     void b12_parentRemovalPreservesSharedEntities() throws SQLException {
         long orderId = createOrder();
