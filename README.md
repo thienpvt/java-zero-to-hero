@@ -4,7 +4,7 @@ Lộ trình học Java theo **domain/chủ đề**, từ kiến thức cơ bản
 
 Nhánh `main` chứa tài liệu định hướng; code thực hành nằm ở các nhánh bài tập. Mỗi domain có đề trong source, test JUnit để kiểm tra và lời giải để đối chiếu sau khi tự làm.
 
-Bản docs-only này đưa vào commit **cục bộ** các guide/spec đã duyệt cho Phase 04/05/09 và số đo local lịch sử; không cập nhật nhánh `main`, không push hay công bố từ xa. Code, cấu hình và test chỉ có ở nhánh `solutions`/bài tập (`*-exercises`): chuyển sang nhánh tương ứng trước khi dùng các đường dẫn source/lệnh trong README module. Số đo chỉ là một cặp chạy ngắn mixed-mode, không phải SLO hay kết luận hiệu năng production.
+Bản docs-only này đưa vào commit **cục bộ** các guide/spec đã duyệt cho Phase 04/05/09 và số đo local lịch sử; nhánh `main` chỉ cập nhật tài liệu cục bộ, không push hay công bố từ xa. Code, cấu hình và test chỉ có ở nhánh `solutions`/`exercises` cục bộ hoặc các nhánh bài tập (`*-exercises`): chuyển sang nhánh tương ứng trước khi dùng các đường dẫn source/lệnh trong README module. Số đo chỉ là một cặp chạy ngắn mixed-mode, không phải SLO hay kết luận hiệu năng production.
 
 ## Chọn nhánh
 
@@ -13,6 +13,8 @@ Bản docs-only này đưa vào commit **cục bộ** các guide/spec đã duy�
 | [`phase00-exercises`](https://github.com/thienpvt/java-zero-to-hero/tree/phase00-exercises) | Khung bài Java cơ bản (`phase-00-java-basics`); đồng thời có khung Phase 01. | Bắt đầu hoặc ôn lại cú pháp, OOP, Collections, Generics, I/O và test. |
 | [`phase01-exercises`](https://github.com/thienpvt/java-zero-to-hero/tree/phase01-exercises) | Khung bài Java Core nâng cao (`phase-01-core-advanced`). | Sau khi đã vững kiến thức cơ bản; luyện Generics, Collections internals, Streams, Reflection, Java hiện đại… |
 | [`solutions`](https://github.com/thienpvt/java-zero-to-hero/tree/solutions) | Lời giải cho cả Phase 00 và Phase 01. | Đối chiếu **sau** khi tự làm và chạy test. |
+
+**Nhánh cục bộ:** `solutions` chứa lời giải Phase 00–05/09; `exercises` là nhánh khung bài (kiểm tra commit cục bộ trước khi dùng Phase 04/05/09). Dùng `git switch exercises` để làm bài, `git switch solutions` để đối chiếu sau khi tự làm; không suy ra nội dung remote từ các nhánh cục bộ.
 
 ## Bắt đầu
 
