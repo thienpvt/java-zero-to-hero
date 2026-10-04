@@ -47,6 +47,12 @@ public class Ex01_DataConstraints {
  * NUMERIC/BigDecimal biểu diễn số thập phân theo precision và scale đã chọn, phù hợp để lưu tiền.
  * SOLUTION-END
  */
+/* ANSWER Q2:
+ * SOLUTION-BEGIN
+ * Dùng `CHECK (quantity BETWEEN 1 AND 1000)` để giới hạn miền; `NOT NULL` riêng biệt cấm giá trị thiếu.
+ * Nếu chỉ có CHECK, SQL cho kết quả NULL là chưa biết và vẫn chấp nhận dòng, nên cần cả hai constraint.
+ * SOLUTION-END
+ */
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * Constraint ở DB bảo vệ invariant trước mọi writer, kể cả SQL thủ công, batch hoặc chương trình khác.
@@ -57,5 +63,11 @@ public class Ex01_DataConstraints {
  * SOLUTION-BEGIN
  * Dùng TIMESTAMP WITH TIME ZONE khi cần lưu một instant như thời điểm tạo đơn; DATE chỉ lưu ngày lịch.
  * PostgreSQL chuẩn hóa instant, không giữ tên timezone gốc để hiển thị.
+ * SOLUTION-END
+ */
+/* OBSERVATION Q5 / ANSWER Q5:
+ * SOLUTION-BEGIN
+ * Default áp dụng khi bỏ cột `created_at` khỏi INSERT hoặc ghi từ khóa `DEFAULT`; explicit `NULL` không kích hoạt nó.
+ * `orders.created_at` có NOT NULL nhưng không có default, nên INSERT mẫu có `NULL` bị từ chối.
  * SOLUTION-END
  */

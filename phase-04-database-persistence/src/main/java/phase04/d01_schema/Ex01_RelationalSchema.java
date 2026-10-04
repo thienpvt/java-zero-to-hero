@@ -43,6 +43,18 @@ public class Ex01_RelationalSchema {
  * Chỉ cho NULL khi nghiệp vụ cho phép thiếu dữ liệu và mọi truy vấn xử lý trạng thái đó.
  * SOLUTION-END
  */
+/* OBSERVATION Q3 / ANSWER Q3:
+ * SOLUTION-BEGIN
+ * `order_items.unit_price` là snapshot giá đã chốt; đổi `products.price` sau này không được sửa lịch sử đơn.
+ * Theo B1, so sánh giá item sau khi cập nhật product để xác nhận hai giá trị có mục đích khác nhau.
+ * SOLUTION-END
+ */
+/* OBSERVATION Q4 / ANSWER Q4:
+ * SOLUTION-BEGIN
+ * Kiểm tra FK bằng SQL trực tiếp chứng minh ranh giới DB từ chối customer không tồn tại.
+ * Java validation có thể bị bỏ qua bởi writer khác hoặc race giữa kiểm tra và ghi; FK kiểm tra cùng lúc ghi.
+ * SOLUTION-END
+ */
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * Denormalization đáng cân nhắc khi đo được workload đọc cần giảm join hoặc lưu snapshot lịch sử.

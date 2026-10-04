@@ -92,6 +92,13 @@ public class Ex01_OrderHistoryQuery {
  * WHERE lọc từng hàng trước GROUP BY và aggregate; HAVING lọc các nhóm sau khi aggregate.
  * SOLUTION-END
  */
+/* OBSERVATION Q4 / ANSWER Q4:
+ * SOLUTION-BEGIN
+ * Một order có hai item tổng lần lượt 2 × 10 và 1 × 5; JOIN tạo hai hàng item, mỗi hàng lặp cột của order.
+ * SUM(order_total) trên kết quả đó cộng 25 hai lần thành 50. Tính từng order trước khi nối item, hoặc cộng unit_price × quantity ở grain item.
+ * B3 dùng cách sau: mỗi item đóng góp đúng một lần vào tổng đơn.
+ * SOLUTION-END
+ */
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * Window function phù hợp khi cần giá trị tổng hợp theo nhóm nhưng vẫn muốn giữ chi tiết từng hàng,
