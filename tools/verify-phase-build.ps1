@@ -24,6 +24,73 @@ function Assert-EqualRejectsMismatch {
   throw 'Assertion self-check failed to reject a mismatched value'
 }
 
+function Assert-Dependency($Project, [string]$GroupId, [string]$ArtifactId, [string]$ExpectedScope, [string]$ExpectedVersion = '') {
+  $dependency = $Project.SelectSingleNode("*[local-name()='dependencies']/*[local-name()='dependency'][*[local-name()='groupId' and text()='$GroupId'] and *[local-name()='artifactId' and text()='$ArtifactId']]")
+  if (-not $dependency) { throw "Missing dependency: $GroupId`:$ArtifactId" }
+  $scope = $dependency.SelectSingleNode("*[local-name()='scope']")
+  if ($ExpectedScope) { Assert-True "$GroupId`:$ArtifactId scope exists" ([bool]$scope); Assert-Equal "$GroupId`:$ArtifactId scope" $ExpectedScope $scope.InnerText }
+  if ($ExpectedVersion) {
+    $version = $dependency.SelectSingleNode("*[local-name()='version']")
+    Assert-True "$GroupId`:$ArtifactId version exists" ([bool]$version)
+    Assert-Equal "$GroupId`:$ArtifactId version" $ExpectedVersion $version.InnerText
+  }
+}
+
+function Assert-Phase05Dependencies($Project) {
+  foreach ($artifact in @('spring-boot-starter-webmvc', 'spring-boot-starter-data-jpa', 'spring-boot-starter-validation', 'spring-boot-starter-security-oauth2-resource-server', 'spring-boot-starter-flyway', 'spring-boot-starter-actuator')) {
+    Assert-Dependency $Project 'org.springframework.boot' $artifact ''
+  }
+  Assert-Dependency $Project 'org.flywaydb' 'flyway-database-postgresql' ''
+  foreach ($artifact in @('spring-boot-starter-webmvc-test', 'spring-boot-starter-data-jpa-test', 'spring-boot-starter-security-test', 'spring-boot-starter-test')) {
+    Assert-Dependency $Project 'org.springframework.boot' $artifact 'test'
+  }
+  Assert-Dependency $Project 'org.testcontainers' 'testcontainers-postgresql' 'test' '2.0.3'
+}
+
+function Assert-Phase05RejectsMissingStarter($Project) {
+  [xml]$copy = $Project.OuterXml
+  $clone = $copy.DocumentElement
+  $dependency = $clone.SelectSingleNode("*[local-name()='dependencies']/*[local-name()='dependency'][*[local-name()='groupId' and text()='org.springframework.boot'] and *[local-name()='artifactId' and text()='spring-boot-starter-webmvc']]")
+  if (-not $dependency) { throw 'phase05 negative check cannot find MVC dependency to remove' }
+  $dependency.ParentNode.RemoveChild($dependency) | Out-Null
+  try {
+    Assert-Phase05Dependencies $clone
+  } catch {
+    return
+  }
+  throw 'phase05 dependency assertion failed to reject missing MVC starter'
+}
+
+function Assert-Phase09RejectsFrameworkDependency($Project) {
+  [xml]$copy = $Project.OuterXml
+  $clone = $copy.DocumentElement
+  $dependency = $copy.CreateElement('dependency', $clone.NamespaceURI)
+  foreach ($pair in @(@('groupId', 'org.springframework.boot'), @('artifactId', 'spring-boot-starter-webmvc'))) {
+    $node = $copy.CreateElement($pair[0], $clone.NamespaceURI)
+    $node.InnerText = $pair[1]
+    $dependency.AppendChild($node) | Out-Null
+  }
+  $clone.SelectSingleNode("*[local-name()='dependencies']").AppendChild($dependency) | Out-Null
+  try {
+    Assert-Phase09Dependencies $clone
+  } catch {
+    return
+  }
+  throw 'phase09 dependency assertion failed to reject framework dependency'
+}
+
+function Assert-Phase09Dependencies($Project) {
+  $dependencies = $Project.SelectSingleNode("*[local-name()='dependencies']")
+  if (-not $dependencies) { throw 'phase09 missing inherited dependency section' }
+  $nodes = @($dependencies.SelectNodes("*[local-name()='dependency']"))
+  Assert-Equal 'phase09 dependency count' '1' ([string]$nodes.Count)
+  $junit = $nodes[0]
+  Assert-Equal 'phase09 sole dependency' 'org.junit.jupiter:junit-jupiter' ($junit.SelectSingleNode("*[local-name()='groupId']").InnerText + ':' + $junit.SelectSingleNode("*[local-name()='artifactId']").InnerText)
+  Assert-Equal 'phase09 JUnit scope' 'test' $junit.SelectSingleNode("*[local-name()='scope']").InnerText
+  Assert-Equal 'phase09 JUnit version' '5.11.4' $junit.SelectSingleNode("*[local-name()='version']").InnerText
+  Assert-Equal 'phase09 JUnit version' '5.11.4' $junit.SelectSingleNode("*[local-name()='version']").InnerText
+}
+
 function Assert-EffectivePom([string]$PomPath, [string]$OutputPath, [string]$ProjectArtifact) {
   & $Maven -f $PomPath help:effective-pom "-Doutput=$OutputPath" | Out-Host
   if ($LASTEXITCODE -ne 0) { throw "help:effective-pom failed for $PomPath (exit $LASTEXITCODE)" }
@@ -31,6 +98,11 @@ function Assert-EffectivePom([string]$PomPath, [string]$OutputPath, [string]$Pro
   [xml]$document = Get-Content $OutputPath -Raw
   $project = $document.SelectSingleNode("//*[local-name()='project'][*[local-name()='artifactId' and text()='$ProjectArtifact']]")
   if (-not $project) { throw "Effective POM project not found: $ProjectArtifact in $OutputPath" }
+  if ($ProjectArtifact -eq 'phase-09-algorithms-system-design') {
+    Assert-Phase09Dependencies $project
+    Assert-Phase09RejectsFrameworkDependency $project
+  }
+  if ($ProjectArtifact -eq 'phase-05-spring-boot') { Assert-Phase05Dependencies $project }
   if ($ProjectArtifact -eq 'phase-04-database-persistence') {
     $junit = $project.SelectSingleNode("*[local-name()='dependencies']/*[local-name()='dependency'][*[local-name()='groupId' and text()='org.junit.jupiter'] and *[local-name()='artifactId' and text()='junit-jupiter']]/*[local-name()='version']")
     Assert-True 'phase04 inherits JUnit Jupiter' ([bool]$junit)
@@ -50,6 +122,8 @@ function Assert-EffectivePom([string]$PomPath, [string]$OutputPath, [string]$Pro
     Assert-True 'phase05 PostgreSQL driver exists' ([bool]$postgres)
     Assert-Equal 'phase05 PostgreSQL driver version' '42.7.13' $postgres.SelectSingleNode("*[local-name()='version']").InnerText
     Assert-Equal 'phase05 PostgreSQL driver scope' 'runtime' $postgres.SelectSingleNode("*[local-name()='scope']").InnerText
+    Assert-Dependency $project 'org.flywaydb' 'flyway-database-postgresql' ''
+    Assert-Phase05RejectsMissingStarter $project
   }
 }
 
@@ -74,4 +148,4 @@ $rootJUnit = $rootProject.SelectSingleNode("*[local-name()='dependencies']/*[loc
 Assert-True 'root declares JUnit Jupiter' ([bool]$rootJUnit)
 Assert-Equal 'root JUnit Jupiter version' '5.11.4' $rootJUnit.InnerText
 
-'Build isolation checks passed: root/phase04 JUnit 5.11.4; phase05 Boot 4.1.1, Java 21, Boot-managed JUnit 6.0.3, PostgreSQL 42.7.13 runtime; phase09 has no direct dependencies.'
+'Build isolation checks passed: root/phase04 JUnit 5.11.4; phase05 Boot 4.1.1 starter dependencies and test slices; phase05 Boot-managed JUnit 6.0.3 and PostgreSQL 42.7.13 runtime; phase09 only JUnit 5.11.4 test dependency.'
