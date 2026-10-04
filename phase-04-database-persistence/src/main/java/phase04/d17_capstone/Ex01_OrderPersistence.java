@@ -158,8 +158,9 @@ public class Ex01_OrderPersistence {
 /* OBSERVATION Q5:
  * SOLUTION-BEGIN
  * q05 lưu PostgreSQL/JDK, seed 2001 orders/items, SQL thực thi và bound params, query count=1
- * cho trang 20 rows, EXPLAIN ANALYZE BUFFERS trước/sau index(customer_id,created_at,id).
- * B-tree hỗ trợ customer predicate/order; unique(order_id,product_id) hỗ trợ item join.
+ * cho trang 20 rows, EXPLAIN ANALYZE BUFFERS trước/sau provided_plan_history(customer_id).
+ * Index scaffold chỉ phục vụ customer predicate, không cung cấp đáp án composite index d04.
+ * Plan ghi Seq Scan order_items trước/sau: không suy ra unique index đã được dùng cho join.
  * Index tốn write/storage; cache và dataset nhỏ không đại diện production, không timing SLA.
  * DB-only TX ngắn, price snapshot dưới product lock chống đổi giá giữa đọc/ghi; lock order
  * giảm deadlock giữa chính flow này, không bảo đảm mọi writer khác cùng tuân thủ.

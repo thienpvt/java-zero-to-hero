@@ -9,6 +9,7 @@ import org.flywaydb.core.api.FlywayException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.parallel.Execution;
@@ -24,7 +25,8 @@ class Ex01_MigrationCompatibilityTest {
     @AfterAll static void close() { if (fixture != null) fixture.close(); }
     @BeforeEach void reset() throws SQLException { fixture.reset("", ""); }
 
-    @Test void b16_emptyDatabaseConstraintsAndRepeatHistory() throws Exception {
+    @Test @DisplayName("B16 — DB rỗng lên version 2, constraint trực tiếp, migrate lại không thêm history")
+    void b16_emptyDatabaseConstraintsAndRepeatHistory() throws Exception {
         Ex01_MigrationCompatibility.migrate(fixture.dataSource()); // positive learner control
         assertEquals(2, scalar("SELECT count(*) FROM flyway_schema_history WHERE success"));
         assertEquals(4, scalar("SELECT count(*) FROM information_schema.tables WHERE table_schema='public' AND table_name IN ('customers','products','orders','order_items')"));
@@ -57,7 +59,8 @@ class Ex01_MigrationCompatibilityTest {
         System.out.println("B16 PG=" + text("SHOW server_version") + " versions=1,2 history=2 repeat=2 fourTables=4");
     }
 
-    @Test void b16_versionOneValidOldRowSurvivesVersionTwo() throws Exception {
+    @Test @DisplayName("B16 — Row hợp lệ tạo ở version 1 còn nguyên sau version 2")
+    void b16_versionOneValidOldRowSurvivesVersionTwo() throws Exception {
         Ex01_MigrationCompatibility.migrate(fixture.dataSource(), "1");
         assertEquals(1, scalar("SELECT count(*) FROM flyway_schema_history"));
         seed();
@@ -71,7 +74,8 @@ class Ex01_MigrationCompatibilityTest {
         assertEquals(2, scalar("SELECT count(*) FROM flyway_schema_history"));
     }
 
-    @Test void b16_incompatibleOldRowBlocksUpgradeWithoutDataLoss() throws Exception {
+    @Test @DisplayName("B16 — Row cũ sai chặn upgrade, không mất dữ liệu; sửa tường minh rồi migrate")
+    void b16_incompatibleOldRowBlocksUpgradeWithoutDataLoss() throws Exception {
         Ex01_MigrationCompatibility.migrate(fixture.dataSource(), "1"); // positive outside assertThrows
         seed();
         execute("INSERT INTO order_items(order_id,product_id,quantity,unit_price) VALUES (1,1,0,2.50)");
@@ -84,12 +88,14 @@ class Ex01_MigrationCompatibilityTest {
         assertEquals(2, scalar("SELECT count(*) FROM flyway_schema_history"));
     }
 
-    @Test void q04_realPostgresIndependentContendersConserveStock() throws Exception {
+    @Test @DisplayName("Q4 — Hai connection PostgreSQL thật tranh stock=1, bảo toàn tồn kho")
+    void q04_realPostgresIndependentContendersConserveStock() throws Exception {
         Ex01_MigrationCompatibility.migrate(fixture.dataSource());
         seed();
         execute("UPDATE products SET stock=1 WHERE id=1");
         CountDownLatch ready = new CountDownLatch(2), go = new CountDownLatch(1);
         var pool = Executors.newFixedThreadPool(2);
+        boolean terminated;
         try {
             var first = pool.submit(() -> contender(ready, go));
             var second = pool.submit(() -> contender(ready, go));
@@ -99,11 +105,15 @@ class Ex01_MigrationCompatibilityTest {
             assertEquals(1, sold);
             assertEquals(1, sold + scalar("SELECT stock FROM products WHERE id=1"));
         } finally {
-            go.countDown(); pool.shutdownNow(); assertTrue(pool.awaitTermination(10, TimeUnit.SECONDS));
+            go.countDown(); pool.shutdownNow();
+            try { terminated = pool.awaitTermination(10, TimeUnit.SECONDS); }
+            catch (InterruptedException interrupted) { Thread.currentThread().interrupt(); terminated = false; }
         }
+        assertTrue(terminated);
     }
 
-    @Test void q05_disposableResetAllowsSameUniqueSeedWithoutPriorRows() throws Exception {
+    @Test @DisplayName("Q5 — Reset disposable cho phép seed unique lặp lại, không phụ thuộc dữ liệu cũ")
+    void q05_disposableResetAllowsSameUniqueSeedWithoutPriorRows() throws Exception {
         Ex01_MigrationCompatibility.migrate(fixture.dataSource());
         long id = Ex01_MigrationCompatibility.insertCustomer(fixture.dataSource(), "same-seed");
         assertTrue(id > 0);
