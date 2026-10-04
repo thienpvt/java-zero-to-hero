@@ -46,16 +46,16 @@ import phase01.support.Compiles;
  *               nào ném ClassCastException.
  *   Hoàn thành khi: q10_prediction xanh và viết xong khối ANSWER Q10 ở cuối file.
  * <p>
- * Q7 [DỰ ĐOÁN + CODE] Tại sao Java không cho phép: {@code if (obj instanceof List&lt;String&gt;)}
+ * Q7 [DỰ ĐOÁN + CODE] Tại sao Java không cho phép: {@code if (obj instanceof List<String>)}
  *   Bắt đầu   : điền hằng Q7_INSTANCEOF_LIST_STRING_COMPILES; bỏ comment 2 dòng mẫu
  *               ngay dưới hằng, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán.
  *   Kiểm chứng: chạy q07_*; đặt breakpoint trong isListOfStrings, F7 qua từng phần tử.
  *   Code      : isListOfStrings trả true nếu obj là List&lt;?&gt; và mọi phần tử là String
  *               (list rỗng → true; có phần tử null → false; không phải List → false).
- *   Hoàn thành khi: các test q07_* xanh; giải thích được vì {@code List&lt;String&gt;} không tồn tại
+ *   Hoàn thành khi: các test q07_* xanh; giải thích được vì {@code List<String>} không tồn tại
  *               như một kiểu runtime riêng (chỉ còn {@code List}) nên JVM không kiểm tra được.
  * <p>
- * Q11 [TỰ TRẢ LỜI] Vì sao {@code List&lt;String&gt;} và {@code List&lt;Integer&gt;} không phân biệt được bằng
+ * Q11 [TỰ TRẢ LỜI] Vì sao {@code List<String>} và {@code List<Integer>} không phân biệt được bằng
  *     {@code instanceof} tại runtime?
  *   Bắt đầu   : làm Q6 và Q7 trước, liên hệ kết quả javap ở Q6 để trả lời.
  *   Kiểm chứng: Tra cứu — không có test riêng.
@@ -79,7 +79,7 @@ public class Ex02_TypeErasure {
     /**
      * Gọi {@code factory.get()} đúng {@code n} lần và trả về danh sách các kết quả.
      *
-     * @throws IllegalArgumentException nếu {@code n &lt; 0}
+     * @throws IllegalArgumentException nếu {@code n < 0}
      */
     static <T> List<T> createN(Supplier<? extends T> factory, int n) {
         // SOLUTION-BEGIN throw Q5
@@ -125,7 +125,7 @@ public class Ex02_TypeErasure {
     static final Compiles Q7_INSTANCEOF_LIST_STRING_COMPILES = Compiles.NO; // SOLUTION-VALUE
 
     /**
-     * {@code true} nếu {@code obj} là một {@code List&lt;?&gt;} và mọi phần tử của nó là {@code String}.
+     * {@code true} nếu {@code obj} là một {@code List<?>} và mọi phần tử của nó là {@code String}.
      * List rỗng trả về {@code true}; nếu có phần tử {@code null} thì trả về {@code false}.
      */
     static boolean isListOfStrings(Object obj) {

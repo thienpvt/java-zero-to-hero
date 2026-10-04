@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * Bài tích hợp — CustomerReportService (tổng hợp đơn hàng thành báo cáo theo khách hàng)
  *
  * Nguồn: 01-java-core-advanced.md, mục "Bài thực hành tích hợp", bước 3 và 4.
- * Cần làm trước: CsvOrderParser (B2, B3) — cần {@code List&lt;Order&gt;} hợp lệ để tổng hợp.
+ * Cần làm trước: CsvOrderParser (B2, B3) — cần {@code List<Order>} hợp lệ để tổng hợp.
  * Cách làm: cài lần lượt {@code summarizeWithLoop} rồi {@code summarizeWithStream}; cả hai
  * phải cho cùng kết quả trên cùng input (CustomerReportServiceTest chạy chung một bộ test
  * cho cả hai bằng {@code @ParameterizedTest}).

@@ -16,7 +16,7 @@ import phase01.support.Compiles;
  *
  * ─────────────────────────────────────────────────────────────────────
  * <p>
- * Q1 [DỰ ĐOÁN] {@code List&lt;String&gt;} có phải subtype của {@code List&lt;Object&gt;} không? Tại sao?
+ * Q1 [DỰ ĐOÁN] {@code List<String>} có phải subtype của {@code List<Object>} không? Tại sao?
  *   Bắt đầu   : điền 3 hằng số Q1_* bên dưới (thay null); bỏ comment từng dòng mẫu
  *               ngay cạnh mỗi hằng {@code Compiles}, xem IDE báo gì, rồi comment lại — sau khi
  *               đã điền dự đoán — trước khi chạy test.
@@ -36,21 +36,21 @@ import phase01.support.Compiles;
  *               Debug test, dùng F7 để xem từng phần tử được cộng vào total.
  *   Code      : sum trả tổng doubleValue() của mọi phần tử; collection rỗng trả 0.0.
  *   Hoàn thành khi: các test q02_* xanh; giải thích được vì sao {@code ? extends Number}
- *               cho phép truyền cả {@code List&lt;Integer&gt;} và {@code List&lt;Double&gt;} mà {@code Number} không cho.
+ *               cho phép truyền cả {@code List<Integer>} và {@code List<Double>} mà {@code Number} không cho.
  * <p>
  * Q3 [CODE] Khi nào dùng {@code ? super T}?
  *   Bắt đầu   : cài đặt addNumbers(List&lt;? super Integer&gt; target, int count) bên dưới.
- *   Kiểm chứng: chạy q03_*; thử tạm đổi tham số thành {@code List&lt;Integer&gt;} rồi gọi với
- *               {@code List&lt;Number&gt;}, xem IDE báo gì, rồi đổi lại {@code ? super Integer} trước khi nộp.
+ *   Kiểm chứng: chạy q03_*; thử tạm đổi tham số thành {@code List<Integer>} rồi gọi với
+ *               {@code List<Number>}, xem IDE báo gì, rồi đổi lại {@code ? super Integer} trước khi nộp.
  *   Code      : thêm các số 0..count-1 vào target theo thứ tự tăng dần;
  *               count &lt; 0 ném IllegalArgumentException, không đổi target.
  *   Hoàn thành khi: các test q03_* xanh; giải thích được vì sao {@code ? super Integer} nhận
- *               được {@code List&lt;Number&gt;}/{@code List&lt;Object&gt;} nhưng không cho đọc phần tử ra kiểu Integer.
+ *               được {@code List<Number>}/{@code List<Object>} nhưng không cho đọc phần tử ra kiểu Integer.
  * <p>
  * Q4 [CODE] Giải thích PECS bằng ví dụ thực tế.
  *   Bắt đầu   : PECS = Producer Extends, Consumer Super. {@code Ctrl+N} → gõ {@code Collections} →
  *               {@code Ctrl+F12} → tìm method {@code copy}, đọc chữ ký
- *               {@code copy(List&lt;? super T&gt; dest, List&lt;? extends T&gt; src)} của JDK để so sánh.
+ *               {@code copy(List<? super T> dest, List<? extends T> src)} của JDK để so sánh.
  *   Kiểm chứng: chạy q04_*; đặt breakpoint đầu copy() và max(), Debug test, F7 qua từng bước.
  *   Code      : copy() nối toàn bộ src vào cuối dst, giữ thứ tự; max() trả phần tử lớn nhất
  *               theo comparator, collection rỗng ném NoSuchElementException.
@@ -91,7 +91,7 @@ public class Ex01_InvarianceAndWildcards {
     /**
      * Thêm các số nguyên {@code 0..count-1} (theo thứ tự tăng dần) vào {@code target}.
      *
-     * @throws IllegalArgumentException nếu {@code count &lt; 0}; khi đó {@code target} giữ nguyên
+     * @throws IllegalArgumentException nếu {@code count < 0}; khi đó {@code target} giữ nguyên
      */
     static void addNumbers(List<? super Integer> target, int count) {
         // SOLUTION-BEGIN throw Q3

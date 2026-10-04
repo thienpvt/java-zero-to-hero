@@ -27,11 +27,11 @@ import phase01.d17_capstone.CustomerReportService.CustomerSummary;
  *               1 lỗi trước khi cài code.
  *   Kiểm chứng: đặt breakpoint đầu {@code render(...)}, Debug test, dùng Evaluate Expression
  *               (Alt+F8) để xem chuỗi báo cáo bạn đang ghép tăng dần qua từng dòng.
- *   Code      : cài {@code render(List&lt;CustomerSummary&gt; rows, List&lt;LineError&gt; errors)}: dòng
+ *   Code      : cài {@code render(List<CustomerSummary> rows, List<LineError> errors)}: dòng
  *               tiêu đề {@code "customerId | orders | totalPaid | firstOrderDate"}; mỗi dòng
  *               dữ liệu {@code customerId | orderCount | totalPaid.toPlainString() |
  *               firstOrderDate}; các dòng phân tách bằng {@code "\n"}; nếu có lỗi, thêm một
- *               dòng trống rồi mỗi lỗi một dòng {@code "Dòng &lt;n&gt;: &lt;message&gt;"}.
+ *               dòng trống rồi mỗi lỗi một dòng {@code "Dòng <n>: <message>"}.
  *   Hoàn thành khi: mọi test trong ReportAppTest xanh và chạy được lệnh dòng lệnh dưới đây
  *               trên file mẫu, ra báo cáo hợp lý (đối chiếu với test đọc file mẫu).
  *

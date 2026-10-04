@@ -30,7 +30,7 @@ import phase00.d13_capstone.Order.Status;
  *   Code      : mỗi dòng không trống có đúng 5 field {@code id,customerCode,yyyy-MM-dd,amount,STATUS}.
  *               Không có dấu phẩy trong field, không có quote. Dòng trống bỏ qua nhưng vẫn tính vào số dòng.
  *               File không tồn tại → {@code NoSuchFileException}. Dòng sai, ngày/tiền/trạng thái không đọc được,
- *               hoặc id trùng trong file → {@code IllegalArgumentException} có chữ {@code dòng &lt;n&gt;}.
+ *               hoặc id trùng trong file → {@code IllegalArgumentException} có chữ {@code dòng <n>}.
  *               Tiền tạo bằng {@code new BigDecimal(chuỗi)}.
  *   Hoàn thành khi: OrderFileTest xanh, kể cả file mẫu tiếng Việt và file rỗng.
  *

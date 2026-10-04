@@ -124,7 +124,7 @@ public class Ex01_NodeTraversal {
          * Trả node tại {@code index} (0-based). Duyệt từ đầu gần hơn (first hoặc last) để
          * giảm số bước, và ghi số bước thực tế đã đi vào {@link #lastTraversalSteps}.
          *
-         * @throws IndexOutOfBoundsException nếu {@code index &lt; 0 || index &gt;= size()}
+         * @throws IndexOutOfBoundsException nếu {@code index < 0 || index >= size()}
          */
         Node<E> nodeAt(int index) {
             // SOLUTION-BEGIN throw Q1

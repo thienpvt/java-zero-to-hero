@@ -50,7 +50,7 @@ public class Ex01_Cas {
      * Tăng một {@code AtomicInteger} mới từ 0 đúng {@code n} lần.
      * Method này cho sẵn. Phần cần viết là overload nhận {@code AtomicInteger}.
      *
-     * @throws IllegalArgumentException nếu {@code n &lt; 0}
+     * @throws IllegalArgumentException nếu {@code n < 0}
      */
     static int incrementTo(int n) {
         return incrementTo(new AtomicInteger(), n);
@@ -60,7 +60,7 @@ public class Ex01_Cas {
      * Tăng {@code current} đúng {@code n} lần bằng vòng {@code compareAndSet}.
      * Trả giá trị của bộ đếm sau những lần tăng của lời gọi này.
      *
-     * @throws IllegalArgumentException nếu {@code current} là null hoặc {@code n &lt; 0}
+     * @throws IllegalArgumentException nếu {@code current} là null hoặc {@code n < 0}
      */
     static int incrementTo(AtomicInteger current, int n) {
         // SOLUTION-BEGIN throw Q2

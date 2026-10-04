@@ -16,7 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *   Hoàn thành khi: viết xong khối ANSWER Q1.
  * <p>
  * Q2 [CODE] ConcurrentHashMap hỗ trợ concurrency như thế nào ở mức khái niệm?
- *   Bắt đầu   : cài đặt {@code counts()} để trả một {@code Map&lt;String, Integer&gt;} mới, kiểu
+ *   Bắt đầu   : cài đặt {@code counts()} để trả một {@code Map<String, Integer>} mới, kiểu
  *               ConcurrentHashMap. Viết khối ANSWER Q2 về mức khái niệm, không chỉ tên lớp.
  *   Kiểm chứng: chạy q02_fourThreadsMergeSum40000. Bốn thread, mỗi thread {@code merge} 10000 lần
  *               trên 100 key, cổng {@code CountDownLatch}, {@code join} tối đa 10 giây.
@@ -35,7 +35,7 @@ public class Ex01_ConcurrentMap {
     static final Boolean Q3_ALLOWS_NULL_KEY = false; // SOLUTION-VALUE
 
     /**
-     * Trả một {@code Map&lt;String, Integer&gt;} mới để nhiều thread cùng {@code merge}.
+     * Trả một {@code Map<String, Integer>} mới để nhiều thread cùng {@code merge}.
      */
     static Map<String, Integer> counts() {
         // SOLUTION-BEGIN throw Q2

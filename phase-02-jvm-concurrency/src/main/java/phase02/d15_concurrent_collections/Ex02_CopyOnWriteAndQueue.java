@@ -23,7 +23,7 @@ import java.util.concurrent.CountDownLatch;
  *   Hoàn thành khi: q05 xanh và ANSWER Q5 giải thích chi phí của write.
  * <p>
  * Q6 [CODE] BlockingQueue giải quyết producer-consumer như thế nào?
- *   Bắt đầu   : cài đặt {@code takeSum(BlockingQueue&lt;Integer&gt;, int)}. Một thread khác {@code put}
+ *   Bắt đầu   : cài đặt {@code takeSum(BlockingQueue<Integer>, int)}. Một thread khác {@code put}
  *               các số từ 0 đến n - 1. Method này {@code take} đúng n phần tử và trả tổng.
  *               Viết khối ANSWER Q6.
  *   Kiểm chứng: chạy q06_takeSumOfZeroThroughNMinusOne. {@code join} tối đa 10 giây, fail nếu thread
@@ -53,7 +53,7 @@ public class Ex02_CopyOnWriteAndQueue {
      * @param queue queue đang rỗng; producer và consumer dùng chung queue này
      * @param n số phần tử cần lấy
      * @return tổng các phần tử đã {@code take}
-     * @throws IllegalArgumentException nếu {@code queue} là null hoặc {@code n &lt; 0}
+     * @throws IllegalArgumentException nếu {@code queue} là null hoặc {@code n < 0}
      * @throws InterruptedException nếu bị ngắt trong lúc {@code take} hoặc {@code join}
      */
     static int takeSum(BlockingQueue<Integer> queue, int n) throws InterruptedException {

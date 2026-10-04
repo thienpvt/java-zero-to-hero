@@ -46,8 +46,8 @@ public class Ex02_MemoryAndLocality {
      * (a) ước lượng thô byte/phần tử qua chênh lệch {@code Runtime.totalMemory() -
      * freeMemory()} trước/sau khi thêm {@code n} phần tử, có {@code System.gc()} trước mỗi
      * lần đo — đây là số đo thô, chỉ dùng để so sánh tương đối, không phải kích thước chính xác;
-     * (b) thời gian duyệt tổng bằng for-each trên {@code int[]}, {@code ArrayList&lt;Integer&gt;} và
-     * {@code LinkedList&lt;Integer&gt;}, đo thô bằng {@code System.nanoTime()} sau một vòng warm-up.
+     * (b) thời gian duyệt tổng bằng for-each trên {@code int[]}, {@code ArrayList<Integer>} và
+     * {@code LinkedList<Integer>}, đo thô bằng {@code System.nanoTime()} sau một vòng warm-up.
      *
      * @param n số phần tử dùng cho cả hai phép đo (nên dùng số nhỏ trong test, số lớn khi chạy main)
      * @return báo cáo dạng văn bản, không rỗng

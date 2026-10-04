@@ -24,7 +24,7 @@ import phase01.support.Compiles;
  *               {@code class X extends Counter} (không cho kế thừa), hoàn toàn không liên quan
  *               đến việc field bên trong instance có bị đổi giá trị được hay không.
  * <p>
- * Q2 [DỰ ĐOÁN] {@code final List&lt;String&gt;} có immutable không?
+ * Q2 [DỰ ĐOÁN] {@code final List<String>} có immutable không?
  *   Bắt đầu   : điền 4 hằng Q2_* bên dưới (thay null từng hằng theo đúng kiểu khai báo).
  *               Với Q2_REASSIGN_FINAL_LIST_COMPILES: bỏ comment khối {@code static {}} mẫu
  *               ngay trên hằng đó, xem IDE báo gì, rồi comment lại (không xoá) — sau khi

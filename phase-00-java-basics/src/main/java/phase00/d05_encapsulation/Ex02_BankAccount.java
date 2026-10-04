@@ -17,7 +17,7 @@ import java.util.Objects;
  *   Kiểm chứng: chạy q03_depositAndWithdraw. Thử viết {@code account.balance = ...} ngoài class để thấy lỗi đỏ
  *               (rồi xóa dòng đó). Debug một lần rút quá số dư.
  *   Code      : id không được trống; số dư đầu không âm (0 được). Nạp và rút phải là số dương
- *               ({@code signum() &gt; 0}). Không rút quá số dư. Null → {@code NullPointerException}.
+ *               ({@code signum() > 0}). Không rút quá số dư. Null → {@code NullPointerException}.
  *               Vi phạm còn lại → {@code IllegalArgumentException}. Tiền là {@code BigDecimal}.
  *   Hoàn thành khi: q03_* xanh; ANSWER Q3 giải thích caller không gán số dư tùy ý được.
  */

@@ -13,7 +13,7 @@ import java.util.WeakHashMap;
  * <p>
  * Q5 [DỰ ĐOÁN + CODE] Strong và WeakReference khác nhau thế nào?
  *   Bắt đầu   : điền hằng Q5_WEAK_DOES_NOT_PREVENT_GC (thay null). Cài đặt
- *               {@code surviveOrClear(WeakReference&lt;String&gt;)} để trả referent hiện tại.
+ *               {@code surviveOrClear(WeakReference<String>)} để trả referent hiện tại.
  *               Method đó không gọi {@code System.gc()} và không gọi {@code clear()}.
  *               {@code weakOf(byte[])} cho sẵn, dùng khi muốn bọc một mảng byte.
  *   Tra cứu   : Ctrl+N → WeakReference → Ctrl+Q, đọc {@code get()}.

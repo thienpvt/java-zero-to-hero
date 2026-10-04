@@ -35,7 +35,7 @@ import phase01.support.Compiles;
  *   Kiểm chứng: build project (Ctrl+F9), mở Terminal (Alt+F12), chạy
  *               javap -c -p target/classes/phase01/d09_lambda/Ex02_CaptureAndMethodRef.class,
  *               so sánh bytecode của length(), equalsIgnoreCase() và listFactory() với một lambda
- *               viết tay như {@code s -&gt; s.length()}: tìm lệnh invokedynamic và method dạng
+ *               viết tay như {@code s -> s.length()}: tìm lệnh invokedynamic và method dạng
  *               lambda$, tự ghi nhận method nào sinh thêm method ẩn — sau khi đã cài đặt.
  *               Đây là kiểm tra tĩnh trên bytecode, không đặt breakpoint.
  *   Code      : length() (String::length), equalsIgnoreCase() (String::equalsIgnoreCase),
