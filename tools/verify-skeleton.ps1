@@ -55,6 +55,21 @@ try {
             Select-String -Pattern 'SOLUTION-' -SimpleMatch
     foreach ($hit in $left) { $violations.Add("Marker left after strip: $($hit.Path):$($hit.LineNumber)") }
 
+    # Javadoc escapes the content of {@code ...}, so &lt;/&gt; inside a code span
+    # render double-escaped (List&lt;String&gt;). Write raw <, > there; keep &lt;/&gt;
+    # for generics in prose.
+    $codeSpan = [regex]'(?s)\{@code(?:(?!\}).)*\}'
+    $javaFiles = Get-ChildItem (Join-Path $tmp "$Module\src\main\java") -Recurse -Filter *.java
+    foreach ($f in $javaFiles) {
+        $src = Get-Content $f.FullName -Raw -Encoding UTF8
+        foreach ($m in $codeSpan.Matches($src)) {
+            if ($m.Value -match '&lt;|&gt;') {
+                $line = ($src.Substring(0, $m.Index) -split "`n").Count
+                $violations.Add("Escaped entity inside {@code}: $($f.FullName):$line -> $($m.Value)")
+            }
+        }
+    }
+
     $mvnArgs = @('-q', '-pl', $Module, 'test', '-Dmaven.test.failure.ignore=true', '-Dsurefire.failIfNoSpecifiedTests=false')
     if ($Package) { $mvnArgs += "-Dtest=$basePackage/$Package/*Test" }
     Push-Location $tmp
