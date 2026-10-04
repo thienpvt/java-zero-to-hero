@@ -1,6 +1,6 @@
 # Foundation design: phases 04, 05, 09
 
-Date: 2026-10-04  
+Date: 2026-10-04
 Status: review
 
 ## Goal and constraints
