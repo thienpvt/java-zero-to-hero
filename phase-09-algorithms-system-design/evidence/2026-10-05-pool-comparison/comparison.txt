@@ -1,0 +1,4 @@
+HTTP run=baseline start=2026-10-04T21:00:51.345056900Z end=2026-10-04T21:00:52.664641Z samples=1000 successes=1000 errors=0 p50Nanos=4962600 p95Nanos=7194500 throughputPerSecond=757.6515801316177
+POOL run=baseline deltaCount=1002 meanAcquisitionSeconds=2.75811876247505E-4 (pool wait + acquisition overhead; not lease time or HTTP latency)
+HTTP run=changed start=2026-10-04T21:00:57.681776300Z end=2026-10-04T21:00:58.969069Z samples=1000 successes=1000 errors=0 p50Nanos=4963600 p95Nanos=7330700 throughputPerSecond=776.8600729735741
+POOL run=changed deltaCount=1002 meanAcquisitionSeconds=7.066766467065868E-6 (pool wait + acquisition overhead; not lease time or HTTP latency)
