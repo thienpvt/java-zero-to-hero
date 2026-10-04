@@ -23,9 +23,10 @@ function Get-SkeletonReportCaseCount([string[]] $XmlTexts) {
     return $count
 }
 
-function Get-SkeletonReportViolations([string[]] $XmlTexts, [string[]] $ExpectedClasses) {
+function Get-SkeletonReportViolations([string[]] $XmlTexts, [string[]] $ExpectedClasses, [hashtable] $ExpectedMethods) {
     $violations = [System.Collections.Generic.List[string]]::new()
     $seenClasses = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+    $seenMethods = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
     $cases = 0
     foreach ($text in $XmlTexts) {
         [xml]$xml = $text
@@ -40,6 +41,14 @@ function Get-SkeletonReportViolations([string[]] $XmlTexts, [string[]] $Expected
                 if (-not $className) { $className = [string]$suite.name }
                 [void]$seenClasses.Add($className)
                 $name = "$className#$($case.name)"
+                # Surefire Jupiter 5/6: method, method(), method(types)[invocation], factory()[child].
+                $method = [regex]::Match([string]$case.name, '^([A-Za-z_$][\w$]*)(?:\([^)]*\))?(?:\[\d+\])*$')
+                if ($ExpectedMethods) {
+                    if ($method.Success -and $ExpectedMethods.ContainsKey($className) -and
+                        $ExpectedMethods[$className] -ccontains $method.Groups[1].Value) {
+                        [void]$seenMethods.Add("$className#$($method.Groups[1].Value)")
+                    } else { $violations.Add("Unexpected reported test method: $name") }
+                }
                 $failures = @($case.failure) + @($case.error) | Where-Object { $_ }
                 $fixture = $className -ceq 'phase04.support.PostgresFixtureTest' -or
                            $className -ceq 'phase05.support.PostgresFixtureTest'
@@ -55,7 +64,10 @@ function Get-SkeletonReportViolations([string[]] $XmlTexts, [string[]] $Expected
                     if (-not $allowed) { $violations.Add("GREEN on skeleton (must be red): $name") }
                 } else {
                     $failureText = (@($failures | ForEach-Object { "$($_.message) $($_.InnerText)" }) -join ' ')
-                    if ($fixture -or $failureText -notmatch '\bTODO (?:Q|B)\d+\b|thay null') {
+                    # Existing provided stream example has the native stripper's throw V1 marker.
+                    $legacyExampleTodo = $name -ceq 'phase01.d10_stream.Ex02_LazinessAndPipelineTest#vd_activeUniqueEmails_locUserActiveVaLoaiTrungGiuThuTuGapDau' -and
+                        $failureText -match '\bUnsupportedOperationException\b' -and $failureText -match '\bTODO V1\b'
+                    if ($fixture -or ($failureText -notmatch '\bTODO (?:Q|B)\d+\b|thay null' -and -not $legacyExampleTodo)) {
                         $violations.Add("RED for wrong reason: $name")
                     }
                 }
@@ -69,7 +81,57 @@ function Get-SkeletonReportViolations([string[]] $XmlTexts, [string[]] $Expected
     foreach ($class in $seenClasses) {
         if ($ExpectedClasses -cnotcontains $class) { $violations.Add("Unexpected reported test class: $class") }
     }
+    foreach ($class in $ExpectedClasses) {
+        if (-not $ExpectedMethods -or -not $ExpectedMethods.ContainsKey($class) -or @($ExpectedMethods[$class]).Count -eq 0) {
+            $violations.Add("No expected method inventory for class: $class")
+            continue
+        }
+        foreach ($method in $ExpectedMethods[$class]) {
+            if (-not $seenMethods.Contains("$class#$method")) {
+                $violations.Add("Missing report/testcase for expected method: $class#$method")
+            }
+        }
+    }
     return $violations.ToArray()
+}
+
+function Get-SkeletonSourceMethods([string] $Source, [string[]] $ExcludedTags = @()) {
+    # ponytail: repository's direct Jupiter annotations, top-level tests, literal @Tag values.
+    # Inheritance/composed/nested tests need compiled metadata before expanding this bounded scan.
+    $source = [regex]::Replace($Source, '(?s)/\*.*?\*/|//[^\r\n]*|"(?:\\.|[^"\\])*"', {
+        param($m)
+        if ($m.Value.StartsWith('"')) { return $m.Value }
+        return [regex]::Replace($m.Value, '[^\r\n]', ' ')
+    })
+    $class = [regex]::Match($source, '(?m)^\s*(?:(?:public|abstract|final)\s+)*class\s+\w+\s*(?<tail>[^\{]*)\{')
+    if (-not $class.Success -or $class.Groups['tail'].Value.Trim() -or
+        $source -match '@(?:[\w.]+\.)?(?:Nested|TestTemplate|Tags)\b') {
+        throw 'Unsupported test metadata: require direct top-level Jupiter tests without inheritance/Nested/TestTemplate/Tags.'
+    }
+    $annotation = '@[\w.]+(?:\s*\((?:[^()"'']|"(?:\\.|[^"\\])*"|''(?:\\.|[^''\\])*''|\([^()]*\))*\))?'
+    $testAnnotation = '@(?:[\w.]+\.)?(?:Test|ParameterizedTest|RepeatedTest|TestFactory)\b'
+    $pattern = '(?m)^\s*(?<annotations>(?:' + $annotation + '\s*)+)(?:(?:public|protected|private|static|final|synchronized)\s+)*(?:[\w.$<>,?\[\]\s]+?)\s+(?<method>[\w$]+)\s*\([^()]*\)\s*(?:throws\s+[\w.,\s]+)?\{'
+    $methods = [System.Collections.Generic.List[string]]::new()
+    $testMethods = @([regex]::Matches($source, $pattern) | Where-Object { $_.Groups['annotations'].Value -match $testAnnotation })
+    if ($testMethods.Count -ne [regex]::Matches($source, $testAnnotation).Count) {
+        throw 'Cannot inventory every Jupiter test method: unsupported annotation or method declaration format.'
+    }
+    $tagPattern = '@(?:[\w.]+\.)?Tag\s*\(\s*"([^"\\]+)"\s*\)'
+    if ($ExcludedTags.Count -and ([regex]::Matches($source, '@(?:[\w.]+\.)?Tag\b').Count -ne
+        [regex]::Matches($source, $tagPattern).Count -or
+        @($ExcludedTags | Where-Object { $_ -notmatch '^[A-Za-z0-9_.-]+$' }).Count)) {
+        throw 'Partial inventory supports literal @Tag values and individual excluded tags, not tag expressions.'
+    }
+    $classTags = @([regex]::Matches($source.Substring(0, $class.Index), $tagPattern) | ForEach-Object { $_.Groups[1].Value })
+    foreach ($match in $testMethods) {
+        $tags = $classTags + @([regex]::Matches($match.Groups['annotations'].Value, $tagPattern) | ForEach-Object { $_.Groups[1].Value })
+        if (@($tags | Where-Object { $ExcludedTags -ccontains $_ }).Count) { continue }
+        $methods.Add($match.Groups['method'].Value)
+    }
+    if (@($methods | Group-Object | Where-Object Count -gt 1).Count) {
+        throw 'Overloaded Jupiter test method names require signature-aware inventory.'
+    }
+    return $methods.ToArray()
 }
 
 if ($SelfCheck) { return }
@@ -112,22 +174,21 @@ if ($Package -and $ExpectedQuestions -gt 0 -and (Test-Path $mainJava)) {
 }
 
 $inventory = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+$methodInventory = @{}
 $testFiles = @(Get-ChildItem $testJava -Recurse -Filter '*Test.java' -ErrorAction SilentlyContinue)
 foreach ($file in $testFiles) {
     $source = Get-Content $file.FullName -Raw -Encoding UTF8
-    if ($source -notmatch '@(?:Test|ParameterizedTest)\b') { continue }
+    if ($source -notmatch '@(?:[\w.]+\.)?(?:Test|ParameterizedTest|RepeatedTest|TestFactory)\b') { continue }
     $relative = $file.FullName.Substring($testJava.Length).TrimStart('\', '/')
     $expectedPath = if ($Package) { "$basePackage\$Package" } else { $basePackage }
     if (-not $relative.StartsWith("$expectedPath\", [StringComparison]::OrdinalIgnoreCase)) { continue }
     $packageMatch = [regex]::Match($source, '(?m)^\s*package\s+([\w.]+)\s*;')
     if (-not $packageMatch.Success) { $violations.Add("Test class has no package declaration: $($file.FullName)"); continue }
     $className = "$($packageMatch.Groups[1].Value).$($file.BaseName)"
-    if ($ExcludeGroups.Count) {
-        $classDeclaration = [regex]::Match($source, '(?m)^\s*(?:(?:public|abstract|final)\s+)*class\s+\w+')
-        $classAnnotations = if ($classDeclaration.Success) { $source.Substring(0, $classDeclaration.Index) } else { '' }
-        $excludedTag = [regex]::Match($classAnnotations, '(?m)@Tag\s*\(\s*"([^"]+)"\s*\)')
-        if ($excludedTag.Success -and $ExcludeGroups -ccontains $excludedTag.Groups[1].Value) { continue }
-    }
+    try { $methods = @(Get-SkeletonSourceMethods $source $ExcludeGroups) }
+    catch { throw "Cannot inventory $($file.FullName): $($_.Exception.Message)" }
+    if ($methods.Count -eq 0) { continue }
+    $methodInventory[$className] = $methods
     [void]$inventory.Add($className)
 }
 
@@ -177,7 +238,7 @@ try {
     $partial = $ExcludeGroups.Count -gt 0
     if ($partial) { Write-Host 'PARTIAL: excluded JUnit groups; not a full skeleton verification.' }
     $xmlTexts = @($reports | ForEach-Object { Get-Content $_.FullName -Raw -Encoding UTF8 })
-    foreach ($problem in (Get-SkeletonReportViolations $xmlTexts @($inventory))) { $violations.Add($problem) }
+    foreach ($problem in (Get-SkeletonReportViolations $xmlTexts @($inventory) $methodInventory)) { $violations.Add($problem) }
     $total = 0
     $total = Get-SkeletonReportCaseCount $xmlTexts
     }
@@ -190,5 +251,6 @@ if ($violations.Count -gt 0) {
     exit 1
 }
 $partialLabel = if ($ExcludeGroups.Count) { 'PARTIAL: ' } else { '' }
-Write-Host "${partialLabel}OK: $total test(s) checked across $($inventory.Count) expected class(es), skeleton rules satisfied."
+$methodCount = @($methodInventory.Values | ForEach-Object { $_ }).Count
+Write-Host "${partialLabel}OK: $total test(s) checked across $($inventory.Count) expected class(es), $methodCount selected method(s), skeleton rules satisfied."
 exit 0

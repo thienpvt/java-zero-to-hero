@@ -63,6 +63,7 @@ class Ex01_Backtracking {
     }
 
     private static void collectRange(int n, int k, int next, List<Integer> path, List<List<Integer>> result) {
+        // SOLUTION-BEGIN throw B1
         if (path.size() == k) {
             result.add(new ArrayList<>(path));
             return;
@@ -73,10 +74,12 @@ class Ex01_Backtracking {
             collectRange(n, k, value + 1, path, result);
             path.remove(path.size() - 1);
         }
+        // SOLUTION-END
     }
 
     private static void collectValues(int[] values, int k, int start,
                                       List<Integer> path, List<List<Integer>> result) {
+        // SOLUTION-BEGIN throw B1
         if (path.size() == k) {
             result.add(new ArrayList<>(path));
             return;
@@ -88,6 +91,7 @@ class Ex01_Backtracking {
             collectValues(values, k, i + 1, path, result);
             path.remove(path.size() - 1);
         }
+        // SOLUTION-END
     }
 }
 
