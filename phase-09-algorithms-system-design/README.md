@@ -1,11 +1,17 @@
 # Phase 09 — Algorithms and System Design
 
-Mô-đun Java 21 cho cấu trúc dữ liệu, thuật toán và system design. Đây là module Java thuần theo parent root, không cần Spring runtime hay database; các prerequisite đo đạc ở giai đoạn sau không phải yêu cầu để học hoặc chạy thuật toán.
+Mô-đun Java 21 cho cấu trúc dữ liệu, thuật toán và system design. Đây là module Java thuần theo parent root, không cần Spring runtime hay database.
 
-Chạy từ thư mục gốc repository:
+Chạy test module từ thư mục gốc repository:
 
 ```powershell
-./mvnw.cmd -pl phase-09-algorithms-system-design test-compile
+./mvnw.cmd -pl phase-09-algorithms-system-design test
 ```
 
-Module hiện chưa có bài tập hoặc test domain. `test-compile` chỉ xác nhận biên dịch trạng thái hiện tại, không phải test suite xanh hay xác nhận curriculum đã hoàn tất. Gate skeleton hiện báo `COMPILE-ONLY` khi module rỗng; chạy test/report gate và skeleton verifier cho test domain sau khi bài tập Phase 09 được thêm.
+Kiểm tra skeleton sau khi chạy test:
+
+```powershell
+./tools/verify-skeleton.ps1 -Module phase-09-algorithms-system-design
+```
+
+Verifier đối chiếu report với test inventory, yêu cầu bài tập chưa giải còn đỏ đúng lý do; `PARTIAL` không phải gate đầy đủ. Nếu module chưa có test inventory, verifier chỉ báo `COMPILE-ONLY`, không phải test suite xanh. Hiện Phase 09 có các bài DSA từ d01 đến d08; đây là curriculum một phần, các chủ đề còn lại vẫn cần bổ sung. DSA không yêu cầu database; PostgreSQL chỉ là prerequisite riêng nếu sau này chạy phép đo telemetry.
