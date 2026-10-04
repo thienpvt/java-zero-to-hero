@@ -31,5 +31,12 @@ $noCases = @(Get-SkeletonReportViolations @('<testsuite tests="0"/>') @())
 Assert-Contains $noCases 'No test cases found in Surefire reports.'
 $fixtureWrongRed = '<testsuite tests="1" failures="1"><testcase classname="phase05.support.PostgresFixtureTest" name="database"><failure message="TODO Q1"/></testcase></testsuite>'
 Assert-Contains @(Get-SkeletonReportViolations @($fixtureWrongRed) @('phase05.support.PostgresFixtureTest')) 'RED for wrong reason: phase05.support.PostgresFixtureTest#database'
+$wrongTodo = '<testsuite tests="1" failures="1"><testcase classname="phase03.ExampleTest" name="q1"><failure message="TODO X9"/></testcase></testsuite>'
+Assert-Contains @(Get-SkeletonReportViolations @($wrongTodo) @('phase03.ExampleTest')) 'RED for wrong reason: phase03.ExampleTest#q1'
+$malformedTodo = '<testsuite tests="1" failures="1"><testcase classname="phase03.ExampleTest" name="q1"><failure message="TODO Q1x"/></testcase></testsuite>'
+Assert-Contains @(Get-SkeletonReportViolations @($malformedTodo) @('phase03.ExampleTest')) 'RED for wrong reason: phase03.ExampleTest#q1'
+$nestedSuites = '<testsuites tests="2"><testsuite name="phase03.ExampleTest" tests="2"><testcase classname="phase03.ExampleTest" name="q1"><failure message="TODO Q1"/></testcase><testcase classname="phase03.ExampleTest" name="q2"><failure message="TODO B2"/></testcase></testsuite></testsuites>'
+Assert-Clean @($nestedSuites) @('phase03.ExampleTest') 'nested suite report'
+if ((Get-SkeletonReportCaseCount @($nestedSuites)) -ne 2) { throw 'Nested suite case count must be 2.' }
 
-Write-Host 'PASS: 10 verifier classifier checks.'
+Write-Host 'PASS: 13 verifier classifier checks.'

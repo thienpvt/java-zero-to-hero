@@ -14,6 +14,15 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
+function Get-SkeletonReportCaseCount([string[]] $XmlTexts) {
+    $count = 0
+    foreach ($text in $XmlTexts) {
+        [xml]$xml = $text
+        $count += @($xml.SelectNodes('//testcase')).Count
+    }
+    return $count
+}
+
 function Get-SkeletonReportViolations([string[]] $XmlTexts, [string[]] $ExpectedClasses) {
     $violations = [System.Collections.Generic.List[string]]::new()
     $seenClasses = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
@@ -46,7 +55,7 @@ function Get-SkeletonReportViolations([string[]] $XmlTexts, [string[]] $Expected
                     if (-not $allowed) { $violations.Add("GREEN on skeleton (must be red): $name") }
                 } else {
                     $failureText = (@($failures | ForEach-Object { "$($_.message) $($_.InnerText)" }) -join ' ')
-                    if ($fixture -or $failureText -notmatch 'TODO [A-Z]+\d+|thay null') {
+                    if ($fixture -or $failureText -notmatch '\bTODO (?:Q|B)\d+\b|thay null') {
                         $violations.Add("RED for wrong reason: $name")
                     }
                 }
@@ -170,7 +179,7 @@ try {
     $xmlTexts = @($reports | ForEach-Object { Get-Content $_.FullName -Raw -Encoding UTF8 })
     foreach ($problem in (Get-SkeletonReportViolations $xmlTexts @($inventory))) { $violations.Add($problem) }
     $total = 0
-    foreach ($text in $xmlTexts) { [xml]$xml = $text; $total += [int]$xml.testsuite.tests }
+    $total = Get-SkeletonReportCaseCount $xmlTexts
     }
 } finally {
     Remove-Item -Recurse -Force $tmp -ErrorAction SilentlyContinue
