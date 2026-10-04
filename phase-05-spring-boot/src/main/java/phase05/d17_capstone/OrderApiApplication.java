@@ -10,5 +10,12 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackageClasses = Customer.class)
 @EnableJpaRepositories(basePackageClasses = OrderApiApplication.class)
 public class OrderApiApplication {
-    public static void main(String[] args) { SpringApplication.run(OrderApiApplication.class, args); }
+    public static void main(String[] args) {
+        // SOLUTION-BEGIN throw B3
+        var app = new SpringApplication(OrderApiApplication.class);
+        app.setDefaultProperties(java.util.Map.of("spring.jpa.open-in-view", false,
+                "spring.jpa.hibernate.ddl-auto", "validate"));
+        app.run(args);
+        // SOLUTION-END
+    }
 }
