@@ -15,8 +15,8 @@
 - JDK 21, `<maven.compiler.release>21</maven.compiler.release>`. No preview features. No `@Transactional` anywhere.
 - Only JUnit Jupiter. No AssertJ, Mockito, JMH, ArchUnit, or mapping libraries. No new build plugins.
 - Javadoc, `@DisplayName`, assertion messages, and exercise exceptions are Vietnamese with diacritics; files UTF-8.
-- In Javadoc: a standalone ` * <p>` line before each `Qn`/`Bn`. No raw generics. Every `<`/`>` inside `/** */` becomes `&lt;`/`&gt;` or an HTML tag (`<p>`, `<br>`). No backticks in Javadoc.
-- Question lines ` * Qn [NHÃN]` copy the `.md` wording; backticks from the `.md` become `{@code ...}`, `<`/`>` escaped.
+- In Javadoc: a standalone ` * <p>` line before each `Qn`/`Bn`. No raw generics in prose. Every `<`/`>` in prose (outside `{@code}`) becomes `&lt;`/`&gt;` or an HTML tag (`<p>`, `<br>`). No backticks in Javadoc.
+- Question lines ` * Qn [NHÃN]` copy the `.md` wording; backticks from the `.md` become `{@code ...}`. Inside `{@code ...}` write raw `<`/`>` — javadoc escapes the content, so `List&lt;String&gt;` there renders as the literal `List&lt;String&gt;`. `verify-skeleton.ps1` rejects `&lt;`/`&gt;` inside a code span.
 - Package `phase03`, domain `dNN_<tên>` exactly per the file map below. Exercise files `ExNN_*.java`; test is the same name plus `Test`, same package.
 - One test class per exercise file. Capstone uses `B1`–`B6` labels, not `Qn`.
 - Marker grammar is fixed (see Task 2). Skeleton compile failures must stay zero; intentional reds must be `TODO Qn`/`TODO Bn` or `thay null`.
