@@ -36,9 +36,9 @@ package phase09.d22_design_capstone;
  * </ul>
  * <p>
  * Topic 18 harness reuses d18_database_scaling/Ex01_DatabaseScaling: bounded loopback HTTP GET and
- * four timestamped cumulative Hikari acquisition snapshots. See phase-09-algorithms-system-design/README.md.
- * Phase05 capstone application has not been built: production measurement is PENDING / NOT RUN.
- * Run only with local app and valid telemetry; missing token/app/CSV must fail explicitly, never report zero wait.
+ * four timestamped cumulative Hikari acquisition snapshots. See phase-09-algorithms-system-design/README.md
+ * and evidence/2026-10-05-pool-comparison/measurement.txt for completed historical local evidence.
+ * Missing token/app/CSV must fail explicitly, never report zero wait. Local result is not production SLO evidence.
  * Static examples, if any, are illustrative only and cannot be presented as measured evidence.
  */
 /* MODEL B1:
@@ -103,8 +103,9 @@ package phase09.d22_design_capstone;
  *    sustained CPU/IO/pool saturation, measured replica lag, independent team/deploy need, and an
  *    explicit consistency/failure model.
  *
- * Reproducible local experiment: Phase05 application and disposable local DB are prerequisites and are
- *    currently absent. When available, keep dataset, page size 20, concurrency 4, cap 1000 requests and
+ * Reproducible local experiment: a bounded run completed historically; see
+ *    phase-09-algorithms-system-design/evidence/2026-10-05-pool-comparison/measurement.txt. For repetition,
+ *    keep dataset, page size 20, concurrency 4, cap 1000 requests and
  *    duration 5 seconds fixed; perform two warmups; compare baseline pool=4 against one changed setting
  *    (for example pool=8), changing nothing else. Use existing
  *    phase09.d18_database_scaling.Ex01_DatabaseScaling only: bounded loopback GET
@@ -115,9 +116,10 @@ package phase09.d22_design_capstone;
  *    concurrency, timestamps, chosen setting, throughput, p95, errors, and acquisition delta/mean
  *    separately. Acquisition is pool wait plus acquisition overhead, not pure queue wait; do not
  *    compare it as HTTP latency. Missing app/token/telemetry or zero counter delta is a failed run.
- *    Actual result: PENDING / NOT RUN; no numeric measurements exist. Do not invent before/after values
- *    or claim this design target was achieved. These static assumptions and scenarios are illustrative
- *    reference reasoning; reviewer should assess their correctness, not keywords.
+ *    A bounded local run completed historically; its actual values and limits are in
+ *    phase-09-algorithms-system-design/evidence/2026-10-05-pool-comparison/measurement.txt.
+ *    That one local pair does not establish production SLOs or prove general improvement. These static
+ *    assumptions and scenarios are illustrative reference reasoning; reviewer should assess correctness, not keywords.
  * SOLUTION-END
  */
 final class Ex01_DesignCapstone {

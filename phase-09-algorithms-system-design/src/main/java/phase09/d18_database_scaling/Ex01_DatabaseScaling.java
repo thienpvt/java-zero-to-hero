@@ -86,8 +86,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Export actual protected Actuator metric bằng PowerShell, scope metrics.read; không poll/parse JSON.
  * Hoàn thành khi: tests hợp đồng xanh và báo cáo actual HTTP/pool độc lập kèm cấu hình,
  * môi trường, khoảng đo, độ lệch, error rate và giới hạn. Tests dùng HttpServer nhỏ chỉ kiểm tra
- * harness, không phải production measurement. Phase05 app chưa được xây: actual capstone
- * measurement PENDING/NOT RUN; không tạo zero telemetry hoặc coi tests là số đo app.
+ * harness, không phải production measurement. Bounded local measurement trên Phase05 app đã chạy;
+ * xem README và evidence/2026-10-05-pool-comparison/measurement.txt; đây không phải production SLO.
  */
 public class Ex01_DatabaseScaling {
     public static void main(String[] args) {
@@ -423,6 +423,6 @@ public class Ex01_DatabaseScaling {
  * Export COUNT/TOTAL_TIME cùng pool trước warmup và sau đo, trong 5s margin; acquisition có thể gồm traffic khác/warmup.
  * Báo cáo HTTP samples, success/error rate, p50/p95, throughput riêng với delta acquisition mean và timestamps.
  * Không suy ra p95 acquisition từ mean; tăng pool có thể đẩy tải sang DB. Lặp có kiểm soát, ghi JIT/cache/noise và môi trường.
- * Phase05 app chưa được xây: actual measurement NOT RUN; chỉ hợp đồng harness được kiểm bằng JDK HttpServer nhỏ.
+ * Bounded local measurement trên Phase05 app đã chạy; xem README và evidence/2026-10-05-pool-comparison/measurement.txt.
  * SOLUTION-END
  */

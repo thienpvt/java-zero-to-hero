@@ -38,7 +38,8 @@ package phase09.d20_reliability_observability_security;
  * Thêm authn/authz, input validation, secrets/log privacy, retry budget và owner kiểm chứng.
  * Hoàn thành khi: failure không giữ cạn pool/thread, fallback không phá invariant/security,
  * recovery không retry storm; tách giả định thiết kế khỏi hành vi đã đo.
- * Phase05 app chưa xây: failure injection và actual capstone measurement PENDING/NOT RUN.
+ * Failure injection vẫn NOT RUN; bounded local pool measurement trên Phase05 app đã chạy,
+ * xem README và evidence/2026-10-05-pool-comparison/measurement.txt.
  */
 class Ex01_ReliabilityObservabilitySecurity {
     static String failureMatrixTemplate() {
@@ -97,6 +98,7 @@ class Ex01_ReliabilityObservabilitySecurity {
  * | idempotent retry có deadline, không phụ thuộc session memory | LB loại instance, rollout/restart và kiểm capacity.
  * Authn/authz kiểm record owner ở server, input bound/rate limit trước effect; secrets từ env/store least privilege.
  * Log allowlist không token/body/PII; correlation ID bounded, metrics label bounded; recovery có owner và SLO.
- * Chỉ ghi observed behavior sau đo thật; actual Phase05 measurement và failure injection NOT RUN.
+ * Bounded local pool measurement đã chạy; xem README và evidence/2026-10-05-pool-comparison/measurement.txt.
+ * Failure injection vẫn NOT RUN; phép đo này không xác nhận production SLO hay failure behavior.
  * SOLUTION-END
  */
