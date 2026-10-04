@@ -1,0 +1,5 @@
+run,snapshot,capturedAtUtc,metricName,pool,count,totalTimeSeconds
+baseline,start,2026-10-04T21:00:51.0547651Z,hikaricp.connections.acquire,capstone,0,0
+baseline,end,2026-10-04T21:00:52.7175730Z,hikaricp.connections.acquire,capstone,1002,0.2763635
+changed,start,2026-10-04T21:00:57.4202782Z,hikaricp.connections.acquire,capstone,0,0
+changed,end,2026-10-04T21:00:59.0266254Z,hikaricp.connections.acquire,capstone,1002,0.0070809
