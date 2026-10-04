@@ -16,6 +16,9 @@
     <module>phase-01-core-advanced</module>
     <module>phase-02-jvm-concurrency</module>
     <module>phase-03-clean-code-design-patterns</module>
+    <module>phase-04-database-persistence</module>
+    <module>phase-05-spring-boot</module>
+    <module>phase-09-algorithms-system-design</module>
   </modules>
 
   <properties>
