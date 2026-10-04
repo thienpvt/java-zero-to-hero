@@ -6,18 +6,19 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * <h2>Chủ đề 3 — Auto-configuration, profile và secrets</h2>
  * <p>Nguồn: {@code 05-spring-boot.md}, §3 Auto-configuration, profiles và cấu hình an toàn,
  * Q1–Q5 và B03.</p>
  * <p>Tiên quyết: bean condition, property và profile.</p>
- * <p>Bắt đầu trong IntelliJ: mở {@code productionSigningKey}, hoàn thiện B03 rồi chạy
- * test với map giá trị giả; không đọc secret của máy cá nhân.</p>
+ * <p>Bắt đầu trong IntelliJ: mở {@code databaseUrl} và {@code productionSigningKey}, hoàn thiện B03
+ * rồi chạy test với Properties/map giá trị giả; không đọc secret của máy cá nhân.</p>
  * <p>Nghiên cứu: dùng debugger/context runner với cấu hình được cung cấp để đọc condition
  * evaluation report và quan sát back-off; đọc Spring Boot Reference, Auto-configuration.</p>
- * <p>Hoàn thành khi B03 nhận key được cấp rõ ràng, thiếu/blank key fail-fast không lộ secret
- * và viết đủ ANSWER Q1–Q5. Câu hỏi viết được tự đối chiếu, không chấm tự động.</p>
+ * <p>Hoàn thành khi B03 chọn URL khác nhau theo profile local/test, nhận key được cấp rõ ràng,
+ * cấu hình thiếu fail-fast không lộ secret và viết đủ ANSWER Q1–Q5. Câu hỏi viết không chấm tự động.</p>
  * Q1 [DỰ ĐOÁN] Điều kiện nào thường khiến auto-configuration tạo hoặc bỏ qua bean?
  * Q2 [CODE] Khi cấu hình không như mong đợi, tìm bằng chứng ở đâu trước khi thêm bean mới?
  * Q3 [TỰ TRẢ LỜI] Profile khác secret management thế nào?
@@ -63,8 +64,15 @@ public final class Ex01_AutoConfigurationAndSecrets {
         @Bean Greeting greeting() { return new Greeting("local"); }
     }
 
-    public static String localDatabaseUrl() {
-        return "jdbc:postgresql://localhost/lab";
+    /** B03: chọn URL database theo profile local/test; không đọc credential của máy. */
+    public static String databaseUrl(String profile, Properties properties) {
+        // SOLUTION-BEGIN throw B03
+        if (!"local".equals(profile) && !"test".equals(profile))
+            throw new IllegalStateException("Expected local or test profile");
+        String value = properties.getProperty("db." + profile + ".url");
+        if (value == null || value.isBlank()) throw new IllegalStateException("Missing database URL");
+        return value;
+        // SOLUTION-END
     }
 
     /** B03: local/test values remain explicit; required signing key never has a credential default. */
@@ -76,7 +84,4 @@ public final class Ex01_AutoConfigurationAndSecrets {
         // SOLUTION-END
     }
 
-    public static String selectedProfile(Map<String, String> properties) {
-        return properties.getOrDefault("spring.profiles.active", "local");
-    }
 }
