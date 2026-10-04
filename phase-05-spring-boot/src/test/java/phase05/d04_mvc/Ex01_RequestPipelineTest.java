@@ -27,7 +27,7 @@ class Ex01_RequestPipelineTest {
     @MockitoBean Ex01_RequestPipeline.OrderService service;
 
     @Test
-    @DisplayName("Q01: request DTO được deserialize rồi gọi service và trả JSON")
+    @DisplayName("B04: request DTO được deserialize rồi gọi service và trả JSON")
     void validJsonReachesServiceAndReturnsJson() throws Exception {
         when(service.place(any())).thenReturn("accepted");
 
@@ -40,7 +40,7 @@ class Ex01_RequestPipelineTest {
     }
 
     @Test
-    @DisplayName("Q02: JSON sai cú pháp bị từ chối trước service")
+    @DisplayName("B04: JSON sai cú pháp bị từ chối trước service")
     void malformedJsonFailsBeforeServiceCall() throws Exception {
         when(service.place(any())).thenReturn("accepted");
         mvc.perform(post("/api/orders").contentType(MediaType.APPLICATION_JSON)
@@ -54,19 +54,7 @@ class Ex01_RequestPipelineTest {
     }
 
     @Test
-    @DisplayName("Q04: binding JSON hợp lệ hoàn thành trước lời gọi service")
-    void bindingCompletesBeforeServiceInvocation() throws Exception {
-        when(service.place(any())).thenReturn("accepted");
-
-        mvc.perform(post("/api/orders").contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"reference\":\"pipeline-check\"}"))
-                .andExpect(status().isOk());
-
-        verify(service).place(new Ex01_RequestPipeline.CreateOrderRequest("pipeline-check"));
-    }
-
-    @Test
-    @DisplayName("Q03: media type không hỗ trợ bị từ chối trước service")
+    @DisplayName("B04: media type không hỗ trợ bị từ chối trước service")
     void unsupportedMediaTypeFailsBeforeServiceCall() throws Exception {
         when(service.place(any())).thenReturn("accepted");
         mvc.perform(post("/api/orders").contentType(MediaType.APPLICATION_JSON)

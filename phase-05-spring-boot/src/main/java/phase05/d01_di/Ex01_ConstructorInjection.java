@@ -2,18 +2,18 @@ package phase05.d01_di;
 
 /**
  * <h2>Chủ đề 1 — Dependency Injection</h2>
- * <p>Nguồn: phase-05-spring-boot, chủ đề Dependency Injection.</p>
+ * <p>Nguồn: {@code 05-spring-boot.md}, §1 Spring Core, IoC và Dependency Injection, Q1–Q5 và B01.</p>
  * <p>Tiên quyết: class, interface và constructor Java.</p>
- * <p>Trong IntelliJ, mở {@code OrderService} rồi đặt breakpoint tại {@code repository.save}.
- * Thử nghiệm bằng fake repository trong test; không cần khởi tạo Spring.</p>
- * <p>Hoàn thành khi service nhận repository qua constructor và test chạy độc lập.</p>
- * <ul>
- *   <li>Q1 [DỰ ĐOÁN] IoC khác DI ở điểm nào?</li>
- *   <li>Q2 [CODE] Vì sao constructor injection thường rõ hơn field injection?</li>
- *   <li>Q3 [TỰ TRẢ LỜI] Một class thuần Java có cần annotation Spring để test không?</li>
- *   <li>Q4 [THÍ NGHIỆM] Khi nào wiring thủ công dễ hiểu hơn component scan?</li>
- *   <li>Q5 [CODE] DI có tự làm thiết kế tốt nếu dependency graph vẫn rối không?</li>
- * </ul>
+ * <p>Bắt đầu trong IntelliJ: mở {@code service}, hoàn thiện B01 rồi chạy test với fake repository.</p>
+ * <p>Nghiên cứu: đặt breakpoint tại {@code repository.save}; đối chiếu constructor injection
+ * trong Spring Framework Reference, Core Technologies.</p>
+ * <p>Hoàn thành khi B01 dùng repository được truyền vào, test không cần Spring và viết đủ
+ * ANSWER Q1–Q5. Câu hỏi viết được tự đối chiếu, không chấm tự động.</p>
+ * Q1 [DỰ ĐOÁN] IoC khác DI ở điểm nào?
+ * Q2 [CODE] Vì sao constructor injection thường rõ hơn field injection?
+ * Q3 [TỰ TRẢ LỜI] Một class thuần Java có cần annotation Spring để test không?
+ * Q4 [THÍ NGHIỆM] Khi nào wiring thủ công dễ hiểu hơn component scan?
+ * Q5 [CODE] DI có tự làm thiết kế tốt nếu dependency graph vẫn rối không?
  * ANSWER Q1:
  * SOLUTION-BEGIN
  * IoC đảo quyền tạo/chọn dependency; DI là một cách hiện thực IoC.
@@ -60,9 +60,5 @@ public final class Ex01_ConstructorInjection {
         // SOLUTION-BEGIN throw B01
         return new OrderService(repository);
         // SOLUTION-END
-    }
-
-    public static OrderService visibleComposition(OrderRepository repository) {
-        return new OrderService(repository);
     }
 }
