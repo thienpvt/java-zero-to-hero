@@ -41,12 +41,33 @@ class Ex01_RelationalSchemaTest {
             s.executeUpdate("INSERT INTO orders(id,customer_id,status,created_at) VALUES (1,1,'NEW',TIMESTAMPTZ '2026-01-01 00:00:00+00')");
             s.executeUpdate("INSERT INTO order_items(order_id,product_id,quantity,unit_price) VALUES (1,1,1,10.00)");
             assertThrows(SQLException.class, () -> s.executeUpdate("INSERT INTO orders(customer_id,status,created_at) VALUES (999,'NEW',CURRENT_TIMESTAMP)"));
-            assertThrows(SQLException.class, () -> s.executeUpdate("INSERT INTO customers(name) VALUES ('Mai')"));
+            assertSqlState("23505", () -> s.executeUpdate("INSERT INTO customers(name) VALUES ('Mai')"));
+            assertSqlState("23505", () -> s.executeUpdate("INSERT INTO products(name,price,stock) VALUES ('Tea',9.00,1)"));
+            assertSqlState("23502", () -> s.executeUpdate("INSERT INTO products(name,price,stock) VALUES (NULL,9.00,1)"));
+            assertSqlState("23514", () -> s.executeUpdate("INSERT INTO products(name,price,stock) VALUES ('Bad price',-1,1)"));
+            assertSqlState("23514", () -> s.executeUpdate("INSERT INTO products(name,price,stock) VALUES ('Bad stock',1,-1)"));
+            assertSqlState("23502", () -> s.executeUpdate("INSERT INTO orders(customer_id,status,created_at) VALUES (NULL,'NEW',CURRENT_TIMESTAMP)"));
+            assertSqlState("23514", () -> s.executeUpdate("INSERT INTO orders(customer_id,status,created_at) VALUES (1,'PENDING',CURRENT_TIMESTAMP)"));
+            assertSqlState("23502", () -> s.executeUpdate("INSERT INTO order_items(order_id,product_id,quantity,unit_price) VALUES (1,1,NULL,10.00)"));
+            assertSqlState("23514", () -> s.executeUpdate("INSERT INTO order_items(order_id,product_id,quantity,unit_price) VALUES (1,1,0,10.00)"));
+            assertSqlState("23514", () -> s.executeUpdate("INSERT INTO order_items(order_id,product_id,quantity,unit_price) VALUES (1,1,1001,10.00)"));
+            assertSqlState("23514", () -> s.executeUpdate("INSERT INTO order_items(order_id,product_id,quantity,unit_price) VALUES (1,1,1,-1)"));
+            assertSqlState("23505", () -> s.executeUpdate("INSERT INTO order_items(order_id,product_id,quantity,unit_price) VALUES (1,1,2,10.00)"));
             s.executeUpdate("UPDATE products SET price=12.00 WHERE id=1");
             try (var rs = s.executeQuery("SELECT unit_price FROM order_items WHERE order_id=1")) {
                 rs.next();
                 assertEquals(new java.math.BigDecimal("10.00"), rs.getBigDecimal(1));
             }
         }
+    }
+
+    private static void assertSqlState(String expected, SqlAction action) {
+        SQLException failure = assertThrows(SQLException.class, action::run);
+        assertEquals(expected, failure.getSQLState());
+    }
+
+    @FunctionalInterface
+    private interface SqlAction {
+        void run() throws SQLException;
     }
 }
