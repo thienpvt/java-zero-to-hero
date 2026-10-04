@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -107,8 +108,20 @@ public final class Ex01_HttpAndPaging {
                 produces = MediaType.APPLICATION_JSON_VALUE)
         public ResponseEntity<ProductResponse> create(@Valid @RequestBody CreateProductRequest request) {
             // SOLUTION-BEGIN throw B05
+            if (request.price() == null || (long) request.price().precision() - request.price().scale() > 17) {
+                var problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Price exceeds supported precision.");
+                problem.setType(URI.create("urn:phase05:problem:validation"));
+                throw new org.springframework.web.ErrorResponseException(HttpStatus.BAD_REQUEST, problem, null);
+            }
             var created = products.create(new CreateProductRequest(request.name(), request.price().setScale(2)));
             return ResponseEntity.created(URI.create("/api/products/" + created.id())).body(created);
+            // SOLUTION-END
+        }
+
+        @ExceptionHandler(org.springframework.web.ErrorResponseException.class)
+        public ProblemDetail invalidInput(org.springframework.web.ErrorResponseException failure) {
+            // SOLUTION-BEGIN throw B05
+            return failure.getBody();
             // SOLUTION-END
         }
 

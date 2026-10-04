@@ -89,6 +89,22 @@ class Ex01_BoundaryValidationTest {
     }
 
     @Test
+    void extremePriceExponentIs400ProblemBeforeBusinessCall() throws Exception {
+        validControl();
+        products.request = null;
+
+        mvc.perform(post("/api/products").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Tea\",\"price\":\"1e2147483647\",\"quantity\":1}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.type").value("urn:phase05:problem:validation"))
+                .andExpect(jsonPath("$.detail").isNotEmpty());
+        assertEquals(0, products.calls);
+        assertNull(products.request);
+    }
+
+    @Test
     void businessInvariantIsNotDtoValidation() throws Exception {
         validControl();
         products.stockAvailable = false;

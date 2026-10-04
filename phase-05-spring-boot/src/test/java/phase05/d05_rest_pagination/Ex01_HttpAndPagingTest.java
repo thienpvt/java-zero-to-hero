@@ -91,6 +91,25 @@ class Ex01_HttpAndPagingTest {
     }
 
     @Test
+    void extremePriceExponentIs400ProblemBeforeBusinessCall() throws Exception {
+        mvc.perform(post("/api/products").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"control\",\"price\":\"2.00\"}"))
+                .andExpect(status().isCreated());
+        products.writes = 0;
+        products.created = null;
+
+        mvc.perform(post("/api/products").contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Tea\",\"price\":\"1e2147483647\"}"))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON))
+                .andExpect(jsonPath("$.status").value(400))
+                .andExpect(jsonPath("$.type").value("urn:phase05:problem:validation"))
+                .andExpect(jsonPath("$.detail").isNotEmpty());
+        assertEquals(0, products.writes);
+        org.junit.jupiter.api.Assertions.assertNull(products.created);
+    }
+
+    @Test
     void stockConflictIs409NotSuccessfulCreation() throws Exception {
         mvc.perform(post("/api/products").contentType(MediaType.APPLICATION_JSON)
                         .content("{\"name\":\"control\",\"price\":\"2.00\"}"))

@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.net.URI;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -98,12 +99,24 @@ public final class Ex01_BoundaryValidation {
                 produces = MediaType.APPLICATION_JSON_VALUE)
         public ResponseEntity<ProductResponse> create(@Valid @RequestBody CreateProductRequest request) {
             // SOLUTION-BEGIN throw B06
+            if (request.price() == null || (long) request.price().precision() - request.price().scale() > 17) {
+                var problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Price exceeds supported precision.");
+                problem.setType(URI.create("urn:phase05:problem:validation"));
+                throw new org.springframework.web.ErrorResponseException(HttpStatus.BAD_REQUEST, problem, null);
+            }
             var normalized = new CreateProductRequest(request.name(), request.price().setScale(2), request.quantity());
             var entity = products.create(normalized);
             var price = entity.price.setScale(2);
             var response = new ProductResponse(entity.id, entity.name, price, entity.quantity, "USD",
                     price.multiply(BigDecimal.valueOf(entity.quantity)).setScale(2));
             return ResponseEntity.created(URI.create("/api/products/" + entity.id)).body(response);
+            // SOLUTION-END
+        }
+
+        @ExceptionHandler(org.springframework.web.ErrorResponseException.class)
+        public ProblemDetail invalidInput(org.springframework.web.ErrorResponseException failure) {
+            // SOLUTION-BEGIN throw B06
+            return failure.getBody();
             // SOLUTION-END
         }
 
