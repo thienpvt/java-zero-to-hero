@@ -4,6 +4,8 @@ Lộ trình học Java theo **domain/chủ đề**, từ kiến thức cơ bản
 
 Nhánh `main` chứa tài liệu định hướng; code thực hành nằm ở các nhánh bài tập. Mỗi domain có đề trong source, test JUnit để kiểm tra và lời giải để đối chiếu sau khi tự làm.
 
+Bản docs-only này đưa vào commit **cục bộ** các guide/spec đã duyệt cho Phase 04/05/09 và số đo local lịch sử; không cập nhật nhánh `main`, không push hay công bố từ xa. Code, cấu hình và test chỉ có ở nhánh `solutions`/bài tập (`*-exercises`): chuyển sang nhánh tương ứng trước khi dùng các đường dẫn source/lệnh trong README module. Số đo chỉ là một cặp chạy ngắn mixed-mode, không phải SLO hay kết luận hiệu năng production.
+
 ## Chọn nhánh
 
 | Nhánh | Nội dung | Khi nào dùng |
@@ -41,4 +43,12 @@ Trên macOS/Linux, dùng `./mvnw` thay cho `.\mvnw.cmd`. Muốn xem khác biệt
 - [Clean Code & Design Patterns](03-clean-code-design-patterns.md)
 - [Bốn kho bài luyện thêm sau các domain](java-practice-next.md)
 
-Các tài liệu trên `main` định hướng cả những giai đoạn chưa có nhánh bài tập; hiện các nhánh bài tập đã xuất bản chỉ bao gồm Phase 00 và Phase 01.
+### Guide/spec Phase 04/05/09 trong commit cục bộ
+
+- Foundation: [spec](docs/superpowers/specs/2026-10-04-phase04-05-09-foundation-design.md) · [plan](docs/superpowers/plans/2026-10-04-phase04-05-09-foundation.md)
+- Phase 04 — Database & Persistence: [guide](phase-04-database-persistence/README.md) · [spec](docs/superpowers/specs/2026-10-04-phase04-exercises-design.md) · [plan](docs/superpowers/plans/2026-10-04-phase04-exercises.md)
+- Phase 05 — Spring Boot: [guide](phase-05-spring-boot/README.md) · [spec](docs/superpowers/specs/2026-10-04-phase05-exercises-design.md) · [plan](docs/superpowers/plans/2026-10-04-phase05-exercises.md)
+- Phase 09 — Algorithms & System Design: [guide](phase-09-algorithms-system-design/README.md) · [spec](docs/superpowers/specs/2026-10-04-phase09-exercises-design.md) · [plan](docs/superpowers/plans/2026-10-04-phase09-exercises.md)
+- Số đo local lịch sử 2026-10-05: [thiết lập và giới hạn](phase-09-algorithms-system-design/evidence/2026-10-05-pool-comparison/measurement.txt) · [compare](phase-09-algorithms-system-design/evidence/2026-10-05-pool-comparison/comparison.txt) · [baseline](phase-09-algorithms-system-design/evidence/2026-10-05-pool-comparison/baseline.properties) · [changed](phase-09-algorithms-system-design/evidence/2026-10-05-pool-comparison/changed.properties) · [telemetry](phase-09-algorithms-system-design/evidence/2026-10-05-pool-comparison/telemetry.csv)
+
+Guide/spec được giữ nguyên từ ref đã duyệt `4af3c13`; nhãn trạng thái review/draft và mô tả nhánh lời giải trong tài liệu là ngữ cảnh lịch sử, không phải trạng thái checkout docs-only này. Các đường dẫn source, POM, wrapper và tools trong module guide chỉ dùng sau khi chuyển sang `solutions`/nhánh bài tập; không có code hay công cụ build ở đây. Tài liệu curriculum sẵn có không thay đổi. Các liên kết remote trong bảng nhánh giữ nguyên cho Phase 00/01 đã xuất bản; phần Phase 04/05/09 này chỉ là commit cục bộ, không tuyên bố đã publish nhánh mới.

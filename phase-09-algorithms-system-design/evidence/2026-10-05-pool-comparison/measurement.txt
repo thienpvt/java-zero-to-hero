@@ -1,0 +1,86 @@
+Historical bounded local pool comparison — 2026-10-05 (UTC 2026-10-04)
+Source revision: 1b9d6725362c9146911c18967570ac1780b78cdb
+
+SETUP
+Real secured native Spring app phase05.d17_capstone.OrderApiApplication,
+local-lab profile, loopback only; main runtime dependencies, no test SPI.
+JDK 21; owned disposable PostgreSQL 18.0; native Flyway schema version 1.
+Same data verified before both runs using an independent JDBC connection:
+100 products, ids 1–100, names Product-001–Product-100, USD 10.00 and stock
+100 each; customer id 1, subject measurement-local; no orders. Price sum
+1000.00, stock sum 10000, id sum 5050. Seed/verify outside snapshot windows.
+Only intentional configuration change: Hikari maximum pool size 2 vs 4;
+same app build, dependencies and pool tag capstone. Baseline ran first;
+changed used a fresh JVM. Existing phase09 d18 CLI, no second backend.
+GET /api/products?page=0&size=20; concurrency 4, request cap 1000,
+duration upper bound 5 s, timeout 2 s. Two warmup GETs per run excluded
+from HTTP samples, included in acquisition counters. Bearer credentials
+and keys omitted; no raw app logs, helper scripts or incomplete attempts.
+
+RESULTS (baseline pool=2 / changed pool=4)
+HTTP samples:                 1000 / 1000
+HTTP successes / errors:     1000 / 0 in each run (observed error rate 0%)
+Elapsed seconds:             1.3198679 / 1.2872331
+Throughput successes/s:      757.6515801316177 / 776.8600729735741
+HTTP p50 milliseconds:       4.9626 / 4.9636
+HTTP p95 milliseconds:       7.1945 / 7.3307
+Acquisition COUNT delta:     1002 / 1002 (1000 measured + 2 warmup)
+Acquisition TOTAL_TIME s:    0.2763635 / 0.0070809 (delta from genuine zero)
+Mean acquisition seconds:    0.000275811876247505 / 0.000007066766467065868
+Mixed observation: throughput +2.5352673%, HTTP p50 +0.0201507% and
+p95 +1.8931128% (worse); acquisition mean lower. No overall improvement claim.
+Properties store latency/elapsed in nanoseconds; divide by 1000000 for ms,
+1000000000 for seconds. Throughput = successes / elapsed seconds.
+Native hikaricp.connections.acquire reports COUNT and TOTAL_TIME, base unit
+seconds. Mean = delta TOTAL_TIME / delta COUNT: wait plus acquisition
+overhead, not lease time, HTTP latency or acquisition p95.
+
+GENUINE UTC SNAPSHOTS
+baseline HTTP: 2026-10-04T21:00:51.345056900Z .. 2026-10-04T21:00:52.664641Z
+baseline meter: 2026-10-04T21:00:51.0547651Z .. 2026-10-04T21:00:52.7175730Z
+changed HTTP: 2026-10-04T21:00:57.681776300Z .. 2026-10-04T21:00:58.969069Z
+changed meter: 2026-10-04T21:00:57.4202782Z .. 2026-10-04T21:00:59.0266254Z
+Four native protected Actuator snapshots, not fabricated zeros; before/after
+gaps 0.2902918/0.052932 s and 0.2614981/0.0575564 s, all within 5 s.
+Startup acquisitions before start snapshots excluded; meter fetches do not
+acquire DB connections. Counter reset between app JVMs is valid.
+
+ACTUAL EXITS / CLEANUP
+Successful build, runtime dependency export, helper/existing CLI compile,
+docker run, container-only timezone setup, pg_isready, seed and dataset
+verification: exit 0. Native readiness UP both app starts.
+Existing d18 run baseline: 0; run changed: 0; compare: 0.
+Independent completed-artifact verification, including repeat compare: 0.
+Documentation-only CPU compare against copied artifacts: 0; no live rerun.
+Owned app processes forcibly stopped after completed runs: exit -1,
+expected Windows termination, not measurement failure; bounded wait finished.
+Owned container removed with volumes: exit 0. Final owned PID/container
+checks found none; unrelated resources untouched. Redaction check passed.
+
+LIMITS / PROVENANCE
+Request cap reached before 5 s in both runs; not a 5-second steady-state
+benchmark. One sequential pair only, separate JVMs, JIT/GC, DB/OS caches,
+cold pool/two-warmup acquisition, Docker/CPU/scheduler noise. Cold/warmup
+effects may explain mean difference. No statistical significance, causal
+improvement, production SLO, general capacity or pool-size recommendation.
+Global/host/JVM timezone unchanged; timezone alias inside owned container only.
+Four raw artifacts initially copied byte-for-byte from completed safe evidence;
+comparison.txt derives from compare.log. Line endings normalized per repository
+policy (CRLF to LF in committed text), with no value/timestamp/content changes.
+Original immutable jobtmp sources unchanged. CPU compare output unchanged;
+text equality verified after CRLF-to-LF conversion.
+measurement.txt summarizes completed measurement and final verification only.
+
+SHA256 (original raw / normalized committed blob)
+baseline.properties
+  fcb6a4e47680a8ff700210509d0420789a6e47c01e95987b6e0cbd6bd21819b0
+  546351ca8dd5ca300c65df82e7f0b8a4f60576efe7301852b6a6627aed7906e6
+changed.properties
+  9e867dd9cc79c63a79d5e5b2dbfac71ee449241aab13422fb8fd5703236e1204
+  033ced92ca8ea3100067074ab14d432f8402b8b6bdff31c8dd70250620f25796
+telemetry.csv
+  c1267ea45963dda668d53919d3ecf818b503a50ec54542ef0a4c2e499a946dee
+  26f63af6e2d4cb955afd512261394b3ac4136a55bd8021d486e973d9e75b1b61
+comparison.txt (original compare.log)
+  6530928e76c1f0667a1aeda31370fb974750be0b44fbb4a845b76fcdafb05be5
+  47add760e2675bf0251647fc54ba978583e22f66fee75b017e26fc57f3f93979
