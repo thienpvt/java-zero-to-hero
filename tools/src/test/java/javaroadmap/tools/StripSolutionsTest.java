@@ -65,6 +65,27 @@ class StripSolutionsTest {
     }
 
     @Test
+    void stripsMarkedSqlTextBlockWithoutLeavingSolutionContent() {
+        String source = String.join("\n",
+                "String sql = \"\"\"",
+                "    SELECT * FROM users",
+                "    // SOLUTION-BEGIN throw Q4",
+                "    WHERE role = 'admin'",
+                "    // SOLUTION-END",
+                "    \"\"\";");
+
+        String stripped = StripSolutions.strip(source);
+
+        assertEquals(String.join("\n",
+                "String sql = \"\"\"",
+                "    SELECT * FROM users",
+                "    throw new UnsupportedOperationException(\"TODO Q4\");",
+                "    \"\"\";"), stripped);
+        assertTrue(!stripped.contains("WHERE role = 'admin'"));
+        assertTrue(!stripped.contains("SOLUTION-"));
+    }
+
+    @Test
     void keepsCrlfLineEndingsAndTrailingNewline() {
         String source = "a\r\n// SOLUTION-BEGIN throw Q1\r\nb\r\n// SOLUTION-END\r\nc\r\n";
         assertEquals("a\r\nthrow new UnsupportedOperationException(\"TODO Q1\");\r\nc\r\n",
