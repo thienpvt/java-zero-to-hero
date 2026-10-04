@@ -37,12 +37,14 @@ import java.util.function.IntPredicate;
  * B1: Cài lower bound và điểm đầu tiên predicate đúng. Thay TODO trong các khối SOLUTION.
  */
 class Ex01_BinarySearch {
+    /**
+     * Returns the first index whose value is at least {@code target}, or {@code values.length}.
+     * The caller must provide a nondecreasing array. The array is not modified.
+     * Runs in O(log n) time and O(1) extra space.
+     */
     static int lowerBound(int[] values, int target) {
         // SOLUTION-BEGIN throw B1
         java.util.Objects.requireNonNull(values, "values");
-        for (int i = 1; i < values.length; i++) {
-            if (values[i] < values[i - 1]) throw new IllegalArgumentException("values must be ascending");
-        }
         int low = 0, high = values.length;
         while (low < high) {
             int middle = low + (high - low) / 2;

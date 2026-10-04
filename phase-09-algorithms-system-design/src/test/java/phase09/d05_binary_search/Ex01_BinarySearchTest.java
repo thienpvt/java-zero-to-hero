@@ -19,7 +19,10 @@ class Ex01_BinarySearchTest {
         assertEquals(4, Ex01_BinarySearch.lowerBound(new int[]{1, 2, 2, 3}, 9));
         assertEquals(1, Ex01_BinarySearch.lowerBound(new int[]{Integer.MIN_VALUE, Integer.MAX_VALUE}, Integer.MAX_VALUE));
         assertThrows(NullPointerException.class, () -> Ex01_BinarySearch.lowerBound(null, 0));
-        assertThrows(IllegalArgumentException.class, () -> Ex01_BinarySearch.lowerBound(new int[]{2, 1}, 1));
+        int[] sorted = {1, 2, 2, 3};
+        assertEquals(1, Ex01_BinarySearch.lowerBound(sorted, 2));
+        assertEquals(1, sorted[0]);
+        assertEquals(2, sorted[1]);
     }
 
     @Test
