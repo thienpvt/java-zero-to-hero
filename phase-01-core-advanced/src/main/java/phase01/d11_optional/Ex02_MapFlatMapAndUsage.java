@@ -17,15 +17,15 @@ import phase01.support.Compiles;
  * Q6 [DỰ ĐOÁN + CODE] {@code map()} và {@code flatMap()} trên Optional khác nhau thế nào?
  *   Bắt đầu   : đọc addressOpt() và legacyCityUpper() bên dưới, điền hằng số Q6_* (thay null).
  *   Kiểm chứng: chạy q06_prediction; nếu sai, Ctrl+N → gõ Optional → Enter → Ctrl+F12 →
- *               so sánh chữ ký {@code &lt;U&gt; Optional&lt;U&gt; map(Function&lt;? super T,? extends U&gt;)}
- *               với {@code &lt;U&gt; Optional&lt;U&gt; flatMap(Function&lt;? super T,? extends Optional&lt;? extends U&gt;&gt;)}.
+ *               so sánh chữ ký {@code <U> Optional<U> map(Function<? super T,? extends U>)}
+ *               với {@code <U> Optional<U> flatMap(Function<? super T,? extends Optional<? extends U>>)}.
  *   Code      : cityUpper(Customer), zipOf(Optional&lt;Customer&gt;).
  *   Hoàn thành khi: mọi test q06_* xanh; giải thích được vì sao map(addressOpt) tạo ra
  *               Optional&lt;Optional&lt;Address&gt;&gt; (phải gọi thêm get()/flatMap để bóc lớp
  *               ngoài) còn flatMap(addressOpt) làm phẳng ngay thành Optional&lt;Address&gt;.
  * <p>
  * Q5 [DỰ ĐOÁN] Optional có thực sự loại bỏ NullPointerException không?
- *   Bắt đầu   : bỏ comment dòng {@code Optional&lt;String&gt; o = null;} ngay trên hằng số Q5_*
+ *   Bắt đầu   : bỏ comment dòng {@code Optional<String> o = null;} ngay trên hằng số Q5_*
  *               bên dưới, xem IDE báo gì, rồi comment lại — sau khi đã điền dự đoán;
  *               điền 2 hằng số Q5_*.
  *   Kiểm chứng: chạy q05_prediction; sau khi đã điền dự đoán, Debug q05_prediction (F7

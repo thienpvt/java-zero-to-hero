@@ -26,9 +26,9 @@ import java.util.Objects;
  *               {@code Files.newBufferedReader}.
  *   Code      : đọc {@code productCode,quantity}, bỏ dòng trống, cộng số lượng (mã trùng thì cộng dồn).
  *               File không tồn tại → {@code NoSuchFileException}. Dòng không đúng hai field, mã trống,
- *               số lượng không phải int hoặc âm → {@code IllegalArgumentException} có chữ {@code dòng &lt;n&gt;}
+ *               số lượng không phải int hoặc âm → {@code IllegalArgumentException} có chữ {@code dòng <n>}
  *               (số dòng vật lý, kể cả dòng trống đã bỏ qua). Ghi báo cáo chỉ khi đọc hết:
- *               mỗi mã một dòng {@code code=qty} theo lần gặp, rồi {@code total=&lt;n&gt;}, ngăn bởi {@code \n}.
+ *               mỗi mã một dòng {@code code=qty} theo lần gặp, rồi {@code total=<n>}, ngăn bởi {@code \n}.
  *   Hoàn thành khi: q01_* xanh; ANSWER Q1 nói charset mặc định của máy có thể khác UTF-8.
  * <p>
  * Q2 [TỰ TRẢ LỜI] File rất lớn có nên luôn dùng {@code Files.readAllLines()} không?

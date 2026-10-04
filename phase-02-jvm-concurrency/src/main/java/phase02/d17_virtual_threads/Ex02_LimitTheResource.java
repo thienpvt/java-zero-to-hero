@@ -40,7 +40,7 @@ public class Ex02_LimitTheResource {
      * Sau đó nhả. Trả mức đồng thời cao nhất.
      * Không dùng {@code Thread.sleep}. Không pool virtual thread.
      *
-     * @throws IllegalArgumentException nếu {@code tasks &lt; 0} hoặc {@code permits &lt; 0}
+     * @throws IllegalArgumentException nếu {@code tasks < 0} hoặc {@code permits < 0}
      * @throws IllegalStateException nếu còn thread sống sau 10 giây
      */
     static int maxInFlight(int tasks, int permits) {
@@ -52,7 +52,7 @@ public class Ex02_LimitTheResource {
      * Đếm số lần chiếm được. Nhả permit chỉ sau khi mọi thread đã gọi xong.
      * Không dùng {@code Thread.sleep}. Không pool virtual thread.
      *
-     * @throws IllegalArgumentException nếu {@code tasks &lt; 0} hoặc {@code permits &lt; 0}
+     * @throws IllegalArgumentException nếu {@code tasks < 0} hoặc {@code permits < 0}
      * @throws IllegalStateException nếu còn thread sống sau 10 giây
      */
     static int acquiredWithTry(int tasks, int permits) {

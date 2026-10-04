@@ -24,7 +24,7 @@ import java.util.concurrent.FutureTask;
  *   Hoàn thành khi: hai test q02_* xanh và viết xong khối ANSWER Q2.
  * <p>
  * Q3 [CODE] Runnable và Callable khác nhau thế nào?
- *   Bắt đầu   : cài {@code callResult()} để chạy một {@code Callable&lt;String&gt;} và trả giá trị.
+ *   Bắt đầu   : cài {@code callResult()} để chạy một {@code Callable<String>} và trả giá trị.
  *               Cài {@code runnableReturnsValue()}.
  *   Tra cứu   : Ctrl+N → Callable → Ctrl+Q, rồi Ctrl+N → Runnable → Ctrl+Q. So chữ ký {@code call} và {@code run}.
  *   Kiểm chứng: chạy q03_callResult và q03_runnableReturnsValue.
@@ -66,7 +66,7 @@ public class Ex01_StartAndTask {
     }
 
     /**
-     * Chạy một {@code Callable&lt;String&gt;} trên một thread và trả chuỗi {@code ok}.
+     * Chạy một {@code Callable<String>} trên một thread và trả chuỗi {@code ok}.
      *
      * @throws IllegalStateException nếu bị ngắt khi chờ, thread vẫn còn sống sau 10 giây,
      *         hoặc Callable ném lỗi

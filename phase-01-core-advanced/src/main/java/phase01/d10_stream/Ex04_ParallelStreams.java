@@ -111,7 +111,7 @@ public class Ex04_ParallelStreams {
      * &lt;ul&gt;
      *   &lt;li&gt;(a) tổng {@code LongStream.rangeClosed(1, count)} tuần tự vs song song, với
      *       {@code count} nhỏ (100 000) và lớn (50 000 000);&lt;/li&gt;
-     *   &lt;li&gt;(b) tổng một {@code List&lt;Integer&gt;} đã boxed (kích thước phụ thuộc {@code n}, tối
+     *   &lt;li&gt;(b) tổng một {@code List<Integer>} đã boxed (kích thước phụ thuộc {@code n}, tối
      *       đa 1 000 000) bằng {@code parallelStream()};&lt;/li&gt;
      *   &lt;li&gt;(c) 32 tác vụ "I/O giả" bằng {@code parallelStream()} so với một
      *       {@code ExecutorService} có 32 thread.&lt;/li&gt;
@@ -119,7 +119,7 @@ public class Ex04_ParallelStreams {
      * Trả về báo cáo dạng văn bản. Đo thô kiểu này DỄ SAI (nhiễu do GC, JIT chưa warm-up đủ,
      * tải máy hiện tại...) — Giai đoạn 2 học đo đúng cách bằng JMH.
      *
-     * @throws IllegalArgumentException nếu {@code n &lt; 1}
+     * @throws IllegalArgumentException nếu {@code n < 1}
      */
     static String runExperiment(int n) {
         if (n < 1) {

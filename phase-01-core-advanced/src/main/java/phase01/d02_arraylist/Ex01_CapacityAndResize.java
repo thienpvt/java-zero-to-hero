@@ -115,7 +115,7 @@ public class Ex01_CapacityAndResize {
 
         /**
          * Tăng capacity của {@code elementData}: capacity mới =
-         * {@code max(old + (old &gt;&gt; 1), old + 1)}. Tăng {@code resizeCount} mỗi lần gọi.
+         * {@code max(old + (old >> 1), old + 1)}. Tăng {@code resizeCount} mỗi lần gọi.
          */
         private void grow() {
             throw new UnsupportedOperationException("TODO Q3");

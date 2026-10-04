@@ -17,7 +17,7 @@ import phase00.d13_capstone.Order.Status;
  *
  * ─────────────────────────────────────────────────────────────────────
  * <p>
- * B2 [CODE] Lưu đơn trong {@code Map&lt;String, Order&gt;}; thêm mới, tìm theo id, đổi trạng thái, liệt kê theo khách.
+ * B2 [CODE] Lưu đơn trong {@code Map<String, Order>}; thêm mới, tìm theo id, đổi trạng thái, liệt kê theo khách.
  *   Bắt đầu   : cài ba method TODO B2. {@code changeStatus} đã gọi {@code find} rồi {@code Order.changeStatus}.
  *   Kiểm chứng: Debug test id trùng và test không có đơn. Alt+F8 xem {@code orders.containsKey}.
  *   Code      : {@code LinkedHashMap} để giữ thứ tự thêm. {@code add} khi id đã có →

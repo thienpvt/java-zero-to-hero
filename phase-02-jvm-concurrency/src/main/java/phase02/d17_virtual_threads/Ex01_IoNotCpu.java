@@ -46,7 +46,7 @@ public class Ex01_IoNotCpu {
      * {@code Executors.newVirtualThreadPerTaskExecutor}. Mỗi thread đọc
      * {@code Thread.currentThread().isVirtual()}. Báo cáo có chữ virtual.
      *
-     * @throws IllegalArgumentException nếu {@code n &lt; 1}
+     * @throws IllegalArgumentException nếu {@code n < 1}
      * @throws IllegalStateException nếu còn thread sống sau 10 giây
      */
     static String runExperiment(int n) {

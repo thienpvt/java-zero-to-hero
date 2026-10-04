@@ -12,7 +12,7 @@ import java.util.List;
  * <p>
  * Q1 [DỰ ĐOÁN] Stateless service thường thread-safe vì sao?
  *   Bắt đầu   : đọc {@code square(int)}, hàm đã làm xong. Điền Q1_STATELESS_SAFE (thay null).
- *               Cài {@code addAll(List&lt;Integer&gt;)} để cộng mọi phần tử bằng biến cục bộ,
+ *               Cài {@code addAll(List<Integer>)} để cộng mọi phần tử bằng biến cục bộ,
  *               cùng kiểu với square: không field.
  *   Kiểm chứng: chạy q01_prediction và q01_addAllSums. Nếu tổng sai, Debug test, F7 vào addAll.
  *   Hoàn thành khi: các test q01_* xanh và viết xong khối ANSWER Q1.

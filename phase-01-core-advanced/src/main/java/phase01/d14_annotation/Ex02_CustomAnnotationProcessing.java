@@ -109,7 +109,7 @@ public class Ex02_CustomAnnotationProcessing {
      * {@code @MaxLength} vi phạm khi độ dài chuỗi lớn hơn giá trị cho phép.
      *
      * @param bean object cần kiểm tra, các field validation phải là {@link String}
-     * @return danh sách {@code "&lt;tên field&gt;: &lt;thông báo lỗi&gt;"}, sắp theo thứ tự tên field tăng
+     * @return danh sách {@code "<tên field>: <thông báo lỗi>"}, sắp theo thứ tự tên field tăng
      *     dần; rỗng nếu {@code bean} hợp lệ
      */
     static List<String> validate(Object bean) {
