@@ -3,6 +3,7 @@ package phase09.d04_two_pointers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -15,12 +16,26 @@ class Ex01_TwoPointersTest {
     void b01FindsPairsAndMinimumWindow() {
         assertArrayEquals(new int[]{0, 1}, Ex01_TwoPointers.pairSumSorted(new int[]{1, 2, 2, 3}, 3));
         assertArrayEquals(new int[]{0, 1}, Ex01_TwoPointers.pairSumSorted(new int[]{2, 2, 9}, 4));
+        assertArrayEquals(new int[]{0, 2}, Ex01_TwoPointers.pairSumSorted(new int[]{1, 1, 5}, 6));
         assertArrayEquals(new int[]{-1, -1}, Ex01_TwoPointers.pairSumSorted(new int[]{1, 2, 4}, 10));
         assertArrayEquals(new int[]{-1, -1}, Ex01_TwoPointers.pairSumSorted(new int[0], 0));
         assertArrayEquals(new int[]{0, 1}, Ex01_TwoPointers.pairSumSorted(new int[]{Integer.MIN_VALUE, Integer.MAX_VALUE}, -1));
         assertEquals(2, Ex01_TwoPointers.minWindowLength(new int[]{2, 3, 1, 2, 4, 3}, 7));
         assertEquals(0, Ex01_TwoPointers.minWindowLength(new int[]{1, 1}, 5));
         assertEquals(0, Ex01_TwoPointers.minWindowLength(new int[0], 1));
+    }
+
+    @Test
+    @DisplayName("B1 trả cặp nhỏ nhất theo chỉ số so với oracle vét cạn")
+    void b01PairMatchesBruteForceOracle() {
+        Random random = new Random(905);
+        for (int trial = 0; trial < 300; trial++) {
+            int[] values = new int[random.nextInt(13)];
+            for (int i = 0; i < values.length; i++) values[i] = random.nextInt(11) - 5;
+            Arrays.sort(values);
+            int target = random.nextInt(21) - 10;
+            assertArrayEquals(bruteForcePair(values, target), Ex01_TwoPointers.pairSumSorted(values, target));
+        }
     }
 
     @Test
@@ -36,6 +51,15 @@ class Ex01_TwoPointersTest {
         assertThrows(IllegalArgumentException.class, () -> Ex01_TwoPointers.pairSumSorted(new int[]{2, 1}, 3));
         assertThrows(IllegalArgumentException.class, () -> Ex01_TwoPointers.minWindowLength(new int[]{1, -1}, 1));
         assertThrows(IllegalArgumentException.class, () -> Ex01_TwoPointers.minWindowLength(new int[]{1}, 0));
+    }
+
+    private int[] bruteForcePair(int[] values, int target) {
+        for (int i = 0; i < values.length; i++) {
+            for (int j = i + 1; j < values.length; j++) {
+                if ((long) values[i] + values[j] == target) return new int[]{i, j};
+            }
+        }
+        return new int[]{-1, -1};
     }
 
     private int bruteForceWindow(int[] values, long target) {

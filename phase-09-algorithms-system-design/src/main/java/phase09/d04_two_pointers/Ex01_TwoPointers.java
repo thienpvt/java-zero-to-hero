@@ -22,7 +22,7 @@ class Ex01_TwoPointers {
             long sum = (long) values[left] + values[right];
             if (sum == target) {
                 int first = left + 1;
-                while (first < right && values[first] == values[left]) first++;
+                while ((long) values[left] + values[first] < target) first++;
                 return new int[]{left, first};
             }
             if (sum < target) left++;
