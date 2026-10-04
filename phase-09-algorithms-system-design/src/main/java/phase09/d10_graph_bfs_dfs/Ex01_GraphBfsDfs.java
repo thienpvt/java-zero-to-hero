@@ -45,6 +45,7 @@ import java.util.Set;
 class Ex01_GraphBfsDfs {
     record Graph(Set<Integer> vertices, Map<Integer, List<Integer>> edges, boolean directed) {
         Graph {
+            // SOLUTION-BEGIN throw B1
             if (vertices == null || edges == null) throw new NullPointerException();
             vertices = Set.copyOf(vertices);
             Map<Integer, List<Integer>> copied = new HashMap<>();
@@ -60,10 +61,12 @@ class Ex01_GraphBfsDfs {
                     throw new IllegalArgumentException("edge endpoints must be declared vertices");
                 }
             }
+            // SOLUTION-END
         }
     }
 
     static int componentCount(Graph graph) {
+        // SOLUTION-BEGIN throw B1
         if (graph == null) throw new NullPointerException("graph");
         Map<Integer, List<Integer>> undirected = new HashMap<>();
         graph.vertices().forEach(vertex -> undirected.put(vertex, new ArrayList<>()));
@@ -85,9 +88,11 @@ class Ex01_GraphBfsDfs {
             }
         }
         return count;
+        // SOLUTION-END
     }
 
     static int shortestPath(Graph graph, int start, int end) {
+        // SOLUTION-BEGIN throw B1
         if (graph == null) throw new NullPointerException("graph");
         if (graph.directed()) throw new IllegalArgumentException("shortestPath requires an undirected graph");
         if (!graph.vertices().contains(start) || !graph.vertices().contains(end)) {
@@ -111,6 +116,7 @@ class Ex01_GraphBfsDfs {
             }
         }
         return -1;
+        // SOLUTION-END
     }
 }
 

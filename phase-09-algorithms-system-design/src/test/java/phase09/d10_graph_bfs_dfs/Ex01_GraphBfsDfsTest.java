@@ -52,6 +52,7 @@ class Ex01_GraphBfsDfsTest {
         assertEquals(Map.of(1, List.of(2)), graph.edges());
         assertThrows(UnsupportedOperationException.class, () -> graph.vertices().clear());
         assertThrows(UnsupportedOperationException.class, () -> graph.edges().get(1).clear());
+        assertEquals(1, Ex01_GraphBfsDfs.componentCount(graph));
         assertThrows(IllegalArgumentException.class, () -> new Ex01_GraphBfsDfs.Graph(
                 Set.of(1), Map.of(1, List.of(2)), false));
     }
