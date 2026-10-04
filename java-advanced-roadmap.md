@@ -73,6 +73,9 @@ Mục tiêu: từ Java cơ bản lên Java Backend Developer có nền tảng v�
 ---
 
 ## Giai đoạn 4 — Database & Persistence
+
+**Kế hoạch chi tiết:** [04-database-persistence.md](04-database-persistence.md).
+
 - SQL nâng cao
 - Index
 - Transaction & Isolation Level
@@ -89,6 +92,9 @@ Mục tiêu: từ Java cơ bản lên Java Backend Developer có nền tảng v�
 ---
 
 ## Giai đoạn 5 — Spring Boot
+
+**Kế hoạch chi tiết:** [05-spring-boot.md](05-spring-boot.md).
+
 - Spring Core / IoC / DI
 - Spring MVC
 - REST API
@@ -148,6 +154,9 @@ Mục tiêu: từ Java cơ bản lên Java Backend Developer có nền tảng v�
 ---
 
 ## Giai đoạn 9 — Algorithms & System Design
+
+**Kế hoạch chi tiết:** [09-algorithms-system-design.md](09-algorithms-system-design.md).
+
 Học song song với các giai đoạn trên theo mục tiêu công việc/phỏng vấn; không chờ hoàn thành hết DSA mới làm backend.
 
 ### DSA
