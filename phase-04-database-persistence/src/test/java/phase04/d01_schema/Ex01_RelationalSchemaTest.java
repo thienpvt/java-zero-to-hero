@@ -2,7 +2,6 @@ package phase04.d01_schema;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.sql.SQLException;
 import org.junit.jupiter.api.AfterAll;
@@ -16,21 +15,6 @@ class Ex01_RelationalSchemaTest {
 
     @BeforeAll static void startDatabase() { fixture = PostgresFixture.start(); }
     @AfterAll static void stopDatabase() { fixture.close(); }
-
-    @Test @DisplayName("Q1 — Tự trả lời: primary key và unique constraint")
-    void q01_writtenAnswer() { assertTrue(true); }
-
-    @Test @DisplayName("Q2 — Tự trả lời: NULL và giá trị rỗng")
-    void q02_writtenAnswer() { assertTrue(true); }
-
-    @Test @DisplayName("Q3 — Thí nghiệm: giá snapshot")
-    void q03_snapshotAnswerIsRecordedBySchema() { assertTrue(true); }
-
-    @Test @DisplayName("Q4 — Thí nghiệm: foreign key")
-    void q04_foreignKeyAnswerIsRecordedBySchema() { assertTrue(true); }
-
-    @Test @DisplayName("Q5 — Tự trả lời: denormalization")
-    void q05_writtenAnswer() { assertTrue(true); }
 
     @Test @DisplayName("B1 — Schema bảo vệ quan hệ và snapshot giá")
     void b01_schemaEnforcesForeignKeyAndSnapshot() throws SQLException {

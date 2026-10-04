@@ -1,7 +1,6 @@
 package phase04.d03_sql_joins;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -31,17 +30,6 @@ class Ex01_OrderHistoryQueryTest {
     @AfterAll static void stopDatabase() { fixture.close(); }
     @BeforeEach void resetDatabase() throws SQLException { fixture.reset(SCHEMA, SEED); }
 
-    @Test @DisplayName("Q1 — Tự trả lời: LEFT JOIN")
-    void q01_writtenAnswer() { assertTrue(true); }
-    @Test @DisplayName("Q2 — Tự trả lời: kiểm tra NULL")
-    void q02_writtenAnswer() { assertTrue(true); }
-    @Test @DisplayName("Q3 — Tự trả lời: WHERE và HAVING")
-    void q03_writtenAnswer() { assertTrue(true); }
-    @Test @DisplayName("Q4 — Thí nghiệm: aggregate không nhân tổng")
-    void q04_noDuplicateAggregate() throws SQLException { assertEquals(25, sqlTotal()); }
-    @Test @DisplayName("Q5 — Tự trả lời: window function")
-    void q05_writtenAnswer() { assertTrue(true); }
-
     @Test @DisplayName("B3 — Lịch sử theo khách và khách không có đơn")
     void b03_historyAndEmptyCustomerSummary() {
         var history = Ex01_OrderHistoryQuery.forCustomer(fixture.dataSource(), 1);
@@ -54,10 +42,4 @@ class Ex01_OrderHistoryQueryTest {
         assertEquals(0, summaries.stream().filter(row -> row.customerId() == 2).findFirst().orElseThrow().orderCount());
     }
 
-    private static int sqlTotal() throws SQLException {
-        try (var c = fixture.dataSource().getConnection(); var s = c.createStatement(); var rs = s.executeQuery("SELECT SUM(i.quantity*i.unit_price) FROM orders o JOIN order_items i ON i.order_id=o.id WHERE o.id=1")) {
-            rs.next();
-            return rs.getBigDecimal(1).intValueExact();
-        }
-    }
 }

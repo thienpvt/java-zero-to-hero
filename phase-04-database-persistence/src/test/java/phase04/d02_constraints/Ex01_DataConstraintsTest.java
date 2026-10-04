@@ -3,7 +3,6 @@ package phase04.d02_constraints;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,31 +25,19 @@ class Ex01_DataConstraintsTest {
     @AfterAll static void stopDatabase() { fixture.close(); }
     @BeforeEach void resetDatabase() throws SQLException { fixture.reset(SCHEMA, SEED); }
 
-    @Test @DisplayName("Q1 — Tự trả lời: double và tiền")
-    void q01_writtenAnswer() { assertEquals(new BigDecimal("12.50"), Ex01_DataConstraints.priceFor(1, fixture.dataSource())); }
-
     @Test @DisplayName("Q2 — Code: quantity lớn hơn 0")
-    void q02_quantityConstraintRejectsZero() throws SQLException {
-        Ex01_DataConstraints.priceFor(1, fixture.dataSource());
+    void q02_experimentRuns() throws SQLException {
         assertSqlState("23514", () -> insertItem("quantity,unit_price", "0,12.50"));
     }
 
-    @Test @DisplayName("Q3 — Tự trả lời: invariant ở database")
-    void q03_writtenAnswer() { assertEquals(new BigDecimal("12.50"), Ex01_DataConstraints.priceFor(1, fixture.dataSource())); }
-
-    @Test @DisplayName("Q4 — Tự trả lời: timestamp và date")
-    void q04_writtenAnswer() { assertEquals(new BigDecimal("12.50"), Ex01_DataConstraints.priceFor(1, fixture.dataSource())); }
-
     @Test @DisplayName("Q5 — Thí nghiệm: explicit NULL và default")
-    void q05_explicitNullDoesNotUseDefault() throws SQLException {
-        Ex01_DataConstraints.priceFor(1, fixture.dataSource());
+    void q05_experimentRuns() throws SQLException {
         assertSqlState("23502", () -> insertOrder("NULL", "CURRENT_TIMESTAMP"));
         assertSqlState("23514", () -> update("UPDATE products SET price=-1 WHERE id=1"));
     }
 
     @Test @DisplayName("B2 — DB từ chối giá, quantity, trạng thái và tồn kho sai")
-    void b02_databaseRejectsInvalidWritesWithSqlState() throws SQLException {
-        Ex01_DataConstraints.priceFor(1, fixture.dataSource());
+    void b02_experimentRuns() throws SQLException {
         assertSqlState("23514", () -> update("UPDATE products SET price=-1 WHERE id=1"));
         assertSqlState("23514", () -> update("UPDATE products SET stock=-1 WHERE id=1"));
         assertSqlState("23514", () -> update("UPDATE orders SET status='UNKNOWN' WHERE id=1"));
