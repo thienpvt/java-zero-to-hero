@@ -15,21 +15,16 @@ import org.springframework.context.annotation.Scope;
  * đè {@code currentUser} nếu field thuộc singleton.</p>
  * <p>Hoàn thành khi B02 không giữ state request, method dùng đúng identity từng lời gọi
  * và viết đủ ANSWER Q1–Q5. Câu hỏi viết được tự đối chiếu, không chấm tự động.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] Spring singleton scope bảo đảm điều gì và không bảo đảm điều gì?
+ * <p>
  * Q2 [CODE] Vì sao field mutable trong controller/service có thể hỏng dưới tải đồng thời?
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Scope {@code prototype} có nghĩa là Spring quản lý toàn bộ lifecycle sau khi inject không?
+ * <p>
  * Q4 [THÍ NGHIỆM] Khi nào chọn {@code @Bean} thay vì {@code @Component}?
+ * <p>
  * Q5 [CODE] Có thể giải quyết mọi state bằng cách đổi bean sang request scope không?
- * ANSWER Q1:
- *
- * ANSWER Q2:
- *
- * ANSWER Q3:
- *
- * ANSWER Q4:
- *
- * ANSWER Q5:
- *
  */
 public final class Ex01_ScopeAndState {
     private Ex01_ScopeAndState() {}
@@ -62,3 +57,23 @@ public final class Ex01_ScopeAndState {
         throw new UnsupportedOperationException("TODO B02");
     }
 }
+
+/* ANSWER Q1:
+ *
+ */
+
+/* ANSWER Q2:
+ *
+ */
+
+/* ANSWER Q3:
+ *
+ */
+
+/* ANSWER Q4:
+ *
+ */
+
+/* ANSWER Q5:
+ *
+ */

@@ -12,14 +12,19 @@ import java.util.List;
  * Bắt đầu: cài Order.addItem/removeItem, chạy Ex01_OrderMappingTest; debug trước flush và đọc FK.
  * Tra cứu: Jakarta Persistence 3.1 OneToMany/ManyToOne, orphanRemoval; Hibernate ORM 6.6 associations.
  * Hoàn thành: hai phía nhất quán, orphan bị DELETE, xóa parent không xóa product/customer dùng chung.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] Owning side quyết định điều gì khi lưu quan hệ?
  * Bắt đầu: viết ANSWER Q1, kiểm tra FK B12; xong khi nêu bên quyết định SQL liên kết.
+ * <p>
  * Q2 [THÍ NGHIỆM] Vì sao chỉ đổi inverse side có thể không ghi FK như mong đợi?
  * Bắt đầu: chạy q02, ghi OBSERVATION Q2; xong khi đối chiếu item.order và lỗi FK/NULL.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] {@code CascadeType.REMOVE} và {@code orphanRemoval} có thể gây mất dữ liệu nào?
  * Bắt đầu: viết ANSWER Q3; xong khi phân biệt child owned và product dùng chung.
+ * <p>
  * Q4 [CODE] Khi nào child entity có lifecycle phụ thuộc parent?
  * Bắt đầu: cài removeItem; debug q04; xong khi child bị xóa, product còn và FK đã ghi đúng.
+ * <p>
  * Q5 [TỰ TRẢ LỜI] Vì sao mapping hai chiều làm tăng độ phức tạp?
  * Bắt đầu: viết ANSWER Q5; xong khi nêu đồng bộ hai phía, mutation và vòng tham chiếu.
  */
@@ -80,15 +85,19 @@ public class Ex01_OrderMapping {
 /* ANSWER Q1:
  *
  */
+
 /* OBSERVATION Q2 / ANSWER Q2:
  *
  */
+
 /* ANSWER Q3:
  *
  */
+
 /* ANSWER Q4:
  *
  */
+
 /* ANSWER Q5:
  *
  */

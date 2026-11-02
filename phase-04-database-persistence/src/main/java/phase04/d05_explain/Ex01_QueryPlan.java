@@ -9,14 +9,19 @@ import javax.sql.DataSource;
  * Bắt đầu: viết explain(ds,customerId), chạy Ex01_QueryPlanTest trên DB disposable.
  * Kiểm tra: output từng dòng của EXPLAIN ANALYZE BUFFERS, 20000 orders/100 customers.
  * Hoàn thành: lưu plan, xác định node tốn kém, giải thích rows/buffers và điều kiện kết luận thay đổi.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] {@code EXPLAIN} khác {@code EXPLAIN ANALYZE} ở điểm nào?
  * Bắt đầu: viết ANSWER Q1; kiểm tra B5, hoàn thành khi phân biệt ước lượng và thực thi.
+ * <p>
  * Q2 [TỰ TRẢ LỜI] Vì sao actual rows lệch xa estimated rows có thể làm plan kém?
  * Bắt đầu: viết ANSWER Q2; kiểm tra từng node, hoàn thành khi nối sai cardinality với chọn plan.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] {@code BUFFERS} cung cấp loại bằng chứng nào?
  * Bắt đầu: viết ANSWER Q3; kiểm tra output B5, hoàn thành khi phân biệt hit/read và latency.
+ * <p>
  * Q4 [TỰ TRẢ LỜI] Vì sao không được chạy {@code EXPLAIN ANALYZE} câu lệnh sửa dữ liệu tùy tiện?
  * Bắt đầu: viết ANSWER Q4; kiểm tra tác động thực thi, hoàn thành khi nêu rủi ro side effect.
+ * <p>
  * Q5 [TỰ TRẢ LỜI] Một plan có cost thấp hơn có luôn đồng nghĩa latency production thấp hơn không?
  * Bắt đầu: viết ANSWER Q5; kiểm tra dataset/cache, hoàn thành khi nêu giới hạn cost model.
  */
@@ -29,15 +34,19 @@ public class Ex01_QueryPlan {
 /* ANSWER Q1:
  *
  */
+
 /* ANSWER Q2:
  *
  */
+
 /* ANSWER Q3:
  *
  */
+
 /* ANSWER Q4:
  *
  */
+
 /* ANSWER Q5:
  *
  */

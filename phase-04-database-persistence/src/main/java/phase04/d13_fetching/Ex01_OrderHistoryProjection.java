@@ -13,14 +13,19 @@ import java.util.List;
  * Bắt đầu: cài page; chạy Ex01_OrderHistoryProjectionTest, debug query và StatementInspector sau seed.
  * Tra cứu: Hibernate ORM 6.6 HQL projections/pagination; Jakarta Persistence 3.1 Tuple.
  * Hoàn thành: page đúng owner/thứ tự/đủ items, DTO bất biến, số SQL không tăng theo từng order.
+ * <p>
  * Q1 [CODE] N+1 thường hình thành qua chuỗi truy vấn nào?
  * Bắt đầu: cài page thay tải lazy trong vòng lặp; debug q01; xong khi có hàng đúng và SQL bounded.
+ * <p>
  * Q2 [TỰ TRẢ LỜI] Vì sao đổi mọi quan hệ sang EAGER không phải cách sửa tổng quát?
  * Bắt đầu: viết ANSWER Q2; xong khi nêu overfetch và secondary SELECT còn có thể xảy ra.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Fetch join nhiều collection có thể gây vấn đề gì?
  * Bắt đầu: viết ANSWER Q3; xong khi nêu row multiplication và pagination collection.
+ * <p>
  * Q4 [TỰ TRẢ LỜI] Khi nào projection hiệu quả hơn tải entity đầy đủ?
  * Bắt đầu: viết ANSWER Q4; xong khi nêu read-only shape và dữ liệu cần cho màn hình.
+ * <p>
  * Q5 [THÍ NGHIỆM] Bằng chứng nào chứng minh N+1 đã được loại bỏ?
  * Bắt đầu: chạy q01 với 3/12 orders và page size 12; ghi OBSERVATION Q5 cùng SQL.
  * Xong khi kết quả đầy đủ giống nhau, query count bị chặn và không đo seed như query người học.
@@ -73,15 +78,19 @@ public class Ex01_OrderHistoryProjection {
 /* ANSWER Q1:
  *
  */
+
 /* ANSWER Q2:
  *
  */
+
 /* ANSWER Q3:
  *
  */
+
 /* ANSWER Q4:
  *
  */
+
 /* OBSERVATION Q5 / ANSWER Q5:
  *
  */

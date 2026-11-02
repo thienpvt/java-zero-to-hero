@@ -21,41 +21,36 @@ import org.springframework.http.HttpStatus;
  * Tiên quyết: Java 21, HTTP, Spring Security/JUnit, PostgreSQL thật.
  * IntelliJ: mở Ex01_AuthenticationAuthorizationTest, chạy test rồi đặt breakpoint trong body B13.
  * Chỉ cấu hình explicit của topic; không scan phase05 hoặc dùng identity provider mạng.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] Authentication khác authorization thế nào?
  * <p>Nguồn §13 Q1; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở security, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_AuthenticationAuthorizationTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q1; không suy luận từ mock decoder.</p>
+ * <p>
  * Q2 [CODE] Vì sao role ở endpoint chưa đủ để bảo vệ order của khách hàng khác?
  * <p>Nguồn §13 Q2; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở Orders.read/changeQuantity/cancel, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_AuthenticationAuthorizationTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q2; không suy luận từ mock decoder.</p>
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Ai là nguồn sự thật của current user ID?
  * <p>Nguồn §13 Q3; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở principal JWT, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_AuthenticationAuthorizationTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q3; không suy luận từ mock decoder.</p>
+ * <p>
  * Q4 [THÍ NGHIỆM] `401` và `403` nên được phát ra ở điều kiện nào?
  * <p>Nguồn §13 Q4; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở filter request 401/403, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_AuthenticationAuthorizationTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q4; không suy luận từ mock decoder.</p>
+ * <p>
  * Q5 [CODE] Vì sao nên ưu tiên security filter/config chuẩn thay vì JWT filter tự viết?
  * <p>Nguồn §13 Q5; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở security, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_AuthenticationAuthorizationTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q5; không suy luận từ mock decoder.</p>
- * ANSWER Q1:
- *
- * ANSWER Q2:
- *
- * ANSWER Q3:
- *
- * ANSWER Q4:
- *
- * ANSWER Q5:
- *
  */
 public final class Ex01_AuthenticationAuthorization {
     private Ex01_AuthenticationAuthorization() {}
@@ -108,3 +103,23 @@ public final class Ex01_AuthenticationAuthorization {
         public String unlisted() { return "must remain denied"; }
     }
 }
+
+/* ANSWER Q1:
+ *
+ */
+
+/* ANSWER Q2:
+ *
+ */
+
+/* ANSWER Q3:
+ *
+ */
+
+/* ANSWER Q4:
+ *
+ */
+
+/* ANSWER Q5:
+ *
+ */

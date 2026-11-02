@@ -9,21 +9,16 @@ package phase05.d01_di;
  * trong Spring Framework Reference, Core Technologies.</p>
  * <p>Hoàn thành khi B01 dùng repository được truyền vào, test không cần Spring và viết đủ
  * ANSWER Q1–Q5. Câu hỏi viết được tự đối chiếu, không chấm tự động.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] IoC khác DI ở điểm nào?
+ * <p>
  * Q2 [CODE] Vì sao constructor injection thường rõ hơn field injection?
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Một class thuần Java có cần annotation Spring để test không?
+ * <p>
  * Q4 [THÍ NGHIỆM] Khi nào wiring thủ công dễ hiểu hơn component scan?
+ * <p>
  * Q5 [CODE] DI có tự làm thiết kế tốt nếu dependency graph vẫn rối không?
- * ANSWER Q1:
- *
- * ANSWER Q2:
- *
- * ANSWER Q3:
- *
- * ANSWER Q4:
- *
- * ANSWER Q5:
- *
  */
 public final class Ex01_ConstructorInjection {
     private Ex01_ConstructorInjection() {}
@@ -50,3 +45,23 @@ public final class Ex01_ConstructorInjection {
         throw new UnsupportedOperationException("TODO B01");
     }
 }
+
+/* ANSWER Q1:
+ *
+ */
+
+/* ANSWER Q2:
+ *
+ */
+
+/* ANSWER Q3:
+ *
+ */
+
+/* ANSWER Q4:
+ *
+ */
+
+/* ANSWER Q5:
+ *
+ */

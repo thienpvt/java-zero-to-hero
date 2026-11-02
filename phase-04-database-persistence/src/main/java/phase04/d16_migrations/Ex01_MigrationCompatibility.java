@@ -12,23 +12,28 @@ import org.flywaydb.core.api.migration.Context;
  * Migration PostgreSQL 18; USD cố định, không thêm cột currency.
  * <p>Nguồn: 04-database-persistence.md, mục 16. B16: tạo schema, nâng cấp dữ liệu cũ,
  * chạy lại history; không giả định rename/drop an toàn cho rolling deploy.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] Migration đem lại lợi ích nào so với sửa schema thủ công?
  * Cần trước: schema bốn bảng và transaction DDL. Bắt đầu: viết ANSWER Q1.
  * Tài liệu: https://documentation.red-gate.com/flyway/flyway-concepts/migrations
  * Debug: đối chiếu flyway_schema_history, không sửa migration đã áp dụng.
  * Hoàn thành: giải thích version, thứ tự, history và khả năng tái tạo DB.
+ * <p>
  * Q2 [TỰ TRẢ LỜI] Vì sao migration rename/drop cột có thể phá deploy rolling?
  * Cần trước: app cũ/mới cùng tồn tại. Bắt đầu: viết trình tự expand/contract.
  * Tài liệu: https://www.postgresql.org/docs/18/sql-altertable.html
  * Debug: tìm SQL app cũ vẫn tham chiếu cột. Hoàn thành: nêu giới hạn rollout lab.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] H2 khác PostgreSQL ở những hành vi nào cần quan tâm?
  * Cần trước: SQLSTATE, MVCC, row lock. Bắt đầu: liệt kê khác biệt trong ANSWER Q3.
  * Tài liệu: https://www.postgresql.org/docs/18/transaction-iso.html
  * Debug: lưu server_version và plan thật. Hoàn thành: không dùng H2 thay test DB.
+ * <p>
  * Q4 [CODE] Test concurrency cần chạy trên loại database nào để có giá trị?
  * Cần trước: connection riêng, conditional update. Bắt đầu: cài reserve, chạy q04.
  * Tài liệu: https://www.postgresql.org/docs/18/explicit-locking.html
  * Debug: gate trước lock, query/future có timeout. Hoàn thành: stock conservation PG18.
+ * <p>
  * Q5 [CODE] Làm sao tránh test phụ thuộc dữ liệu từ lần chạy trước?
  * Cần trước: fixture disposable và unique name. Bắt đầu: cài insertCustomer, chạy q05.
  * Tài liệu: https://java.testcontainers.org/modules/databases/postgres/
@@ -87,12 +92,15 @@ public class Ex01_MigrationCompatibility {
 /* ANSWER Q1:
  *
  */
+
 /* ANSWER Q2:
  *
  */
+
 /* ANSWER Q3:
  *
  */
+
 /* OBSERVATION B16 / ANSWER Q4,Q5:
  *
  */

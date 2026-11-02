@@ -19,21 +19,16 @@ import java.util.Properties;
  * evaluation report và quan sát back-off; đọc Spring Boot Reference, Auto-configuration.</p>
  * <p>Hoàn thành khi B03 chọn URL khác nhau theo profile local/test, nhận key được cấp rõ ràng,
  * cấu hình thiếu fail-fast không lộ secret và viết đủ ANSWER Q1–Q5. Câu hỏi viết không chấm tự động.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] Điều kiện nào thường khiến auto-configuration tạo hoặc bỏ qua bean?
+ * <p>
  * Q2 [CODE] Khi cấu hình không như mong đợi, tìm bằng chứng ở đâu trước khi thêm bean mới?
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Profile khác secret management thế nào?
+ * <p>
  * Q4 [THÍ NGHIỆM] Vì sao giá trị mặc định an toàn khác với hard-code credential?
+ * <p>
  * Q5 [CODE] Nên phản ứng thế nào khi thiếu signing key ở môi trường production?
- * ANSWER Q1:
- *
- * ANSWER Q2:
- *
- * ANSWER Q3:
- *
- * ANSWER Q4:
- *
- * ANSWER Q5:
- *
  */
 public final class Ex01_AutoConfigurationAndSecrets {
     private Ex01_AutoConfigurationAndSecrets() {}
@@ -65,3 +60,23 @@ public final class Ex01_AutoConfigurationAndSecrets {
     }
 
 }
+
+/* ANSWER Q1:
+ *
+ */
+
+/* ANSWER Q2:
+ *
+ */
+
+/* ANSWER Q3:
+ *
+ */
+
+/* ANSWER Q4:
+ *
+ */
+
+/* ANSWER Q5:
+ *
+ */

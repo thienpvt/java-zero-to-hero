@@ -16,31 +16,26 @@ import org.springframework.transaction.annotation.*;
  * <p>B11: mở {@code PurchaseService.buy} trong IntelliJ; hoàn thiện B11, chạy
  * {@code Ex01_StockRaceTest}. Hai worker dùng connection/transaction riêng, barrier hữu hạn ngay
  * trước cạnh tranh. Debugger xem stock, affected rows, version; không Thread.sleep/synchronized.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] Vì sao check rồi update trong Java có race condition?
  * <p>Dự đoán NAIVE_SUCCESSFUL_ORDERS; đọc PostgreSQL READ COMMITTED, chạy unsafeBuy trong DB bỏ đi.
  * Hoàn thành: hai order có thể bán một stock dù stock cuối không âm.</p>
+ * <p>
  * Q2 [CODE] {@code @Version} phát hiện điều gì?
  * <p>Mở optimisticBuy, đọc Hibernate optimistic locking; breakpoint sau read trước flush.
  * Hoàn thành: stale version gây conflict, transaction thua không để lại order.</p>
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Conditional update giải quyết phần nào của race?
  * <p>Mở ANSWER Q3 và PostgreSQL UPDATE docs. Hoàn thành: giải thích predicate/affected rows
  * tại DB và vì sao ghi order phải chung transaction; không test từ khóa.</p>
+ * <p>
  * Q4 [THÍ NGHIỆM] Vì sao {@code synchronized} không thể thay row lock/version trong ứng dụng nhiều instance?
  * <p>Chạy smoke Q4; debugger xem backend PID hai worker ở B11, đọc monitor/JVM scope.
  * Hoàn thành: ghi phạm vi lock Java vào ANSWER Q4; không dựng distributed-lock framework.</p>
+ * <p>
  * Q5 [CODE] Khi conflict, API có thể trả status nào và vì sao?
  * <p>Mở conflictStatus/buy, đọc HTTP 409; giữ invalid quantity là lỗi input riêng.
  * Hoàn thành: một winner, stock conservation và status conflict 409; HTTP capstone chưa thuộc B11.</p>
- * ANSWER Q1:
- *
- * ANSWER Q2:
- *
- * ANSWER Q3:
- *
- * ANSWER Q4:
- *
- * ANSWER Q5:
- *
  */
 public final class Ex01_StockRace {
     private Ex01_StockRace() {}
@@ -76,3 +71,23 @@ public final class Ex01_StockRace {
         }
     }
 }
+
+/* ANSWER Q1:
+ *
+ */
+
+/* ANSWER Q2:
+ *
+ */
+
+/* ANSWER Q3:
+ *
+ */
+
+/* ANSWER Q4:
+ *
+ */
+
+/* ANSWER Q5:
+ *
+ */

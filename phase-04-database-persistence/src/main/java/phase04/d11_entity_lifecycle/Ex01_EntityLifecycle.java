@@ -9,14 +9,19 @@ import java.time.Instant;
  * Bắt đầu: chạy Ex01_EntityLifecycleTest, đặt breakpoint tại persist/flush/commit/merge.
  * Tra cứu: Jakarta Persistence 3.1 EntityManager; Hibernate ORM 6.6 User Guide, flushing.
  * Hoàn thành: đối chiếu state với hàng đọc qua connection độc lập, xóa hàng thí nghiệm.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] {@code flush} khác commit thế nào?
  * Bắt đầu: viết ANSWER Q1, đối chiếu B11; xong khi phân biệt đồng bộ SQL và visibility/độ bền.
+ * <p>
  * Q2 [CODE] Dirty checking xảy ra khi nào?
  * Bắt đầu: cài cancel; debug q02; xong khi managed đổi status được ghi mà không gọi merge.
+ * <p>
  * Q3 [CODE] Vì sao giá trị trả về từ {@code merge} cần được dùng đúng?
  * Bắt đầu: cài mergeDetached và observe; debug q03; xong khi kiểm tra cả hai instance.
+ * <p>
  * Q4 [TỰ TRẢ LỜI] Entity detached thay đổi có tự persist không?
  * Bắt đầu: viết ANSWER Q4, chạy thí nghiệm state; xong khi kiểm tra DB sau detach.
+ * <p>
  * Q5 [TỰ TRẢ LỜI] Generated ID làm equals/hashCode khó ở điểm nào?
  * Bắt đầu: viết ANSWER Q5 với lựa chọn cho HashSet; xong khi nêu rủi ro hash đổi sau persist.
  */
@@ -51,15 +56,19 @@ public class Ex01_EntityLifecycle {
 /* ANSWER Q1:
  *
  */
+
 /* ANSWER Q2:
  *
  */
+
 /* ANSWER Q3:
  *
  */
+
 /* ANSWER Q4:
  *
  */
+
 /* ANSWER Q5:
  *
  */

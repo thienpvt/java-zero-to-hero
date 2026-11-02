@@ -12,18 +12,23 @@ import javax.sql.DataSource;
  * Debug: ghi snapshot, commit/SQLSTATE và đọc stock qua connection thứ ba.
  * Tài liệu: https://www.postgresql.org/docs/18/transaction-iso.html
  * Hoàn thành: tái hiện write skew, Serializable hủy một transaction, invariant được bảo vệ.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] Dirty read khác non-repeatable read thế nào?
  * Bắt đầu: viết ANSWER Q1, phân biệt dữ liệu chưa commit với hai lần đọc dữ liệu đã commit.
  * Hoàn thành khi chỉ rõ transaction nào commit giữa các lần đọc.
+ * <p>
  * Q2 [TỰ TRẢ LỜI] `READ COMMITTED` cho snapshot ở phạm vi nào trong PostgreSQL?
  * Bắt đầu: viết ANSWER Q2 và chạy thí nghiệm hai lần SELECT với writer commit ở giữa.
  * Hoàn thành khi phân biệt snapshot statement với snapshot transaction.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Vì sao PostgreSQL `REPEATABLE READ` vẫn có thể có serialization anomaly?
  * Bắt đầu: viết ANSWER Q3, xét invariant phụ thuộc hai hàng được ghi riêng.
  * Hoàn thành khi giải thích write skew dù đọc ổn định và không có phantom.
+ * <p>
  * Q4 [TỰ TRẢ LỜI] Vì sao test race dựa trên `sleep` không đáng tin?
  * Bắt đầu: viết ANSWER Q4, thay delay bằng gate có timeout.
  * Hoàn thành khi gate xác nhận cả hai đã đọc, không chờ peer đang cần lock của mình.
+ * <p>
  * Q5 [CODE] Test cần assert invariant nào khi hai request mua cùng sản phẩm?
  * Bắt đầu: hoàn thành reserve và chạy q05 với hai transaction riêng.
  * Hoàn thành khi lượng được chấp nhận cộng stock cuối bằng stock đầu, không oversell.
@@ -51,15 +56,19 @@ public class Ex01_IsolationAnomaly {
 /* ANSWER Q1:
  *
  */
+
 /* ANSWER Q2:
  *
  */
+
 /* ANSWER Q3:
  *
  */
+
 /* ANSWER Q4:
  *
  */
+
 /* OBSERVATION B8 / ANSWER Q5:
  *
  */

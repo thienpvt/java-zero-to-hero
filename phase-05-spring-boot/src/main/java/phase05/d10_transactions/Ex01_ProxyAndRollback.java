@@ -16,31 +16,26 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * <p>B10: mở {@code OrderService.placeOrder} trong IntelliJ, hoàn thiện B10; chạy
  * {@code Ex01_ProxyAndRollbackTest}. Debugger dừng ở failure seam sau stock update;
  * kiểm tra dữ liệu bằng connection khác, không dùng transaction tự rollback của test.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] Vì sao self-invocation bỏ qua transaction proxy?
  * <p>Dự đoán SELF_HAS_TRANSACTION; đọc Spring transaction proxy mode, breakpoint vào selfInvocation.
  * Hoàn thành: external call có transaction, this-call không có transaction mới.</p>
+ * <p>
  * Q2 [CODE] Mặc định checked exception có rollback không?
  * <p>Mở checkedDefault/checkedRollback; đọc rollback rules, không bật global ALL_EXCEPTIONS.
  * Hoàn thành: checked mặc định commit event, rollbackFor không để lại event mới.</p>
+ * <p>
  * Q3 [TỰ TRẢ LỜI] {@code readOnly=true} có bảo đảm DB từ chối write không?
  * <p>Mở ANSWER Q3; đọc TransactionDefinition.isReadOnly và PostgreSQL read-only transaction.
  * Hoàn thành: phân biệt hint với enforceReadOnly/DB permission; không khái quát mọi manager.</p>
+ * <p>
  * Q4 [THÍ NGHIỆM] {@code UnexpectedRollbackException} có thể xuất hiện khi nào?
  * <p>Chạy smoke Q4 rồi test rollback-only, debugger tại OuterService và inner REQUIRED bean.
  * Hoàn thành: ghi vì sao catch exception không xóa rollback-only vào ANSWER Q4.</p>
+ * <p>
  * Q5 [CODE] Vì sao không gọi dịch vụ payment từ xa bên trong DB transaction dài?
  * <p>Mở placeOrder và failure seam; đọc Spring transaction resource scope.
  * Hoàn thành: use case chỉ ghi DB nguyên tử, RuntimeException/Error rollback; không gọi HTTP thật.</p>
- * ANSWER Q1:
- *
- * ANSWER Q2:
- *
- * ANSWER Q3:
- *
- * ANSWER Q4:
- *
- * ANSWER Q5:
- *
  */
 public final class Ex01_ProxyAndRollback {
     private Ex01_ProxyAndRollback() {}
@@ -99,3 +94,23 @@ public final class Ex01_ProxyAndRollback {
         }
     }
 }
+
+/* ANSWER Q1:
+ *
+ */
+
+/* ANSWER Q2:
+ *
+ */
+
+/* ANSWER Q3:
+ *
+ */
+
+/* ANSWER Q4:
+ *
+ */
+
+/* ANSWER Q5:
+ *
+ */

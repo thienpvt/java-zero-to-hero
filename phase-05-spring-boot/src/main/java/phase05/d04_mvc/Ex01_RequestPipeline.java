@@ -19,21 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
  * <p>Test MVC tắt filter riêng cho bài học pipeline, không chứng minh xác thực của capstone.</p>
  * <p>Hoàn thành khi B04 dùng dependency được truyền vào, request lỗi bị từ chối trước service,
  * response hợp lệ là JSON và viết đủ ANSWER Q1–Q5. Câu hỏi viết không chấm tự động.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] Filter và Spring MVC interceptor khác vị trí trong request pipeline ra sao?
+ * <p>
  * Q2 [CODE] Deserialization khác serialization thế nào?
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Vì sao controller không nên gọi {@code new} để khởi tạo dependency?
+ * <p>
  * Q4 [THÍ NGHIỆM] Binding lỗi có xảy ra trước khi service được gọi không?
+ * <p>
  * Q5 [CODE] API nên trả gì khi client gửi JSON sai cú pháp hoặc media type không hỗ trợ?
- * ANSWER Q1:
- *
- * ANSWER Q2:
- *
- * ANSWER Q3:
- *
- * ANSWER Q4:
- *
- * ANSWER Q5:
- *
  */
 public final class Ex01_RequestPipeline {
     private Ex01_RequestPipeline() {}
@@ -69,3 +64,23 @@ public final class Ex01_RequestPipeline {
         throw new UnsupportedOperationException("TODO B04");
     }
 }
+
+/* ANSWER Q1:
+ *
+ */
+
+/* ANSWER Q2:
+ *
+ */
+
+/* ANSWER Q3:
+ *
+ */
+
+/* ANSWER Q4:
+ *
+ */
+
+/* ANSWER Q5:
+ *
+ */

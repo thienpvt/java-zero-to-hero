@@ -14,31 +14,26 @@ import org.flywaydb.core.api.migration.Context;
  * <p>B09: mở {@code migrationSql} trong IntelliJ; viết migration Java-owned, chạy
  * {@code Ex01_SchemaOwnershipTest} từ DB rỗng. Debugger xem Flyway info và Hibernate validate.
  * Không đặt SQL vào resources; configuration chỉ đăng ký migration của chủ đề này.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] Vì sao migration đã chạy không nên sửa trực tiếp?
  * <p>Dự đoán history sau lần migrate thứ hai; đọc Flyway migration/checksum docs.
  * Hoàn thành: history vẫn một version; giải thích thêm version mới trong ANSWER Q1.</p>
+ * <p>
  * Q2 [CODE] {@code ddl-auto=validate} kiểm tra gì và không làm gì?
  * <p>Viết DDL đúng mapping Product; đọc Hibernate schema validation. Breakpoint sau migrate.
  * Hoàn thành: mapping validate thành công; bỏ stock gây lỗi mà Hibernate không sửa schema.</p>
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Tại sao migration là owner của schema khi đã chọn Flyway?
  * <p>Mở ANSWER Q3; đối chiếu ddl-auto update và validate trong docs.
  * Hoàn thành: nêu một nguồn sự thật và thứ tự migrate trước validate.</p>
+ * <p>
  * Q4 [THÍ NGHIỆM] Khi nào cần index/constraint trong migration thay vì chỉ kiểm tra ở Java?
  * <p>Chạy smoke Q4, xem pg_indexes/pg_constraint bằng debugger; đọc PostgreSQL constraints.
  * Hoàn thành: ghi bằng chứng stock constraint và owner paging index vào ANSWER Q4.</p>
+ * <p>
  * Q5 [CODE] Flyway PostgreSQL có thể cần module hỗ trợ database riêng nào ở Boot 4?
  * <p>Mở {@code flyway}, đối chiếu POM có sẵn và Flyway PostgreSQL docs.
  * Hoàn thành: migrate PostgreSQL 18 thật với module đúng; không thay POM hoặc dùng H2.</p>
- * ANSWER Q1:
- *
- * ANSWER Q2:
- *
- * ANSWER Q3:
- *
- * ANSWER Q4:
- *
- * ANSWER Q5:
- *
  */
 public final class Ex01_SchemaOwnership {
     private Ex01_SchemaOwnership() {}
@@ -94,3 +89,23 @@ public final class Ex01_SchemaOwnership {
         }
     }
 }
+
+/* ANSWER Q1:
+ *
+ */
+
+/* ANSWER Q2:
+ *
+ */
+
+/* ANSWER Q3:
+ *
+ */
+
+/* ANSWER Q4:
+ *
+ */
+
+/* ANSWER Q5:
+ *
+ */
