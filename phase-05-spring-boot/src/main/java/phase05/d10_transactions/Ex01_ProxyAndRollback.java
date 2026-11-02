@@ -16,46 +16,26 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * <p>B10: mở {@code OrderService.placeOrder} trong IntelliJ, hoàn thiện B10; chạy
  * {@code Ex01_ProxyAndRollbackTest}. Debugger dừng ở failure seam sau stock update;
  * kiểm tra dữ liệu bằng connection khác, không dùng transaction tự rollback của test.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] Vì sao self-invocation bỏ qua transaction proxy?
  * <p>Dự đoán SELF_HAS_TRANSACTION; đọc Spring transaction proxy mode, breakpoint vào selfInvocation.
  * Hoàn thành: external call có transaction, this-call không có transaction mới.</p>
+ * <p>
  * Q2 [CODE] Mặc định checked exception có rollback không?
  * <p>Mở checkedDefault/checkedRollback; đọc rollback rules, không bật global ALL_EXCEPTIONS.
  * Hoàn thành: checked mặc định commit event, rollbackFor không để lại event mới.</p>
+ * <p>
  * Q3 [TỰ TRẢ LỜI] {@code readOnly=true} có bảo đảm DB từ chối write không?
  * <p>Mở ANSWER Q3; đọc TransactionDefinition.isReadOnly và PostgreSQL read-only transaction.
  * Hoàn thành: phân biệt hint với enforceReadOnly/DB permission; không khái quát mọi manager.</p>
+ * <p>
  * Q4 [THÍ NGHIỆM] {@code UnexpectedRollbackException} có thể xuất hiện khi nào?
  * <p>Chạy smoke Q4 rồi test rollback-only, debugger tại OuterService và inner REQUIRED bean.
  * Hoàn thành: ghi vì sao catch exception không xóa rollback-only vào ANSWER Q4.</p>
+ * <p>
  * Q5 [CODE] Vì sao không gọi dịch vụ payment từ xa bên trong DB transaction dài?
  * <p>Mở placeOrder và failure seam; đọc Spring transaction resource scope.
  * Hoàn thành: use case chỉ ghi DB nguyên tử, RuntimeException/Error rollback; không gọi HTTP thật.</p>
- * ANSWER Q1:
- * SOLUTION-BEGIN
- * Proxy intercept external call; this.transactionActive gọi target trực tiếp nên annotation không chạy.
- * Gọi từ bean khác hoặc tách use case boundary; không dựa self-invocation cho propagation mới.
- * SOLUTION-END
- * ANSWER Q2:
- * SOLUTION-BEGIN
- * Mặc định RuntimeException/Error rollback, checked exception commit nếu không có rollback rule khác.
- * rollbackFor=CheckedFailure.class cấu hình rõ trường hợp checked cần rollback; test dùng DB độc lập.
- * SOLUTION-END
- * ANSWER Q3:
- * SOLUTION-BEGIN
- * readOnly là hint cho transaction manager/provider, không bảo đảm mọi DB/manager từ chối write.
- * PostgreSQL transaction thực sự READ ONLY có thể từ chối; cần kiểm chứng manager/config cụ thể.
- * SOLUTION-END
- * ANSWER Q4:
- * SOLUTION-BEGIN
- * Inner REQUIRED qua proxy chia sẻ transaction và runtime failure đánh dấu rollback-only.
- * Outer bắt exception vẫn không thể commit; UnexpectedRollbackException báo rollback thay vì thành công giả.
- * SOLUTION-END
- * ANSWER Q5:
- * SOLUTION-BEGIN
- * HTTP payment không thuộc ACID của DB, giữ lock lâu và có thể thành công dù DB rollback.
- * B10 không làm payment; production cần boundary/idempotency và cơ chế phối hợp riêng khi có remote I/O.
- * SOLUTION-END
  */
 public final class Ex01_ProxyAndRollback {
     private Ex01_ProxyAndRollback() {}
@@ -169,3 +149,38 @@ public final class Ex01_ProxyAndRollback {
         }
     }
 }
+
+/* ANSWER Q1:
+ * SOLUTION-BEGIN
+ * Proxy intercept external call; this.transactionActive gọi target trực tiếp nên annotation không chạy.
+ * Gọi từ bean khác hoặc tách use case boundary; không dựa self-invocation cho propagation mới.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q2:
+ * SOLUTION-BEGIN
+ * Mặc định RuntimeException/Error rollback, checked exception commit nếu không có rollback rule khác.
+ * rollbackFor=CheckedFailure.class cấu hình rõ trường hợp checked cần rollback; test dùng DB độc lập.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q3:
+ * SOLUTION-BEGIN
+ * readOnly là hint cho transaction manager/provider, không bảo đảm mọi DB/manager từ chối write.
+ * PostgreSQL transaction thực sự READ ONLY có thể từ chối; cần kiểm chứng manager/config cụ thể.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q4:
+ * SOLUTION-BEGIN
+ * Inner REQUIRED qua proxy chia sẻ transaction và runtime failure đánh dấu rollback-only.
+ * Outer bắt exception vẫn không thể commit; UnexpectedRollbackException báo rollback thay vì thành công giả.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q5:
+ * SOLUTION-BEGIN
+ * HTTP payment không thuộc ACID của DB, giữ lock lâu và có thể thành công dù DB rollback.
+ * B10 không làm payment; production cần boundary/idempotency và cơ chế phối hợp riêng khi có remote I/O.
+ * SOLUTION-END
+ */

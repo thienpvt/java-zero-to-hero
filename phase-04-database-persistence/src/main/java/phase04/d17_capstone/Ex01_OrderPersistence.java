@@ -16,26 +16,31 @@ import javax.sql.DataSource;
  * customerId là caller đã tin cậy, SQL scope không thay thế HTTP authorization.
  * Missing customer/product: NoSuchElementException; thiếu stock: InsufficientStockException;
  * input sai: IllegalArgumentException; lỗi JDBC giữ SQLException, không trả fake success.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] Giá order item lấy từ đâu và vì sao?
  * Cần trước: NUMERIC và snapshot. Bắt đầu: viết ANSWER Q1, xem giá DB trước/sau mua.
  * Tài liệu: https://www.postgresql.org/docs/18/datatype-numeric.html
  * Debug: so sánh products.price/order_items.unit_price, không dùng double/client price.
  * Hoàn thành: tổng lịch sử giữ nguyên khi giá catalog đổi, currency lab luôn USD.
+ * <p>
  * Q2 [CODE] Thành phần nào phải rollback cùng nhau khi một item thiếu stock?
  * Cần trước: transaction JDBC và constraint. Bắt đầu: cài createOrder, chạy q02/B17.
  * Tài liệu: https://docs.oracle.com/en/java/javase/21/docs/api/java.sql/java/sql/Connection.html
  * Debug: fresh connection kiểm tra orders/items/stock sau lỗi item thứ hai.
  * Hoàn thành: validate trước writes; rollback cả SQLException/RuntimeException/Error.
+ * <p>
  * Q3 [CODE] Làm sao chứng minh hai request đồng thời không oversell?
  * Cần trước: affected-row count và row lock. Bắt đầu: hoàn thành createOrder, chạy q03.
  * Tài liệu: https://www.postgresql.org/docs/18/explicit-locking.html
  * Debug: hai backend PID, gate trước locks, timeout có giới hạn, không sleep/JVM lock.
  * Hoàn thành: accepted quantity + stock cuối = stock đầu, chỉ một request mua stock=1.
+ * <p>
  * Q4 [CODE] Làm sao chứng minh query list không bị N+1 và pagination đúng?
  * Cần trước: JOIN/aggregate, ORDER BY và OFFSET. Bắt đầu: cài ordersForCustomer, chạy q04.
  * Tài liệu: https://www.postgresql.org/docs/18/queries-limit.html
  * Debug: đếm executeQuery thật, kiểm tra tie created_at và customer predicate trong DB.
  * Hoàn thành: một projection query/trang, page zero-based, size 1–100, không foreign rows.
+ * <p>
  * Q5 [THÍ NGHIỆM] Bằng chứng nào cần lưu để giải thích lựa chọn index và transaction?
  * Cần trước: EXPLAIN ANALYZE BUFFERS. Bắt đầu: chạy q05, đọc file target/task6-evidence.
  * Tài liệu: https://www.postgresql.org/docs/18/using-explain.html
@@ -144,6 +149,7 @@ public class Ex01_OrderPersistence {
  * làm đổi tổng lịch sử; tổng là SUM(quantity*unit_price) NUMERIC, không qua double.
  * SOLUTION-END
  */
+
 /* ANSWER Q2,Q3,Q4 / OBSERVATION B17:
  * SOLUTION-BEGIN
  * Validate toàn input trước connection/write. Một transaction giữ owner key share và locks
@@ -155,6 +161,7 @@ public class Ex01_OrderPersistence {
  * không phải tổng quantity; created_at,id ASC tie-break, offset long tránh overflow.
  * SOLUTION-END
  */
+
 /* OBSERVATION Q5:
  * SOLUTION-BEGIN
  * q05 lưu PostgreSQL/JDK, seed 2001 orders/items, SQL thực thi và bound params, query count=1

@@ -12,18 +12,23 @@ import java.sql.SQLException;
  * Hoàn thành: accepted quantity + stock cuối = stock đầu; thiếu/mất product trả false.
  * Caller sở hữu commit/rollback cho mọi method; quantity 1–1000, productId dương trước SQL.
  * Optimistic comparison dùng products.version chỉ trong fixture cục bộ, không đổi schema chung.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] Vì sao read-then-write không điều kiện có race condition?
  * Bắt đầu: viết ANSWER Q1 với hai reader cùng thấy stock cũ.
  * Hoàn thành khi giải thích lost update và oversell dù mỗi UPDATE riêng nguyên tử.
+ * <p>
  * Q2 [CODE] Số dòng update có ý nghĩa gì với conditional stock update?
  * Bắt đầu: cài reserve, chạy q02 trên product đủ/thiếu/không tồn tại.
  * Hoàn thành khi boolean phản ánh affected count, không coi zero rows là thành công.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Optimistic và pessimistic locking đánh đổi điều gì?
  * Bắt đầu: viết ANSWER Q3 và cài hai method so sánh trong B14.
  * Hoàn thành khi nêu conflict/retry so với chờ lock và giữ transaction ngắn.
+ * <p>
  * Q4 [TỰ TRẢ LỜI] Vì sao Java lock không đủ cho nhiều instance ứng dụng?
  * Bắt đầu: viết ANSWER Q4, xét hai JVM dùng connection riêng.
  * Hoàn thành khi đặt invariant tại database, không giả định JVM chung.
+ * <p>
  * Q5 [CODE] Làm sao đảm bảo invariant `stock >= 0` cả khi có nhiều writer?
  * Bắt đầu: chạy q05 và B14 với barrier trước contested UPDATE/lock.
  * Hoàn thành khi kiểm tra conservation, at most inventory accepted và DB CHECK.
@@ -89,6 +94,7 @@ public class Ex01_StockLocking {
  * Dùng atomic conditional update/affected count hoặc lock/version đúng trong cùng transaction.
  * SOLUTION-END
  */
+
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * Optimistic kiểm tra version khi ghi, không giữ row lock từ lúc đọc; conflict cần đọc lại/retry
@@ -96,12 +102,14 @@ public class Ex01_StockLocking {
  * khác chờ, có nguy cơ deadlock và tăng latency. Comparison version là field fixture local.
  * SOLUTION-END
  */
+
 /* ANSWER Q4:
  * SOLUTION-BEGIN
  * Java lock chỉ phối hợp thread dùng cùng lock object trong một JVM. JVM khác và SQL client
  * không tham gia lock đó. PostgreSQL row lock/atomic predicate và constraint cùng bảo vệ DB.
  * SOLUTION-END
  */
+
 /* OBSERVATION B14 / ANSWER Q2,Q5:
  * SOLUTION-BEGIN
  * Stock đầu 1, hai TX mua 1: một affected row, một zero rows, accepted=1, stock cuối=0.

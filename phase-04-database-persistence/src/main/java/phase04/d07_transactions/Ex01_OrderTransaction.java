@@ -13,18 +13,23 @@ import javax.sql.DataSource;
  * Giá USD dùng BigDecimal; Line không nhận giá hoặc tổng tiền từ caller.
  * Hoàn thành: control hợp lệ commit; valid-first/insufficient-second không để lại thay đổi.
  * Không gọi payment API, email hoặc mạng ngoài DB trong bài này.
+ * <p>
  * Q1 [CODE] Transaction boundary của tạo order và giảm stock nên bao gồm thao tác nào?
  * Bắt đầu: cài create cho nhiều Line; kiểm tra q01 và b07 bằng connection mới sau mỗi lời gọi.
  * Hoàn thành khi order, snapshot items và stock cùng thành công hoặc cùng không thay đổi.
+ * <p>
  * Q2 [TỰ TRẢ LỜI] MVCC giúp readers và writers tương tác ra sao?
  * Bắt đầu: viết ANSWER Q2, phân biệt snapshot với lock khi hai writer tranh một hàng.
  * Hoàn thành khi giải thích cả tương tác đọc/ghi và giới hạn của snapshot.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Local DB transaction không đảm bảo điều gì với payment API?
  * Bắt đầu: viết ANSWER Q3 bằng một tình huống DB và nhà cung cấp payment có kết quả khác nhau.
  * Hoàn thành khi nêu phạm vi atomicity và cách xử lý tác dụng ngoài DB.
+ * <p>
  * Q4 [TỰ TRẢ LỜI] Vì sao transaction dài có thể gây vấn đề cho hệ thống?
  * Bắt đầu: viết ANSWER Q4, xét lock, snapshot và tài nguyên khi request kéo dài.
  * Hoàn thành khi nêu chi phí và đề xuất ranh giới ngắn cho flow này.
+ * <p>
  * Q5 [TỰ TRẢ LỜI] Khi DB commit thành công nhưng email gửi lỗi, hệ thống cần xem đây là loại failure nào?
  * Bắt đầu: viết ANSWER Q5, phân biệt kết quả đặt hàng với kết quả thông báo.
  * Hoàn thành khi mô tả trạng thái đã commit và cơ chế phục hồi gửi email.
@@ -90,6 +95,7 @@ public class Ex01_OrderTransaction {
  * Chỉ commit sau tất cả thao tác; lỗi bất kỳ rollback toàn transaction. Không bao gồm tác dụng mạng bên ngoài.
  * SOLUTION-END
  */
+
 /* ANSWER Q2:
  * SOLUTION-BEGIN
  * PostgreSQL MVCC cho reader đọc phiên bản hàng phù hợp snapshot, thường không chặn writer và ngược lại.
@@ -97,6 +103,7 @@ public class Ex01_OrderTransaction {
  * Snapshot và anomaly còn phụ thuộc isolation level.
  * SOLUTION-END
  */
+
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * Rollback local DB không hoàn tác payment đã thành công; commit DB cũng không đảm bảo payment thành công.
@@ -104,12 +111,14 @@ public class Ex01_OrderTransaction {
  * outbox có thể lưu ý định gửi cùng transaction, không biến API thành một phần của rollback DB.
  * SOLUTION-END
  */
+
 /* ANSWER Q4:
  * SOLUTION-BEGIN
  * Transaction dài giữ lock và connection lâu, tăng contention/deadlock; snapshot cũ cản thu hồi phiên bản MVCC.
  * Giữ phần kiểm tra/ghi DB ngắn; không chờ email, payment hay người dùng khi đang giữ transaction.
  * SOLUTION-END
  */
+
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * Đây là lỗi notification sau commit, không phải thất bại atomic của order đã lưu.

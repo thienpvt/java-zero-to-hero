@@ -12,14 +12,19 @@ import java.util.List;
  * Bắt đầu: cài Order.addItem/removeItem, chạy Ex01_OrderMappingTest; debug trước flush và đọc FK.
  * Tra cứu: Jakarta Persistence 3.1 OneToMany/ManyToOne, orphanRemoval; Hibernate ORM 6.6 associations.
  * Hoàn thành: hai phía nhất quán, orphan bị DELETE, xóa parent không xóa product/customer dùng chung.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] Owning side quyết định điều gì khi lưu quan hệ?
  * Bắt đầu: viết ANSWER Q1, kiểm tra FK B12; xong khi nêu bên quyết định SQL liên kết.
+ * <p>
  * Q2 [THÍ NGHIỆM] Vì sao chỉ đổi inverse side có thể không ghi FK như mong đợi?
  * Bắt đầu: chạy q02, ghi OBSERVATION Q2; xong khi đối chiếu item.order và lỗi FK/NULL.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] {@code CascadeType.REMOVE} và {@code orphanRemoval} có thể gây mất dữ liệu nào?
  * Bắt đầu: viết ANSWER Q3; xong khi phân biệt child owned và product dùng chung.
+ * <p>
  * Q4 [CODE] Khi nào child entity có lifecycle phụ thuộc parent?
  * Bắt đầu: cài removeItem; debug q04; xong khi child bị xóa, product còn và FK đã ghi đúng.
+ * <p>
  * Q5 [TỰ TRẢ LỜI] Vì sao mapping hai chiều làm tăng độ phức tạp?
  * Bắt đầu: viết ANSWER Q5; xong khi nêu đồng bộ hai phía, mutation và vòng tham chiếu.
  */
@@ -99,6 +104,7 @@ public class Ex01_OrderMapping {
  * Cả hai phía trong bộ nhớ vẫn cần đồng bộ để API và persistence context không mâu thuẫn.
  * SOLUTION-END
  */
+
 /* OBSERVATION Q2 / ANSWER Q2:
  * SOLUTION-BEGIN
  * q02 chỉ thêm vào inverse list, item.order vẫn null; persist/flush bị từ chối bởi nullability/FK.
@@ -106,6 +112,7 @@ public class Ex01_OrderMapping {
  * Thí nghiệm dùng PostgreSQL 18.0, bốn bảng, một order và một product; rollback sau lỗi.
  * SOLUTION-END
  */
+
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * Cascade REMOVE lan xóa parent sang entity được tham chiếu; nếu product dùng chung thì mất dữ liệu
@@ -114,12 +121,14 @@ public class Ex01_OrderMapping {
  * ORM xóa child owned; DELETE bằng JDBC dùng ON DELETE CASCADE của DB, không callbacks/context ORM.
  * SOLUTION-END
  */
+
 /* ANSWER Q4:
  * SOLUTION-BEGIN
  * OrderItem là dòng của đúng một order, không có ý nghĩa độc lập; orphanRemoval phù hợp.
  * Product có lifecycle riêng, nhiều order tham chiếu, nên không cascade REMOVE từ item sang product.
  * SOLUTION-END
  */
+
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * Hai tham chiếu phải cùng thay đổi; public mutable list dễ bỏ qua owning FK. Helper giữ invariant,

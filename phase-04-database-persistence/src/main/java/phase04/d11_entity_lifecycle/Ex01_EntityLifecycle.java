@@ -9,14 +9,19 @@ import java.time.Instant;
  * Bắt đầu: chạy Ex01_EntityLifecycleTest, đặt breakpoint tại persist/flush/commit/merge.
  * Tra cứu: Jakarta Persistence 3.1 EntityManager; Hibernate ORM 6.6 User Guide, flushing.
  * Hoàn thành: đối chiếu state với hàng đọc qua connection độc lập, xóa hàng thí nghiệm.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] {@code flush} khác commit thế nào?
  * Bắt đầu: viết ANSWER Q1, đối chiếu B11; xong khi phân biệt đồng bộ SQL và visibility/độ bền.
+ * <p>
  * Q2 [CODE] Dirty checking xảy ra khi nào?
  * Bắt đầu: cài cancel; debug q02; xong khi managed đổi status được ghi mà không gọi merge.
+ * <p>
  * Q3 [CODE] Vì sao giá trị trả về từ {@code merge} cần được dùng đúng?
  * Bắt đầu: cài mergeDetached và observe; debug q03; xong khi kiểm tra cả hai instance.
+ * <p>
  * Q4 [TỰ TRẢ LỜI] Entity detached thay đổi có tự persist không?
  * Bắt đầu: viết ANSWER Q4, chạy thí nghiệm state; xong khi kiểm tra DB sau detach.
+ * <p>
  * Q5 [TỰ TRẢ LỜI] Generated ID làm equals/hashCode khó ở điểm nào?
  * Bắt đầu: viết ANSWER Q5 với lựa chọn cho HashSet; xong khi nêu rủi ro hash đổi sau persist.
  */
@@ -113,24 +118,28 @@ public class Ex01_EntityLifecycle {
  * IDENTITY có thể INSERT ngay tại persist để lấy ID, nên không suy luận insert chỉ xuất hiện tại flush.
  * SOLUTION-END
  */
+
 /* ANSWER Q2:
  * SOLUTION-BEGIN
  * Persistence context theo dõi entity managed; flush so sánh state hiện tại với snapshot và phát UPDATE.
  * Flush thường xảy ra trước commit hoặc query cần dữ liệu đồng bộ. Detached không còn được theo dõi.
  * SOLUTION-END
  */
+
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * Merge sao chép state vào instance managed rồi trả instance đó; đối tượng đầu vào vẫn detached.
  * Dùng instance trả về cho thay đổi tiếp theo; sửa đầu vào sau merge không tự cập nhật instance managed.
  * SOLUTION-END
  */
+
 /* ANSWER Q4:
  * SOLUTION-BEGIN
  * Không. Thay đổi detached nằm ngoài dirty checking; cần merge trong transaction và dùng kết quả.
  * Đọc qua connection mới để tránh nhầm state cache với dữ liệu đã commit.
  * SOLUTION-END
  */
+
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * ID chưa có trước persist; hash dựa ID đổi khi DB cấp ID khiến HashSet không tìm được entry cũ.

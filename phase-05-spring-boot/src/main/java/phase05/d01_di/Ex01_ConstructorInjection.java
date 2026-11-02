@@ -9,31 +9,16 @@ package phase05.d01_di;
  * trong Spring Framework Reference, Core Technologies.</p>
  * <p>Hoàn thành khi B01 dùng repository được truyền vào, test không cần Spring và viết đủ
  * ANSWER Q1–Q5. Câu hỏi viết được tự đối chiếu, không chấm tự động.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] IoC khác DI ở điểm nào?
+ * <p>
  * Q2 [CODE] Vì sao constructor injection thường rõ hơn field injection?
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Một class thuần Java có cần annotation Spring để test không?
+ * <p>
  * Q4 [THÍ NGHIỆM] Khi nào wiring thủ công dễ hiểu hơn component scan?
+ * <p>
  * Q5 [CODE] DI có tự làm thiết kế tốt nếu dependency graph vẫn rối không?
- * ANSWER Q1:
- * SOLUTION-BEGIN
- * IoC đảo quyền tạo/chọn dependency; DI là một cách hiện thực IoC.
- * SOLUTION-END
- * ANSWER Q2:
- * SOLUTION-BEGIN
- * Constructor làm dependency bắt buộc hiện rõ và cho phép object bất biến.
- * SOLUTION-END
- * ANSWER Q3:
- * SOLUTION-BEGIN
- * Không; test truyền fake trực tiếp, không cần container hay annotation.
- * SOLUTION-END
- * ANSWER Q4:
- * SOLUTION-BEGIN
- * Wiring thủ công hữu ích ở graph nhỏ, test hoặc khi muốn thấy toàn bộ dependency.
- * SOLUTION-END
- * ANSWER Q5:
- * SOLUTION-BEGIN
- * Không; DI không sửa trách nhiệm chồng chéo hay graph phụ thuộc quá rối.
- * SOLUTION-END
  */
 public final class Ex01_ConstructorInjection {
     private Ex01_ConstructorInjection() {}
@@ -62,3 +47,33 @@ public final class Ex01_ConstructorInjection {
         // SOLUTION-END
     }
 }
+
+/* ANSWER Q1:
+ * SOLUTION-BEGIN
+ * IoC đảo quyền tạo/chọn dependency; DI là một cách hiện thực IoC.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q2:
+ * SOLUTION-BEGIN
+ * Constructor làm dependency bắt buộc hiện rõ và cho phép object bất biến.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q3:
+ * SOLUTION-BEGIN
+ * Không; test truyền fake trực tiếp, không cần container hay annotation.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q4:
+ * SOLUTION-BEGIN
+ * Wiring thủ công hữu ích ở graph nhỏ, test hoặc khi muốn thấy toàn bộ dependency.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q5:
+ * SOLUTION-BEGIN
+ * Không; DI không sửa trách nhiệm chồng chéo hay graph phụ thuộc quá rối.
+ * SOLUTION-END
+ */

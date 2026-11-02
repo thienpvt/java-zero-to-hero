@@ -21,51 +21,36 @@ import org.springframework.http.HttpStatus;
  * Tiên quyết: Java 21, HTTP, Spring Security/JUnit, PostgreSQL thật.
  * IntelliJ: mở Ex01_AuthenticationAuthorizationTest, chạy test rồi đặt breakpoint trong body B13.
  * Chỉ cấu hình explicit của topic; không scan phase05 hoặc dùng identity provider mạng.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] Authentication khác authorization thế nào?
  * <p>Nguồn §13 Q1; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở security, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_AuthenticationAuthorizationTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q1; không suy luận từ mock decoder.</p>
+ * <p>
  * Q2 [CODE] Vì sao role ở endpoint chưa đủ để bảo vệ order của khách hàng khác?
  * <p>Nguồn §13 Q2; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở Orders.read/changeQuantity/cancel, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_AuthenticationAuthorizationTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q2; không suy luận từ mock decoder.</p>
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Ai là nguồn sự thật của current user ID?
  * <p>Nguồn §13 Q3; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở principal JWT, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_AuthenticationAuthorizationTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q3; không suy luận từ mock decoder.</p>
+ * <p>
  * Q4 [THÍ NGHIỆM] `401` và `403` nên được phát ra ở điều kiện nào?
  * <p>Nguồn §13 Q4; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở filter request 401/403, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_AuthenticationAuthorizationTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q4; không suy luận từ mock decoder.</p>
+ * <p>
  * Q5 [CODE] Vì sao nên ưu tiên security filter/config chuẩn thay vì JWT filter tự viết?
  * <p>Nguồn §13 Q5; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở security, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_AuthenticationAuthorizationTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q5; không suy luận từ mock decoder.</p>
- * ANSWER Q1:
- * SOLUTION-BEGIN
- * Authentication xác minh caller; authorization quyết định quyền. Token hợp lệ thiếu scope vẫn nhận 403, token invalid nhận 401.
- * SOLUTION-END
- * ANSWER Q2:
- * SOLUTION-BEGIN
- * Role/scope chỉ cho phép loại thao tác. Service phải kiểm tra owner từ principal cho từng order; guessed ID của owner khác trả 404 cho cả đọc, sửa và hủy.
- * SOLUTION-END
- * ANSWER Q3:
- * SOLUTION-BEGIN
- * Principal đã được authentication xác thực là nguồn ID; JWT subject được map nội bộ. Không tin customerId trong body, query hoặc header tự khai báo.
- * SOLUTION-END
- * ANSWER Q4:
- * SOLUTION-BEGIN
- * 401 khi thiếu hoặc sai authentication; 403 khi principal hợp lệ thiếu quyền. Quan sát WWW-Authenticate Bearer; insufficient_scope khác invalid_token.
- * SOLUTION-END
- * ANSWER Q5:
- * SOLUTION-BEGIN
- * Resource server chuẩn đã xử lý Bearer header, chữ ký, validator, authority mapping và challenge. Cấu hình SecurityFilterChain explicit, stateless, deny-by-default; không tự viết JWT filter.
- * SOLUTION-END
  */
 public final class Ex01_AuthenticationAuthorization {
     private Ex01_AuthenticationAuthorization() {}
@@ -155,3 +140,33 @@ public final class Ex01_AuthenticationAuthorization {
         public String unlisted() { return "must remain denied"; }
     }
 }
+
+/* ANSWER Q1:
+ * SOLUTION-BEGIN
+ * Authentication xác minh caller; authorization quyết định quyền. Token hợp lệ thiếu scope vẫn nhận 403, token invalid nhận 401.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q2:
+ * SOLUTION-BEGIN
+ * Role/scope chỉ cho phép loại thao tác. Service phải kiểm tra owner từ principal cho từng order; guessed ID của owner khác trả 404 cho cả đọc, sửa và hủy.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q3:
+ * SOLUTION-BEGIN
+ * Principal đã được authentication xác thực là nguồn ID; JWT subject được map nội bộ. Không tin customerId trong body, query hoặc header tự khai báo.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q4:
+ * SOLUTION-BEGIN
+ * 401 khi thiếu hoặc sai authentication; 403 khi principal hợp lệ thiếu quyền. Quan sát WWW-Authenticate Bearer; insufficient_scope khác invalid_token.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q5:
+ * SOLUTION-BEGIN
+ * Resource server chuẩn đã xử lý Bearer header, chữ ký, validator, authority mapping và challenge. Cấu hình SecurityFilterChain explicit, stateless, deny-by-default; không tự viết JWT filter.
+ * SOLUTION-END
+ */

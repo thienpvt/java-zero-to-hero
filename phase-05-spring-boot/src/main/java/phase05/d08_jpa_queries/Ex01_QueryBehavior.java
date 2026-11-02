@@ -16,47 +16,26 @@ import org.springframework.web.bind.annotation.*;
  * <p>B08: mở {@code OrderQueries}, hoàn thiện vùng B08; chạy {@code Ex01_QueryBehaviorTest}.
  * Fixture/mapping có sẵn, không có OSIV; từng lần đọc đóng session trước khi trả DTO.
  * Debugger xem SQL trong StatementInspector, không đếm repository call.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] {@code save} khác commit như thế nào?
  * <p>Mở test Q1 trong IntelliJ, dự đoán số row connection khác thấy sau persist/flush;
  * đọc EntityManager.flush Javadoc. Hoàn thành: dự đoán và bằng chứng trước/sau commit khớp.</p>
+ * <p>
  * Q2 [CODE] Vì sao test chỉ đếm repository call chưa đủ để phát hiện N+1?
  * <p>Mở {@code naiveOrderPage}, đọc Hibernate fetching guide; breakpoint khi truy cập items.
  * Hoàn thành: inspector đo N+1 thật, còn projection B08 có số SELECT hữu hạn.</p>
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Collection fetch join ảnh hưởng pagination ra sao?
  * <p>Mở ANSWER Q3, đọc Hibernate pagination/fetch join warning; xem LIMIT tại DB.
  * Hoàn thành: giải thích row nhân lên và paging trong memory, không viết test từ khóa.</p>
+ * <p>
  * Q4 [THÍ NGHIỆM] Vì sao map entity sang DTO sau khi persistence context đóng cần query/fetch plan rõ?
  * <p>Chạy smoke Q4, debugger duyệt DTO sau session.close; đọc LazyInitializationException.
  * Hoàn thành: ghi quan sát vào ANSWER Q4; không dùng thời gian làm assertion.</p>
+ * <p>
  * Q5 [CODE] Khi nào projection hiệu quả hơn load entity graph đầy đủ?
  * <p>Mở {@code orderPage}, đọc Hibernate native projection; chỉ tải cột DTO cần.
  * Hoàn thành: owner predicate trước LIMIT, thứ tự created_at/id, size 1–100, DTO tách session.</p>
- * ANSWER Q1:
- * SOLUTION-BEGIN
- * save/persist đưa entity vào persistence context; flush gửi SQL nhưng chưa commit.
- * Connection độc lập không thấy row chưa commit ở READ COMMITTED; commit mới công bố dữ liệu.
- * SOLUTION-END
- * ANSWER Q2:
- * SOLUTION-BEGIN
- * Một repository call có thể tải danh sách rồi phát thêm SELECT khi duyệt mỗi lazy collection.
- * StatementInspector đo SQL thực thi: fixture ba order gây bốn SELECT ở nhánh naive,
- * projection dùng ba SELECT cho page, item và total, không tăng theo số order trên trang.
- * SOLUTION-END
- * ANSWER Q3:
- * SOLUTION-BEGIN
- * Collection join nhân số row của parent. LIMIT trên row join có thể cắt thiếu collection;
- * Hibernate có thể paging trong memory. B08 page parent tại DB rồi tải items bằng ID trang.
- * SOLUTION-END
- * ANSWER Q4:
- * SOLUTION-BEGIN
- * Lazy relation chưa tải không truy cập được sau session.close; OSIV che mất query boundary.
- * DTO B08 được dựng đủ bên trong session và không còn giữ entity/proxy khi trả về caller.
- * SOLUTION-END
- * ANSWER Q5:
- * SOLUTION-BEGIN
- * Read-only list chỉ cần vài cột và item snapshot nên projection tránh dirty checking/graph thừa.
- * Graph phù hợp khi use case cần hành vi entity; projection không thay thế mọi query.
- * SOLUTION-END
  */
 public final class Ex01_QueryBehavior {
     private Ex01_QueryBehavior() {}
@@ -157,3 +136,39 @@ public final class Ex01_QueryBehavior {
         }
     }
 }
+
+/* ANSWER Q1:
+ * SOLUTION-BEGIN
+ * save/persist đưa entity vào persistence context; flush gửi SQL nhưng chưa commit.
+ * Connection độc lập không thấy row chưa commit ở READ COMMITTED; commit mới công bố dữ liệu.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q2:
+ * SOLUTION-BEGIN
+ * Một repository call có thể tải danh sách rồi phát thêm SELECT khi duyệt mỗi lazy collection.
+ * StatementInspector đo SQL thực thi: fixture ba order gây bốn SELECT ở nhánh naive,
+ * projection dùng ba SELECT cho page, item và total, không tăng theo số order trên trang.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q3:
+ * SOLUTION-BEGIN
+ * Collection join nhân số row của parent. LIMIT trên row join có thể cắt thiếu collection;
+ * Hibernate có thể paging trong memory. B08 page parent tại DB rồi tải items bằng ID trang.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q4:
+ * SOLUTION-BEGIN
+ * Lazy relation chưa tải không truy cập được sau session.close; OSIV che mất query boundary.
+ * DTO B08 được dựng đủ bên trong session và không còn giữ entity/proxy khi trả về caller.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q5:
+ * SOLUTION-BEGIN
+ * Read-only list chỉ cần vài cột và item snapshot nên projection tránh dirty checking/graph thừa.
+ * Graph phù hợp khi use case cần hành vi entity; projection không thay thế mọi query.
+ * SOLUTION-END
+ */

@@ -12,14 +12,19 @@ import javax.sql.DataSource;
  * <p>Nguồn: 04-database-persistence.md, mục 3. Cần làm trước: JOIN và aggregate SQL.
  * Cách làm: chạy {@code Ex01_OrderHistoryQueryTest}; so sánh khách có đơn với khách chưa có đơn.
  * Hoàn thành khi tổng, số dòng item, customer scope và LEFT JOIN đều đúng.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] {@code LEFT JOIN} tạo kết quả gì khi không có dòng khớp?
  * Bắt đầu: viết ANSWER Q1; hoàn thành khi mô tả hàng trái vẫn còn và cột phải là NULL.
+ * <p>
  * Q2 [TỰ TRẢ LỜI] Vì sao {@code column = NULL} không dùng để kiểm tra null?
  * Bắt đầu: viết ANSWER Q2; hoàn thành khi giải thích logic ba giá trị và cách dùng IS NULL.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] {@code WHERE} khác {@code HAVING} ở đâu?
  * Bắt đầu: viết ANSWER Q3; hoàn thành khi phân biệt lọc hàng đầu vào và nhóm aggregate.
+ * <p>
  * Q4 [THÍ NGHIỆM] Join orders với order_items có thể làm tổng đơn hàng bị nhân đôi thế nào?
  * Bắt đầu: đối chiếu B3 với order nhiều item; hoàn thành khi tính mỗi giá snapshot nhân quantity đúng một lần.
+ * <p>
  * Q5 [TỰ TRẢ LỜI] Khi nào window function phù hợp hơn aggregate làm mất chi tiết từng dòng?
  * Bắt đầu: viết ANSWER Q5; hoàn thành khi nêu use case cần aggregate nhưng vẫn giữ từng dòng.
  */
@@ -81,17 +86,20 @@ public class Ex01_OrderHistoryQuery {
  * LEFT JOIN giữ mọi hàng ở phía trái. Khi không có hàng phải khớp, các cột phía phải nhận NULL.
  * SOLUTION-END
  */
+
 /* ANSWER Q2:
  * SOLUTION-BEGIN
  * NULL biểu thị chưa biết; so sánh thông thường với NULL cho kết quả UNKNOWN chứ không phải TRUE/FALSE.
  * Dùng IS NULL hoặc IS NOT NULL để kiểm tra trạng thái này.
  * SOLUTION-END
  */
+
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * WHERE lọc từng hàng trước GROUP BY và aggregate; HAVING lọc các nhóm sau khi aggregate.
  * SOLUTION-END
  */
+
 /* OBSERVATION Q4 / ANSWER Q4:
  * SOLUTION-BEGIN
  * Một order có hai item tổng lần lượt 2 × 10 và 1 × 5; JOIN tạo hai hàng item, mỗi hàng lặp cột của order.
@@ -99,6 +107,7 @@ public class Ex01_OrderHistoryQuery {
  * B3 dùng cách sau: mỗi item đóng góp đúng một lần vào tổng đơn.
  * SOLUTION-END
  */
+
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * Window function phù hợp khi cần giá trị tổng hợp theo nhóm nhưng vẫn muốn giữ chi tiết từng hàng,

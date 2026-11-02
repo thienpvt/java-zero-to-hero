@@ -12,18 +12,23 @@ import javax.sql.DataSource;
  * Debug: ghi snapshot, commit/SQLSTATE và đọc stock qua connection thứ ba.
  * Tài liệu: https://www.postgresql.org/docs/18/transaction-iso.html
  * Hoàn thành: tái hiện write skew, Serializable hủy một transaction, invariant được bảo vệ.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] Dirty read khác non-repeatable read thế nào?
  * Bắt đầu: viết ANSWER Q1, phân biệt dữ liệu chưa commit với hai lần đọc dữ liệu đã commit.
  * Hoàn thành khi chỉ rõ transaction nào commit giữa các lần đọc.
+ * <p>
  * Q2 [TỰ TRẢ LỜI] `READ COMMITTED` cho snapshot ở phạm vi nào trong PostgreSQL?
  * Bắt đầu: viết ANSWER Q2 và chạy thí nghiệm hai lần SELECT với writer commit ở giữa.
  * Hoàn thành khi phân biệt snapshot statement với snapshot transaction.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Vì sao PostgreSQL `REPEATABLE READ` vẫn có thể có serialization anomaly?
  * Bắt đầu: viết ANSWER Q3, xét invariant phụ thuộc hai hàng được ghi riêng.
  * Hoàn thành khi giải thích write skew dù đọc ổn định và không có phantom.
+ * <p>
  * Q4 [TỰ TRẢ LỜI] Vì sao test race dựa trên `sleep` không đáng tin?
  * Bắt đầu: viết ANSWER Q4, thay delay bằng gate có timeout.
  * Hoàn thành khi gate xác nhận cả hai đã đọc, không chờ peer đang cần lock của mình.
+ * <p>
  * Q5 [CODE] Test cần assert invariant nào khi hai request mua cùng sản phẩm?
  * Bắt đầu: hoàn thành reserve và chạy q05 với hai transaction riêng.
  * Hoàn thành khi lượng được chấp nhận cộng stock cuối bằng stock đầu, không oversell.
@@ -139,6 +144,7 @@ public class Ex01_IsolationAnomaly {
  * READ UNCOMMITTED thực tế có hành vi READ COMMITTED.
  * SOLUTION-END
  */
+
 /* ANSWER Q2:
  * SOLUTION-BEGIN
  * READ COMMITTED lấy snapshot mới cho mỗi statement, không giữ một snapshot cho toàn transaction.
@@ -146,6 +152,7 @@ public class Ex01_IsolationAnomaly {
  * statement dữ liệu đầu tiên; không chỉ từ thời điểm gọi setAutoCommit(false).
  * SOLUTION-END
  */
+
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * PostgreSQL REPEATABLE READ ngăn non-repeatable read và phantom nhưng vẫn cho write skew.
@@ -153,6 +160,7 @@ public class Ex01_IsolationAnomaly {
  * phá invariant tổng thể. Serializable phát hiện phụ thuộc nguy hiểm và báo 40001; retry toàn TX.
  * SOLUTION-END
  */
+
 /* ANSWER Q4:
  * SOLUTION-BEGIN
  * Sleep chỉ trì hoãn, không chứng minh worker đã tới mốc nào; scheduler và DB latency thay đổi.
@@ -160,6 +168,7 @@ public class Ex01_IsolationAnomaly {
  * Luôn cancel futures, rollback/close và kết thúc executor khi một worker lỗi.
  * SOLUTION-END
  */
+
 /* OBSERVATION B8 / ANSWER Q5:
  * SOLUTION-BEGIN
  * Dataset: products 1 và 2 stock=1; invariant ít nhất một đơn vị còn lại giữa hai hàng.

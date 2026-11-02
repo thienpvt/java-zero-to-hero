@@ -21,51 +21,31 @@ import org.springframework.web.server.ResponseStatusException;
  * <p>Nguồn: {@code 05-spring-boot.md}, §5, Q1–Q5 và B05. Tiên quyết: MVC, DTO, HTTP.</p>
  * <p>B05: hoàn thiện factory và các method được đánh dấu, chạy {@code Ex01_HttpAndPagingTest}.
  * Boundary {@code Products} dùng fake, không chứng minh database paging hoặc JWT.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] {@code 401} và {@code 403} khác nhau thế nào?
  * <p>Nguồn: §5 Q1. Tiên quyết: authentication/authorization.
  * Cách làm: mở Spring Security Reference, Basic Authentication; dự đoán status và challenge
  * trước khi đặt breakpoint vào handler B07. Hoàn thành: giải thích hai trường hợp trong ANSWER Q1.</p>
+ * <p>
  * Q2 [CODE] Khi nào trả {@code 201} thay vì {@code 200}?
  * <p>Nguồn: §5 Q2. Tiên quyết: POST và URI tài nguyên.
  * Cách làm: mở {@code ProductController.create}, đọc ResponseEntity Javadoc, hoàn thiện B05;
  * debugger kiểm tra URI. Hoàn thành: test POST trả 201, Location và JSON tài nguyên mới.</p>
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Vì sao pagination cần sort ổn định?
  * <p>Nguồn: §5 Q3. Tiên quyết: thứ tự và khóa duy nhất.
  * Cách làm: mở test hai trang; debugger xem ID khi name/price bằng nhau, đọc Stream.sorted.
  * Hoàn thành: ANSWER Q3 phân biệt tie-breaker với snapshot khi dữ liệu thay đổi.</p>
+ * <p>
  * Q4 [THÍ NGHIỆM] Rủi ro của page size không giới hạn là gì?
  * <p>Nguồn: §5 Q4. Tiên quyết: bộ nhớ và tải request.
  * Cách làm: đọc RequestParam Javadoc, chạy test size 100/101; debugger tại {@code page},
  * không cấp phát dữ liệu khổng lồ. Hoàn thành: ghi giới hạn quan sát được vào ANSWER Q4.</p>
+ * <p>
  * Q5 [CODE] {@code 409} phù hợp với xung đột nào trong đặt hàng?
  * <p>Nguồn: §5 Q5. Tiên quyết: business invariant và HTTP status.
  * Cách làm: mở {@code conflict}, đọc ExceptionHandler Javadoc, bật fake stock conflict;
  * debugger kiểm tra không có Location. Hoàn thành: test conflict trả 409, không tạo thành công.</p>
- * ANSWER Q1:
- * SOLUTION-BEGIN
- * 401: chưa xác thực hoặc credential không hợp lệ; challenge mô tả cơ chế xác thực.
- * 403: đã xác thực nhưng thiếu quyền; gửi lại credential không tự cấp quyền còn thiếu.
- * SOLUTION-END
- * ANSWER Q2:
- * SOLUTION-BEGIN
- * 201 dùng khi request tạo tài nguyên mới; Location chỉ URI tài nguyên được tạo.
- * 200 phù hợp đọc hoặc xử lý thành công không tạo tài nguyên mới; GET không ghi dữ liệu.
- * SOLUTION-END
- * ANSWER Q3:
- * SOLUTION-BEGIN
- * name/price có thể bằng nhau; thêm ID duy nhất tránh đảo thứ tự giữa các trang cùng dữ liệu.
- * Tie-breaker không tạo snapshot: thay đổi đồng thời vẫn có thể dịch offset; cân nhắc cursor khi cần.
- * SOLUTION-END
- * ANSWER Q4:
- * SOLUTION-BEGIN
- * Size không giới hạn có thể làm tăng tải DB, serialization, bộ nhớ và thời gian đáp ứng.
- * B05 từ chối size ngoài 1–100, page âm và sort ngoài allowlist trước khi đọc boundary.
- * SOLUTION-END
- * ANSWER Q5:
- * SOLUTION-BEGIN
- * 409 phù hợp thiếu stock sau cạnh tranh, version conflict hoặc hủy order đã hủy.
- * JSON hỏng là 400, thiếu quyền là 403; lỗi DB bất ngờ không tự trở thành 409.
- * SOLUTION-END
  */
 public final class Ex01_HttpAndPaging {
     private Ex01_HttpAndPaging() {}
@@ -139,3 +119,38 @@ public final class Ex01_HttpAndPaging {
         // SOLUTION-END
     }
 }
+
+/* ANSWER Q1:
+ * SOLUTION-BEGIN
+ * 401: chưa xác thực hoặc credential không hợp lệ; challenge mô tả cơ chế xác thực.
+ * 403: đã xác thực nhưng thiếu quyền; gửi lại credential không tự cấp quyền còn thiếu.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q2:
+ * SOLUTION-BEGIN
+ * 201 dùng khi request tạo tài nguyên mới; Location chỉ URI tài nguyên được tạo.
+ * 200 phù hợp đọc hoặc xử lý thành công không tạo tài nguyên mới; GET không ghi dữ liệu.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q3:
+ * SOLUTION-BEGIN
+ * name/price có thể bằng nhau; thêm ID duy nhất tránh đảo thứ tự giữa các trang cùng dữ liệu.
+ * Tie-breaker không tạo snapshot: thay đổi đồng thời vẫn có thể dịch offset; cân nhắc cursor khi cần.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q4:
+ * SOLUTION-BEGIN
+ * Size không giới hạn có thể làm tăng tải DB, serialization, bộ nhớ và thời gian đáp ứng.
+ * B05 từ chối size ngoài 1–100, page âm và sort ngoài allowlist trước khi đọc boundary.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q5:
+ * SOLUTION-BEGIN
+ * 409 phù hợp thiếu stock sau cạnh tranh, version conflict hoặc hủy order đã hủy.
+ * JSON hỏng là 400, thiếu quyền là 403; lỗi DB bất ngờ không tự trở thành 409.
+ * SOLUTION-END
+ */

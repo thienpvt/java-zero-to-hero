@@ -7,14 +7,19 @@ import java.util.List;
  * <p>Nguồn: 04-database-persistence.md, mục 1. Cần làm trước: kiến thức SQL và khóa quan hệ.
  * Cách làm: chạy {@code Ex01_RelationalSchemaTest}; migration được áp dụng lên PostgreSQL dùng riêng.
  * Hoàn thành khi B1 chứng minh FK, unique và giá snapshot bằng thao tác DB.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] Primary key khác unique constraint ở điểm nào?
  * Bắt đầu: viết ANSWER Q1; hoàn thành khi phân biệt định danh hàng và tính duy nhất của giá trị.
+ * <p>
  * Q2 [TỰ TRẢ LỜI] Khi nào một cột nên cho phép {@code NULL}, và {@code NULL} khác giá trị rỗng thế nào?
  * Bắt đầu: viết ANSWER Q2; hoàn thành khi giải thích được trạng thái chưa biết/không có và chuỗi rỗng.
+ * <p>
  * Q3 [THÍ NGHIỆM] Vì sao đơn hàng cần giữ đơn giá tại thời điểm mua?
  * Bắt đầu: B1 cập nhật giá product sau khi tạo item; hoàn thành khi giá item vẫn giữ nguyên.
+ * <p>
  * Q4 [THÍ NGHIỆM] Foreign key bảo vệ được lỗi nào mà validation ở Java không đủ bảo vệ?
  * Bắt đầu: B1 chèn order tham chiếu customer không tồn tại; hoàn thành khi DB từ chối.
+ * <p>
  * Q5 [TỰ TRẢ LỜI] Khi nào denormalization đáng cân nhắc và chi phí nào phát sinh?
  * Bắt đầu: viết ANSWER Q5; hoàn thành khi nêu workload/lý do và rủi ro đồng bộ dữ liệu.
  */
@@ -37,24 +42,28 @@ public class Ex01_RelationalSchema {
  * UNIQUE bảo đảm một cột hoặc nhóm cột không trùng; bảng có thể có nhiều unique constraint.
  * SOLUTION-END
  */
+
 /* ANSWER Q2:
  * SOLUTION-BEGIN
  * NULL biểu diễn giá trị chưa biết hoặc không áp dụng; chuỗi rỗng vẫn là một giá trị TEXT đã biết.
  * Chỉ cho NULL khi nghiệp vụ cho phép thiếu dữ liệu và mọi truy vấn xử lý trạng thái đó.
  * SOLUTION-END
  */
+
 /* OBSERVATION Q3 / ANSWER Q3:
  * SOLUTION-BEGIN
  * `order_items.unit_price` là snapshot giá đã chốt; đổi `products.price` sau này không được sửa lịch sử đơn.
  * Theo B1, so sánh giá item sau khi cập nhật product để xác nhận hai giá trị có mục đích khác nhau.
  * SOLUTION-END
  */
+
 /* OBSERVATION Q4 / ANSWER Q4:
  * SOLUTION-BEGIN
  * Kiểm tra FK bằng SQL trực tiếp chứng minh ranh giới DB từ chối customer không tồn tại.
  * Java validation có thể bị bỏ qua bởi writer khác hoặc race giữa kiểm tra và ghi; FK kiểm tra cùng lúc ghi.
  * SOLUTION-END
  */
+
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * Denormalization đáng cân nhắc khi đo được workload đọc cần giảm join hoặc lưu snapshot lịch sử.

@@ -58,6 +58,7 @@ class Ex01_MessagingRetry {
  * ghi dedup và business effect cùng transaction, retention phù hợp replay, không ACK trước commit.
  * SOLUTION-END
  */
+
 /* ANSWER Q2:
  * SOLUTION-BEGIN
  * Outbox ghi state nghiệp vụ và event trong cùng DB transaction, tránh DB commit nhưng publish bị mất
@@ -65,6 +66,7 @@ class Ex01_MessagingRetry {
  * Không tự làm consumer/payment idempotent, không tạo ACID transaction xuyên DB/broker/provider.
  * SOLUTION-END
  */
+
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * Retry vô hạn giữ tài nguyên, phình backlog, khuếch đại overload và nhân side effect nếu thiếu idempotency.
@@ -72,6 +74,7 @@ class Ex01_MessagingRetry {
  * lỗi validation/auth không retry. DLQ có owner, alert, sửa nguyên nhân và replay kiểm soát.
  * SOLUTION-END
  */
+
 /* ANSWER Q4:
  * SOLUTION-BEGIN
  * Không. Delivery guarantee có scope broker/transaction cụ thể, không bảo đảm effect ngoài scope chỉ xảy ra một lần.
@@ -79,6 +82,7 @@ class Ex01_MessagingRetry {
  * DB consumer cần unique dedup key cùng transaction; retention và compensation phải theo nghiệp vụ.
  * SOLUTION-END
  */
+
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * synchronized/ReentrantLock chỉ chia sẻ state trong một JVM; instance khác giữ lock khác nên vẫn tranh chấp stock.

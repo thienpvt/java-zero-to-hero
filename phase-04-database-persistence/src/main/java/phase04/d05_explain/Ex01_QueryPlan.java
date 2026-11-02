@@ -9,14 +9,19 @@ import javax.sql.DataSource;
  * Bắt đầu: viết explain(ds,customerId), chạy Ex01_QueryPlanTest trên DB disposable.
  * Kiểm tra: output từng dòng của EXPLAIN ANALYZE BUFFERS, 20000 orders/100 customers.
  * Hoàn thành: lưu plan, xác định node tốn kém, giải thích rows/buffers và điều kiện kết luận thay đổi.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] {@code EXPLAIN} khác {@code EXPLAIN ANALYZE} ở điểm nào?
  * Bắt đầu: viết ANSWER Q1; kiểm tra B5, hoàn thành khi phân biệt ước lượng và thực thi.
+ * <p>
  * Q2 [TỰ TRẢ LỜI] Vì sao actual rows lệch xa estimated rows có thể làm plan kém?
  * Bắt đầu: viết ANSWER Q2; kiểm tra từng node, hoàn thành khi nối sai cardinality với chọn plan.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] {@code BUFFERS} cung cấp loại bằng chứng nào?
  * Bắt đầu: viết ANSWER Q3; kiểm tra output B5, hoàn thành khi phân biệt hit/read và latency.
+ * <p>
  * Q4 [TỰ TRẢ LỜI] Vì sao không được chạy {@code EXPLAIN ANALYZE} câu lệnh sửa dữ liệu tùy tiện?
  * Bắt đầu: viết ANSWER Q4; kiểm tra tác động thực thi, hoàn thành khi nêu rủi ro side effect.
+ * <p>
  * Q5 [TỰ TRẢ LỜI] Một plan có cost thấp hơn có luôn đồng nghĩa latency production thấp hơn không?
  * Bắt đầu: viết ANSWER Q5; kiểm tra dataset/cache, hoàn thành khi nêu giới hạn cost model.
  */
@@ -50,24 +55,28 @@ public class Ex01_QueryPlan {
  * ANALYZE bổ sung số hàng, loops và thời gian thực tế; kết quả phụ thuộc dataset và trạng thái cache.
  * SOLUTION-END
  */
+
 /* ANSWER Q2:
  * SOLUTION-BEGIN
  * Sai cardinality có thể khiến planner chọn join order, join algorithm hoặc scan không phù hợp.
  * Kiểm tra statistics, dữ liệu lệch và tương quan cột; đối chiếu estimated/actual rows từng node.
  * SOLUTION-END
  */
+
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * BUFFERS báo các block hit/read/dirtied/written, kể cả shared/local/temp khi có.
  * Shared read không tự chứng minh physical disk I/O vì OS cache; hit cũng không bảo đảm latency thấp.
  * SOLUTION-END
  */
+
 /* ANSWER Q4:
  * SOLUTION-BEGIN
  * ANALYZE thực thi INSERT/UPDATE/DELETE, có thể ghi dữ liệu, giữ lock và kích hoạt trigger.
  * Rollback không hoàn tác mọi tác động ngoài DB hoặc sequence; B5 chỉ SELECT trên DB disposable.
  * SOLUTION-END
  */
+
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * Cost là đơn vị tương đối của planner, không phải milliseconds hay SLA production.

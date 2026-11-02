@@ -58,6 +58,7 @@ class Ex01_ReliabilityObservabilitySecurity {
  * không dùng percentile từ vài mẫu làm bằng chứng chắc chắn hoặc lấy mean của các percentile.
  * SOLUTION-END
  */
+
 /* ANSWER Q2:
  * SOLUTION-BEGIN
  * Timeout chặn một call chờ quá budget; breaker ngừng gửi thêm khi dependency lỗi/chậm liên tục,
@@ -65,6 +66,7 @@ class Ex01_ReliabilityObservabilitySecurity {
  * concurrency bound, retry budget hay xử lý lỗi nghiệp vụ; fallback vẫn phải giữ invariant.
  * SOLUTION-END
  */
+
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * Mỗi tổ hợp label tạo time series, user/request ID làm số series tăng lớn, tốn RAM, ingest,
@@ -72,6 +74,7 @@ class Ex01_ReliabilityObservabilitySecurity {
  * ID chi tiết thuộc log/trace với sampling và privacy policy, không metric label.
  * SOLUTION-END
  */
+
 /* ANSWER Q4:
  * SOLUTION-BEGIN
  * ID được propagate qua request/event nối structured log và trace của cùng luồng, giúp tìm điểm lỗi/chậm.
@@ -79,6 +82,7 @@ class Ex01_ReliabilityObservabilitySecurity {
  * ID không chứng minh identity/authorization và không dùng làm high-cardinality metric label.
  * SOLUTION-END
  */
+
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * Không log password, bearer/JWT, API key, cookie/session, connection-string secret, payment data

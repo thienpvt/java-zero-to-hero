@@ -16,46 +16,26 @@ import org.springframework.transaction.annotation.*;
  * <p>B11: mở {@code PurchaseService.buy} trong IntelliJ; hoàn thiện B11, chạy
  * {@code Ex01_StockRaceTest}. Hai worker dùng connection/transaction riêng, barrier hữu hạn ngay
  * trước cạnh tranh. Debugger xem stock, affected rows, version; không Thread.sleep/synchronized.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] Vì sao check rồi update trong Java có race condition?
  * <p>Dự đoán NAIVE_SUCCESSFUL_ORDERS; đọc PostgreSQL READ COMMITTED, chạy unsafeBuy trong DB bỏ đi.
  * Hoàn thành: hai order có thể bán một stock dù stock cuối không âm.</p>
+ * <p>
  * Q2 [CODE] {@code @Version} phát hiện điều gì?
  * <p>Mở optimisticBuy, đọc Hibernate optimistic locking; breakpoint sau read trước flush.
  * Hoàn thành: stale version gây conflict, transaction thua không để lại order.</p>
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Conditional update giải quyết phần nào của race?
  * <p>Mở ANSWER Q3 và PostgreSQL UPDATE docs. Hoàn thành: giải thích predicate/affected rows
  * tại DB và vì sao ghi order phải chung transaction; không test từ khóa.</p>
+ * <p>
  * Q4 [THÍ NGHIỆM] Vì sao {@code synchronized} không thể thay row lock/version trong ứng dụng nhiều instance?
  * <p>Chạy smoke Q4; debugger xem backend PID hai worker ở B11, đọc monitor/JVM scope.
  * Hoàn thành: ghi phạm vi lock Java vào ANSWER Q4; không dựng distributed-lock framework.</p>
+ * <p>
  * Q5 [CODE] Khi conflict, API có thể trả status nào và vì sao?
  * <p>Mở conflictStatus/buy, đọc HTTP 409; giữ invalid quantity là lỗi input riêng.
  * Hoàn thành: một winner, stock conservation và status conflict 409; HTTP capstone chưa thuộc B11.</p>
- * ANSWER Q1:
- * SOLUTION-BEGIN
- * Hai transaction cùng đọc stock=1 rồi cùng ghi stock=0 và order; mất một decrement.
- * Check Java không khóa DB; test naive cố ý chứng minh oversell, không dùng đường này để sửa.
- * SOLUTION-END
- * ANSWER Q2:
- * SOLUTION-BEGIN
- * Hibernate thêm version cũ vào UPDATE predicate. Writer thứ hai stale version không update được,
- * OptimisticLockException làm transaction rollback, gồm order insert trước flush.
- * SOLUTION-END
- * ANSWER Q3:
- * SOLUTION-BEGIN
- * UPDATE stock=stock-qty WHERE stock>=qty kiểm tra/giảm nguyên tử tại row DB.
- * affected rows=0 là conflict, không tạo order; affected rows=1 và order phải cùng transaction.
- * SOLUTION-END
- * ANSWER Q4:
- * SOLUTION-BEGIN
- * Monitor chỉ bảo vệ object trong một JVM, không chặn instance khác hoặc writer SQL trực tiếp.
- * B11 không dùng Java lock làm boundary; backend PID độc lập vẫn giữ conservation nhờ DB.
- * SOLUTION-END
- * ANSWER Q5:
- * SOLUTION-BEGIN
- * 409 biểu thị xung đột stock/version với trạng thái hiện tại, client có thể đọc lại hoặc retry hữu hạn.
- * Quantity ngoài 1–1000 là invalid input, không tự trở thành stock conflict; không retry vô hạn.
- * SOLUTION-END
  */
 public final class Ex01_StockRace {
     private Ex01_StockRace() {}
@@ -140,3 +120,38 @@ public final class Ex01_StockRace {
         }
     }
 }
+
+/* ANSWER Q1:
+ * SOLUTION-BEGIN
+ * Hai transaction cùng đọc stock=1 rồi cùng ghi stock=0 và order; mất một decrement.
+ * Check Java không khóa DB; test naive cố ý chứng minh oversell, không dùng đường này để sửa.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q2:
+ * SOLUTION-BEGIN
+ * Hibernate thêm version cũ vào UPDATE predicate. Writer thứ hai stale version không update được,
+ * OptimisticLockException làm transaction rollback, gồm order insert trước flush.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q3:
+ * SOLUTION-BEGIN
+ * UPDATE stock=stock-qty WHERE stock>=qty kiểm tra/giảm nguyên tử tại row DB.
+ * affected rows=0 là conflict, không tạo order; affected rows=1 và order phải cùng transaction.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q4:
+ * SOLUTION-BEGIN
+ * Monitor chỉ bảo vệ object trong một JVM, không chặn instance khác hoặc writer SQL trực tiếp.
+ * B11 không dùng Java lock làm boundary; backend PID độc lập vẫn giữ conservation nhờ DB.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q5:
+ * SOLUTION-BEGIN
+ * 409 biểu thị xung đột stock/version với trạng thái hiện tại, client có thể đọc lại hoặc retry hữu hạn.
+ * Quantity ngoài 1–1000 là invalid input, không tự trở thành stock conflict; không retry vô hạn.
+ * SOLUTION-END
+ */

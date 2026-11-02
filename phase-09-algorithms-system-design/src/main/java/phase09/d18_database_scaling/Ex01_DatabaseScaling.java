@@ -392,24 +392,28 @@ public class Ex01_DatabaseScaling {
  * Mỗi insert/update/delete phải duy trì index, tăng I/O, write amplification và storage; index dư làm write chậm.
  * SOLUTION-END
  */
+
 /* ANSWER Q2:
  * SOLUTION-BEGIN
  * Primary đã commit nhưng replica asynchronous chưa apply, hoặc replica bị lag sau outage/tải cao.
  * Read-after-write có thể thấy bản cũ; dùng primary hoặc cơ chế đọc chờ version khi invariant cần dữ liệu mới.
  * SOLUTION-END
  */
+
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * Key lệch theo hot tenant hoặc tăng theo thời gian có thể dồn hầu hết write/read vào một partition.
  * Tổng capacity còn rảnh nhưng hot shard hết CPU/I/O; chọn theo access pattern, đo skew và kế hoạch rebalance.
  * SOLUTION-END
  */
+
 /* ANSWER Q4:
  * SOLUTION-BEGIN
  * Khi network partition ngăn replica liên lạc, operation cần linearizability phải từ chối/chờ một phía
  * thay vì phục vụ mọi request bằng dữ liệu có thể mâu thuẫn. Không phải chọn hai trong ba cho mọi thời điểm.
  * SOLUTION-END
  */
+
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * Availability là khả năng phục vụ request; durability là giữ write đã xác nhận qua failure theo cam kết.

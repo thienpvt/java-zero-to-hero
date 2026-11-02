@@ -14,18 +14,23 @@ import javax.sql.DataSource;
  * Bắt đầu: cài ba phương thức, chạy Ex01_JdbcResourcesTest trên PostgreSQL 18.
  * findOrder chỉ nhận ID số; thử input giống SQL bằng findProductByName riêng.
  * Hoàn thành: đọc đúng dữ liệu, cập nhật an toàn, đóng tài nguyên cả khi SQL lỗi và trả Hikari lease.
+ * <p>
  * Q1 [CODE] {@code PreparedStatement} bảo vệ dữ liệu đầu vào theo cách nào?
  * Bắt đầu: cài lookup ID và tên; đối chiếu tên bình thường với tên có dấu nháy trong q01.
  * Hoàn thành khi trả đúng literal đã lưu, không làm đổi cấu trúc truy vấn.
+ * <p>
  * Q2 [TỰ TRẢ LỜI] Vì sao không thể bind tên cột bằng parameter placeholder thông thường?
  * Bắt đầu: viết ANSWER Q2, phân biệt identifier trong cú pháp với giá trị đầu vào.
  * Hoàn thành khi nêu cách chọn sort/cột động không tin caller.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] {@code Connection.close()} có ý nghĩa gì khi connection do pool cấp?
  * Bắt đầu: viết ANSWER Q3, phân biệt logical lease với connection vật lý.
  * Hoàn thành khi giải thích lifecycle từ acquire đến tái sử dụng.
+ * <p>
  * Q4 [THÍ NGHIỆM] Điều gì xảy ra nếu không đóng {@code ResultSet}/statement/connection?
  * Bắt đầu: chạy q04 và b09 với pool một connection; ghi OBSERVATION Q4 từ kết quả thật.
  * Hoàn thành khi quan sát thứ tự close và acquire lại sau SQL failure trong thời hạn test.
+ * <p>
  * Q5 [TỰ TRẢ LỜI] Vì sao bắt SQLException rồi tiếp tục trả response thành công là nguy hiểm?
  * Bắt đầu: viết ANSWER Q5; đối chiếu đường lỗi bảng không tồn tại trong b09 với kết quả rỗng hợp lệ.
  * Hoàn thành khi phân biệt lỗi DB với không tìm thấy dữ liệu và giữ chẩn đoán lỗi.
@@ -85,18 +90,21 @@ public class Ex01_JdbcResources {
  * Input có dấu nháy vẫn được so khớp literal. ID long không phải thí nghiệm injection chuỗi.
  * SOLUTION-END
  */
+
 /* ANSWER Q2:
  * SOLUTION-BEGIN
  * Placeholder đứng ở vị trí giá trị, không tạo identifier hoặc keyword khi DB phân tích cú pháp.
  * Cột/sort động cần ánh xạ allowlist sang SQL cố định; không nối trực tiếp tên caller gửi.
  * SOLUTION-END
  */
+
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * close kết thúc logical lease và trả connection về pool để tái sử dụng; thường không đóng socket vật lý.
  * Không dùng lại handle đã close. Pool giữ lifecycle vật lý và đóng chúng khi shutdown hoặc connection hỏng.
  * SOLUTION-END
  */
+
 /* OBSERVATION Q4:
  * SOLUTION-BEGIN
  * q04 quan sát close ResultSet, PreparedStatement rồi Connection trên JDBC PostgreSQL thật.
@@ -106,6 +114,7 @@ public class Ex01_JdbcResources {
  * Dataset: một order, ba products, một tên dạng injection; PostgreSQL 18.0, không dùng timing golden.
  * SOLUTION-END
  */
+
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * Trả thành công che lỗi ghi/đọc, khiến caller tin dữ liệu đã lưu hoặc không tồn tại và không thể phục hồi đúng.

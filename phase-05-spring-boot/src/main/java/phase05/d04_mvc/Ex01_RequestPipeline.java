@@ -19,31 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
  * <p>Test MVC tắt filter riêng cho bài học pipeline, không chứng minh xác thực của capstone.</p>
  * <p>Hoàn thành khi B04 dùng dependency được truyền vào, request lỗi bị từ chối trước service,
  * response hợp lệ là JSON và viết đủ ANSWER Q1–Q5. Câu hỏi viết không chấm tự động.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] Filter và Spring MVC interceptor khác vị trí trong request pipeline ra sao?
+ * <p>
  * Q2 [CODE] Deserialization khác serialization thế nào?
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Vì sao controller không nên gọi {@code new} để khởi tạo dependency?
+ * <p>
  * Q4 [THÍ NGHIỆM] Binding lỗi có xảy ra trước khi service được gọi không?
+ * <p>
  * Q5 [CODE] API nên trả gì khi client gửi JSON sai cú pháp hoặc media type không hỗ trợ?
- * ANSWER Q1:
- * SOLUTION-BEGIN
- * Filter chạy trước DispatcherServlet; interceptor chạy quanh handler MVC sau mapping.
- * SOLUTION-END
- * ANSWER Q2:
- * SOLUTION-BEGIN
- * Deserialization đổi JSON thành object; serialization đổi object thành response JSON.
- * SOLUTION-END
- * ANSWER Q3:
- * SOLUTION-BEGIN
- * Gọi {@code new} ghép controller với implementation và bỏ qua container wiring/test seam.
- * SOLUTION-END
- * ANSWER Q4:
- * SOLUTION-BEGIN
- * Có; converter binding lỗi dừng request trước khi handler gọi service.
- * SOLUTION-END
- * ANSWER Q5:
- * SOLUTION-BEGIN
- * JSON sai cú pháp trả 400; media type không hỗ trợ trả 415, không gọi service.
- * SOLUTION-END
  */
 public final class Ex01_RequestPipeline {
     private Ex01_RequestPipeline() {}
@@ -81,3 +66,33 @@ public final class Ex01_RequestPipeline {
         // SOLUTION-END
     }
 }
+
+/* ANSWER Q1:
+ * SOLUTION-BEGIN
+ * Filter chạy trước DispatcherServlet; interceptor chạy quanh handler MVC sau mapping.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q2:
+ * SOLUTION-BEGIN
+ * Deserialization đổi JSON thành object; serialization đổi object thành response JSON.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q3:
+ * SOLUTION-BEGIN
+ * Gọi {@code new} ghép controller với implementation và bỏ qua container wiring/test seam.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q4:
+ * SOLUTION-BEGIN
+ * Có; converter binding lỗi dừng request trước khi handler gọi service.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q5:
+ * SOLUTION-BEGIN
+ * JSON sai cú pháp trả 400; media type không hỗ trợ trả 415, không gọi service.
+ * SOLUTION-END
+ */

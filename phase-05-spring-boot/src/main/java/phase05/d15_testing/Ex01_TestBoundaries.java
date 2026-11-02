@@ -15,51 +15,36 @@ import org.springframework.web.bind.annotation.*;
  * Tiên quyết: Java 21, HTTP, Spring Security/JUnit, PostgreSQL thật.
  * IntelliJ: mở Ex01_TestBoundariesTest, chạy test rồi đặt breakpoint trong body B15.
  * Chỉ cấu hình explicit của topic; không scan phase05 hoặc dùng identity provider mạng.</p>
+ * <p>
  * Q1 [DỰ ĐOÁN] Test nào chứng minh validation/binding của MVC?
  * <p>Nguồn §15 Q1; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở Controller.create, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_TestBoundariesTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q1; không suy luận từ mock decoder.</p>
+ * <p>
  * Q2 [CODE] Vì sao unit test repository mock không chứng minh SQL đúng?
  * <p>Nguồn §15 Q2; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở schemaSql, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_TestBoundariesTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q2; không suy luận từ mock decoder.</p>
+ * <p>
  * Q3 [TỰ TRẢ LỜI] Vì sao H2 không đủ cho PostgreSQL lock/migration behavior?
  * <p>Nguồn §15 Q3; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở PostgreSQL constraint, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_TestBoundariesTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q3; không suy luận từ mock decoder.</p>
+ * <p>
  * Q4 [THÍ NGHIỆM] Khi nào `@SpringBootTest` đáng chi phí?
  * <p>Nguồn §15 Q4; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở unit/MVC/filter tests, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_TestBoundariesTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q4; không suy luận từ mock decoder.</p>
+ * <p>
  * Q5 [CODE] Vì sao test token decoder thật khác test controller với mock claims?
  * <p>Nguồn §15 Q5; tiên quyết: HTTP/principal/DB boundary.
  * Cách làm: mở Controller.owner, đọc Javadoc Spring Security/Boot theo dependency đã cài;
  * debugger ở boundary và chạy Ex01_TestBoundariesTest. Hoàn thành: quan sát status/state
  * hoặc kết quả DB/metric thật, ghi ANSWER Q5; không suy luận từ mock decoder.</p>
- * ANSWER Q1:
- * SOLUTION-BEGIN
- * MVC test gửi request thật qua binding/validation kiểm tra 400, JSON/status và không gọi service. Unit test DTO không chứng minh DispatcherServlet boundary.
- * SOLUTION-END
- * ANSWER Q2:
- * SOLUTION-BEGIN
- * Mock repository không chạy JDBC/SQL; chỉ chứng minh logic dùng stub. SQL syntax, schema, constraint và rollback cần PostgreSQL thật.
- * SOLUTION-END
- * ANSWER Q3:
- * SOLUTION-BEGIN
- * H2 khác dialect, migration và MVCC/lock của PostgreSQL. Chạy migration/constraint trên PostgreSQL 18 disposable, không embedded replacement hoặc auto-skip.
- * SOLUTION-END
- * ANSWER Q4:
- * SOLUTION-BEGIN
- * Khi cần kiểm chứng nhiều lớp wiring, real HTTP/security/DB/Actuator. Giữ unit không context, MVC ở boundary hẹp; không full Boot cho mọi test.
- * SOLUTION-END
- * ANSWER Q5:
- * SOLUTION-BEGIN
- * Decoder thật xác minh token signed và claims; MockMvc jwt() chèn principal, bỏ qua chữ ký/decoder. Mock claims chỉ chứng minh controller ownership/mapping, không chứng minh JWT an toàn.
- * SOLUTION-END
  */
 public final class Ex01_TestBoundaries {
     private Ex01_TestBoundaries() {}
@@ -125,3 +110,33 @@ public final class Ex01_TestBoundaries {
         }
     }
 }
+
+/* ANSWER Q1:
+ * SOLUTION-BEGIN
+ * MVC test gửi request thật qua binding/validation kiểm tra 400, JSON/status và không gọi service. Unit test DTO không chứng minh DispatcherServlet boundary.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q2:
+ * SOLUTION-BEGIN
+ * Mock repository không chạy JDBC/SQL; chỉ chứng minh logic dùng stub. SQL syntax, schema, constraint và rollback cần PostgreSQL thật.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q3:
+ * SOLUTION-BEGIN
+ * H2 khác dialect, migration và MVCC/lock của PostgreSQL. Chạy migration/constraint trên PostgreSQL 18 disposable, không embedded replacement hoặc auto-skip.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q4:
+ * SOLUTION-BEGIN
+ * Khi cần kiểm chứng nhiều lớp wiring, real HTTP/security/DB/Actuator. Giữ unit không context, MVC ở boundary hẹp; không full Boot cho mọi test.
+ * SOLUTION-END
+ */
+
+/* ANSWER Q5:
+ * SOLUTION-BEGIN
+ * Decoder thật xác minh token signed và claims; MockMvc jwt() chèn principal, bỏ qua chữ ký/decoder. Mock claims chỉ chứng minh controller ownership/mapping, không chứng minh JWT an toàn.
+ * SOLUTION-END
+ */

@@ -12,18 +12,23 @@ import javax.sql.DataSource;
  * Tài liệu: https://www.postgresql.org/docs/18/mvcc-serialization-failure-handling.html
  * Hoàn thành: 40P01/40001 thật, bounded fresh retries, lỗi khác không retry, rollback nguyên tử.
  * SqlWork chỉ tác dụng DB; không gọi payment/email. Caller không tự commit trong work.
+ * <p>
  * Q1 [TỰ TRẢ LỜI] Deadlock khác lock wait timeout như thế nào?
  * Bắt đầu: viết ANSWER Q1 với vòng chờ hai row và chờ đơn không có vòng.
  * Hoàn thành khi phân biệt SQLSTATE và deadline bảo vệ test khỏi treo.
+ * <p>
  * Q2 [CODE] Vì sao chỉ retry câu lệnh bị lỗi có thể sai?
  * Bắt đầu: cài retryTransaction, chạy q02 kiểm tra đọc lại state và rollback attempt cũ.
  * Hoàn thành khi mỗi attempt mở connection mới, run work một lần, commit một lần.
+ * <p>
  * Q3 [TỰ TRẢ LỜI] SQLSTATE `40001` báo loại lỗi nào trong PostgreSQL?
  * Bắt đầu: viết ANSWER Q3, chạy B15 Serializable write skew trên hai hàng riêng.
  * Hoàn thành khi phân biệt serialization failure với 40P01 và lỗi mạng commit không rõ.
+ * <p>
  * Q4 [CODE] Retry không giới hạn có thể gây vấn đề gì?
  * Bắt đầu: giới hạn maxAttempts 1–10, chạy q04 cho cả retryable và nonretryable SQLSTATE.
  * Hoàn thành khi hết budget ném lỗi cuối, Runtime/Error không retry, interrupt giữ flag.
+ * <p>
  * Q5 [TỰ TRẢ LỜI] Vì sao gọi payment API trong transaction khiến retry nguy hiểm?
  * Bắt đầu: viết ANSWER Q5 với payment thành công trước DB rollback.
  * Hoàn thành khi chỉ rõ rollback DB không hoàn tác external side effect.
@@ -72,6 +77,7 @@ public class Ex01_DeadlockRetry {
  * statement timeout/cancel là 57014. Query timeout 10s lớn hơn deadlock_timeout mặc định 1s.
  * SOLUTION-END
  */
+
 /* ANSWER Q3:
  * SOLUTION-BEGIN
  * 40001 là serialization failure, có thể xuất hiện tại statement hoặc commit. PostgreSQL SSI
@@ -79,6 +85,7 @@ public class Ex01_DeadlockRetry {
  * 40P01 cũng retryable. Không retry mọi SQLException hoặc commit network failure 08xxx.
  * SOLUTION-END
  */
+
 /* ANSWER Q5:
  * SOLUTION-BEGIN
  * Retry có thể thanh toán hai lần vì rollback DB không hoàn tác payment API đã thành công.
@@ -86,6 +93,7 @@ public class Ex01_DeadlockRetry {
  * remote API thành một phần của DB rollback, và lỗi commit không rõ phải đối soát.
  * SOLUTION-END
  */
+
 /* OBSERVATION B15 / ANSWER Q2,Q4:
  * SOLUTION-BEGIN
  * Hai TX update hai product theo thứ tự đối nghịch; barrier chỉ sau hai first locks riêng.
