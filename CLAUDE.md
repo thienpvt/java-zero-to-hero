@@ -20,9 +20,10 @@
 2. **Simple explanation:** explain the mechanism, using a familiar example when useful.
 3. **Code example:** include code when it makes the answer clearer.
 4. **Common pitfall:** mention one important misconception or trade-off when relevant.
-5. **Explore further:** always end with related questions for deeper learning.
+5. **Summary:** recap the answer in one or two sentences before the follow-up questions.
+6. **Explore further:** always end with related questions for deeper learning.
 
-Not every heading must appear. Omit unnecessary sections, except the final follow-up questions. Translate headings into the response language.
+Not every heading must appear. Omit unnecessary sections, except the summary and the final follow-up questions. Translate headings into the response language.
 
 ## Code Examples
 - Prefer small examples focused on one concept. Avoid building an entire application.
